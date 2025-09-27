@@ -12,8 +12,10 @@ public class PhaseShop : MonoBehaviour
     private int startCoins = 10;
     private int coins;
 
-    
 
+    /// <summary>
+    /// Awake method.
+    /// </summary>
     private void Awake()
     {
         battleSlotPos = new Vector2[battleSlots.Length];

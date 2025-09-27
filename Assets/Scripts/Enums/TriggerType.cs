@@ -11,10 +11,10 @@
     Buy,
     Tier1FriendBought,
 
-    StartOfBattle,
-    EndOfBattle,
     StartOfTurn,
     EndTurn,
+    StartOfBattle,
+    EndOfBattle,
 
     BeforeAttack,
     AfterAttack,
