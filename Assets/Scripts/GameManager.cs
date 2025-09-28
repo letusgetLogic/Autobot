@@ -1,4 +1,8 @@
-﻿using System;
+﻿using NUnit.Framework;
+using NUnit.Framework.Constraints;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +12,11 @@ public class GameManager : MonoBehaviour
 
     private GameState state;
     private Template[] templates;
+
+    [HideInInspector] 
+    public List<SoUnit> Units = new();
+    [HideInInspector] 
+    public List<SoItem> Items = new();
 
     /// <summary>
     /// Awake method.
@@ -66,12 +75,34 @@ public class GameManager : MonoBehaviour
     /// <exception cref="NotImplementedException"></exception>
     private void RunGame()
     {
-        int turns = 1;
+        SceneManager.LoadScene("PhaseShop");
+        StartCoroutine(WaitForPhaseShopInstance());
 
-        do
-        {
-            SceneManager.LoadScene("PhaseShop");
-        } while (state != GameState.EndOfGame); 
+    }
+
+    /// <summary>
+    /// Waits until the <see cref="PhaseShop.Instance"/> is initialized and then transitions the game state to the start
+    /// of the turn.
+    /// </summary>
+    /// <remarks>This method suspends execution until the <see cref="PhaseShop.Instance"/> is not null. Once
+    /// the instance is available,  it sets the game state to <see cref="GameState.StartOfTurn"/> and performs the
+    /// necessary actions to start the turn,  including initializing the first template and rolling for the phase
+    /// shop.</remarks>
+    /// <returns></returns>
+    private IEnumerator WaitForPhaseShopInstance()
+    {
+        yield return new WaitUntil(() => PhaseShop.Instance != null);
+        state = GameState.StartOfTurn;
+        PhaseShop.Instance.StartTurn(templates[0]);
+        StartPack.Instance.AddUnitsByTier(templates[0].Turns);
+        PhaseShop.Instance.Roll();
+    }
+
+    public void EndGame()
+    {
+        state = GameState.EndOfGame;
+        Units.Clear();
+        Items.Clear();
     }
 }   
                                                                                                                                           
