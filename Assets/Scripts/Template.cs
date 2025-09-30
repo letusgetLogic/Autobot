@@ -18,6 +18,17 @@ public class Template
         Health = _health;
         WinsCondition = _wins;
         Turns = 0; 
-    }   
+    }
+
+    /// <summary>
+    /// Rolls the shop at the start of the turn.
+    /// </summary>
+    public void RollShopAtStart()
+    {
+        Turns++;
+        PhaseShop.Instance.StartTurn(this);
+        StartPack.Instance.AddUnitsByTier(Turns);
+        PhaseShop.Instance.Roll();
+    }
 
 }

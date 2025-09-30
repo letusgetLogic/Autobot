@@ -2,18 +2,16 @@
 {
     None,
 
+    Buff,
+
     Summon,
     SummonOpponent,
 
-    Buff,
+    CopyHealth,
+    BuffSelfIfAFriendLv3,
 
-    //BuffSelf,
-    //CopyHealth,
-    //BuffSelfIfAFriendLv3,
-    //BuffFriendPernament,
-    //BuffFriendUntilEndOfBattle,
-    //BuffFriendIfLost,
-    //BuffShopUnitPernament,
+    BuffFriendIfLost,
+    BuffShopUnitPernament,
 
     Deal,
 

@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
                     new Template(GameSettings.Instance.PlayerHealth, GameSettings.Instance.Wins),
                     new Template(GameSettings.Instance.PlayerHealth, GameSettings.Instance.Wins)
                     };
-                RunGame();
+                RunSingle();
                 break;
 
             case GameMode.AI:
@@ -70,13 +70,17 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts game.
+    /// Starts game mode single.
     /// </summary>
-    /// <exception cref="NotImplementedException"></exception>
-    private void RunGame()
+    private void RunSingle()
     {
-        SceneManager.LoadScene("PhaseShop");
-        StartCoroutine(WaitForPhaseShopInstance());
+       foreach (var template in templates)
+       {
+            state = GameState.StartOfTurn;
+            SceneManager.LoadScene("PhaseShop");
+            StartCoroutine(StartTurn(template));
+       }
+
 
     }
 
@@ -84,20 +88,13 @@ public class GameManager : MonoBehaviour
     /// Waits until the <see cref="PhaseShop.Instance"/> is initialized and then transitions the game state to the start
     /// of the turn.
     /// </summary>
-    /// <remarks>This method suspends execution until the <see cref="PhaseShop.Instance"/> is not null. Once
-    /// the instance is available,  it sets the game state to <see cref="GameState.StartOfTurn"/> and performs the
-    /// necessary actions to start the turn,  including initializing the first template and rolling for the phase
-    /// shop.</remarks>
-    /// <returns></returns>
-    private IEnumerator WaitForPhaseShopInstance()
+    private IEnumerator StartTurn(Template _template)
     {
         yield return new WaitUntil(() => PhaseShop.Instance != null);
         state = GameState.StartOfTurn;
-        PhaseShop.Instance.StartTurn(templates[0]);
-        StartPack.Instance.AddUnitsByTier(templates[0].Turns);
-        PhaseShop.Instance.Roll();
-    }
+        _template.RollShopAtStart();
 
+    }
     public void EndGame()
     {
         state = GameState.EndOfGame;
