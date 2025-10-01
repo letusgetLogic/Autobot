@@ -5,20 +5,19 @@ using UnityEditor;
 #endif
 
 [CreateAssetMenu(fileName = "Unit", menuName = "ScriptableObject/Unit")]
-public class SoUnit :ScriptableObject
+public class SoUnit : ScriptableObject
 {
     public Sprite Sprite;
 
-    public string
-        Name;
+    public string Name;
 
-    public int 
+    public int
         Health,
-        Attack;
+        Attack,
+        Cost;
 
-    public Ability AbilityLv1;
-    public Ability AbilityLv2;
-    public Ability AbilityLv3;
+    public int LevelLimit;
+    public Level[] Levels;
 
     private void OnEnable()
     {

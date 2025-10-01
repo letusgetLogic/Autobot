@@ -1,21 +1,19 @@
-﻿public struct Ability
+﻿public struct Level
     {
-    public string
-       Description;
+    public string Description;
+    public int Sell;
 
     public bool HasAbility;
 
     public TriggerType TriggerType;
+    public int TriggerTimes;
+    public int TriggerTimesLimit;
     public DoType DoType;
     public FromWho FromWho;
     public ToWho ToWho;
+    public int ToWhoCount;
     public AbilityDuration AbilityDuration;
 
-    public int
-        Cost,
-        ToWhoCount,
-        TriggerTimes,
-        TriggerTimesLimit;
 
     // Buff
     public int
@@ -23,5 +21,7 @@
         AttackBuff;
 
     // Summon
+    public SoUnit[] SummonUnits;
+    public bool SummonForOpponent;
 }
 

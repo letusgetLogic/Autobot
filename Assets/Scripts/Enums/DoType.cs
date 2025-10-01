@@ -5,7 +5,6 @@
     Buff,
 
     Summon,
-    SummonOpponent,
 
     CopyHealth,
     BuffSelfIfAFriendLv3,
