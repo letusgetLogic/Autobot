@@ -2,6 +2,7 @@
 {
     None,
     UntilNextTurn,
-    Permanent
+    Permanent,
+    Both
 }
 
