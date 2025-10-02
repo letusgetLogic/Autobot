@@ -1,6 +1,4 @@
-﻿using log4net.Core;
-using System;
-using System.Reflection;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,7 +6,7 @@ using UnityEngine;
 class SoUnitEditor : Editor
 {
     private SoUnit data;
-    private Level[] levels;
+
     private bool[]
         showLevelSections,
         showTriggerSections;
@@ -17,7 +15,6 @@ class SoUnitEditor : Editor
     {
         EditorStyles.textField.wordWrap = true;
         data = (SoUnit)target;
-        levels = ((SoUnit)target).Levels;
         Draw();
     }
 
@@ -46,23 +43,19 @@ class SoUnitEditor : Editor
         data.Cost = EditorGUILayout.IntField("Cost", data.Cost);
         data.LevelLimit = EditorGUILayout.IntField("Level Limit", data.LevelLimit);
 
-
-        if (data.LevelLimit <= 0)
-            return;
-        else
-            if (data.Levels == null || data.Levels.Length != data.LevelLimit)
-        {
+        if (data.Levels == null || data.Levels.Length != data.LevelLimit)
             data.Levels = new Level[data.LevelLimit];
-            showLevelSections = new bool[data.LevelLimit];
-            showTriggerSections = new bool[data.LevelLimit];
-        }
+        if (showLevelSections == null || showLevelSections.Length != data.Levels.Length)
+            showLevelSections = new bool[data.Levels.Length];
+        if (showTriggerSections == null || showTriggerSections.Length != data.Levels.Length)
+            showTriggerSections = new bool[data.Levels.Length];
 
         if (GUILayout.Button("Synchronize Levels"))
         {
             for (int i = 1; i < data.LevelLimit; i++)
             {
                 data.Levels[i] = data.Levels[0];
-                data.Levels[i].Sell = data.Levels[0].Sell + 1;
+                data.Levels[i].Sell = data.Levels[i - 1].Sell + 1;
             }
         }
 
@@ -70,7 +63,7 @@ class SoUnitEditor : Editor
 
         for (int i = 0; i < data.LevelLimit; i++)
         {
-            DrawLevel(i);
+            DrawLevel(ref data.Levels[i], i);
         }
 
         EditorGUI.indentLevel--;
@@ -80,7 +73,7 @@ class SoUnitEditor : Editor
     /// Draw the data for a specific level. 
     /// </summary>
     /// <param name="_i"></param>
-    private void DrawLevel(int _i)
+    private void DrawLevel(ref Level _level, int _i)
     {
         showLevelSections[_i] = EditorGUILayout.Foldout(showLevelSections[_i], $"Level {_i + 1}");
         if (!showLevelSections[_i])
@@ -88,18 +81,20 @@ class SoUnitEditor : Editor
 
         EditorGUI.indentLevel++;
 
-        levels[_i].Description = EditorGUILayout.TextField("Description", levels[_i].Description);
-        levels[_i].Sell = EditorGUILayout.IntField("Sell", levels[_i].Sell);
-        levels[_i].HasAbility = EditorGUILayout.Toggle("Has Ability", levels[_i].HasAbility);
+        EditorGUILayout.LabelField("Description", GUILayout.Width(100));
+        _level.Description = EditorGUILayout.TextArea(_level.Description);
 
-        if (levels[_i].HasAbility)
+        _level.Sell = EditorGUILayout.IntField("Sell", _level.Sell);
+        _level.HasAbility = EditorGUILayout.Toggle("Has Ability", _level.HasAbility);
+
+        if (_level.HasAbility)
         {
-            levels[_i].TriggerType = (TriggerType)EditorGUILayout.EnumPopup("Trigger", levels[_i].TriggerType);
-                DrawTriggerTimes(ref levels[_i], _i);
+            _level.TriggerType = (TriggerType)EditorGUILayout.EnumPopup("Trigger", _level.TriggerType);
+            DrawTriggerTimes(ref _level, _i);
 
-            DrawDoType(ref levels[_i]);
+            DrawDoType(ref _level);
 
-            levels[_i].AbilityDuration = (AbilityDuration)EditorGUILayout.EnumPopup("Duration", levels[_i].AbilityDuration);
+            _level.AbilityDuration = (AbilityDuration)EditorGUILayout.EnumPopup("Duration", _level.AbilityDuration);
         }
 
         EditorGUI.indentLevel--;
@@ -113,14 +108,15 @@ class SoUnitEditor : Editor
         EditorGUI.indentLevel++;
         EditorGUILayout.BeginHorizontal();
 
+        EditorGUILayout.LabelField("> Times", GUILayout.Width(100));
         showTriggerSections[_i] = EditorGUILayout.Toggle(showTriggerSections[_i]);
 
         if (showTriggerSections[_i])
         {
-            EditorGUILayout.LabelField("- Times", GUILayout.Width(80));
+            EditorGUILayout.LabelField("- Times", GUILayout.Width(90));
             _level.TriggerTimes = EditorGUILayout.IntField(_level.TriggerTimes, GUILayout.Width(80));
 
-            EditorGUILayout.LabelField("- Limit", GUILayout.Width(80));
+            EditorGUILayout.LabelField("- Limit", GUILayout.Width(90));
             _level.TriggerTimesLimit = EditorGUILayout.IntField(_level.TriggerTimesLimit, GUILayout.Width(80));
         }
 
@@ -194,9 +190,17 @@ class SoUnitEditor : Editor
         EditorGUI.indentLevel++;
 
         EditorGUILayout.BeginHorizontal();
-        _level.SummonUnits = new SoUnit[EditorGUILayout.IntField(_level.SummonUnits.Length, GUILayout.Width(80))];
+        _level.UnitLimit = EditorGUILayout.IntField(_level.UnitLimit, GUILayout.Width(80));
         EditorGUILayout.LabelField("Summoned Units");
         EditorGUILayout.EndHorizontal();
+
+        if (_level.SummonUnits == null || _level.SummonUnits.Length != _level.UnitLimit)
+        {
+            _level.SummonUnits = new SoUnit[_level.UnitLimit];
+        }
+
+        if (_level.SummonUnits == null)
+            return;
 
         for (int i = 0; i < _level.SummonUnits.Length; i++)
         {

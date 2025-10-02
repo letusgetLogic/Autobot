@@ -110,7 +110,7 @@ public class PhaseShop : MonoBehaviour
             GameObject unit = 
                 Instantiate(unitPrefab, shopUnitsSlotsPos[i], Quaternion.identity);
 
-            unit.GetComponent<UnitController>().Initialize(unitData);
+            //unit.GetComponent<UnitController>().Initialize(unitData);
         }
     }
 }

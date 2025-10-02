@@ -21,7 +21,9 @@ public struct Level
         HealthBuff,
         AttackBuff;
 
+
     // Summon
+    public int UnitLimit;
     public SoUnit[] SummonUnits;
     public bool SummonForOpponent;
 }

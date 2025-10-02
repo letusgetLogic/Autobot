@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42189c78519c9a4f9f01e03301b4e0e, type: 3}
+  m_Name: Ant
+  m_EditorClassIdentifier: Assembly-CSharp::SoUnit
+  Sprite: {fileID: 0}
+  ID: 
+  Name: 
+  Health: 0
+  Attack: 0
+  Cost: 0
+  LevelLimit: 3
+  Levels:
+  - Description: "Faint \u2192 Give one random friend +1 attack and +1 health."
+    Sell: 1
+    HasAbility: 1
+    TriggerType: 17
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 3
+    ToWhoCount: 1
+    AbilityDuration: 3
+    HealthBuff: 1
+    AttackBuff: 1
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+  - Description: "Faint \u2192 Give one random friend +2 attack and +2 health."
+    Sell: 2
+    HasAbility: 1
+    TriggerType: 17
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 3
+    ToWhoCount: 1
+    AbilityDuration: 3
+    HealthBuff: 2
+    AttackBuff: 2
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+  - Description: "Faint \u2192 Give one random friend +3 attack and +3 health."
+    Sell: 3
+    HasAbility: 1
+    TriggerType: 17
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 3
+    ToWhoCount: 1
+    AbilityDuration: 3
+    HealthBuff: 3
+    AttackBuff: 3
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
