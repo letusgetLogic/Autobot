@@ -1,4 +1,5 @@
-﻿public struct Level
+﻿[System.Serializable]
+public struct Level
     {
     public string Description;
     public int Sell;

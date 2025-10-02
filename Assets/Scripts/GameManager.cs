@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(StartTurn(template));
        }
 
-
+ 
     }
 
     /// <summary>
