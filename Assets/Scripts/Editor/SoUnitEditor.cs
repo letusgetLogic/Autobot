@@ -96,8 +96,27 @@ class SoUnitEditor : Editor
 
             _level.AbilityDuration = (AbilityDuration)EditorGUILayout.EnumPopup("Duration", _level.AbilityDuration);
         }
+        else
+        {
+            // Reset ability-related fields if HasAbility is false
+            _level.TriggerType = TriggerType.None;
+            _level.TriggerTimes = 0;
+            _level.TriggerTimesLimit = 0;
+            _level.DoType = DoType.None;
+            _level.FromWho = FromWho.None;
+            _level.ToWho = ToWho.None;
+            _level.ToWhoCount = 0;
+            _level.AbilityDuration = AbilityDuration.None;
+            // Buff attributes
+            _level.HealthBuff = 0;
+            _level.AttackBuff = 0;
+            // Summon attributes
+            _level.UnitLimit = 0;
+            _level.SummonUnits = null;
+            _level.SummonForOpponent = false;
+        }
 
-        EditorGUI.indentLevel--;
+            EditorGUI.indentLevel--;
     }
 
     /// <summary>
@@ -134,13 +153,20 @@ class SoUnitEditor : Editor
         _level.DoType = (DoType)EditorGUILayout.EnumPopup("Do", _level.DoType);
         DrawFromWhoToWho(ref _level);
 
-        if (_level.DoType == DoType.Buff)
+        switch (_level.DoType)
         {
-            DrawBuffAttributes(ref _level);
-        }
-        else if (_level.DoType == DoType.Summon)
-        {
-            DrawSummonAttributes(ref _level);
+            case DoType.Buff:
+                DrawBuffAttributes(ref _level);
+                break;
+            case DoType.Summon:
+                DrawSummonAttributes(ref _level);
+                break;
+            case DoType.Deal:
+                DrawDealAttributes(ref _level);
+                break;
+            case DoType.GainCoin:   
+                DrawGainCoinAttributes(ref _level);
+                break;
         }
     }
 
@@ -209,6 +235,28 @@ class SoUnitEditor : Editor
         }
         _level.SummonForOpponent = EditorGUILayout.Toggle("Summon for Opponent", _level.SummonForOpponent);
 
+        EditorGUI.indentLevel--;
+    }
+
+    /// <summary>
+    /// Draw the deal attributes.
+    /// </summary>
+    /// <param name="_level"></param>
+    private void DrawDealAttributes(ref Level _level)
+    {
+        EditorGUI.indentLevel++;
+        _level.DealDamage = EditorGUILayout.IntField("Deal Damage", _level.DealDamage);
+        EditorGUI.indentLevel--;
+    }
+
+    /// <summary>
+    /// Draw the gain coin attributes.
+    /// </summary>
+    /// <param name="_level"></param>
+    private void DrawGainCoinAttributes(ref Level _level)
+    {
+        EditorGUI.indentLevel++;
+        _level.GainCoin = EditorGUILayout.IntField("Gain Coin", _level.GainCoin);
         EditorGUI.indentLevel--;
     }
 }

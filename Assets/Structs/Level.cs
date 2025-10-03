@@ -15,16 +15,20 @@ public struct Level
     public int ToWhoCount;
     public AbilityDuration AbilityDuration;
 
-
     // Buff
     public int
         HealthBuff,
         AttackBuff;
 
-
     // Summon
     public int UnitLimit;
     public SoUnit[] SummonUnits;
     public bool SummonForOpponent;
+
+    // Deal
+    public int DealDamage;
+
+    // Gain
+    public int GainCoin;
 }
 

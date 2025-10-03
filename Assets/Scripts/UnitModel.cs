@@ -6,19 +6,7 @@ using UnityEditor;
 
 public class UnitModel : MonoBehaviour
 {
-    public Sprite Sprite;
-
-    public string
-        ID,
-        Name;
-
-    public int
-        Health,
-        Attack,
-        Cost;
-
-    public int LevelLimit;
-    public Level[] Levels { get; set; }
+    public SoUnit Data { get; set; }
 
     public Level CurrentLevel { get; set; }
     public int BattleHealth { get; set; }

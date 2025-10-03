@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42189c78519c9a4f9f01e03301b4e0e, type: 3}
   m_Name: Cricket
   m_EditorClassIdentifier: Assembly-CSharp::SoUnit
-  Sprite: {fileID: 0}
+  Sprite: {fileID: -849357013, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
   ID: 
-  Name: 
-  Health: 0
-  Attack: 0
-  Cost: 0
+  Name: Cricket
+  Health: 3
+  Attack: 1
+  Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: 
-    Sell: 0
+  - Description: "Faint \u2192 Summon one 1/1 Zombie Cricket."
+    Sell: 1
     HasAbility: 1
     TriggerType: 17
     TriggerTimes: 0
@@ -30,41 +30,50 @@ MonoBehaviour:
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 3
     HealthBuff: 0
     AttackBuff: 0
-    UnitLimit: 0
-    SummonUnits: []
+    UnitLimit: 1
+    SummonUnits:
+    - {fileID: 11400000, guid: 691223960b7a3584daf7a6f835880c4a, type: 2}
     SummonForOpponent: 0
-  - Description: 
-    Sell: 0
-    HasAbility: 0
-    TriggerType: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Description: "Faint \u2192 Summon one 2/2 Zombie Cricket."
+    Sell: 2
+    HasAbility: 1
+    TriggerType: 17
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
+    DoType: 2
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 3
     HealthBuff: 0
     AttackBuff: 0
-    UnitLimit: 0
-    SummonUnits: []
+    UnitLimit: 1
+    SummonUnits:
+    - {fileID: 11400000, guid: 691223960b7a3584daf7a6f835880c4a, type: 2}
     SummonForOpponent: 0
-  - Description: 
-    Sell: 0
-    HasAbility: 0
-    TriggerType: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Description: "Faint \u2192 Summon one 3/3 Zombie Cricket."
+    Sell: 3
+    HasAbility: 1
+    TriggerType: 17
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
+    DoType: 2
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 3
     HealthBuff: 0
     AttackBuff: 0
-    UnitLimit: 0
-    SummonUnits: []
+    UnitLimit: 1
+    SummonUnits:
+    - {fileID: 11400000, guid: 691223960b7a3584daf7a6f835880c4a, type: 2}
     SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0

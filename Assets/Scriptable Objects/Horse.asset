@@ -10,64 +10,64 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a42189c78519c9a4f9f01e03301b4e0e, type: 3}
-  m_Name: Ant
+  m_Name: Horse
   m_EditorClassIdentifier: Assembly-CSharp::SoUnit
-  Sprite: {fileID: -655873960, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
+  Sprite: {fileID: -1478326905, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
   ID: 
-  Name: Ant
-  Health: 2
+  Name: Horse
+  Health: 1
   Attack: 2
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Faint \u2192 Give one random friend +1 attack and +1 health."
+  - Description: "Friend summoned \u2192 Give it +1 attack until end of battle."
     Sell: 1
     HasAbility: 1
-    TriggerType: 17
+    TriggerType: 3
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 1
+    ToWho: 8
+    ToWhoCount: 0
+    AbilityDuration: 1
+    HealthBuff: 0
     AttackBuff: 1
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Faint \u2192 Give one random friend +2 attack and +2 health."
+  - Description: "Friend summoned \u2192 Give it +2 attack until end of battle."
     Sell: 2
     HasAbility: 1
-    TriggerType: 17
+    TriggerType: 3
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 2
+    ToWho: 8
+    ToWhoCount: 0
+    AbilityDuration: 1
+    HealthBuff: 0
     AttackBuff: 2
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Faint \u2192 Give one random friend +3 attack and +3 health."
+  - Description: "Friend summoned \u2192 Give it +3 attack until end of battle."
     Sell: 3
     HasAbility: 1
-    TriggerType: 17
+    TriggerType: 3
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 3
+    ToWho: 8
+    ToWhoCount: 0
+    AbilityDuration: 1
+    HealthBuff: 0
     AttackBuff: 3
     UnitLimit: 0
     SummonUnits: []

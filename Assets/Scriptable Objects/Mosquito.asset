@@ -10,67 +10,67 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a42189c78519c9a4f9f01e03301b4e0e, type: 3}
-  m_Name: Ant
+  m_Name: Mosquito
   m_EditorClassIdentifier: Assembly-CSharp::SoUnit
-  Sprite: {fileID: -655873960, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
+  Sprite: {fileID: -1475683899, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
   ID: 
-  Name: Ant
+  Name: Mosquito
   Health: 2
   Attack: 2
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Faint \u2192 Give one random friend +1 attack and +1 health."
+  - Description: "Start of battle \u2192 Deal 1 damage to one random enemy."
     Sell: 1
     HasAbility: 1
-    TriggerType: 17
+    TriggerType: 9
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
+    DoType: 7
     FromWho: 1
-    ToWho: 3
+    ToWho: 9
     ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 1
-    AttackBuff: 1
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
+    DealDamage: 1
     GainCoin: 0
-  - Description: "Faint \u2192 Give one random friend +2 attack and +2 health."
+  - Description: "Start of battle \u2192 Deal 1 damage to two random enemy."
     Sell: 2
     HasAbility: 1
-    TriggerType: 17
+    TriggerType: 9
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
+    DoType: 7
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 2
-    AttackBuff: 2
+    ToWho: 9
+    ToWhoCount: 2
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
+    DealDamage: 1
     GainCoin: 0
-  - Description: "Faint \u2192 Give one random friend +3 attack and +3 health."
+  - Description: "Start of battle \u2192 Deal 1 damage to three random enemy."
     Sell: 3
     HasAbility: 1
-    TriggerType: 17
+    TriggerType: 9
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
+    DoType: 7
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 3
-    AttackBuff: 3
+    ToWho: 9
+    ToWhoCount: 3
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
+    DealDamage: 1
     GainCoin: 0
