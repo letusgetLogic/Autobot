@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,13 +7,28 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Mode Development")]
+
+    [SerializeField]
+    private int setHealth = 3;
+    [SerializeField]
+    private int setWins = 5;
+    [SerializeField]
+    private bool isDeveloper;
+
     private GameState state;
     private Template[] templates;
 
-    [HideInInspector] 
-    public List<SoUnit> Units = new();
-    [HideInInspector] 
-    public List<SoItem> Items = new();
+    [HideInInspector]
+    public List<SoUnit> AvaiableUnits = new();
+    [HideInInspector]
+    public List<SoItem> AvaiableItems = new();
+
+    public GameMode Mode { get; set; }
+    public int PlayerCount { get; private set; }
+    public bool WithTimer { get; private set; }
+    public int WinsCondition { get; set; }
+    public int PlayerHealth { get; set; }
 
     /// <summary>
     /// Awake method.
@@ -25,12 +37,16 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(Instance.gameObject);
         }
         else
         {
-            Instance = this;
+            Instance = this; 
             DontDestroyOnLoad(this);
+        }
+        if (isDeveloper)
+        {
+            LoadGame();
         }
     }
 
@@ -41,18 +57,20 @@ public class GameManager : MonoBehaviour
     {
         state = GameState.LoadGame;
 
-        switch (GameSettings.Instance.Mode)
+        switch (Mode)
         {
             case GameMode.None:
-                GameSettings.Instance.Mode = GameMode.Single;
+                Mode = GameMode.Single;
+                PlayerHealth = setHealth;
+                WinsCondition = setWins;
                 LoadGame();
                 break;
 
             case GameMode.Single:
                 templates = new[]
                     {
-                    new Template(GameSettings.Instance.PlayerHealth, GameSettings.Instance.Wins),
-                    new Template(GameSettings.Instance.PlayerHealth, GameSettings.Instance.Wins)
+                    new Template("Player 1", PlayerHealth, WinsCondition),
+                    new Template("Player 2", PlayerHealth, WinsCondition)
                     };
                 RunSingle();
                 break;
@@ -60,11 +78,8 @@ public class GameManager : MonoBehaviour
             case GameMode.AI:
                 // Load AI game mode
                 break;
-            case GameMode.Versus:
+            case GameMode.Friends:
                 // Load Versus game mode
-                break;
-            default:
-                Debug.LogError("Invalid game mode selected.");
                 break;
         }
     }
@@ -74,32 +89,34 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void RunSingle()
     {
-       foreach (var template in templates)
-       {
-            state = GameState.StartOfTurn;
-            SceneManager.LoadScene("PhaseShop");
-            StartCoroutine(StartTurn(template));
-       }
-
- 
+        state = GameState.StartOfTurn;
+       
+        StartCoroutine(StartTurn(templates[0]));
     }
 
     /// <summary>
-    /// Waits until the <see cref="PhaseShop.Instance"/> is initialized and then transitions the game state to the start
+    /// Waits until the <see cref="PhaseShopUnitManager.Instance"/> is initialized and then transitions the game state to the start
     /// of the turn.
     /// </summary>
     private IEnumerator StartTurn(Template _template)
     {
-        yield return new WaitUntil(() => PhaseShop.Instance != null);
+        yield return new WaitUntil(() =>
+            PhaseShopUnitManager.Instance != null &&
+            PhaseShopUI.Instance != null &&
+            StartPack.Instance != null);
+       
         state = GameState.StartOfTurn;
-        _template.RollShopAtStart();
+        _template.StartShop();
+    }
 
+    public void SetShopPhase()
+    {
+        state = GameState.ShopPhase;
     }
     public void EndGame()
     {
         state = GameState.EndOfGame;
-        Units.Clear();
-        Items.Clear();
+        AvaiableUnits.Clear();
+        AvaiableItems.Clear();
     }
-}   
-                                                                                                                                          
+}

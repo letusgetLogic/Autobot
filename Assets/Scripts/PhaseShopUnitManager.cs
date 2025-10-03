@@ -1,43 +1,27 @@
 using System;
 using UnityEngine;
 
-public class PhaseShop : MonoBehaviour
+public class PhaseShopUnitManager : MonoBehaviour
 {
-    public static PhaseShop Instance { get; private set; }
+    public static PhaseShopUnitManager Instance { get; private set; }
 
     [SerializeField]
     private GameObject unitPrefab;
 
-    [Header("Reference")]
     [SerializeField]
-    private GameObject[] battleSlots; 
-    private Vector2[] battleSlotPos;
+    private GameObject[] 
+        battleSlots,
+        shopUnitsSlots,
+        extraShopUnitsSlots,
+        shopItemsSlots,
+        extraShopItemsSlots; 
 
-    [SerializeField]
-    private GameObject[] shopUnitsSlots; 
-    private Vector2[] shopUnitsSlotsPos;
-
-    [SerializeField]
-    private GameObject[] extraShopUnitsSlots; 
-    private Vector2[] extraShopUnitsSlotsPos;
-
-    [SerializeField]
-    private GameObject[] shopItemsSlots; 
-    private Vector2[] shopItemsSlotsPos;
-
-    [SerializeField]
-    private GameObject[] extraShopItemsSlots; 
-    private Vector2[] extraShopItemsSlotsPos;
-
-    [SerializeField]
-    private int 
-        startCoins = 10,
-        rollCost = 1;
-
-    private int coins { get; set; }
-
-
-    private Template template { get; set; }
+    private Vector2[] 
+        battleSlotPos,
+        shopUnitsSlotsPos,
+        extraShopUnitsSlotsPos,
+        shopItemsSlotsPos,
+        extraShopItemsSlotsPos;
 
     /// <summary>
     /// Awake method.
@@ -80,37 +64,32 @@ public class PhaseShop : MonoBehaviour
     }
 
     /// <summary>
-    /// Initialize template and counts turn.    
+    /// Spawns units in the shop slots.
     /// </summary>
-    /// <param name="_template"></param>
-    public void StartTurn(Template _template)
-    {
-        template = _template;
-        template.Turns++;
-    }
-
-    /// <summary>
-    /// Roll the shop for new units and items.
-    /// </summary>
-    public void Roll()
-    {
-        if (coins < rollCost)
+    public void SpawnUnits()
         {
-            // hint no enough coins
-            return;
-        }
-
-        coins -= rollCost;
-
         for (int i = 0; i < shopUnitsSlots.Length; i++)
         {
-            var unitData = GameManager.Instance.Units
-                [UnityEngine.Random.Range(0, GameManager.Instance.Units.Count)];
+            var existingUnit = shopUnitsSlots[i].GetComponentInChildren<UnitController>();
+            if (existingUnit != null)
+            {
+                Destroy(existingUnit.gameObject);
+            }
 
-            GameObject unit = 
-                Instantiate(unitPrefab, shopUnitsSlotsPos[i], Quaternion.identity);
+            var unitData = GameManager.Instance.AvaiableUnits
+                [UnityEngine.Random.Range(0, GameManager.Instance.AvaiableUnits.Count)];
 
-            //unit.GetComponent<UnitController>().Initialize(unitData);
+            GameObject unit = Instantiate(unitPrefab);
+
+            unit.transform.SetParent(shopUnitsSlots[i].transform, false);
+
+            unit.GetComponent<UnitController>().Initialize(unitData);
         }
+
+        GameManager.Instance.SetShopPhase();
+    }
+    public void TriggerStartOfTurn()
+    {
+
     }
 }

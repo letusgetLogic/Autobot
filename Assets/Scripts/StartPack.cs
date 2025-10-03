@@ -33,7 +33,7 @@ public class StartPack : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(Instance.gameObject);
         }
         else
         {
@@ -94,7 +94,7 @@ public class StartPack : MonoBehaviour
         {
         foreach (var unit in _tier)
         {
-            GameManager.Instance.Units.Add(unit);
+            GameManager.Instance.AvaiableUnits.Add(unit);
         }
     }
 }

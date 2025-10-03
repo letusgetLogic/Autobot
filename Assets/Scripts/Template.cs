@@ -2,33 +2,35 @@
 
 public class Template
 {
+    public string Name { get; private set; }
     public int Health { get; set; }
     public int WinsCondition { get; set; }
     public int Turns { get; set; }
     public int Wins { get; set; }
     public GameObject[] BattleUnits { get; set; }
+    public int Coins { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Template"/> class with the specified health and win game condition.
+    /// Assigns the template values.
     /// </summary>
-    /// <param name="_health">The initial health value for the instance. Must be a non-negative integer.</param>
-    /// <param name="_wins">The initial number of wins for the instance. Must be a non-negative integer.</param>
-    public Template(int _health, int _wins)
+    /// <param name="_name"></param>
+    /// <param name="_health"></param>
+    /// <param name="_wins"></param>
+    public Template(string _name, int _health, int _wins)
     {
         Health = _health;
         WinsCondition = _wins;
-        Turns = 0; 
+        Turns = 0;
+        Name = _name;
     }
 
-    /// <summary>
-    /// Rolls the shop at the start of the turn.
-    /// </summary>
-    public void RollShopAtStart()
+    public void StartShop()
     {
         Turns++;
-        PhaseShop.Instance.StartTurn(this);
+        Coins = PhaseShopUI.Instance.StartCoins;
+        PhaseShopUI.Instance.UpdateUI(this);
+        PhaseShopUnitManager.Instance.TriggerStartOfTurn();
         StartPack.Instance.AddUnitsByTier(Turns);
-        PhaseShop.Instance.Roll();
+        PhaseShopUI.Instance.Roll();
     }
-
 }

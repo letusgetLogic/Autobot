@@ -1,8 +1,14 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance { get; private set; }
+
+    public TMP_InputField ModeSingleTrophy;
+    public TMP_InputField ModeSingleHeart;
 
     [SerializeField]
     private int 
@@ -10,12 +16,6 @@ public class GameSettings : MonoBehaviour
         minHealth = 3,
         maxWins = 10,
         minWins = 3;
-
-    public GameMode Mode { get; set; }
-    public int PlayerCount { get; private set; }
-    public bool WithTimer { get; private set; }
-    public int Wins { get; private set; }
-    public int PlayerHealth { get; private set; }
 
     /// <summary>
     /// Awake method.
@@ -30,7 +30,27 @@ public class GameSettings : MonoBehaviour
         Instance = this;
     }
 
-    
+    /// <summary>
+    /// Start game with selected settings.  
+    /// </summary>
+    public void StartGame()
+    {
+        switch (GameManager.Instance.Mode)
+        {
+            case GameMode.Single:
+                int a = int.Parse(ModeSingleTrophy.text);
+                if (a < minWins || a > maxWins) 
+                    return;
+                int b = int.Parse(ModeSingleHeart.text);
+                if (b < minHealth || b > maxHealth) 
+                    return;
+                GameManager.Instance.WinsCondition = a;
+                GameManager.Instance.PlayerHealth = b;
+                GameManager.Instance.LoadGame();
+                SceneManager.LoadScene("PhaseShop");
+                break;
+        }
+    }
 
 }
 

@@ -4,8 +4,10 @@ using UnityEngine.EventSystems;
 
 public class UnitView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private Sprite sprite;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
+    [SerializeField]
     private TextMeshProUGUI 
         name,
         description,
@@ -24,12 +26,12 @@ public class UnitView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void SetData(Sprite _sprite, string _name, string _description, 
         int _cost, int _health, int _attack)
     {
-        _sprite = sprite;
-        name.text = _name;
-        description.text = _description;
-        cost.text = _cost.ToString();
-        health.text = _health.ToString();
-        attack.text = _attack.ToString();
+        spriteRenderer.sprite = _sprite;
+        //name.text = _name;
+        //description.text = _description;
+        //cost.text = _cost.ToString();
+        //health.text = _health.ToString();
+        //attack.text = _attack.ToString();
     }
 
     public void OnBeginDrag(PointerEventData eventData)

@@ -3,6 +3,6 @@
     None,
     Single,
     AI,
-    Versus,
+    Friends,
 }
 
