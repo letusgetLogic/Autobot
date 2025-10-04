@@ -5,8 +5,14 @@ public class UnitController : MonoBehaviour
 {
     [SerializeField]
     private UnitView view;
+
     [SerializeField]
-    private UnitMouseEvent mouseEvent;
+    private HoverEvent hoverEvent;
+
+    [SerializeField]
+    private DragNDrop dragEvent;
+
+    private Vector3 lastPosition;
 
     private UnitModel model;
 
@@ -17,12 +23,17 @@ public class UnitController : MonoBehaviour
 
     private void OnEnable()
     {
-        mouseEvent.OnMouseOverEvent += ShowStats;
+        hoverEvent.OnMouseOverEvent += ShowStats;
+        hoverEvent.OnMouseExitEvent += HideStats;
+        dragEvent.OnMouseDown += SetLastPosition;
+
     }
 
     private void OnDisable()
     {
-        mouseEvent.OnMouseOverEvent -= ShowStats;
+        hoverEvent.OnMouseOverEvent -= ShowStats;
+        hoverEvent.OnMouseExitEvent -= HideStats;
+        dragEvent.OnMouseDown -= SetLastPosition;
     }
 
     /// <summary>
@@ -46,28 +57,31 @@ public class UnitController : MonoBehaviour
             );
     }
 
+    #region Mouse Event
+
+    /// <summary>
+    /// Shows the description.
+    /// </summary>
     private void ShowStats()
     {
-
+        view.SetDescriptionActive(true);
     }
 
+    /// <summary>
+    /// Hides the description.
+    /// </summary>
     private void HideStats()
     {
-
+        view.SetDescriptionActive(false);
     }
 
-    private void BeginDrag()
-        {
-
-    }
-
-    private void Drag()
+    /// <summary>
+    /// 
+    /// </summary>
+    private void SetLastPosition()
     {
-        
+        lastPosition = transform.position;
     }
 
-    private void EndDrag()
-    {
-
-    }
+    #endregion
 }

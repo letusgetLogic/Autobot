@@ -1,19 +1,18 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using static UnityEngine.Rendering.DebugUI;
 
-public class UnitMouseEvent : MonoBehaviour
+public class HoverEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public UnityAction OnMouseOverEvent;
     public UnityAction OnMouseExitEvent;
 
-    public void OnMouseOver()
+    public void OnPointerEnter(PointerEventData eventData)
     {
         OnMouseOverEvent?.Invoke();
     }
 
-    public void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
         OnMouseExitEvent?.Invoke();
     }

@@ -1,19 +1,26 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class UnitView : MonoBehaviour
 {
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
+    [SerializeField] 
+    private GameObject description;
+
     [SerializeField]
     private TextMeshProUGUI 
         name,
-        description,
-        cost,
+        ability,
+        coin,
         health,
         attack;
+
+    private void Awake()
+    {
+        description.SetActive(false);
+    }
 
     /// <summary>
     /// Sets the data for the unit view.
@@ -27,10 +34,19 @@ public class UnitView : MonoBehaviour
         int _cost, int _health, int _attack)
     {
         spriteRenderer.sprite = _sprite;
-        //name.text = _name;
-        //description.text = _description;
-        //cost.text = _cost.ToString();
-        //health.text = _health.ToString();
-        //attack.text = _attack.ToString();
+        name.text = _name;
+        ability.text = _description;
+        coin.text = _cost.ToString();
+        health.text = _health.ToString();
+        attack.text = _attack.ToString();
+    }
+
+    /// <summary>
+    /// Sets game object description active true/false.
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetDescriptionActive(bool value)
+    {
+        description.SetActive(value);
     }
 }
