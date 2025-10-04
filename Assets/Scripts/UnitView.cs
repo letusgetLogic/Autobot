@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UnitView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class UnitView : MonoBehaviour
 {
     [SerializeField]
     private SpriteRenderer spriteRenderer;
@@ -32,20 +32,5 @@ public class UnitView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         //cost.text = _cost.ToString();
         //health.text = _health.ToString();
         //attack.text = _attack.ToString();
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        throw new System.NotImplementedException();
     }
 }

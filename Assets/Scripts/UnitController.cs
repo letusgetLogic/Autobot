@@ -1,18 +1,28 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
     [SerializeField]
     private UnitView view;
+    [SerializeField]
+    private UnitMouseEvent mouseEvent;
 
     private UnitModel model;
 
-    /// <summary>
-    /// Awake method.
-    /// </summary>
     private void Awake()
     {
         model = new UnitModel();
+    }
+
+    private void OnEnable()
+    {
+        mouseEvent.OnMouseOverEvent += ShowStats;
+    }
+
+    private void OnDisable()
+    {
+        mouseEvent.OnMouseOverEvent -= ShowStats;
     }
 
     /// <summary>
@@ -34,6 +44,30 @@ public class UnitController : MonoBehaviour
             model.Data.Health,
             model.Data.Attack
             );
+    }
+
+    private void ShowStats()
+    {
+
+    }
+
+    private void HideStats()
+    {
+
+    }
+
+    private void BeginDrag()
+        {
+
+    }
+
+    private void Drag()
+    {
+        
+    }
+
+    private void EndDrag()
+    {
 
     }
 }
