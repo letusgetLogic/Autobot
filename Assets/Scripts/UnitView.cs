@@ -9,6 +9,7 @@ public class UnitView : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer dragSpriteRenderer;
+    public SpriteRenderer DragSpriteRenderer => dragSpriteRenderer;
 
     [SerializeField] 
     private GameObject description;
@@ -69,6 +70,8 @@ public class UnitView : MonoBehaviour
         description.SetActive(value);
     }
 
+    #region Drag Event
+
     /// <summary>
     /// OnPointerDown calls this method.
     /// </summary>
@@ -94,4 +97,6 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;
         dragSpriteRenderer.gameObject.transform.localScale = originalScale;
     }
+
+    #endregion
 }

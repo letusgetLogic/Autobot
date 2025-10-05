@@ -6,12 +6,6 @@ public class UnitController : MonoBehaviour
     [SerializeField]
     private UnitView view;
 
-    [SerializeField]
-    private EventHover hoverEvent;
-
-    [SerializeField]
-    private EventDrag dragEvent;
-
     private UnitModel model;
 
     private void Awake()
@@ -19,20 +13,6 @@ public class UnitController : MonoBehaviour
         model = new UnitModel();
     }
 
-    private void OnEnable()
-    {
-        hoverEvent.OnMouseOverEvent += ShowStats;
-        hoverEvent.OnMouseExitEvent += HideStats;
-        //dragEvent.OnMouseUp += MoveBackToParent;
-
-    }
-
-    private void OnDisable()
-    {
-        hoverEvent.OnMouseOverEvent -= ShowStats;
-        hoverEvent.OnMouseExitEvent -= HideStats;
-        //dragEvent.OnMouseUp -= MoveBackToParent;
-    }
 
     /// <summary>
     /// Initializes data.
@@ -60,7 +40,7 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Shows the description.
     /// </summary>
-    private void ShowStats()
+    public void ShowStats()
     {
         view.SetDescriptionActive(true);
     }
@@ -68,17 +48,9 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Hides the description.
     /// </summary>
-    private void HideStats()
+    public void HideStats()
     {
         view.SetDescriptionActive(false);
-    }
-
-    /// <summary>
-    /// Moves sprite back to his parent.
-    /// </summary>
-    private void MoveBackToParent()
-    {
-        dragEvent.transform.localPosition = Vector3.zero;
     }
 
     #endregion

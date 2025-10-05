@@ -46,6 +46,7 @@ public class EventDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
         {
             go.GetComponent<UnitView>().BeingMovedOnMouse(eventData);
         }
+        Debug.Log(eventData.pointerDrag);
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -57,8 +58,6 @@ public class EventDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
 
         var go = slot.GameObjectIsOnMe;
 
-        PhaseShopUnitManager.Instance.AttachedGameObject = null;
-
         if (go == null)
             return;
 
@@ -66,5 +65,11 @@ public class EventDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
         {
             go.GetComponent<UnitView>().BeingReleased(eventData);
         }
+
+        if (PhaseShopUnitManager.Instance.IsCheckingAttachedToDrop == true)
+            return;
+
+        PhaseShopUnitManager.Instance.AttachedGameObject = null;
+       
     }
 }

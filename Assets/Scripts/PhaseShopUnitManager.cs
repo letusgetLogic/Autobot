@@ -17,6 +17,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         extraShopItemsSlots;
 
     public GameObject AttachedGameObject { get; set; }
+    public bool IsCheckingAttachedToDrop {  get; set; }
 
     /// <summary>
     /// Awake method.
@@ -58,7 +59,19 @@ public class PhaseShopUnitManager : MonoBehaviour
         GameManager.Instance.SetShopPhase();
     }
 
+    /// <summary>
+    /// Transports the attached game object to the drop slot.
+    /// </summary>
+    /// <param name="dropParent"></param>
+    public void TransportAttachedTo(Transform dropParent)
+    {
+        var slot = AttachedGameObject.transform.parent;
+        slot.GetComponent<Slot>().GameObjectIsOnMe = null;
 
+        AttachedGameObject.transform.SetParent(dropParent, false);
+
+        AttachedGameObject = null;
+    }
     public void TriggerStartOfTurn()
     {
 
