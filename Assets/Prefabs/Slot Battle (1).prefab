@@ -99,6 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 132480885314422412}
+  - component: {fileID: 2951906009104834408}
   - component: {fileID: 8029909456027123132}
   - component: {fileID: 3453101502185859737}
   m_Layer: 0
@@ -118,11 +119,23 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3722615455089316458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2951906009104834408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3581023165317997160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b22cedee9bf55c94685e5a7b245e3603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropEvent
 --- !u!212 &8029909456027123132
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -237,7 +250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3722615455089316458}
   m_Layer: 0
-  m_Name: Slot (1)
+  m_Name: Slot Battle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

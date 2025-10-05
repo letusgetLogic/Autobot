@@ -14,7 +14,9 @@ public class PhaseShopUnitManager : MonoBehaviour
         shopUnitsSlots,
         extraShopUnitsSlots,
         shopItemsSlots,
-        extraShopItemsSlots; 
+        extraShopItemsSlots;
+
+    public GameObject AttachedGameObject { get; set; }
 
     /// <summary>
     /// Awake method.
@@ -49,6 +51,8 @@ public class PhaseShopUnitManager : MonoBehaviour
             unit.transform.SetParent(shopUnitsSlots[i].transform, false);
 
             unit.GetComponent<UnitController>().Initialize(unitData);
+
+            shopUnitsSlots[i].GetComponent<Slot>().GameObjectIsOnMe = unit;
         }
 
         GameManager.Instance.SetShopPhase();

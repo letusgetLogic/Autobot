@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitUntil(() =>
             PhaseShopUnitManager.Instance != null &&
             PhaseShopUI.Instance != null &&
-            StartPack.Instance != null);
+            StarterPack.Instance != null);
        
         state = GameState.StartOfTurn;
         _template.StartShop();

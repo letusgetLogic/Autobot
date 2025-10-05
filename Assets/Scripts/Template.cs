@@ -30,7 +30,7 @@ public class Template
         Coins = PhaseShopUI.Instance.StartCoins;
         PhaseShopUI.Instance.UpdateUI(this);
         PhaseShopUnitManager.Instance.TriggerStartOfTurn();
-        StartPack.Instance.AddUnitsByTier(Turns);
+        StarterPack.Instance.AddUnitsByTier(Turns);
         PhaseShopUI.Instance.Roll();
     }
 }

@@ -7,10 +7,10 @@ public class UnitController : MonoBehaviour
     private UnitView view;
 
     [SerializeField]
-    private HoverEvent hoverEvent;
+    private EventHover hoverEvent;
 
     [SerializeField]
-    private DragNDrop dragEvent;
+    private EventDrag dragEvent;
 
     private UnitModel model;
 
@@ -23,7 +23,7 @@ public class UnitController : MonoBehaviour
     {
         hoverEvent.OnMouseOverEvent += ShowStats;
         hoverEvent.OnMouseExitEvent += HideStats;
-        dragEvent.OnMouseUp += MoveBackToParent;
+        //dragEvent.OnMouseUp += MoveBackToParent;
 
     }
 
@@ -31,7 +31,7 @@ public class UnitController : MonoBehaviour
     {
         hoverEvent.OnMouseOverEvent -= ShowStats;
         hoverEvent.OnMouseExitEvent -= HideStats;
-        dragEvent.OnMouseDown -= MoveBackToParent;
+        //dragEvent.OnMouseUp -= MoveBackToParent;
     }
 
     /// <summary>

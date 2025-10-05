@@ -751,8 +751,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -847826981
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1296110919, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -1046,13 +1046,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6079444853286274854}
-  - component: {fileID: 923411078194695021}
   - component: {fileID: 8008772173490919151}
   - component: {fileID: 1651141544470514720}
   - component: {fileID: 7093791337503913802}
   m_Layer: 0
   m_Name: Sprite
-  m_TagString: Untagged
+  m_TagString: Dropable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1072,19 +1071,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8643658486882797714}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &923411078194695021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7406705955813022837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f99fb8e19e4efe844b212b8790f9888e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragNDrop
-  scale: 1.1
 --- !u!114 &8008772173490919151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1143,7 +1129,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -847826981
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1296110919, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1162,7 +1148,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7406705955813022837}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -1467,7 +1453,7 @@ GameObject:
   - component: {fileID: 6062272584430887621}
   m_Layer: 0
   m_Name: Unit
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1510,6 +1496,7 @@ MonoBehaviour:
   coin: {fileID: 4721028244520927221}
   health: {fileID: 7573786022878088153}
   attack: {fileID: 1708875098253315830}
+  scale: 1.1
 --- !u!114 &6062272584430887621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1524,4 +1511,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitController
   view: {fileID: 4368942393228875258}
   hoverEvent: {fileID: 8008772173490919151}
-  dragEvent: {fileID: 923411078194695021}
+  dragEvent: {fileID: 0}

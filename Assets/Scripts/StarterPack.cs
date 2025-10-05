@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class StartPack : MonoBehaviour
+public class StarterPack : MonoBehaviour
 {
-    public static StartPack Instance { get; private set; }
+    public static StarterPack Instance { get; private set; }
 
     [SerializeField] int tier1AvaiableAtTurn = 1;
     [SerializeField] int tier2AvaiableAtTurn = 3;

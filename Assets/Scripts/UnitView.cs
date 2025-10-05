@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitView : MonoBehaviour
 {
@@ -20,9 +21,22 @@ public class UnitView : MonoBehaviour
         health,
         attack;
 
+    [SerializeField]
+    private float scale = 1.1f;
+
+    private Camera mainCamera;
+    private Vector3 offset;
+    private Vector3 originalScale;
+
     private void Awake()
     {
         description.SetActive(false);
+    }
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
+        originalScale = dragSpriteRenderer.gameObject.transform.localScale;
     }
 
     /// <summary>
@@ -39,6 +53,7 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.sprite = _sprite;
         shadowSpriteRenderer.sprite = _sprite;
         name.text = _name;
+        gameObject.name = _name;
         ability.text = _description;
         coin.text = _cost.ToString();
         health.text = _health.ToString();
@@ -52,5 +67,31 @@ public class UnitView : MonoBehaviour
     public void SetDescriptionActive(bool value)
     {
         description.SetActive(value);
+    }
+
+    /// <summary>
+    /// OnPointerDown calls this method.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void BeingAttached(PointerEventData eventData)
+    {
+        offset = transform.position - mainCamera.ScreenToWorldPoint(
+           new Vector3(eventData.position.x, eventData.position.y, 10f));
+
+        dragSpriteRenderer.gameObject.transform.localScale *= scale;
+    }
+
+    public void BeingMovedOnMouse(PointerEventData eventData)
+    {
+        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(
+            new Vector3(eventData.position.x, eventData.position.y, 10f));
+
+        dragSpriteRenderer.gameObject.transform.position = worldPosition + offset;
+    }
+
+    public void BeingReleased(PointerEventData eventData)
+    {
+        dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;
+        dragSpriteRenderer.gameObject.transform.localScale = originalScale;
     }
 }
