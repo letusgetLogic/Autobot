@@ -4,8 +4,8 @@ using UnityEngine.EventSystems;
 
 public class EventDrop : MonoBehaviour, IDropHandler, IPointerEnterHandler
 {
-    public UnityAction OnDropIsOccupied;
-    public bool IsOccupied { get; private set; } = false;
+    public UnityAction OnDropWhileOccupied { get; set; }
+   
     private Slot slot { get; set; }
 
     private void Start()
@@ -16,18 +16,17 @@ public class EventDrop : MonoBehaviour, IDropHandler, IPointerEnterHandler
     {
         PhaseShopUnitManager.Instance.IsCheckingAttachedToDrop = false;
 
-        var go = PhaseShopUnitManager.Instance.AttachedGameObject;
+        var goOnDrag = PhaseShopUnitManager.Instance.AttachedGameObject;
 
-        if (go == null || !go.GetComponent<UnitView>().DragSpriteRenderer.
+        if (goOnDrag == null || !goOnDrag.GetComponent<UnitView>().DragSpriteRenderer.
             gameObject.CompareTag("Dropable"))
             return;
 
-        if (IsOccupied)
-            OnDropIsOccupied?.Invoke();
+        if (slot.GameObjectIsOnMe != null)
+            PhaseShopUnitManager.Instance.IsFusible(slot.GameObjectIsOnMe, goOnDrag.gameObject);
         else
         {
             PhaseShopUnitManager.Instance.TransportAttachedTo(transform.parent);
-            IsOccupied = true;
         }
     }
 

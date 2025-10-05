@@ -7,6 +7,7 @@ public class UnitController : MonoBehaviour
     private UnitView view;
 
     private UnitModel model;
+    public UnitModel Model => model;
 
     private void Awake()
     {
@@ -24,6 +25,9 @@ public class UnitController : MonoBehaviour
         model.CurrentLevel = model.Data.Levels[0];
         model.BattleHealth = model.Data.Health;
         model.BattleAttack = model.Data.Attack;
+        model.XP = 1;
+
+        model.InitializeLevel();
 
         view.SetData(
             model.Data.Sprite,
@@ -54,4 +58,28 @@ public class UnitController : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// Makes a fusion and give this additional xp.
+    /// </summary>
+    /// <param name="additionalXP"></param>
+    public void DoFusion(int additionalXP)
+    {
+        model.XP += additionalXP;
+
+        if (model.XP > StarterPack.Instance.XpToLv3)
+            model.XP = StarterPack.Instance.XpToLv3;
+    }
+
+    /// <summary>
+    /// Checks, if the level is maxed.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsMaxed()
+    {
+        if (model.CurrentLevel.Number == model.Data.Levels.Length) 
+            return true;    
+
+        return false;
+    }
 }

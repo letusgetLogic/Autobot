@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 public class EventHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public PointerEventData Data { get; private set; }
-    public UnityAction OnMouseOverEvent;
-    public UnityAction OnMouseExitEvent;
+    public UnityAction OnMouseOverEvent { get; set; }
+    public UnityAction OnMouseExitEvent { get; set; }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -16,7 +16,7 @@ public class EventHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Data = eventData;
+        Data = null;
         OnMouseExitEvent?.Invoke();
     }
 }

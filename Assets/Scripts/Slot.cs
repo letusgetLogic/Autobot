@@ -11,7 +11,8 @@ public class Slot : MonoBehaviour
     }
 
     [SerializeField]
-    private EventHover hoverEvent;
+    private EventHover eventHover;
+    public EventHover EventHover => eventHover;
 
     public GameObject GameObjectIsOnMe { get; set; }
 
@@ -22,15 +23,15 @@ public class Slot : MonoBehaviour
 
     private void OnEnable()
     {
-        hoverEvent.OnMouseOverEvent += ShowStats;
-        hoverEvent.OnMouseExitEvent += HideStats;
+        eventHover.OnMouseOverEvent += ShowStats;
+        eventHover.OnMouseExitEvent += HideStats;
 
     }
 
     private void OnDisable()
     {
-        hoverEvent.OnMouseOverEvent -= ShowStats;
-        hoverEvent.OnMouseExitEvent -= HideStats;
+        eventHover.OnMouseOverEvent -= ShowStats;
+        eventHover.OnMouseExitEvent -= HideStats;
     }
 
 
@@ -41,9 +42,10 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void ShowStats()
     {
-
-
         if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
+            return;
+
+        if (eventHover.Data != null) 
             return;
 
         border.enabled = true;

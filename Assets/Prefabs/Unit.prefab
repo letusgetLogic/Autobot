@@ -1046,7 +1046,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6079444853286274854}
-  - component: {fileID: 8008772173490919151}
   - component: {fileID: 1651141544470514720}
   m_Layer: 0
   m_Name: Sprite
@@ -1070,18 +1069,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8643658486882797714}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8008772173490919151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7406705955813022837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9147dedae6bd68448d175a15e898358, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitMouseEvent
 --- !u!212 &1651141544470514720
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1129,15 +1116,15 @@ SpriteRenderer:
   m_SortingLayerID: -847826981
   m_SortingLayer: 2
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1296110919, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
+  m_Sprite: {fileID: 3453677562052780572, guid: 52f0fd634a3e632428b3f80cfd832e69, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.35, y: 1.3}
+  m_Size: {x: 1.2666667, y: 1.3666667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7803416924041146072
@@ -1288,7 +1275,6 @@ GameObject:
   - component: {fileID: 879442083360165133}
   - component: {fileID: 6929582102136086327}
   - component: {fileID: 4079664355780762918}
-  - component: {fileID: 5718071486922431314}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -1338,8 +1324,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -1099682533
-  m_SortingOrder: 0
+  m_SortingLayerID: -847826981
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &6929582102136086327
 MonoBehaviour:
@@ -1381,18 +1367,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &5718071486922431314
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7924404934901620359}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &8212703507569859520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,6 +1424,7 @@ MonoBehaviour:
   health: {fileID: 7573786022878088153}
   attack: {fileID: 1708875098253315830}
   scale: 1.1
+  dragOverOther: {x: 0, y: 0, z: -1}
 --- !u!114 &6062272584430887621
 MonoBehaviour:
   m_ObjectHideFlags: 0

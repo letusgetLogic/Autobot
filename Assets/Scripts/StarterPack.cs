@@ -5,6 +5,9 @@ public class StarterPack : MonoBehaviour
 {
     public static StarterPack Instance { get; private set; }
 
+    public int XpToLv2 = 3;
+    public int XpToLv3 = 6;
+
     [SerializeField] int tier1AvaiableAtTurn = 1;
     [SerializeField] int tier2AvaiableAtTurn = 3;
     [SerializeField] int tier3AvaiableAtTurn = 5;

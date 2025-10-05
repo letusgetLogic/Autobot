@@ -6,6 +6,11 @@ public class UnitView : MonoBehaviour
 {
     [SerializeField]
     private SpriteRenderer shadowSpriteRenderer;
+    public SpriteRenderer Shadow
+    {
+        get { return shadowSpriteRenderer; }
+        set { shadowSpriteRenderer = value; }
+    }
 
     [SerializeField]
     private SpriteRenderer dragSpriteRenderer;
@@ -24,6 +29,9 @@ public class UnitView : MonoBehaviour
 
     [SerializeField]
     private float scale = 1.1f;
+
+    [SerializeField]
+    private Vector3 dragOverOther = Vector3.back; // offset while dragging over other
 
     private Camera mainCamera;
     private Vector3 offset;
@@ -79,11 +87,16 @@ public class UnitView : MonoBehaviour
     public void BeingAttached(PointerEventData eventData)
     {
         offset = transform.position - mainCamera.ScreenToWorldPoint(
-           new Vector3(eventData.position.x, eventData.position.y, 10f));
+           new Vector3(eventData.position.x, eventData.position.y, 10f)) +
+           dragOverOther;
 
         dragSpriteRenderer.gameObject.transform.localScale *= scale;
     }
 
+    /// <summary>
+    /// OnDrag calls this method.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void BeingMovedOnMouse(PointerEventData eventData)
     {
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(
@@ -92,6 +105,10 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.gameObject.transform.position = worldPosition + offset;
     }
 
+    /// <summary>
+    /// OnPointerUp calls this method.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void BeingReleased(PointerEventData eventData)
     {
         dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;

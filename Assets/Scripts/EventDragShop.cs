@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class EventDragShop : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private Slot slot { get; set; }
 
@@ -46,7 +46,6 @@ public class EventDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
         {
             go.GetComponent<UnitView>().BeingMovedOnMouse(eventData);
         }
-        Debug.Log(eventData.pointerDrag);
     }
 
     public void OnPointerUp(PointerEventData eventData)
