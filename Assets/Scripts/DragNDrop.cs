@@ -5,9 +5,6 @@ using UnityEngine.EventSystems;
 public class DragNDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [SerializeField]
-    private Transform rootTf;
-
-    [SerializeField]
     private float scale = 1.1f;
 
     public UnityAction OnMouseDown;
@@ -51,7 +48,7 @@ public class DragNDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
-        rootTf.position = worldPosition + offset;
+        transform.position = worldPosition + offset;
     }
 
     public void OnPointerUp(PointerEventData eventData)

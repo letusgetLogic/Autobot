@@ -4,7 +4,10 @@ using UnityEngine;
 public class UnitView : MonoBehaviour
 {
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer shadowSpriteRenderer;
+
+    [SerializeField]
+    private SpriteRenderer dragSpriteRenderer;
 
     [SerializeField] 
     private GameObject description;
@@ -33,7 +36,8 @@ public class UnitView : MonoBehaviour
     public void SetData(Sprite _sprite, string _name, string _description, 
         int _cost, int _health, int _attack)
     {
-        spriteRenderer.sprite = _sprite;
+        dragSpriteRenderer.sprite = _sprite;
+        shadowSpriteRenderer.sprite = _sprite;
         name.text = _name;
         ability.text = _description;
         coin.text = _cost.ToString();

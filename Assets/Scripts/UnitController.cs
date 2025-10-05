@@ -12,8 +12,6 @@ public class UnitController : MonoBehaviour
     [SerializeField]
     private DragNDrop dragEvent;
 
-    private Vector3 lastPosition;
-
     private UnitModel model;
 
     private void Awake()
@@ -25,7 +23,7 @@ public class UnitController : MonoBehaviour
     {
         hoverEvent.OnMouseOverEvent += ShowStats;
         hoverEvent.OnMouseExitEvent += HideStats;
-        dragEvent.OnMouseDown += SetLastPosition;
+        dragEvent.OnMouseUp += MoveBackToParent;
 
     }
 
@@ -33,7 +31,7 @@ public class UnitController : MonoBehaviour
     {
         hoverEvent.OnMouseOverEvent -= ShowStats;
         hoverEvent.OnMouseExitEvent -= HideStats;
-        dragEvent.OnMouseDown -= SetLastPosition;
+        dragEvent.OnMouseDown -= MoveBackToParent;
     }
 
     /// <summary>
@@ -76,11 +74,11 @@ public class UnitController : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Moves sprite back to his parent.
     /// </summary>
-    private void SetLastPosition()
+    private void MoveBackToParent()
     {
-        lastPosition = transform.position;
+        dragEvent.transform.localPosition = Vector3.zero;
     }
 
     #endregion
