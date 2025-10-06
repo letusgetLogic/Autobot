@@ -37,7 +37,7 @@ public class Slot : MonoBehaviour
     }
 
 
-    #region Hover Event
+    #region Hover Event - Show description
 
     /// <summary>
     /// Shows the description.

@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 5523288145169055422}
   - component: {fileID: 3344295562065147624}
   - component: {fileID: 2951906009104834408}
+  - component: {fileID: 5719285484096049178}
   - component: {fileID: 3453101502185859737}
   m_Layer: 0
   m_Name: Collider
@@ -252,6 +253,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b22cedee9bf55c94685e5a7b245e3603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropEvent
+--- !u!114 &5719285484096049178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3581023165317997160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743b072119ab2484f89f864165db91e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventDrag
 --- !u!61 &3453101502185859737
 BoxCollider2D:
   m_ObjectHideFlags: 0

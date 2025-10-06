@@ -91,6 +91,12 @@ public class UnitView : MonoBehaviour
            dragOverOther;
 
         dragSpriteRenderer.gameObject.transform.localScale *= scale;
+
+        if (shadowSpriteRenderer.enabled == false)
+        {
+            health.enabled = false;
+            attack.enabled = false;
+        }
     }
 
     /// <summary>
@@ -113,6 +119,9 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;
         dragSpriteRenderer.gameObject.transform.localScale = originalScale;
+
+        health.enabled = true;
+        attack.enabled = true;
     }
 
     #endregion

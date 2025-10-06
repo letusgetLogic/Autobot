@@ -26,7 +26,9 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
             PhaseShopUnitManager.Instance.IsFusible(slot.GameObjectIsOnMe, goOnDrag.gameObject);
         else
         {
-            PhaseShopUnitManager.Instance.Transport(goOnDrag, transform.parent, true, true);
+            PhaseShopUnitManager.Instance.Transport(goOnDrag, transform.parent, true);
         }
+
+        PhaseShopUnitManager.Instance.AttachedGameObject = null;
     }
 }

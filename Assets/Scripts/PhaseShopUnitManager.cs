@@ -43,7 +43,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     /// <param name="slotScripts"></param>
     /// <param name="slots"></param>
-    private Slot[] InitializeArray( GameObject[] slots)
+    private Slot[] InitializeArray(GameObject[] slots)
     {
         var slotScripts = new Slot[slots.Length];
 
@@ -90,12 +90,15 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Transports the attached game object to the drop slot.
     /// </summary>
-    public void Transport(GameObject attached, Transform dropSlot, bool disableShadow, bool isAttachedByMouse)
+    public void Transport(GameObject attached, Transform dropSlot, bool disableShadow)
     {
-        var parent = attached.transform.parent;
+        var tf = attached.transform;
 
-        if (parent != null && parent.CompareTag("Slot Battle") || parent.CompareTag("Slot Shop"))
-           parent.GetComponent<Slot>().GameObjectIsOnMe = null;
+        if (tf.parent != null &&
+            tf.parent.CompareTag("Slot Battle") || tf.parent.CompareTag("Slot Shop"))
+        {
+            tf.parent.GetComponent<Slot>().GameObjectIsOnMe = null;
+        }
 
         attached.transform.SetParent(dropSlot, false);
         dropSlot.GetComponent<Slot>().GameObjectIsOnMe = attached;
@@ -104,9 +107,6 @@ public class PhaseShopUnitManager : MonoBehaviour
         {
             attached.GetComponent<UnitView>().Shadow.enabled = false;
         }
-
-        if (isAttachedByMouse)
-            AttachedGameObject = null;
     }
 
     /// <summary>
@@ -127,75 +127,38 @@ public class PhaseShopUnitManager : MonoBehaviour
         return false;
     }
 
-    /// <spublic void PushOtherAway(int target, int direction)
-    {
-        int search = target + direction;
-        while (search >= 0 && search < battleSlotScripts.Length)
-        {
-            if (battleSlotScripts[search].GameObjectIsOnMe != null)
-            {
-                search += direction;
-            }
-            else
-            {
-                int previous = search - direction;
 
-                if(previous == target)
-                    break;
-
-                Transport(battleSlotScripts[previous].GameObjectIsOnMe, battleSlots[search].transform, false, false);
-                search -= direction;
-            }
-                
-        }
-    }
-
-/*public void PushOtherAway(int target, int direction)
-    {
-        int search = target + direction;
-        while (search >= 0 && search < battleSlotScripts.Length)
-        {
-            if (battleSlotScripts[search].GameObjectIsOnMe != null)
-            {
-                search += direction;
-            }
-            else
-            {
-                int previous = search - direction;
-
-                if(previous == target)
-                    break;
-
-                Transport(battleSlotScripts[previous].GameObjectIsOnMe, battleSlots[search].transform, false, false);
-                search -= direction;
-            }
-                
-        }
-    }*/
-
-///summary>
+    ///summary>
     /// Pushes the other units away.
     /// </summary>
     /// <param name="target"></param>
     /// <param name="direction"></param>
     public void PushOtherAway(int target, int direction)
     {
+        if (direction == 0)
+            return;
+        Debug.Log("Push");
         int search = target + direction;
         while (search >= 0 && search < battleSlotScripts.Length)
         {
-            if (battleSlotScripts[search].GameObjectIsOnMe != null)
+            if (battleSlotScripts[search].GameObjectIsOnMe != null) // slot is occupied
             {
-                search += direction;
+                search += direction; // search for an emnpty space
             }
-            else
+            else // slot is empty
             {
-                for(int i=search; i = target; i -= direction)
-{
-int previous = i - direction;
-Transport(battleSlotScripts[previous].GameObjectIsOnMe, battleSlots[i].transform, false, false);
-}
+                for (int i = search; i != target; i -= direction)
+                {
+                    int previous = i - direction; // swap the previous slot to the empty slot
+
+                    var attached = battleSlotScripts[previous].GameObjectIsOnMe;
+                    if (attached == null)
+                        break;
+                    Transport(attached, battleSlots[i].transform, false);
+                }
+                return;
             }
-                
+
         }
     }
 
