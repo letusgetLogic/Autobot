@@ -127,12 +127,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Pushes the other units away.
-    /// </summary>
-    /// <param name="target"></param>
-    /// <param name="direction"></param>
-    public void PushOtherAway(int target, int direction)
+    /// <spublic void PushOtherAway(int target, int direction)
     {
         int search = target + direction;
         while (search >= 0 && search < battleSlotScripts.Length)
@@ -150,6 +145,55 @@ public class PhaseShopUnitManager : MonoBehaviour
 
                 Transport(battleSlotScripts[previous].GameObjectIsOnMe, battleSlots[search].transform, false, false);
                 search -= direction;
+            }
+                
+        }
+    }
+
+/*public void PushOtherAway(int target, int direction)
+    {
+        int search = target + direction;
+        while (search >= 0 && search < battleSlotScripts.Length)
+        {
+            if (battleSlotScripts[search].GameObjectIsOnMe != null)
+            {
+                search += direction;
+            }
+            else
+            {
+                int previous = search - direction;
+
+                if(previous == target)
+                    break;
+
+                Transport(battleSlotScripts[previous].GameObjectIsOnMe, battleSlots[search].transform, false, false);
+                search -= direction;
+            }
+                
+        }
+    }*/
+
+///summary>
+    /// Pushes the other units away.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="direction"></param>
+    public void PushOtherAway(int target, int direction)
+    {
+        int search = target + direction;
+        while (search >= 0 && search < battleSlotScripts.Length)
+        {
+            if (battleSlotScripts[search].GameObjectIsOnMe != null)
+            {
+                search += direction;
+            }
+            else
+            {
+                for(int i=search; i = target; i -= direction)
+{
+int previous = i - direction;
+Transport(battleSlotScripts[previous].GameObjectIsOnMe, battleSlots[i].transform, false, false);
+}
             }
                 
         }
