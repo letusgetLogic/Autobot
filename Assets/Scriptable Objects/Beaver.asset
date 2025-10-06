@@ -20,7 +20,8 @@ MonoBehaviour:
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Sell \u2192 Give two random friends +1 attack."
+  - Number: 1
+    Description: "Sell \u2192 Give two random friends +1 attack."
     Sell: 1
     HasAbility: 1
     TriggerType: 4
@@ -38,7 +39,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Sell \u2192 Give two random friends +2 attack."
+  - Number: 2
+    Description: "Sell \u2192 Give two random friends +2 attack."
     Sell: 2
     HasAbility: 1
     TriggerType: 4
@@ -56,7 +58,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Sell \u2192 Give two random friends +3 attack."
+  - Number: 3
+    Description: "Sell \u2192 Give two random friends +3 attack."
     Sell: 3
     HasAbility: 1
     TriggerType: 4

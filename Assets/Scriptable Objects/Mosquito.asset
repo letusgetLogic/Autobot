@@ -20,7 +20,8 @@ MonoBehaviour:
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Start of battle \u2192 Deal 1 damage to one random enemy."
+  - Number: 1
+    Description: "Start of battle \u2192 Deal 1 damage to one random enemy."
     Sell: 1
     HasAbility: 1
     TriggerType: 9
@@ -38,7 +39,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 1
     GainCoin: 0
-  - Description: "Start of battle \u2192 Deal 1 damage to two random enemy."
+  - Number: 2
+    Description: "Start of battle \u2192 Deal 1 damage to two random enemy."
     Sell: 2
     HasAbility: 1
     TriggerType: 9
@@ -56,7 +58,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 1
     GainCoin: 0
-  - Description: "Start of battle \u2192 Deal 1 damage to three random enemy."
+  - Number: 3
+    Description: "Start of battle \u2192 Deal 1 damage to three random enemy."
     Sell: 3
     HasAbility: 1
     TriggerType: 9

@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273ee789f10627d4ba5f62891d6f6f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhaseShopUI
-  startCoins: 11
+  startCoins: 110
   rollCost: 1
   nameText: {fileID: 1447329010790009410}
   coinsText: {fileID: 247628768}
@@ -2324,7 +2324,7 @@ MonoBehaviour:
   - {fileID: 556019396}
   - {fileID: 1565203626}
   - {fileID: 200250130}
-  shopUnitsSlots:
+  shopUnitSlots:
   - {fileID: 3849827548677519118}
   - {fileID: 1537244470}
   - {fileID: 1196207864}
@@ -2333,6 +2333,7 @@ MonoBehaviour:
   - {fileID: 113793913}
   - {fileID: 1612550011}
   extraShopItemsSlots: []
+  delayPushing: 1
 --- !u!4 &1663862021
 Transform:
   m_ObjectHideFlags: 0
@@ -2763,6 +2764,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882816279e7ece644bfdabb6efe10b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartPack
+  XpToLv2: 3
+  XpToLv3: 6
   tier1AvaiableAtTurn: 1
   tier2AvaiableAtTurn: 0
   tier3AvaiableAtTurn: 0

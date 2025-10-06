@@ -11,17 +11,21 @@ public class PhaseShopUnitManager : MonoBehaviour
     [SerializeField]
     private GameObject[]
         battleSlots,
-        shopUnitsSlots,
+        shopUnitSlots,
         extraShopUnitsSlots,
         shopItemsSlots,
         extraShopItemsSlots;
 
+    private Slot[] battleSlotScripts { get; set; }
+    private Slot[] shopUnitSlotScripts { get; set; }
+
+    [SerializeField]
+    private float delayPushing = 1f;
+    public float DelayPushing => delayPushing;
+
     public GameObject AttachedGameObject { get; set; }
     public bool IsCheckingAttachedToDrop { get; set; }
 
-    /// <summary>
-    /// Awake method.
-    /// </summary>
     private void Awake()
     {
         if (Instance != null)
@@ -29,6 +33,26 @@ public class PhaseShopUnitManager : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+        battleSlotScripts = InitializeArray(battleSlots);
+        shopUnitSlotScripts = InitializeArray(shopUnitSlots);
+    }
+
+    /// <summary>
+    /// Initializes array.
+    /// </summary>
+    /// <param name="slotScripts"></param>
+    /// <param name="slots"></param>
+    private Slot[] InitializeArray( GameObject[] slots)
+    {
+        var slotScripts = new Slot[slots.Length];
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slotScripts[i] = slots[i].GetComponent<Slot>();
+            slotScripts[i].Index = i;
+        }
+        return slotScripts;
     }
 
     /// <summary>
@@ -36,9 +60,9 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     public void SpawnUnits()
     {
-        for (int i = 0; i < shopUnitsSlots.Length; i++)
+        for (int i = 0; i < shopUnitSlots.Length; i++)
         {
-            var existingUnit = shopUnitsSlots[i].GetComponentInChildren<UnitController>();
+            var existingUnit = shopUnitSlots[i].GetComponentInChildren<UnitController>();
             if (existingUnit != null)
             {
                 Destroy(existingUnit.gameObject);
@@ -50,11 +74,9 @@ public class PhaseShopUnitManager : MonoBehaviour
             GameObject unit = Instantiate(unitPrefab);
             unit.GetComponent<UnitController>().Initialize(unitData);
 
-            unit.transform.SetParent(shopUnitsSlots[i].transform, false);
+            unit.transform.SetParent(shopUnitSlots[i].transform, false);
 
-            var slot = shopUnitsSlots[i].GetComponent<Slot>();
-
-            slot.GameObjectIsOnMe = unit;
+            shopUnitSlotScripts[i].GameObjectIsOnMe = unit;
         }
 
         GameManager.Instance.SetShopPhase();
@@ -68,19 +90,23 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Transports the attached game object to the drop slot.
     /// </summary>
-    /// <param name="dropParent"></param>
-    public void TransportAttachedTo(Transform dropParent)
+    public void Transport(GameObject attached, Transform dropSlot, bool disableShadow, bool isAttachedByMouse)
     {
-        var slot = AttachedGameObject.transform.parent.GetComponent<Slot>();
-        slot.GameObjectIsOnMe = null;
+        var parent = attached.transform.parent;
 
-        AttachedGameObject.transform.SetParent(dropParent, false);
-        dropParent.GetComponent<Slot>().GameObjectIsOnMe = AttachedGameObject;
+        if (parent != null && parent.CompareTag("Slot Battle") || parent.CompareTag("Slot Shop"))
+           parent.GetComponent<Slot>().GameObjectIsOnMe = null;
 
-        if (AttachedGameObject.CompareTag("Unit"))
-            AttachedGameObject.GetComponent<UnitView>().Shadow.enabled = false;
+        attached.transform.SetParent(dropSlot, false);
+        dropSlot.GetComponent<Slot>().GameObjectIsOnMe = attached;
 
-        AttachedGameObject = null;
+        if (disableShadow && attached.CompareTag("Unit"))
+        {
+            attached.GetComponent<UnitView>().Shadow.enabled = false;
+        }
+
+        if (isAttachedByMouse)
+            AttachedGameObject = null;
     }
 
     /// <summary>
@@ -94,11 +120,39 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (onSlot.GetComponent<UnitController>().IsMaxed() ||
             onDrag.GetComponent<UnitController>().IsMaxed())
             return false;
-        
+
         if (onSlot.name == onDrag.name)
             return true;
 
         return false;
+    }
+
+    /// <summary>
+    /// Pushes the other units away.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="direction"></param>
+    public void PushOtherAway(int target, int direction)
+    {
+        int search = target + direction;
+        while (search >= 0 && search < battleSlotScripts.Length)
+        {
+            if (battleSlotScripts[search].GameObjectIsOnMe != null)
+            {
+                search += direction;
+            }
+            else
+            {
+                int previous = search - direction;
+
+                if(previous == target)
+                    break;
+
+                Transport(battleSlotScripts[previous].GameObjectIsOnMe, battleSlots[search].transform, false, false);
+                search -= direction;
+            }
+                
+        }
     }
 
 }

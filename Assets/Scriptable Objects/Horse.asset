@@ -20,7 +20,8 @@ MonoBehaviour:
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Friend summoned \u2192 Give it +1 attack until end of battle."
+  - Number: 1
+    Description: "Friend summoned \u2192 Give it +1 attack until end of battle."
     Sell: 1
     HasAbility: 1
     TriggerType: 3
@@ -38,7 +39,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Friend summoned \u2192 Give it +2 attack until end of battle."
+  - Number: 2
+    Description: "Friend summoned \u2192 Give it +2 attack until end of battle."
     Sell: 2
     HasAbility: 1
     TriggerType: 3
@@ -56,7 +58,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Friend summoned \u2192 Give it +3 attack until end of battle."
+  - Number: 3
+    Description: "Friend summoned \u2192 Give it +3 attack until end of battle."
     Sell: 3
     HasAbility: 1
     TriggerType: 3

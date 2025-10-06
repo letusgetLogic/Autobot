@@ -20,7 +20,8 @@ MonoBehaviour:
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Sell \u2192 Gain +1 gold."
+  - Number: 1
+    Description: "Sell \u2192 Gain +1 gold."
     Sell: 1
     HasAbility: 1
     TriggerType: 4
@@ -38,7 +39,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 1
-  - Description: "Sell \u2192 Gain +2 gold."
+  - Number: 2
+    Description: "Sell \u2192 Gain +2 gold."
     Sell: 2
     HasAbility: 1
     TriggerType: 4
@@ -56,7 +58,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 2
-  - Description: "Sell \u2192 Gain +3 gold."
+  - Number: 3
+    Description: "Sell \u2192 Gain +3 gold."
     Sell: 3
     HasAbility: 1
     TriggerType: 4

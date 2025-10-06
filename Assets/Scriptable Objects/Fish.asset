@@ -20,7 +20,8 @@ MonoBehaviour:
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Level up \u2192 Give two friends +1 attack and +1 health."
+  - Number: 1
+    Description: "Level up \u2192 Give two friends +1 attack and +1 health."
     Sell: 1
     HasAbility: 1
     TriggerType: 1
@@ -38,7 +39,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Level up \u2192 Give two friends +2 attack and +2 health."
+  - Number: 2
+    Description: "Level up \u2192 Give two friends +2 attack and +2 health."
     Sell: 2
     HasAbility: 1
     TriggerType: 1
@@ -56,7 +58,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: No ability.
+  - Number: 3
+    Description: No ability.
     Sell: 3
     HasAbility: 0
     TriggerType: 0

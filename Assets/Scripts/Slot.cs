@@ -15,6 +15,8 @@ public class Slot : MonoBehaviour
     public EventHover EventHover => eventHover;
 
     public GameObject GameObjectIsOnMe { get; set; }
+    public int Index { get; set; }  
+
 
     private void Start()
     {
@@ -45,7 +47,7 @@ public class Slot : MonoBehaviour
         if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
             return;
 
-        if (eventHover.Data != null) 
+        if (eventHover.Data != null && eventHover.Data.pointerDrag != null) 
             return;
 
         border.enabled = true;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class EventDrop : MonoBehaviour, IDropHandler, IPointerEnterHandler
+public class EventDropSlotBattle : MonoBehaviour, IDropHandler
 {
     public UnityAction OnDropWhileOccupied { get; set; }
    
@@ -26,20 +26,7 @@ public class EventDrop : MonoBehaviour, IDropHandler, IPointerEnterHandler
             PhaseShopUnitManager.Instance.IsFusible(slot.GameObjectIsOnMe, goOnDrag.gameObject);
         else
         {
-            PhaseShopUnitManager.Instance.TransportAttachedTo(transform.parent);
+            PhaseShopUnitManager.Instance.Transport(goOnDrag, transform.parent, true, true);
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        var go = PhaseShopUnitManager.Instance.AttachedGameObject;
-
-        if (go == null || !go.GetComponent<UnitView>().DragSpriteRenderer.
-            gameObject.CompareTag("Dropable"))
-            return;
-
-        PhaseShopUnitManager.Instance.IsCheckingAttachedToDrop = true;
-
-        slot.Border.enabled = true;
     }
 }
