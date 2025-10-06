@@ -6,33 +6,14 @@ public class UnitController : MonoBehaviour
     [SerializeField]
     private UnitView view;
 
-    [SerializeField]
-    private HoverEvent hoverEvent;
-
-    [SerializeField]
-    private DragNDrop dragEvent;
-
     private UnitModel model;
+    public UnitModel Model => model;
 
     private void Awake()
     {
         model = new UnitModel();
     }
 
-    private void OnEnable()
-    {
-        hoverEvent.OnMouseOverEvent += ShowStats;
-        hoverEvent.OnMouseExitEvent += HideStats;
-        dragEvent.OnMouseUp += MoveBackToParent;
-
-    }
-
-    private void OnDisable()
-    {
-        hoverEvent.OnMouseOverEvent -= ShowStats;
-        hoverEvent.OnMouseExitEvent -= HideStats;
-        dragEvent.OnMouseDown -= MoveBackToParent;
-    }
 
     /// <summary>
     /// Initializes data.
@@ -44,6 +25,9 @@ public class UnitController : MonoBehaviour
         model.CurrentLevel = model.Data.Levels[0];
         model.BattleHealth = model.Data.Health;
         model.BattleAttack = model.Data.Attack;
+        model.XP = 1;
+
+        model.InitializeLevel();
 
         view.SetData(
             model.Data.Sprite,
@@ -60,7 +44,7 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Shows the description.
     /// </summary>
-    private void ShowStats()
+    public void ShowStats()
     {
         view.SetDescriptionActive(true);
     }
@@ -68,18 +52,34 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Hides the description.
     /// </summary>
-    private void HideStats()
+    public void HideStats()
     {
         view.SetDescriptionActive(false);
     }
 
+    #endregion
+
     /// <summary>
-    /// Moves sprite back to his parent.
+    /// Makes a fusion and give this additional xp.
     /// </summary>
-    private void MoveBackToParent()
+    /// <param name="additionalXP"></param>
+    public void DoFusion(int additionalXP)
     {
-        dragEvent.transform.localPosition = Vector3.zero;
+        model.XP += additionalXP;
+
+        if (model.XP > StarterPack.Instance.XpToLv3)
+            model.XP = StarterPack.Instance.XpToLv3;
     }
 
-    #endregion
+    /// <summary>
+    /// Checks, if the level is maxed.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsMaxed()
+    {
+        if (model.CurrentLevel.Number == model.Data.Levels.Length) 
+            return true;    
+
+        return false;
+    }
 }

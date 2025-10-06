@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42189c78519c9a4f9f01e03301b4e0e, type: 3}
   m_Name: Otter
   m_EditorClassIdentifier: Assembly-CSharp::SoUnit
-  Sprite: {fileID: 1696388533, guid: 3069a49995dca1f4fb391ca506ff7938, type: 3}
+  Sprite: {fileID: -7342475443439335439, guid: 52f0fd634a3e632428b3f80cfd832e69, type: 3}
   ID: 
   Name: Otter
   Health: 4
@@ -20,7 +20,8 @@ MonoBehaviour:
   Cost: 3
   LevelLimit: 3
   Levels:
-  - Description: "Buy \u2192 Give one random friend +1 health."
+  - Number: 1
+    Description: "Buy \u2192 Give one random friend +1 health."
     Sell: 1
     HasAbility: 1
     TriggerType: 5
@@ -38,7 +39,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Buy \u2192 Give two random friend +1 health."
+  - Number: 2
+    Description: "Buy \u2192 Give two random friend +1 health."
     Sell: 2
     HasAbility: 1
     TriggerType: 5
@@ -56,7 +58,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Buy \u2192 Give three random friend +1 health."
+  - Number: 3
+    Description: "Buy \u2192 Give three random friend +1 health."
     Sell: 3
     HasAbility: 1
     TriggerType: 5
