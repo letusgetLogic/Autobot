@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 
 public class UnitView : MonoBehaviour
 {
+    #region Variables
+
     [SerializeField]
     private SpriteRenderer shadowSpriteRenderer;
     public SpriteRenderer Shadow
@@ -36,6 +38,8 @@ public class UnitView : MonoBehaviour
     private Camera mainCamera;
     private Vector3 offset;
     private Vector3 originalScale;
+
+    #endregion
 
     private void Awake()
     {

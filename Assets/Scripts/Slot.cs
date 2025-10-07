@@ -14,7 +14,7 @@ public class Slot : MonoBehaviour
     private EventHover eventHover;
     public EventHover EventHover => eventHover;
 
-    public GameObject GameObjectIsOnMe { get; set; }
+    //public GameObject GameObjectIsOnMe { get; set; }
     public int Index { get; set; }  
 
 
@@ -36,6 +36,33 @@ public class Slot : MonoBehaviour
         eventHover.OnMouseExitEvent -= HideStats;
     }
 
+    /// <summary>
+    /// Returns the component UnitView.
+    /// </summary>
+    /// <returns></returns>
+    public UnitView UnitView()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Unit"))
+                return child.GetComponent<UnitView>();
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns the component UnitController.
+    /// </summary>
+    /// <returns></returns>
+    public UnitController UnitVController()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Unit"))
+                return child.GetComponent<UnitController>();
+        }
+        return null;
+    }
 
     #region Hover Event - Show description
 
@@ -44,16 +71,16 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void ShowStats()
     {
-        if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
-            return;
+        //if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
+        //    return;
 
-        if (eventHover.Data != null && eventHover.Data.pointerDrag != null) 
-            return;
+        //if (eventHover.Data != null && eventHover.Data.pointerDrag != null) 
+        //    return;
 
-        border.enabled = true;
+        //border.enabled = true;
 
-        var view = GameObjectIsOnMe.GetComponent<UnitView>();
-        view.SetDescriptionActive(true);
+        //var view = GameObjectIsOnMe.GetComponent<UnitView>();
+        //view.SetDescriptionActive(true);
     }
 
     /// <summary>
@@ -61,14 +88,14 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void HideStats()
     {
-        if (border.enabled)
-            border.enabled = false;
+        //if (border.enabled)
+        //    border.enabled = false;
 
-        if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
-            return;
+        //if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
+        //    return;
 
-        var view = GameObjectIsOnMe.GetComponent<UnitView>();
-        view.SetDescriptionActive(false);
+        //var view = GameObjectIsOnMe.GetComponent<UnitView>();
+        //view.SetDescriptionActive(false);
     }
 
     #endregion

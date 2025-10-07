@@ -23,7 +23,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     private float delayPushing = 1f;
     public float DelayPushing => delayPushing;
 
-    public GameObject AttachedGameObject { get; set; }
+    //public GameObject AttachedGameObject { get; set; }
     public bool IsCheckingAttachedToDrop { get; set; }
 
     private void Awake()
@@ -76,7 +76,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
             unit.transform.SetParent(shopUnitSlots[i].transform, false);
 
-            shopUnitSlotScripts[i].GameObjectIsOnMe = unit;
+            //shopUnitSlotScripts[i].GameObjectIsOnMe = unit;
         }
 
         GameManager.Instance.SetShopPhase();
@@ -92,21 +92,21 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     public void Transport(GameObject attached, Transform dropSlot, bool disableShadow)
     {
-        var tf = attached.transform;
+        //var tf = attached.transform;
 
-        if (tf.parent != null &&
-            tf.parent.CompareTag("Slot Battle") || tf.parent.CompareTag("Slot Shop"))
-        {
-            tf.parent.GetComponent<Slot>().GameObjectIsOnMe = null;
-        }
+        //if (tf.parent != null &&
+        //    tf.parent.CompareTag("Slot Battle") || tf.parent.CompareTag("Slot Shop"))
+        //{
+        //    tf.parent.GetComponent<Slot>().GameObjectIsOnMe = null;
+        //}
 
-        attached.transform.SetParent(dropSlot, false);
-        dropSlot.GetComponent<Slot>().GameObjectIsOnMe = attached;
+        //attached.transform.SetParent(dropSlot, false);
+        //dropSlot.GetComponent<Slot>().GameObjectIsOnMe = attached;
 
-        if (disableShadow && attached.CompareTag("Unit"))
-        {
-            attached.GetComponent<UnitView>().Shadow.enabled = false;
-        }
+        //if (disableShadow && attached.CompareTag("Unit"))
+        //{
+        //    attached.GetComponent<UnitView>().Shadow.enabled = false;
+        //}
     }
 
     /// <summary>
@@ -135,31 +135,31 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <param name="direction"></param>
     public void PushOtherAway(int target, int direction)
     {
-        if (direction == 0)
-            return;
-        Debug.Log("Push");
-        int search = target + direction;
-        while (search >= 0 && search < battleSlotScripts.Length)
-        {
-            if (battleSlotScripts[search].GameObjectIsOnMe != null) // slot is occupied
-            {
-                search += direction; // search for an emnpty space
-            }
-            else // slot is empty
-            {
-                for (int i = search; i != target; i -= direction)
-                {
-                    int previous = i - direction; // swap the previous slot to the empty slot
+        //if (direction == 0)
+        //    return;
+        //Debug.Log("Push");
+        //int search = target + direction;
+        //while (search >= 0 && search < battleSlotScripts.Length)
+        //{
+        //    if (battleSlotScripts[search].GameObjectIsOnMe != null) // slot is occupied
+        //    {
+        //        search += direction; // search for an emnpty space
+        //    }
+        //    else // slot is empty
+        //    {
+        //        for (int i = search; i != target; i -= direction)
+        //        {
+        //            int previous = i - direction; // swap the previous slot to the empty slot
 
-                    var attached = battleSlotScripts[previous].GameObjectIsOnMe;
-                    if (attached == null)
-                        break;
-                    Transport(attached, battleSlots[i].transform, false);
-                }
-                return;
-            }
+        //            var attached = battleSlotScripts[previous].GameObjectIsOnMe;
+        //            if (attached == null)
+        //                break;
+        //            Transport(attached, battleSlots[i].transform, false);
+        //        }
+        //        return;
+        //    }
 
-        }
+        //}
     }
 
 }

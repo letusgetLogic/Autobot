@@ -15,37 +15,27 @@ public class EventDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
-        //Debug.Log("PointerDown");
+        //var go = slot.GameObjectIsOnMe;
 
-        var go = slot.GameObjectIsOnMe;
-
-        if (go == null)
+        if (slot.UnitView() == null)
             return;
 
-        PhaseShopUnitManager.Instance.AttachedGameObject = go;
+        //PhaseShopUnitManager.Instance.AttachedGameObject = go;
 
-        if (go.CompareTag("Unit"))
-        {
-            go.GetComponent<UnitView>().BeingAttached(eventData);
-        }
+        slot.UnitView().BeingAttached(eventData);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
+       
+        //var go = slot.GameObjectIsOnMe;
 
-        //Debug.Log("Drag");
-
-        var go = slot.GameObjectIsOnMe;
-
-        if (go == null)
+        if (slot.UnitView() == null)
             return;
 
-        if (go.CompareTag("Unit"))
-        {
-            go.GetComponent<UnitView>().BeingMovedOnMouse(eventData);
-        }
+        slot.UnitView().GetComponent<UnitView>().BeingMovedOnMouse(eventData);
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -53,22 +43,17 @@ public class EventDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
-        //Debug.Log("PointerUp");
+        //var go = slot.GameObjectIsOnMe;
 
-        var go = slot.GameObjectIsOnMe;
-
-        if (go == null)
+        if (slot.UnitView() == null)
             return;
 
-        if (go.CompareTag("Unit"))
-        {
-            go.GetComponent<UnitView>().BeingReleased(eventData);
-        }
+        slot.UnitView().BeingReleased(eventData);
 
         if (PhaseShopUnitManager.Instance.IsCheckingAttachedToDrop == true)
             return;
 
-        PhaseShopUnitManager.Instance.AttachedGameObject = null;
+        //PhaseShopUnitManager.Instance.AttachedGameObject = null;
        
     }
 }
