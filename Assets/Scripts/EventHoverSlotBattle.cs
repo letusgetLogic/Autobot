@@ -3,72 +3,54 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField]
     private float offsetMoveOther = 0.3f;
+
+    private EventDrag eventDrag { get; set; }
     private Slot slot { get; set; }
-    private Camera main { get; set; }
     private Coroutine couroutine { get; set; }
 
     private void Start()
     {
         slot = transform.parent.GetComponent<Slot>();
-        main = Camera.main;
+        eventDrag = GetComponent<EventDrag>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
+        if (eventData.pointerDrag == null || 
+            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null)
             return;
-
-        PhaseShopUnitManager.Instance.IsCheckingAttachedToDrop = true;
 
         slot.Border.enabled = true;
     }
 
     private void OnMouseOver()
     {
-        //if (PhaseShopUnitManager.Instance.AttachedGameObject == null)
-        //    return;
+        GameObject draggingUnit;
 
-        //var goOnDrag = PhaseShopUnitManager.Instance.AttachedGameObject;
-        //Debug.Log(goOnDrag);
-        //if (goOnDrag.transform.parent == null ||
-        //    !goOnDrag.transform.parent.CompareTag("Slot Battle"))
-        //    return;
+        if (eventDrag.Data == null ||
+            eventDrag.Data.pointerDrag == null ||
+            eventDrag.Data.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null)
+            return;
+        else
+            draggingUnit = eventDrag.Data.pointerDrag.transform.parent.GetComponent<Slot>().Unit();
 
-        //if (slot.GameObjectIsOnMe == null)
-        //    return;
+        if (slot.Unit() == null||
+            slot.Unit() == draggingUnit)
+            return;
 
-        //int direction = DirectionMoveOther();
-        //if (direction == 0)
-        //    return;
-
-        //bool isFusible = PhaseShopUnitManager.Instance.IsFusible(
-        //    slot.GameObjectIsOnMe, goOnDrag.gameObject);
-
-        //SetParentNull(goOnDrag);
-
-        //if (isFusible)
-        //{
-        //    if(couroutine==null)
-        //        couroutine = StartCoroutine(DelayPushing());
-        //}
-        //else
-        //{
-        //    PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, direction);
-        //}
-    }
-
-    /// <summary>
-    /// Set the parent of dragged object null to make an empty space for pushing units.
-    /// </summary>
-    /// <param name="goOnDrag"></param>
-    private void SetParentNull(GameObject goOnDrag)
-    {
-        //goOnDrag.transform.parent.GetComponent<Slot>().GameObjectIsOnMe = null;
-        //goOnDrag.transform.SetParent(null);
+        if (PhaseShopUnitManager.Instance.IsFusible(slot.Unit(), draggingUnit))
+        {
+            if (couroutine == null)
+                couroutine = StartCoroutine(DelayPushing());
+        }
+        else
+        {
+            PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
+        }
     }
 
     /// <summary>
@@ -101,10 +83,5 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler, IPointe
         }
 
         return 0;
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        PhaseShopUnitManager.Instance.IsCheckingAttachedToDrop = false; 
     }
 }

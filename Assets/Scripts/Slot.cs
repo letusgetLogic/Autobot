@@ -14,8 +14,7 @@ public class Slot : MonoBehaviour
     private EventHover eventHover;
     public EventHover EventHover => eventHover;
 
-    //public GameObject GameObjectIsOnMe { get; set; }
-    public int Index { get; set; }  
+    public int Index { get; set; }
 
 
     private void Start()
@@ -36,6 +35,8 @@ public class Slot : MonoBehaviour
         eventHover.OnMouseExitEvent -= HideStats;
     }
 
+    #region Returns Unit
+
     /// <summary>
     /// Returns the component UnitView.
     /// </summary>
@@ -54,7 +55,7 @@ public class Slot : MonoBehaviour
     /// Returns the component UnitController.
     /// </summary>
     /// <returns></returns>
-    public UnitController UnitVController()
+    public UnitController UnitController()
     {
         foreach (Transform child in transform)
         {
@@ -64,6 +65,22 @@ public class Slot : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Returns the game object unit.
+    /// </summary>
+    /// <returns></returns>
+    public GameObject Unit()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Unit"))
+                return child.gameObject;
+        }
+        return null;
+    }
+
+    #endregion
+
     #region Hover Event - Show description
 
     /// <summary>
@@ -71,16 +88,14 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void ShowStats()
     {
-        //if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
-        //    return;
+        if (eventHover.Data != null && eventHover.Data.pointerDrag != null)
+            return;
 
-        //if (eventHover.Data != null && eventHover.Data.pointerDrag != null) 
-        //    return;
+        if (UnitView() == null)
+            return;
 
-        //border.enabled = true;
-
-        //var view = GameObjectIsOnMe.GetComponent<UnitView>();
-        //view.SetDescriptionActive(true);
+        UnitView().SetDescriptionActive(true);
+        border.enabled = true;
     }
 
     /// <summary>
@@ -88,14 +103,11 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void HideStats()
     {
-        //if (border.enabled)
-        //    border.enabled = false;
+        if (border.enabled)
+            border.enabled = false;
 
-        //if (GameObjectIsOnMe == null || !GameObjectIsOnMe.CompareTag("Unit"))
-        //    return;
-
-        //var view = GameObjectIsOnMe.GetComponent<UnitView>();
-        //view.SetDescriptionActive(false);
+        if (UnitView() != null)
+            UnitView().SetDescriptionActive(false);
     }
 
     #endregion

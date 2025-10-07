@@ -24,7 +24,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     public float DelayPushing => delayPushing;
 
     //public GameObject AttachedGameObject { get; set; }
-    public bool IsCheckingAttachedToDrop { get; set; }
 
     private void Awake()
     {
@@ -75,8 +74,6 @@ public class PhaseShopUnitManager : MonoBehaviour
             unit.GetComponent<UnitController>().Initialize(unitData);
 
             unit.transform.SetParent(shopUnitSlots[i].transform, false);
-
-            //shopUnitSlotScripts[i].GameObjectIsOnMe = unit;
         }
 
         GameManager.Instance.SetShopPhase();
@@ -90,23 +87,27 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Transports the attached game object to the drop slot.
     /// </summary>
-    public void Transport(GameObject attached, Transform dropSlot, bool disableShadow)
+    public void Transport(GameObject attached, Transform dropSlot,
+        bool mouseRelease, bool disableShadow)
     {
-        //var tf = attached.transform;
+        if (attached == null)
+            return;
 
-        //if (tf.parent != null &&
-        //    tf.parent.CompareTag("Slot Battle") || tf.parent.CompareTag("Slot Shop"))
-        //{
-        //    tf.parent.GetComponent<Slot>().GameObjectIsOnMe = null;
-        //}
+        attached.transform.SetParent(null);
 
-        //attached.transform.SetParent(dropSlot, false);
-        //dropSlot.GetComponent<Slot>().GameObjectIsOnMe = attached;
+        attached.transform.SetParent(dropSlot, false);
+        attached.transform.localPosition = Vector3.zero;
 
-        //if (disableShadow && attached.CompareTag("Unit"))
-        //{
-        //    attached.GetComponent<UnitView>().Shadow.enabled = false;
-        //}
+        if (attached.CompareTag("Unit"))
+        {
+            var unitView = attached.GetComponent<UnitView>();
+
+            if (mouseRelease)
+                unitView.BeingReleased(null);
+
+            if (disableShadow)
+                unitView.Shadow.enabled = false;
+        }
     }
 
     /// <summary>
@@ -135,31 +136,31 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <param name="direction"></param>
     public void PushOtherAway(int target, int direction)
     {
-        //if (direction == 0)
-        //    return;
-        //Debug.Log("Push");
-        //int search = target + direction;
-        //while (search >= 0 && search < battleSlotScripts.Length)
-        //{
-        //    if (battleSlotScripts[search].GameObjectIsOnMe != null) // slot is occupied
-        //    {
-        //        search += direction; // search for an emnpty space
-        //    }
-        //    else // slot is empty
-        //    {
-        //        for (int i = search; i != target; i -= direction)
-        //        {
-        //            int previous = i - direction; // swap the previous slot to the empty slot
+        if (direction == 0)
+            return;
 
-        //            var attached = battleSlotScripts[previous].GameObjectIsOnMe;
-        //            if (attached == null)
-        //                break;
-        //            Transport(attached, battleSlots[i].transform, false);
-        //        }
-        //        return;
-        //    }
+        int search = target + direction;
 
-        //}
+        while (search >= 0 && search < battleSlotScripts.Length)
+        {
+            if (battleSlotScripts[search].Unit() != null) // slot is occupied
+            {
+                search += direction; // search for an emnpty space
+            }
+            else // slot is empty
+            {
+                for (int i = search; i != target; i -= direction)
+                {
+                    int previous = i - direction; // swap the previous slot to the empty slot
+
+                    var attached = battleSlotScripts[previous].Unit();
+                    if (attached == null)
+                        break;
+                    Transport(attached, battleSlots[i].transform, false, false);
+                }
+                return;
+            }
+        }
     }
 
 }

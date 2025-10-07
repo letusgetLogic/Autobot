@@ -12,22 +12,20 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
     {
         slot = transform.parent.GetComponent<Slot>();
     }
+
     public void OnDrop(PointerEventData eventData)
     {
-        PhaseShopUnitManager.Instance.IsCheckingAttachedToDrop = false;
+        if (eventData.pointerDrag == null)
+            return;
 
-        //var goOnDrag = PhaseShopUnitManager.Instance.AttachedGameObject;
+        var draggingUnit = eventData.pointerDrag.transform.parent.
+            GetComponent<Slot>().Unit();
 
-        //if (goOnDrag == null)
-        //    return;
-
-        //if (slot.GameObjectIsOnMe != null)
-        //    PhaseShopUnitManager.Instance.IsFusible(slot.GameObjectIsOnMe, goOnDrag.gameObject);
-        //else
-        //{
-        //    PhaseShopUnitManager.Instance.Transport(goOnDrag, transform.parent, true);
-        //}
-
-        //PhaseShopUnitManager.Instance.AttachedGameObject = null;
+        if (slot.Unit() != null)
+            PhaseShopUnitManager.Instance.IsFusible(slot.Unit(), draggingUnit);
+        else
+        {
+            PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
+        }
     }
 }

@@ -90,9 +90,9 @@ public class UnitView : MonoBehaviour
     /// <param name="eventData"></param>
     public void BeingAttached(PointerEventData eventData)
     {
-        offset = transform.position - mainCamera.ScreenToWorldPoint(
-           new Vector3(eventData.position.x, eventData.position.y, 10f)) +
-           dragOverOther;
+        //offset = transform.position - mainCamera.ScreenToWorldPoint(
+        //   new Vector3(eventData.position.x, eventData.position.y, 10f)) +
+        //   dragOverOther;
 
         dragSpriteRenderer.gameObject.transform.localScale *= scale;
 
@@ -112,7 +112,7 @@ public class UnitView : MonoBehaviour
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
-        dragSpriteRenderer.gameObject.transform.position = worldPosition + offset;
+        dragSpriteRenderer.gameObject.transform.position = worldPosition + dragOverOther/*offset*/;
     }
 
     /// <summary>
