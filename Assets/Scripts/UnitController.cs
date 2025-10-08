@@ -8,23 +8,13 @@ public class UnitController : MonoBehaviour
     private UnitModel model;
     public UnitModel Model => model;
 
-    private void Awake()
-    {
-        model = new UnitModel();
-    }
-
-
     /// <summary>
     /// Initializes data.
     /// </summary>
     /// <param name="_data"></param>
     public void Initialize(SoUnit _data)
     {
-        model.Data = _data;
-        model.CurrentLevel = model.Data.Levels[0];
-        model.BattleHealth = model.Data.Health;
-        model.BattleAttack = model.Data.Attack;
-        model.XP = 1;
+        model = new UnitModel(_data);
 
         model.InitializeLevel();
 
@@ -32,7 +22,7 @@ public class UnitController : MonoBehaviour
             model.Data.Sprite,
             model.Data.Name,
             model.CurrentLevel.Description,
-            model.CurrentLevel.Sell,
+            model.Data.Cost,
             model.Data.Health,
             model.Data.Attack
             );
@@ -80,5 +70,31 @@ public class UnitController : MonoBehaviour
             return true;    
 
         return false;
+    }
+
+    /// <summary>
+    /// Sets the manage state freezed and set the sprite active.
+    /// </summary>
+    public void GetFrezzed()
+    {
+        model.ManageState = UnitState.Freezed;
+        view.IceCube.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Sets the manage state unfreezed and set the sprite active.
+    /// </summary>
+    public void GetUnfrezzed()
+    {
+        model.ManageState = UnitState.InSlotShop;
+        view.IceCube.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Destroys the game object.
+    /// </summary>
+    public void GetSelled()
+    {
+        Destroy(gameObject);
     }
 }

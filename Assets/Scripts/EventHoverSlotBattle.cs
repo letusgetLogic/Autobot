@@ -54,6 +54,7 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
         yield return new WaitForSeconds(PhaseShopUnitManager.Instance.DelayPushing);
 
         PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
+        couroutine = null;
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class PhaseShopUnitManager : MonoBehaviour
 {
@@ -77,6 +78,22 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
 
         GameManager.Instance.SetShopPhase();
+    }
+
+    public void SetAttachedGameObject(GameObject target)
+    {
+        if (target == null)
+        {
+            if (AttachedGameObject != null)
+                AttachedGameObject.transform.parent.
+                    GetComponent<Slot>().Border.enabled = false;
+        }
+        else
+        {
+            target.transform.parent.GetComponent<Slot>().Border.enabled = true;
+        }
+
+        AttachedGameObject = target;
     }
 
     public void TriggerStartOfTurn()

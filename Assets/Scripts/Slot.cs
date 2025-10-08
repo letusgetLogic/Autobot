@@ -91,6 +91,10 @@ public class Slot : MonoBehaviour
         if (eventHover.Data != null && eventHover.Data.pointerDrag != null)
             return;
 
+        if (UnitController() == null || 
+            UnitController().Model.ManageState == UnitState.Freezed)
+            return;
+
         if (UnitView() == null)
             return;
 
@@ -103,7 +107,9 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void HideStats()
     {
-        if (border.enabled)
+        var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+        if (border.enabled && 
+            (attached == null || attached != Unit()))
             border.enabled = false;
 
         if (UnitView() != null)

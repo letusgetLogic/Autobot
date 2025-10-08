@@ -15,18 +15,26 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
+        if (slot.UnitController() == null ||
+            slot.UnitController().Model.ManageState == UnitState.Freezed)
+            return;
+
         if (slot.UnitView() == null)
             return;
 
         slot.UnitView().BeingAttached(eventData);
 
-        PhaseShopUnitManager.Instance.AttachedGameObject = 
-            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit();
+        PhaseShopUnitManager.Instance.SetAttachedGameObject(
+            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit());
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
+        if (slot.UnitController() == null ||
+            slot.UnitController().Model.ManageState == UnitState.Freezed)
             return;
 
         if (slot.UnitView() == null)
@@ -40,11 +48,15 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
+        if (slot.UnitController() == null ||
+            slot.UnitController().Model.ManageState == UnitState.Freezed)
+            return;
+
         if (slot.UnitView() == null)
             return;
 
         slot.UnitView().BeingReleased(eventData);
 
-        PhaseShopUnitManager.Instance.AttachedGameObject = null;
+        PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
     }
 }

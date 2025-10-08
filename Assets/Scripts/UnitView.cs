@@ -8,22 +8,20 @@ public class UnitView : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer shadowSpriteRenderer;
-    public SpriteRenderer Shadow
-    {
-        get { return shadowSpriteRenderer; }
-        set { shadowSpriteRenderer = value; }
-    }
+    public SpriteRenderer Shadow => shadowSpriteRenderer; 
 
     [SerializeField]
-    private SpriteRenderer dragSpriteRenderer;
-    public SpriteRenderer DragSpriteRenderer => dragSpriteRenderer;
+    private SpriteRenderer 
+        dragSpriteRenderer,
+        iceCube;
+    public SpriteRenderer IceCube => iceCube;
 
     [SerializeField] 
     private GameObject description;
 
     [SerializeField]
     private TextMeshProUGUI 
-        name,
+        myName,
         ability,
         coin,
         health,
@@ -44,6 +42,7 @@ public class UnitView : MonoBehaviour
     private void Awake()
     {
         description.SetActive(false);
+        iceCube.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -65,7 +64,7 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.sprite = _sprite;
         shadowSpriteRenderer.sprite = _sprite;
-        name.text = _name;
+        myName.text = _name;
         gameObject.name = _name;
         ability.text = _description;
         coin.text = _cost.ToString();

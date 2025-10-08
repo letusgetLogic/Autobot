@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -20,11 +21,14 @@ public class PhaseShopUI : MonoBehaviour
         turnText,
         trophyText;
 
+    [SerializeField]
+    private GameObject
+        sellButton,
+        freezeButton,
+        unfreezeButton;
+
     private Template player { get; set; }
 
-    /// <summary>
-    /// Awake method.
-    /// </summary>
     private void Awake()
     {
         if (Instance != null)
@@ -32,6 +36,8 @@ public class PhaseShopUI : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+        SetButtonActive(UnitState.None);
     }
 
     /// <summary>
@@ -61,6 +67,8 @@ public class PhaseShopUI : MonoBehaviour
         coinsText.text = _coins.ToString();
     }
 
+    #region Button
+
     /// <summary>
     /// Roll the shop for new units and items.
     /// </summary>
@@ -76,4 +84,84 @@ public class PhaseShopUI : MonoBehaviour
         UpdateUI(player.Coins);
         PhaseShopUnitManager.Instance.SpawnUnits();
     }
+
+    /// <summary>
+    /// Activates button, which manages units und items, or deactives with ManageButton.None.
+    /// </summary>
+    /// <param name="manageButton"></param>
+    public void SetButtonActive(UnitState manageButton)
+    {
+        switch (manageButton)
+        {
+            case UnitState.None:
+                sellButton.SetActive(false);
+                freezeButton.SetActive(false);
+                unfreezeButton.SetActive(false);
+                break;
+
+            case UnitState.InSlotShop:
+                sellButton.SetActive(false);
+                freezeButton.SetActive(true);
+                unfreezeButton.SetActive(false);
+                break;
+
+            case UnitState.Freezed:
+                sellButton.SetActive(false);
+                freezeButton.SetActive(false);
+                unfreezeButton.SetActive(true);
+                break;
+
+            case UnitState.InSlotBattle:
+                sellButton.SetActive(true);
+                freezeButton.SetActive(false);
+                unfreezeButton.SetActive(false);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Freeze the attached object.
+    /// </summary>
+    public void Freeze()
+    {
+        SetButtonActive(UnitState.None);
+
+        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+            PhaseShopUnitManager.Instance.AttachedGameObject.
+                GetComponent<UnitController>().GetFrezzed();
+
+    }
+
+    /// <summary>
+    /// Unfreeze the attached object.
+    /// </summary>
+    public void Unfreeze()
+    {
+        SetButtonActive(UnitState.None);
+
+        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+            PhaseShopUnitManager.Instance.AttachedGameObject.
+                GetComponent<UnitController>().GetUnfrezzed();
+
+    }
+
+    /// <summary>
+    /// Destroys the attached object and adds sell coins. 
+    /// </summary>
+    public void Sell()
+    {
+        SetButtonActive(UnitState.None);
+
+        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        {
+            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+                GetComponent<UnitController>();
+
+            unit.GetSelled();
+            player.Coins += unit.Model.CurrentLevel.Sell;
+            UpdateUI(player.Coins);
+        }
+    }
+
+    #endregion
 }
