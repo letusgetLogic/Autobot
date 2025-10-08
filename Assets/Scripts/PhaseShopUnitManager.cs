@@ -23,7 +23,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     private float delayPushing = 1f;
     public float DelayPushing => delayPushing;
 
-    //public GameObject AttachedGameObject { get; set; }
+    public GameObject AttachedGameObject { get; set; }
 
     private void Awake()
     {

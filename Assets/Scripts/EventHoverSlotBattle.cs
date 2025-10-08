@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,14 +7,12 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
     [SerializeField]
     private float offsetMoveOther = 0.3f;
 
-    private EventDrag eventDrag { get; set; }
     private Slot slot { get; set; }
     private Coroutine couroutine { get; set; }
 
     private void Start()
     {
         slot = transform.parent.GetComponent<Slot>();
-        eventDrag = GetComponent<EventDrag>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -29,20 +26,15 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
 
     private void OnMouseOver()
     {
-        GameObject draggingUnit;
-
-        if (eventDrag.Data == null ||
-            eventDrag.Data.pointerDrag == null ||
-            eventDrag.Data.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null)
+        if (PhaseShopUnitManager.Instance.AttachedGameObject == null)
             return;
-        else
-            draggingUnit = eventDrag.Data.pointerDrag.transform.parent.GetComponent<Slot>().Unit();
-
+      
         if (slot.Unit() == null||
-            slot.Unit() == draggingUnit)
+            slot.Unit() == PhaseShopUnitManager.Instance.AttachedGameObject)
             return;
 
-        if (PhaseShopUnitManager.Instance.IsFusible(slot.Unit(), draggingUnit))
+        if (PhaseShopUnitManager.Instance.IsFusible(
+            slot.Unit(), PhaseShopUnitManager.Instance.AttachedGameObject))
         {
             if (couroutine == null)
                 couroutine = StartCoroutine(DelayPushing());

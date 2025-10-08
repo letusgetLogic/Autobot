@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public PointerEventData Data { get; set; }
     private Slot slot { get; set; }
 
     private void Start()
@@ -21,6 +19,9 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             return;
 
         slot.UnitView().BeingAttached(eventData);
+
+        PhaseShopUnitManager.Instance.AttachedGameObject = 
+            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -32,8 +33,6 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             return;
 
         slot.UnitView().GetComponent<UnitView>().BeingMovedOnMouse(eventData);
-
-        Data = eventData;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -46,6 +45,6 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         slot.UnitView().BeingReleased(eventData);
 
-        Data = null;
+        PhaseShopUnitManager.Instance.AttachedGameObject = null;
     }
 }
