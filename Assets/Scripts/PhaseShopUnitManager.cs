@@ -9,6 +9,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     [SerializeField]
     private GameObject unitPrefab;
 
+    [Tooltip("Slots")]
     [SerializeField]
     private GameObject[]
         battleSlots,
@@ -20,9 +21,15 @@ public class PhaseShopUnitManager : MonoBehaviour
     private Slot[] battleSlotScripts { get; set; }
     private Slot[] shopUnitSlotScripts { get; set; }
 
+    [Tooltip("Delay pushing other unit to make space")]
     [SerializeField]
-    private float delayPushing = 1f;
+    private float delayPushing = .5f;
     public float DelayPushing => delayPushing;
+
+    [Tooltip("Delay pushing other unit to make space, while a fusion between 2 units is possible")]
+    [SerializeField]
+    private float delayPushingFusion = 1f;
+    public float DelayPushingFusion => delayPushingFusion;
 
     public GameObject AttachedGameObject { get; set; }
 
@@ -62,10 +69,13 @@ public class PhaseShopUnitManager : MonoBehaviour
     {
         for (int i = 0; i < shopUnitSlots.Length; i++)
         {
-            var existingUnit = shopUnitSlots[i].GetComponentInChildren<UnitController>();
-            if (existingUnit != null)
+            var unitController = shopUnitSlotScripts[i].UnitController();
+            if (unitController != null)
             {
-                Destroy(existingUnit.gameObject);
+                if (unitController.Model.ManageState == UnitState.Freezed)
+                    continue;
+
+                Destroy(unitController.gameObject);
             }
 
             var unitData = GameManager.Instance.AvaiableUnits
@@ -87,6 +97,8 @@ public class PhaseShopUnitManager : MonoBehaviour
             if (AttachedGameObject != null)
                 AttachedGameObject.transform.parent.
                     GetComponent<Slot>().Border.enabled = false;
+
+            PhaseShopUI.Instance.SetButtonActive(UnitState.None);
         }
         else
         {
@@ -104,12 +116,18 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Transports the attached game object to the drop slot.
     /// </summary>
+    /// <param name="attached"></param>
+    /// <param name="dropSlot"></param>
+    /// <param name="mouseRelease"> unitView.BeingReleased(null); </param>
+    /// <param name="disableShadow">  unitView.Shadow.enabled = false;</param>
     public void Transport(GameObject attached, Transform dropSlot,
         bool mouseRelease, bool disableShadow)
     {
-        if (attached == null)
+        if (attached == null || 
+            attached.GetComponent<UnitController>().Model.ManageState == UnitState.Freezed)
             return;
 
+        attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
         attached.transform.SetParent(null);
 
         attached.transform.SetParent(dropSlot, false);
@@ -124,6 +142,8 @@ public class PhaseShopUnitManager : MonoBehaviour
 
             if (disableShadow)
                 unitView.Shadow.enabled = false;
+
+            attached.GetComponent<UnitController>().Model.ManageState = UnitState.InSlotBattle;
         }
     }
 

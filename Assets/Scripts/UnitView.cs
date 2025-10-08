@@ -12,12 +12,14 @@ public class UnitView : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer 
-        dragSpriteRenderer,
-        iceCube;
-    public SpriteRenderer IceCube => iceCube;
+        dragSpriteRenderer;
 
-    [SerializeField] 
-    private GameObject description;
+    [SerializeField]
+    private GameObject
+        description,
+        iceCube;
+
+    public GameObject IceCube => iceCube;
 
     [SerializeField]
     private TextMeshProUGUI 
@@ -34,7 +36,7 @@ public class UnitView : MonoBehaviour
     private Vector3 dragOverOther = Vector3.back; // offset while dragging over other
 
     private Camera mainCamera;
-    private Vector3 offset;
+   
     private Vector3 originalScale;
 
     #endregion
@@ -89,11 +91,7 @@ public class UnitView : MonoBehaviour
     /// <param name="eventData"></param>
     public void BeingAttached(PointerEventData eventData)
     {
-        //offset = transform.position - mainCamera.ScreenToWorldPoint(
-        //   new Vector3(eventData.position.x, eventData.position.y, 10f)) +
-        //   dragOverOther;
-
-        dragSpriteRenderer.gameObject.transform.localScale *= scale;
+         dragSpriteRenderer.gameObject.transform.localScale *= scale;
 
         if (shadowSpriteRenderer.enabled == false)
         {
@@ -111,7 +109,7 @@ public class UnitView : MonoBehaviour
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
-        dragSpriteRenderer.gameObject.transform.position = worldPosition + dragOverOther/*offset*/;
+        dragSpriteRenderer.gameObject.transform.position = worldPosition + dragOverOther;
     }
 
     /// <summary>

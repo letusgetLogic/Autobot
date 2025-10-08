@@ -17,8 +17,9 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null || 
-            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null)
+        if (PhaseShopUnitManager.Instance.AttachedGameObject == null &&
+            (eventData.pointerDrag == null ||
+            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null))
             return;
 
         slot.Border.enabled = true;
@@ -26,23 +27,17 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
 
     private void OnMouseOver()
     {
-        if (PhaseShopUnitManager.Instance.AttachedGameObject == null)
+        if (PhaseShopUnitManager.Instance.AttachedGameObject == null ||
+            PhaseShopUnitManager.Instance.AttachedGameObject.
+            GetComponent<UnitController>().Model.ManageState == UnitState.Freezed)
             return;
-      
-        if (slot.Unit() == null||
+
+        if (slot.Unit() == null ||
             slot.Unit() == PhaseShopUnitManager.Instance.AttachedGameObject)
             return;
 
-        if (PhaseShopUnitManager.Instance.IsFusible(
-            slot.Unit(), PhaseShopUnitManager.Instance.AttachedGameObject))
-        {
-            if (couroutine == null)
-                couroutine = StartCoroutine(DelayPushing());
-        }
-        else
-        {
-            PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
-        }
+        if (couroutine == null)
+            couroutine = StartCoroutine(DelayPushing());
     }
 
     /// <summary>
@@ -51,7 +46,12 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
     /// <returns></returns>
     private IEnumerator DelayPushing()
     {
-        yield return new WaitForSeconds(PhaseShopUnitManager.Instance.DelayPushing);
+        bool isFusible = PhaseShopUnitManager.Instance.IsFusible(
+            slot.Unit(), PhaseShopUnitManager.Instance.AttachedGameObject);
+
+        yield return new WaitForSeconds(isFusible ?
+            PhaseShopUnitManager.Instance.DelayPushingFusion :
+            PhaseShopUnitManager.Instance.DelayPushing);
 
         PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
         couroutine = null;

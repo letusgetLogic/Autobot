@@ -78,7 +78,7 @@ public class UnitController : MonoBehaviour
     public void GetFrezzed()
     {
         model.ManageState = UnitState.Freezed;
-        view.IceCube.gameObject.SetActive(true);
+        view.IceCube.SetActive(true);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class UnitController : MonoBehaviour
     public void GetUnfrezzed()
     {
         model.ManageState = UnitState.InSlotShop;
-        view.IceCube.gameObject.SetActive(false);
+        view.IceCube.SetActive(false);
     }
 
     /// <summary>

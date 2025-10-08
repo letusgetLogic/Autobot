@@ -127,9 +127,12 @@ public class PhaseShopUI : MonoBehaviour
         SetButtonActive(UnitState.None);
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        {
             PhaseShopUnitManager.Instance.AttachedGameObject.
-                GetComponent<UnitController>().GetFrezzed();
+               GetComponent<UnitController>().GetFrezzed();
 
+            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+        }
     }
 
     /// <summary>
@@ -140,9 +143,12 @@ public class PhaseShopUI : MonoBehaviour
         SetButtonActive(UnitState.None);
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        {
             PhaseShopUnitManager.Instance.AttachedGameObject.
                 GetComponent<UnitController>().GetUnfrezzed();
 
+            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+        }
     }
 
     /// <summary>
@@ -160,6 +166,8 @@ public class PhaseShopUI : MonoBehaviour
             unit.GetSelled();
             player.Coins += unit.Model.CurrentLevel.Sell;
             UpdateUI(player.Coins);
+
+            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
     }
 

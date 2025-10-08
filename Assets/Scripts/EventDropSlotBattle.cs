@@ -26,7 +26,6 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
         else
         {
             PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
-            draggingUnit.GetComponent<UnitController>().Model.ManageState = UnitState.InSlotBattle;
         }
 
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);

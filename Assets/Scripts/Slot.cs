@@ -14,6 +14,9 @@ public class Slot : MonoBehaviour
     private EventHover eventHover;
     public EventHover EventHover => eventHover;
 
+    [SerializeField]
+    private EventDrag eventDrag;
+
     public int Index { get; set; }
 
 
@@ -109,7 +112,7 @@ public class Slot : MonoBehaviour
     {
         var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
         if (border.enabled && 
-            (attached == null || attached != Unit()))
+            (eventDrag.IsDragging || attached == null || attached != Unit()))
             border.enabled = false;
 
         if (UnitView() != null)
