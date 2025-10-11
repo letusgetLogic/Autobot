@@ -16,8 +16,18 @@ public class UnitView : MonoBehaviour
 
     [SerializeField]
     private GameObject
+        canvas,
         description,
-        iceCube;
+        iceCube,
+        level,
+        box1StepFilled,
+        box2Step,
+        step1Filled,
+        step2Filled,
+        box3Step,
+        step3Filled,
+        step4Filled,
+        step5Filled;
 
     public GameObject IceCube => iceCube;
 
@@ -27,10 +37,15 @@ public class UnitView : MonoBehaviour
         ability,
         coin,
         health,
-        attack;
+        attack,
+        levelAmount;
 
     [SerializeField]
     private float scale = 1.1f;
+
+    [SerializeField]
+    private float delayUpdateLevel = .5f;
+    public float DelayUpdateLevel => delayUpdateLevel;
 
     [SerializeField]
     private Vector3 dragOverOther = Vector3.back; // offset while dragging over other
@@ -38,6 +53,7 @@ public class UnitView : MonoBehaviour
     private Camera mainCamera;
    
     private Vector3 originalScale;
+    private Vector3 levelPosition;
 
     #endregion
 
@@ -45,6 +61,7 @@ public class UnitView : MonoBehaviour
     {
         description.SetActive(false);
         iceCube.gameObject.SetActive(false);
+        levelPosition = level.transform.localPosition;
     }
 
     private void Start()
@@ -110,6 +127,7 @@ public class UnitView : MonoBehaviour
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
         dragSpriteRenderer.gameObject.transform.position = worldPosition + dragOverOther;
+        canvas.transform.position = worldPosition + dragOverOther;
     }
 
     /// <summary>
@@ -120,10 +138,39 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;
         dragSpriteRenderer.gameObject.transform.localScale = originalScale;
+        canvas.transform.localPosition = Vector3.zero;
 
         health.enabled = true;
         attack.enabled = true;
     }
 
     #endregion
+
+    /// <summary>
+    /// Sets the step components active.
+    /// </summary>
+    /// <param name="box1"></param>
+    /// <param name="box2"></param>
+    /// <param name="step1"></param>
+    /// <param name="step2"></param>
+    /// <param name="box3"></param>
+    /// <param name="step3"></param>
+    /// <param name="step4"></param>
+    /// <param name="step5"></param>
+    public void SetStepActive(
+        string level,
+        bool box1, 
+        bool box2, bool step1, bool step2,
+        bool box3, bool step3, bool step4, bool step5)
+    {
+        levelAmount.text = level;
+        box1StepFilled.SetActive(box1);
+        box2Step.SetActive(box2);
+        step1Filled.SetActive(step1);
+        step2Filled.SetActive(step2);
+        box3Step.SetActive(box3);
+        step3Filled.SetActive(step3);
+        step4Filled.SetActive(step4);
+        step5Filled.SetActive(step5);
+    }      
 }

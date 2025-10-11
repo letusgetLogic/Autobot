@@ -34,7 +34,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
-
+        Debug.Log(eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit());
         if (slot.UnitController() == null ||
             slot.UnitController().Model.ManageState == UnitState.Freezed)
             return;

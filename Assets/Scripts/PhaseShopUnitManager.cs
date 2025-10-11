@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class PhaseShopUnitManager : MonoBehaviour
 {
@@ -136,6 +135,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (attached.CompareTag("Unit"))
         {
             var unitView = attached.GetComponent<UnitView>();
+            var controller = attached.GetComponent<UnitController>();
 
             if (mouseRelease)
                 unitView.BeingReleased(null);
@@ -143,7 +143,8 @@ public class PhaseShopUnitManager : MonoBehaviour
             if (disableShadow)
                 unitView.Shadow.enabled = false;
 
-            attached.GetComponent<UnitController>().Model.ManageState = UnitState.InSlotBattle;
+            controller.Model.ManageState = UnitState.InSlotBattle;
+            controller.UpdateData(false);
         }
     }
 

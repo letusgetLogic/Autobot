@@ -22,7 +22,13 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
             GetComponent<Slot>().Unit();
 
         if (slot.Unit() != null)
-            PhaseShopUnitManager.Instance.IsFusible(slot.Unit(), draggingUnit);
+        {
+            if (PhaseShopUnitManager.Instance.IsFusible(slot.Unit(), draggingUnit))
+            {
+                Destroy(draggingUnit);
+                slot.UnitController().UpdateLevel();
+            }
+        }
         else
         {
             PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);

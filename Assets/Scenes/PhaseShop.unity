@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273ee789f10627d4ba5f62891d6f6f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhaseShopUI
-  startCoins: 110
+  startCoins: 10
   rollCost: 1
   nameText: {fileID: 1447329010790009410}
   coinsText: {fileID: 247628768}
@@ -3131,6 +3131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StartPack
   XpToLv2: 3
   XpToLv3: 6
+  AddHealth: 1
+  AddAttack: 1
   tier1AvaiableAtTurn: 1
   tier2AvaiableAtTurn: 0
   tier3AvaiableAtTurn: 0

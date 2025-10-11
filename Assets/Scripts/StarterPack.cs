@@ -8,6 +8,9 @@ public class StarterPack : MonoBehaviour
     public int XpToLv2 = 3;
     public int XpToLv3 = 6;
 
+    public int AddHealth = 1;
+    public int AddAttack = 1;
+
     [SerializeField] int tier1AvaiableAtTurn = 1;
     [SerializeField] int tier2AvaiableAtTurn = 3;
     [SerializeField] int tier3AvaiableAtTurn = 5;

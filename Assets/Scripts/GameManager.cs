@@ -109,6 +109,9 @@ public class GameManager : MonoBehaviour
         _template.StartShop();
     }
 
+    /// <summary>
+    /// Sets the shop phase.
+    /// </summary>
     public void SetShopPhase()
     {
         state = GameState.ShopPhase;
