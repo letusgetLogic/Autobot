@@ -9,6 +9,7 @@ public class Template
     public int Wins { get; set; }
     public GameObject[] BattleUnits { get; set; }
     public int Coins { get; set; }
+    public bool IsShopDone { get; set; }
 
     /// <summary>
     /// Assigns the template values.

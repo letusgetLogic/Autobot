@@ -51,6 +51,7 @@ public class PhaseShopUI : MonoBehaviour
     public void UpdateUI(Template _template)
     {
         player = _template;
+        player.IsShopDone = false;
         nameText.text = player.Name;
         coinsText.text = player.Coins.ToString();
         heartText.text = player.Health.ToString();
@@ -119,6 +120,8 @@ public class PhaseShopUI : MonoBehaviour
         }
     }
 
+    #region Manage Button
+
     /// <summary>
     /// Freeze the attached object.
     /// </summary>
@@ -169,6 +172,17 @@ public class PhaseShopUI : MonoBehaviour
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Ends turn.
+    /// </summary>
+    public void EndTurn()
+    {
+        player.IsShopDone = true;
+        GameManager.Instance.EndShopPhase();
     }
 
     #endregion

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public List<SoItem> AvaiableItems = new();
 
     public GameMode Mode { get; set; }
+    public int PlayerAmount { get; private set; }
     public int PlayerCount { get; private set; }
     public bool WithTimer { get; private set; }
     public int WinsCondition { get; set; }
@@ -67,6 +68,8 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameMode.Single:
+                PlayerCount = 0;
+                PlayerAmount = 2;
                 templates = new[]
                     {
                     new Template("Player 1", PlayerHealth, WinsCondition),
@@ -90,8 +93,16 @@ public class GameManager : MonoBehaviour
     private void RunSingle()
     {
         state = GameState.StartOfTurn;
-       
-        StartCoroutine(StartTurn(templates[0]));
+
+        if (PlayerCount <= templates.Length)
+        {
+            StartCoroutine(StartTurn(templates[PlayerCount]));
+            PlayerCount++;
+        }
+        else
+        {
+
+        }
     }
 
     /// <summary>
@@ -116,6 +127,16 @@ public class GameManager : MonoBehaviour
     {
         state = GameState.ShopPhase;
     }
+
+    /// <summary>
+    /// Ends the phase of shop.
+    /// </summary>
+    public void EndShopPhase()
+    {
+        state = GameState.EndOfTurn;
+        RunSingle();
+    }
+
     public void EndGame()
     {
         state = GameState.EndOfGame;
