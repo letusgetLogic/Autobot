@@ -6,7 +6,7 @@
         CurrentLevel = Data.Levels[0];
         BattleHealth = Data.Health;
         BattleAttack = Data.Attack;
-        XP = 0;
+        XP = 1;
         ManageState = UnitState.InSlotShop;
     }
 

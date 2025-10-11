@@ -1,14 +1,15 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
+public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private float offsetMoveOther = 0.3f;
 
     private Slot slot { get; set; }
-    private Coroutine couroutine { get; set; }
+    private float countDown { get; set; }
+    private bool isCounting { get; set; }
+    private int direction { get; set; }
 
     private void Start()
     {
@@ -27,34 +28,39 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
 
     private void OnMouseOver()
     {
-        if (PhaseShopUnitManager.Instance.AttachedGameObject == null ||
-            PhaseShopUnitManager.Instance.AttachedGameObject.
-            GetComponent<UnitController>().Model.ManageState == UnitState.Freezed)
+        var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+        if (attached == null ||
+            attached.GetComponent<UnitController>().Model.ManageState == UnitState.Freezed)
             return;
 
         if (slot.Unit() == null ||
-            slot.Unit() == PhaseShopUnitManager.Instance.AttachedGameObject)
+            slot.Unit() == attached)
             return;
 
-        if (couroutine == null)
-            couroutine = StartCoroutine(DelayPushing());
-    }
+        if (!isCounting)
+        {
+            bool isFusible = PhaseShopUnitManager.Instance.IsFusible(
+            slot.UnitController(),
+            attached.GetComponent<UnitController>());
 
-    /// <summary>
-    /// Delays pushing.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator DelayPushing()
-    {
-        bool isFusible = PhaseShopUnitManager.Instance.IsFusible(
-            slot.Unit(), PhaseShopUnitManager.Instance.AttachedGameObject);
-
-        yield return new WaitForSeconds(isFusible ?
+            countDown = isFusible ?
             PhaseShopUnitManager.Instance.DelayPushingFusion :
-            PhaseShopUnitManager.Instance.DelayPushing);
+            PhaseShopUnitManager.Instance.DelayPushing;
 
-        PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
-        couroutine = null;
+            direction = DirectionMoveOther();
+            isCounting = true;
+        }
+
+        if (isCounting && DirectionMoveOther() == direction)
+            countDown -= Time.deltaTime;
+        else
+            isCounting = false;
+
+        if (countDown <= 0)
+        {
+            PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
+            isCounting = false;
+        }
     }
 
     /// <summary>
@@ -76,5 +82,10 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler
         }
 
         return 0;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isCounting = false;
     }
 }

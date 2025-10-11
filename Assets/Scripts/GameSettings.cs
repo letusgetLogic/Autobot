@@ -28,6 +28,7 @@ public class GameSettings : MonoBehaviour
         }
 
         Instance = this;
+        GameManager.Instance.Mode = GameMode.Single;
     }
 
     /// <summary>
@@ -47,7 +48,7 @@ public class GameSettings : MonoBehaviour
                 GameManager.Instance.WinsCondition = a;
                 GameManager.Instance.PlayerHealth = b;
                 GameManager.Instance.LoadGame();
-                SceneManager.LoadScene("PhaseShop");
+                
                 break;
         }
     }

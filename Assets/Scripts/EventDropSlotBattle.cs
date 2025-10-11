@@ -18,22 +18,33 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
         if (eventData.pointerDrag == null)
             return;
 
-        var draggingUnit = eventData.pointerDrag.transform.parent.
-            GetComponent<Slot>().Unit();
+        var draggingUnit = eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit();
+        var draggingUnitController = draggingUnit.GetComponent<UnitController>();
+        var model = draggingUnitController.Model;
 
         if (slot.Unit() != null)
         {
-            if (PhaseShopUnitManager.Instance.IsFusible(slot.Unit(), draggingUnit))
+            if (model.ManageState == UnitState.InSlotShop)
+                PhaseShopUI.Instance.UpdateCoin(-model.Data.Cost);
+
+            if (PhaseShopUnitManager.Instance.IsFusible(slot.UnitController(), draggingUnitController))
             {
+                slot.UnitController().UpdateLevel(
+                    model.XP,
+                    model.BattleHealth - model.Data.Health,
+                    model.BattleAttack - model.Data.Attack
+                    );
                 Destroy(draggingUnit);
-                slot.UnitController().UpdateLevel();
             }
         }
         else
         {
+            if (model.ManageState == UnitState.InSlotShop)
+                PhaseShopUI.Instance.UpdateCoin(-model.Data.Cost);
+
             PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
         }
-
+       
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
     }
 }

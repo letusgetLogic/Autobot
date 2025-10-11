@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PhaseShopUnitManager : MonoBehaviour
 {
@@ -18,7 +18,9 @@ public class PhaseShopUnitManager : MonoBehaviour
         extraShopItemsSlots;
 
     private Slot[] battleSlotScripts { get; set; }
+    public Slot[] BattleSlots => battleSlotScripts;
     private Slot[] shopUnitSlotScripts { get; set; }
+    public Slot[] ShopUnitSlots => shopUnitSlotScripts;
 
     [Tooltip("Delay pushing other unit to make space")]
     [SerializeField]
@@ -39,16 +41,36 @@ public class PhaseShopUnitManager : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+    }
 
-        battleSlotScripts = InitializeArray(battleSlots);
-        shopUnitSlotScripts = InitializeArray(shopUnitSlots);
+    /// <summary>
+    /// Initializes the slots.
+    /// </summary>
+    /// <param name="player"></param>
+    public void Initialize(Template player)
+    {
+       battleSlotScripts = InitializeArray( battleSlots);
+       shopUnitSlotScripts = InitializeArray(shopUnitSlots);
+
+        if (player.BattleSlots != null)
+        {
+            for (int i = 0; i < player.BattleSlots.Length; i++)
+            {
+                battleSlotScripts[i] = player.BattleSlots[i];
+            }
+        }
+        if (player.FreezedUnitSlots != null)
+        {
+            for (int i = 0; i <= player.FreezedUnitSlots.Length; i++)
+            {
+                shopUnitSlotScripts[i] = player.FreezedUnitSlots[i];
+            }
+        }
     }
 
     /// <summary>
     /// Initializes array.
     /// </summary>
-    /// <param name="slotScripts"></param>
-    /// <param name="slots"></param>
     private Slot[] InitializeArray(GameObject[] slots)
     {
         var slotScripts = new Slot[slots.Length];
@@ -64,7 +86,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Spawns units in the shop slots.
     /// </summary>
-    public void SpawnUnits()
+    public void SpawnShopUnits()
     {
         for (int i = 0; i < shopUnitSlots.Length; i++)
         {
@@ -72,7 +94,10 @@ public class PhaseShopUnitManager : MonoBehaviour
             if (unitController != null)
             {
                 if (unitController.Model.ManageState == UnitState.Freezed)
+                {
+                    unitController.gameObject.transform.SetParent(shopUnitSlots[i].transform, false);
                     continue;
+                }
 
                 Destroy(unitController.gameObject);
             }
@@ -87,6 +112,19 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
 
         GameManager.Instance.SetShopPhase();
+    }
+
+    public void SpawnBattleUnits()
+    {
+        for (int i = 0; i < battleSlotScripts.Length; i++)
+        {
+            var unit = battleSlotScripts[i].Unit();
+            if (unit != null)
+            {
+                Instantiate(unit);
+                unit.transform.SetParent(battleSlots[i].transform, false);
+            }
+        }
     }
 
     public void SetAttachedGameObject(GameObject target)
@@ -154,10 +192,10 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <param name="onSlot"></param>
     /// <param name="onDrag"></param>
     /// <returns></returns>
-    public bool IsFusible(GameObject onSlot, GameObject onDrag)
+    public bool IsFusible(UnitController onSlot, UnitController onDrag)
     {
-        if (onSlot.GetComponent<UnitController>().IsMaxed() ||
-            onDrag.GetComponent<UnitController>().IsMaxed())
+        if (onSlot.IsMaxed() ||
+            onDrag.IsMaxed())
             return false;
 
         if (onSlot.name == onDrag.name)

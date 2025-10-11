@@ -8,16 +8,18 @@ public class UnitView : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer shadowSpriteRenderer;
-    public SpriteRenderer Shadow => shadowSpriteRenderer; 
+    public SpriteRenderer Shadow => shadowSpriteRenderer;
 
     [SerializeField]
-    private SpriteRenderer 
+    private SpriteRenderer
         dragSpriteRenderer;
 
     [SerializeField]
     private GameObject
         canvas,
         description,
+        heartIcon,
+        attackIcon,
         iceCube,
         level,
         box1StepFilled,
@@ -32,7 +34,7 @@ public class UnitView : MonoBehaviour
     public GameObject IceCube => iceCube;
 
     [SerializeField]
-    private TextMeshProUGUI 
+    private TextMeshProUGUI
         myName,
         ability,
         coin,
@@ -51,7 +53,7 @@ public class UnitView : MonoBehaviour
     private Vector3 dragOverOther = Vector3.back; // offset while dragging over other
 
     private Camera mainCamera;
-   
+
     private Vector3 originalScale;
     private Vector3 levelPosition;
 
@@ -78,7 +80,7 @@ public class UnitView : MonoBehaviour
     /// <param name="_cost"></param>
     /// <param name="_health"></param>
     /// <param name="_attack"></param>
-    public void SetData(Sprite _sprite, string _name, string _description, 
+    public void SetData(Sprite _sprite, string _name, string _description,
         int _cost, int _health, int _attack)
     {
         dragSpriteRenderer.sprite = _sprite;
@@ -108,10 +110,12 @@ public class UnitView : MonoBehaviour
     /// <param name="eventData"></param>
     public void BeingAttached(PointerEventData eventData)
     {
-         dragSpriteRenderer.gameObject.transform.localScale *= scale;
+        dragSpriteRenderer.gameObject.transform.localScale *= scale;
 
         if (shadowSpriteRenderer.enabled == false)
         {
+            heartIcon.gameObject.SetActive(false);
+            attackIcon.gameObject.SetActive(false);
             health.enabled = false;
             attack.enabled = false;
         }
@@ -140,6 +144,8 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.gameObject.transform.localScale = originalScale;
         canvas.transform.localPosition = Vector3.zero;
 
+        heartIcon.gameObject.SetActive(true);
+        attackIcon.gameObject.SetActive(true);
         health.enabled = true;
         attack.enabled = true;
     }
@@ -159,7 +165,7 @@ public class UnitView : MonoBehaviour
     /// <param name="step5"></param>
     public void SetStepActive(
         string level,
-        bool box1, 
+        bool box1,
         bool box2, bool step1, bool step2,
         bool box3, bool step3, bool step4, bool step5)
     {
@@ -172,5 +178,5 @@ public class UnitView : MonoBehaviour
         step3Filled.SetActive(step3);
         step4Filled.SetActive(step4);
         step5Filled.SetActive(step5);
-    }      
+    }
 }

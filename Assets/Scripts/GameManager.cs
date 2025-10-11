@@ -93,15 +93,16 @@ public class GameManager : MonoBehaviour
     private void RunSingle()
     {
         state = GameState.StartOfTurn;
+        PlayerCount++;
 
         if (PlayerCount <= templates.Length)
         {
-            StartCoroutine(StartTurn(templates[PlayerCount]));
-            PlayerCount++;
+            SceneManager.LoadScene("PhaseShop");
+            StartCoroutine(StartTurn(templates[PlayerCount - 1]));
         }
         else
         {
-
+            SceneManager.LoadScene("PhaseBattle");
         }
     }
 

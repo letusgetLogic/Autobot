@@ -7,9 +7,9 @@ public class Template
     public int WinsCondition { get; set; }
     public int Turns { get; set; }
     public int Wins { get; set; }
-    public GameObject[] BattleUnits { get; set; }
+    public Slot[] BattleSlots { get; set; }
+    public Slot[] FreezedUnitSlots { get; set; }
     public int Coins { get; set; }
-    public bool IsShopDone { get; set; }
 
     /// <summary>
     /// Assigns the template values.
@@ -29,9 +29,27 @@ public class Template
     {
         Turns++;
         Coins = PhaseShopUI.Instance.StartCoins;
-        PhaseShopUI.Instance.UpdateUI(this);
+        PhaseShopUnitManager.Instance.Initialize(this);
         PhaseShopUnitManager.Instance.TriggerStartOfTurn();
         StarterPack.Instance.AddUnitsByTier(Turns);
-        PhaseShopUI.Instance.Roll();
+        PhaseShopUI.Instance.UpdateUI(this);
+        PhaseShopUnitManager.Instance.SpawnShopUnits();
+    }
+
+    public void EndShop()
+    {
+        BattleSlots = new Slot[PhaseShopUnitManager.Instance.BattleSlots.Length];
+        for (int i = 0; i < PhaseShopUnitManager.Instance.BattleSlots.Length; i++)
+        {
+            BattleSlots[i] = PhaseShopUnitManager.Instance.BattleSlots[i];
+        }
+
+        FreezedUnitSlots = new Slot[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
+        for (int i = 0; i < PhaseShopUnitManager.Instance.ShopUnitSlots.Length; i++)
+        {
+            FreezedUnitSlots[i] = PhaseShopUnitManager.Instance.ShopUnitSlots[i];
+        }
+
+        GameManager.Instance.EndShopPhase();
     }
 }

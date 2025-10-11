@@ -51,7 +51,6 @@ public class PhaseShopUI : MonoBehaviour
     public void UpdateUI(Template _template)
     {
         player = _template;
-        player.IsShopDone = false;
         nameText.text = player.Name;
         coinsText.text = player.Coins.ToString();
         heartText.text = player.Health.ToString();
@@ -63,9 +62,10 @@ public class PhaseShopUI : MonoBehaviour
     /// Updates the coins display.
     /// </summary>
     /// <param name="amount">The current amount of coins.</param>
-    public void UpdateUI(int _coins)
+    public void UpdateCoin(int deviation)
     {
-        coinsText.text = _coins.ToString();
+        player.Coins += deviation;
+        coinsText.text = player.Coins.ToString();
     }
 
     #region Button
@@ -81,9 +81,8 @@ public class PhaseShopUI : MonoBehaviour
             return;
         }
 
-        player.Coins -= rollCost;
-        UpdateUI(player.Coins);
-        PhaseShopUnitManager.Instance.SpawnUnits();
+        UpdateCoin(-rollCost);
+        PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 
     /// <summary>
@@ -167,8 +166,7 @@ public class PhaseShopUI : MonoBehaviour
                 GetComponent<UnitController>();
 
             unit.GetSelled();
-            player.Coins += unit.Model.CurrentLevel.Sell;
-            UpdateUI(player.Coins);
+            UpdateCoin(unit.Model.CurrentLevel.Sell);
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
@@ -181,8 +179,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void EndTurn()
     {
-        player.IsShopDone = true;
-        GameManager.Instance.EndShopPhase();
+        player.EndShop();
     }
 
     #endregion
