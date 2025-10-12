@@ -179,4 +179,15 @@ public class UnitView : MonoBehaviour
         step4Filled.SetActive(step4);
         step5Filled.SetActive(step5);
     }
+
+    /// <summary>
+    /// Flips the sprite and push the level display on the right side.
+    /// </summary>
+    public void SetRightSide()
+    {
+        dragSpriteRenderer.flipX = true;
+
+        var pos = level.transform.localPosition;
+        level.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);
+    }
 }

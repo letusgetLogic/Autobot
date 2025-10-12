@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
         else
         {
             SceneManager.LoadScene("PhaseBattle");
+            StartCoroutine(InitializePlayer());
         }
     }
 
@@ -132,8 +133,18 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Ends the phase of shop.
     /// </summary>
-    public void EndShopPhase()
+    public void EndShopPhase(Slot[] battleSlots, Slot[] shopUnitSlots)
     {
+        foreach (Slot slot in battleSlots)
+        {
+            slot.transform.position = new Vector3(1000, 1000);
+            slot.transform.SetParent(transform);
+        }
+        foreach (Slot slot in shopUnitSlots)
+        {
+            slot.transform.position = new Vector3(1000, 1000);
+            slot.transform.SetParent(transform);
+        }
         state = GameState.EndOfTurn;
         RunSingle();
     }
@@ -143,5 +154,13 @@ public class GameManager : MonoBehaviour
         state = GameState.EndOfGame;
         AvaiableUnits.Clear();
         AvaiableItems.Clear();
+    }
+
+    private IEnumerator InitializePlayer()
+    {
+        yield return new WaitUntil(() => PhaseBattle.Instance != null);
+
+        state = GameState.StartOfBattle;
+        PhaseBattle.Instance.Initialize(templates[0], templates[1]);
     }
 }

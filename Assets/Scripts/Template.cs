@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-
-public class Template
+﻿public class Template
 {
     public string Name { get; private set; }
-    public int Health { get; set; }
+    public int Lives { get; set; }
     public int WinsCondition { get; set; }
     public int Turns { get; set; }
     public int Wins { get; set; }
@@ -15,16 +13,19 @@ public class Template
     /// Assigns the template values.
     /// </summary>
     /// <param name="_name"></param>
-    /// <param name="_health"></param>
+    /// <param name="_lives"></param>
     /// <param name="_wins"></param>
-    public Template(string _name, int _health, int _wins)
+    public Template(string _name, int _lives, int _wins)
     {
-        Health = _health;
+        Lives = _lives;
         WinsCondition = _wins;
         Turns = 0;
         Name = _name;
     }
 
+    /// <summary>
+    /// Starts the phase shop.
+    /// </summary>
     public void StartShop()
     {
         Turns++;
@@ -36,6 +37,9 @@ public class Template
         PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 
+    /// <summary>
+    /// Ends the phase shop.
+    /// </summary>
     public void EndShop()
     {
         BattleSlots = new Slot[PhaseShopUnitManager.Instance.BattleSlots.Length];
@@ -50,6 +54,6 @@ public class Template
             FreezedUnitSlots[i] = PhaseShopUnitManager.Instance.ShopUnitSlots[i];
         }
 
-        GameManager.Instance.EndShopPhase();
+        GameManager.Instance.EndShopPhase(BattleSlots, FreezedUnitSlots);
     }
 }

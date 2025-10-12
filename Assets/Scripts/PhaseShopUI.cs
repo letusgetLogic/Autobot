@@ -53,7 +53,7 @@ public class PhaseShopUI : MonoBehaviour
         player = _template;
         nameText.text = player.Name;
         coinsText.text = player.Coins.ToString();
-        heartText.text = player.Health.ToString();
+        heartText.text = player.Lives.ToString();
         turnText.text = player.Turns.ToString();
         trophyText.text = player.Wins.ToString() + " / " + player.WinsCondition.ToString();
     }
