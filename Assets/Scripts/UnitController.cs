@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class UnitController : MonoBehaviour
 {
@@ -24,6 +23,15 @@ public class UnitController : MonoBehaviour
         UpdateData(true);
     }
 
+    /// <summary>
+    /// Sets the data in model.
+    /// </summary>
+    public void SetModel(UnitModel _model)
+    {
+        model = _model;
+    }
+
+
     #region Mouse Event
 
     /// <summary>
@@ -44,29 +52,8 @@ public class UnitController : MonoBehaviour
 
     #endregion
 
-    /// <summary>
-    /// Makes a fusion and give this additional xp.
-    /// </summary>
-    /// <param name="additionalXP"></param>
-    public void DoFusion(int additionalXP)
-    {
-        model.XP += additionalXP;
 
-        if (model.XP > StarterPack.Instance.XpToLv3)
-            model.XP = StarterPack.Instance.XpToLv3;
-    }
-
-    /// <summary>
-    /// Checks, if the level is maxed.
-    /// </summary>
-    /// <returns></returns>
-    public bool IsMaxed()
-    {
-        if (model.CurrentLevel.Number == model.Data.Levels.Length) 
-            return true;    
-
-        return false;
-    }
+    #region PhaseShop
 
     #region Manage buttons
 
@@ -97,6 +84,32 @@ public class UnitController : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// Makes a fusion and give this additional xp.
+    /// </summary>
+    /// <param name="additionalXP"></param>
+    public void DoFusion(int additionalXP)
+    {
+        model.XP += additionalXP;
+
+        if (model.XP > StarterPack.Instance.XpToLv3)
+            model.XP = StarterPack.Instance.XpToLv3;
+    }
+
+    /// <summary>
+    /// Checks, if the level is maxed.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsMaxed()
+    {
+        if (model.CurrentLevel.Number == model.Data.Levels.Length) 
+            return true;    
+
+        return false;
+    }
+
+    #region Update Level
 
     /// <summary>
     /// Updates the level, xp, health and attack.
@@ -172,6 +185,29 @@ public class UnitController : MonoBehaviour
         Model.CurrentLevel = Model.Data.Levels[2];
         UpdateData(false);
     }
+
+    #endregion
+
+    #endregion
+
+
+    #region Phase Battle
+
+    /// <summary>
+    /// Takes damage.
+    /// </summary>
+    /// <param name="damage"></param>
+    public void TakeDamage(int damage)
+    {
+        if (damage < 0) 
+            damage = 0;
+
+        model.BattleHealth -= damage;
+        view.UpdateHealth(model.BattleHealth);
+        view.ShowDamage(damage);
+    }
+
+    #endregion
 
     /// <summary>
     /// Updates the data.

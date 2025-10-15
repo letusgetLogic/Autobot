@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -40,13 +41,16 @@ public class UnitView : MonoBehaviour
         coin,
         health,
         attack,
-        levelAmount;
+        levelAmount,
+        damage;
 
     [SerializeField]
     private float scale = 1.1f;
 
     [SerializeField]
-    private float delayUpdateLevel = .5f;
+    private float
+        delayUpdateLevel = 0.5f,
+        durationDamage = 0.5f;
     public float DelayUpdateLevel => delayUpdateLevel;
 
     [SerializeField]
@@ -102,6 +106,7 @@ public class UnitView : MonoBehaviour
         description.SetActive(value);
     }
 
+
     #region Drag Event
 
     /// <summary>
@@ -152,6 +157,7 @@ public class UnitView : MonoBehaviour
 
     #endregion
 
+
     /// <summary>
     /// Sets the step components active.
     /// </summary>
@@ -189,5 +195,35 @@ public class UnitView : MonoBehaviour
 
         var pos = level.transform.localPosition;
         level.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);
+    }
+
+    /// <summary>
+    /// Updates the health.
+    /// </summary>
+    /// <param name="_health"></param>
+    public void UpdateHealth(int _health)
+    {
+        health.text = _health.ToString();
+    }
+
+    /// <summary>
+    /// Shows damage.
+    /// </summary>
+    public void ShowDamage(int _damage)
+    {
+        damage.enabled = true;
+        damage.text = _damage.ToString();
+        StartCoroutine(HideDamage());
+    }
+
+    /// <summary>
+    /// Hides damage.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator HideDamage()
+    {
+        yield return new WaitForSeconds(durationDamage);
+
+        damage.enabled = false;
     }
 }

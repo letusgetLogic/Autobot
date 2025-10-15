@@ -22,7 +22,8 @@ public class Slot : MonoBehaviour
 
     private void Start()
     {
-        border.enabled = false;
+        if (border != null)
+            border.enabled = false;
     }
 
     private void OnEnable()
@@ -84,6 +85,7 @@ public class Slot : MonoBehaviour
 
     #endregion
 
+
     #region Hover Event - Show description
 
     /// <summary>
@@ -94,7 +96,7 @@ public class Slot : MonoBehaviour
         if (eventHover.Data != null && eventHover.Data.pointerDrag != null)
             return;
 
-        if (UnitController() == null || 
+        if (UnitController() == null ||
             UnitController().Model.ManageState == UnitState.Freezed)
             return;
 
@@ -102,7 +104,9 @@ public class Slot : MonoBehaviour
             return;
 
         UnitView().SetDescriptionActive(true);
-        border.enabled = true;
+
+        if (border != null)
+            border.enabled = true;
     }
 
     /// <summary>
@@ -110,13 +114,20 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void HideStats()
     {
-        var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
-        if (border.enabled && 
-            (eventDrag.IsDragging || attached == null || attached != Unit()))
-            border.enabled = false;
-
         if (UnitView() != null)
             UnitView().SetDescriptionActive(false);
+
+        if (PhaseShopUnitManager.Instance == null)
+            return;
+
+        var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+        if (border.enabled &&
+            eventDrag != null &&
+            (eventDrag.IsDragging || attached == null || attached != Unit()) &&
+            border != null)
+        {
+            border.enabled = false;
+        }
     }
 
     #endregion

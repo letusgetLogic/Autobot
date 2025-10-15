@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
         else
         {
             SceneManager.LoadScene("PhaseBattle");
-            StartCoroutine(InitializePlayer());
+            StartCoroutine(RunPhaseBattle());
         }
     }
 
@@ -149,6 +149,19 @@ public class GameManager : MonoBehaviour
         RunSingle();
     }
 
+    private IEnumerator RunPhaseBattle()
+    {
+        yield return new WaitUntil(() => PhaseBattle.Instance != null);
+
+        state = GameState.StartOfBattle;
+        PhaseBattle.Instance.Initialize(templates[0], templates[1]);
+    }
+
+    public void UpdatePlayerStats(int outcome)
+    {
+
+    }
+
     public void EndGame()
     {
         state = GameState.EndOfGame;
@@ -156,11 +169,4 @@ public class GameManager : MonoBehaviour
         AvaiableItems.Clear();
     }
 
-    private IEnumerator InitializePlayer()
-    {
-        yield return new WaitUntil(() => PhaseBattle.Instance != null);
-
-        state = GameState.StartOfBattle;
-        PhaseBattle.Instance.Initialize(templates[0], templates[1]);
-    }
 }
