@@ -205,6 +205,16 @@ public class UnitController : MonoBehaviour
         model.BattleHealth -= damage;
         view.UpdateHealth(model.BattleHealth);
         view.ShowDamage(damage);
+
+        if (model.BattleHealth <= 0)
+        {
+
+        }
+    }
+
+    public void Faint()
+    {
+        Destroy(gameObject);
     }
 
     #endregion
@@ -222,5 +232,10 @@ public class UnitController : MonoBehaviour
            model.BattleHealth,
            model.BattleAttack
            );
+    }
+
+    public void MoveTo(Vector3 target)
+    {
+        //transform.DoMove();
     }
 }

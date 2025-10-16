@@ -151,12 +151,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RunPhaseBattle()
     {
-        yield return new WaitUntil(() => PhaseBattle.Instance != null);
+        yield return new WaitUntil(() => PhaseBattleView.Instance != null);
 
         state = GameState.StartOfBattle;
-        PhaseBattle.Instance.Initialize(templates[0], templates[1]);
+        PhaseBattleController.Instance.Run(templates[0], templates[1]);
     }
 
+    /// <summary>
+    /// 0 = draw, 1 = right wins, -1 = left wins.
+    /// </summary>
+    /// <param name="outcome"></param>
     public void UpdatePlayerStats(int outcome)
     {
 

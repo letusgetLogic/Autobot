@@ -1,13 +1,16 @@
-﻿public class Template
+﻿using System.Collections.Generic;
+
+public class Template
 {
     public string Name { get; private set; }
     public int Lives { get; set; }
     public int WinsCondition { get; set; }
     public int Turns { get; set; }
     public int Wins { get; set; }
-    public Slot[] BattleSlots { get; set; }
+    public Slot[] TeamSlots { get; set; }
     public Slot[] FreezedUnitSlots { get; set; }
     public int Coins { get; set; }
+    public List<UnitController> FaintUnits { get; set; }
 
     /// <summary>
     /// Assigns the template values.
@@ -42,10 +45,10 @@
     /// </summary>
     public void EndShop()
     {
-        BattleSlots = new Slot[PhaseShopUnitManager.Instance.BattleSlots.Length];
+        TeamSlots = new Slot[PhaseShopUnitManager.Instance.BattleSlots.Length];
         for (int i = 0; i < PhaseShopUnitManager.Instance.BattleSlots.Length; i++)
         {
-            BattleSlots[i] = PhaseShopUnitManager.Instance.BattleSlots[i];
+            TeamSlots[i] = PhaseShopUnitManager.Instance.BattleSlots[i];
         }
 
         FreezedUnitSlots = new Slot[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
@@ -54,6 +57,6 @@
             FreezedUnitSlots[i] = PhaseShopUnitManager.Instance.ShopUnitSlots[i];
         }
 
-        GameManager.Instance.EndShopPhase(BattleSlots, FreezedUnitSlots);
+        GameManager.Instance.EndShopPhase(TeamSlots, FreezedUnitSlots);
     }
 }

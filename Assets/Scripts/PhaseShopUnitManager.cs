@@ -52,11 +52,11 @@ public class PhaseShopUnitManager : MonoBehaviour
        battleSlotScripts = InitializeArray( battleSlots);
        shopUnitSlotScripts = InitializeArray(shopUnitSlots);
 
-        if (player.BattleSlots != null)
+        if (player.TeamSlots != null)
         {
-            for (int i = 0; i < player.BattleSlots.Length; i++)
+            for (int i = 0; i < player.TeamSlots.Length; i++)
             {
-                battleSlotScripts[i] = player.BattleSlots[i];
+                battleSlotScripts[i] = player.TeamSlots[i];
             }
         }
         if (player.FreezedUnitSlots != null)
