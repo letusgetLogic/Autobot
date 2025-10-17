@@ -56,7 +56,10 @@ public class InitState : StateBase
                 unitOnScene.transform.SetParent(slots[i].transform, false);
 
                 if (isRight)
+                {
                     unitOnScene.GetComponent<UnitView>().SetRightSide();
+                    unitOnScene.GetComponent<UnitController>().Model.IsTeam1 = false;
+                }
             }
         }
     }

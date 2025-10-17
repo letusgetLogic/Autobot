@@ -43,7 +43,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         }
     }
 
-    public Queue<UnitController> Triggers { get; set; }
+    public Queue<AbilityBase> UnitAbilities { get; set; }
  
 
     private void Awake()
@@ -105,6 +105,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         return Instantiate(gameObject);
     }
 
+    /// <summary>
+    /// Destroy the fainted units.
+    /// </summary>
     public void DestroyFaint()
     {
         for (int i = 0; i < slots1.Length; i++)
@@ -112,6 +115,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             var unit = slots1[i].UnitController();
             if (unit != null && unit.Model.IsFaint)
             {
+                var ability = unit.TriggerAbility(TriggerType.Faint);
+                if (ability != null)
+                    ability.Activate();
+
                 Destroy(unit.gameObject);
             }
         }
@@ -120,8 +127,13 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             var unit = slots2[i].UnitController();
             if (unit != null && unit.Model.IsFaint)
             {
+                var ability = unit.TriggerAbility(TriggerType.Faint);
+                if (ability != null)
+                    ability.Activate();
+
                 Destroy(unit.gameObject);
             }
         }
     }
+
 }

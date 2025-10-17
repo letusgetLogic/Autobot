@@ -1,19 +1,7 @@
-﻿using UnityEngine.Rendering;
-
-public class UnitModel
+﻿public class UnitModel
 {
-    public UnitModel(SoUnit _data)
-    {
-        Data = _data;
-        CurrentLevel = Data.Levels[0];
-        BattleHealth = Data.Health;
-        BattleAttack = Data.Attack;
-        XP = 1;
-        ManageState = UnitState.InSlotShop;
-    }
-
-    public SoUnit Data { get; set; }
-
+    public UnitController Controller { get; private set; }
+    public SoUnit Data { get; private set; }
     public Level CurrentLevel { get; set; }
     public int BattleHealth { get; set; }
     public int BattleAttack { get; set; }
@@ -28,9 +16,21 @@ public class UnitModel
             XP = StarterPack.Instance.XpToLv3;
         else XP = value;
     }
+    public UnitState ManageState { get; set; }
+    public UnitModel(UnitController controller, SoUnit _data)
+    {
+        Controller = controller;
+        Data = _data;
+        CurrentLevel = Data.Levels[0];
+        BattleHealth = Data.Health;
+        BattleAttack = Data.Attack;
+        XP = 1;
+        ManageState = UnitState.InSlotShop;
+    }
+    public AbilityBase Ability => AbilityBase.GetAbility(Controller, CurrentLevel);
     public bool IsMaxed => CurrentLevel.Number == Data.Levels.Length;
     public bool IsFaint => BattleHealth <= 0;
-    public UnitState ManageState { get; set; }
+    public bool IsTeam1 { get; set;} = true;
 
     /// <summary>
     /// Initializes the level number.

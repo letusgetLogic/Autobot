@@ -17,7 +17,7 @@ public class UnitController : MonoBehaviour
     /// <param name="_data"></param>
     public void Initialize(SoUnit _data)
     {
-        model = new UnitModel(_data);
+        model = new UnitModel(this, _data);
         model.InitializeLevel();
         UpdateData(true);
     }
@@ -183,6 +183,21 @@ public class UnitController : MonoBehaviour
         view.UpdateHealth(model.BattleHealth);
     }
 
+    public AbilityBase TriggerAbility(TriggerType triggerType)
+    {
+        if (triggerType == model.CurrentLevel.TriggerType)
+        {
+            return model.Ability;
+        }
+        return null;
+    }
+
+    public void Buff(int addHealth, int addAttack)
+    {
+        model.BattleHealth += addHealth;
+        model.BattleAttack += addAttack;
+    }
+
     #endregion
 
     /// <summary>
@@ -204,4 +219,5 @@ public class UnitController : MonoBehaviour
     {
         //transform.DoMove();
     }
+
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -42,7 +43,9 @@ public class UnitView : MonoBehaviour
         health,
         attack,
         levelAmount,
-        damage;
+        damage,
+        buffHealth,
+        buffAttack;
 
     [SerializeField]
     private float scale = 1.1f;
@@ -50,7 +53,8 @@ public class UnitView : MonoBehaviour
     [SerializeField]
     private float
         delayUpdateLevel = 0.5f,
-        durationDamage = 0.5f;
+        durationDamage = 0.5f,
+        durationBuff = 0.5f;
     public float DelayUpdateLevel => delayUpdateLevel;
 
     [SerializeField]
@@ -225,5 +229,23 @@ public class UnitView : MonoBehaviour
         yield return new WaitForSeconds(durationDamage);
 
         damage.enabled = false;
+    }
+
+    public void ShowBuff(int health, int attack)
+    {
+        buffHealth.text = health.ToString();
+        buffHealth.enabled = health > 0;
+
+        buffAttack.text = attack.ToString();
+        buffAttack.enabled = attack > 0;
+
+        StartCoroutine(HideBuff());
+    }
+
+    private IEnumerator HideBuff()
+    {
+        yield return new WaitForSeconds(durationBuff);
+        buffHealth.enabled = false;
+        buffAttack.enabled = false;
     }
 }
