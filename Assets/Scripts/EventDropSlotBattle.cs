@@ -22,18 +22,20 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
         var draggingUnitController = draggingUnit.GetComponent<UnitController>();
         var model = draggingUnitController.Model;
 
-        if (slot.Unit() != null)
+        var unitOnSlot = slot.UnitController();
+        if (unitOnSlot != null)
         {
             if (model.ManageState == UnitState.InSlotShop)
                 PhaseShopUI.Instance.UpdateCoin(-model.Data.Cost);
 
-            if (PhaseShopUnitManager.Instance.IsFusible(slot.UnitController(), draggingUnitController))
+            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, draggingUnitController))
             {
-                slot.UnitController().UpdateLevel(
+                unitOnSlot.UpdateLevel(
                     model.XP,
                     model.BattleHealth - model.Data.Health,
                     model.BattleAttack - model.Data.Attack
                     );
+
                 Destroy(draggingUnit);
             }
         }

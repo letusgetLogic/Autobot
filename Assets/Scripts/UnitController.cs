@@ -9,6 +9,7 @@ public class UnitController : MonoBehaviour
 
     private UnitModel model;
     public UnitModel Model => model;
+    
 
     /// <summary>
     /// Initializes data.
@@ -17,9 +18,7 @@ public class UnitController : MonoBehaviour
     public void Initialize(SoUnit _data)
     {
         model = new UnitModel(_data);
-
         model.InitializeLevel();
-
         UpdateData(true);
     }
 
@@ -55,7 +54,7 @@ public class UnitController : MonoBehaviour
 
     #region PhaseShop
 
-    #region Manage buttons
+        #region Manage buttons
 
     /// <summary>
     /// Sets the manage state freezed and set the sprite active.
@@ -83,40 +82,17 @@ public class UnitController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    #endregion
+        #endregion
+    
 
-    /// <summary>
-    /// Makes a fusion and give this additional xp.
-    /// </summary>
-    /// <param name="additionalXP"></param>
-    public void DoFusion(int additionalXP)
-    {
-        model.XP += additionalXP;
-
-        if (model.XP > StarterPack.Instance.XpToLv3)
-            model.XP = StarterPack.Instance.XpToLv3;
-    }
-
-    /// <summary>
-    /// Checks, if the level is maxed.
-    /// </summary>
-    /// <returns></returns>
-    public bool IsMaxed()
-    {
-        if (model.CurrentLevel.Number == model.Data.Levels.Length) 
-            return true;    
-
-        return false;
-    }
-
-    #region Update Level
+        #region Update Level
 
     /// <summary>
     /// Updates the level, xp, health and attack.
     /// </summary>
     public void UpdateLevel(int addXp, int addHealth, int addAttack)
     {
-        model.XP += addXp;
+        model.SetXP(model.XP + addXp);
         model.BattleHealth += addHealth + StarterPack.Instance.AddHealth;
         model.BattleAttack += addAttack + StarterPack.Instance.AddAttack;
         UpdateLevelXP(model.XP);
@@ -186,7 +162,7 @@ public class UnitController : MonoBehaviour
         UpdateData(false);
     }
 
-    #endregion
+        #endregion
 
     #endregion
 
@@ -203,18 +179,8 @@ public class UnitController : MonoBehaviour
             damage = 0;
 
         model.BattleHealth -= damage;
-        view.UpdateHealth(model.BattleHealth);
         view.ShowDamage(damage);
-
-        if (model.BattleHealth <= 0)
-        {
-
-        }
-    }
-
-    public void Faint()
-    {
-        Destroy(gameObject);
+        view.UpdateHealth(model.BattleHealth);
     }
 
     #endregion

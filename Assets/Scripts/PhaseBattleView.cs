@@ -17,6 +17,10 @@ public class PhaseBattleView : MonoBehaviour
     private TextMeshProUGUI name2;
     [SerializeField]
     private TextMeshProUGUI turn2, wins2, lives2;
+
+    [Header("Info Label")]
+    [SerializeField]
+    private TextMeshProUGUI label;
     
     private void Awake()
     {
@@ -43,5 +47,11 @@ public class PhaseBattleView : MonoBehaviour
         turn2.text = player2.Turns.ToString();
         wins2.text = player2.Wins.ToString();
         lives2.text = player2.Lives.ToString();
+    }
+
+    public void ShowWinner(string winner)
+    {
+        label.text = $"{winner} won this battle!";
+        label.enabled = true;
     }
 }

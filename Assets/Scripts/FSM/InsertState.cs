@@ -1,4 +1,6 @@
-﻿public class InsertState : StateBase
+﻿using UnityEngine;
+
+public class InsertState : StateBase
 {
     public InsertState(float maxCount) : base(maxCount)
     {
@@ -6,13 +8,20 @@
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        MoveCloserTogether(PhaseBattleController.Instance.Slot1);
-        MoveCloserTogether(PhaseBattleController.Instance.Slot2);
+        MoveCloserTogether(PhaseBattleController.Instance.Slots1);
+        MoveCloserTogether(PhaseBattleController.Instance.Slots2);
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx)
     {
-        
+        if (Count < MaxCount)
+        {
+            Count += Time.deltaTime;
+        }
+        else
+        {
+            ctx.SetState(new BeforeAttackState(0));
+        }
     }
 
     private void MoveCloserTogether(Slot[] slots)

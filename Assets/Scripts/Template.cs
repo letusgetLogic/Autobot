@@ -10,7 +10,6 @@ public class Template
     public Slot[] TeamSlots { get; set; }
     public Slot[] FreezedUnitSlots { get; set; }
     public int Coins { get; set; }
-    public List<UnitController> FaintUnits { get; set; }
 
     /// <summary>
     /// Assigns the template values.

@@ -1,6 +1,10 @@
-﻿public class CheckOutcomeState : StateBase
+﻿using UnityEngine;
+
+public class CheckOutcomeState : StateBase
 {
     private bool startOfBattle { get; set; }
+    private bool outcome { get; set; }
+
     public CheckOutcomeState(float maxCount, bool startOfBattle) : base(maxCount)
     {
         this.startOfBattle = startOfBattle;
@@ -8,49 +12,69 @@
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        if (CheckOutcome())
-            ctx.SetState(null);
-        else
-        {
-            if (startOfBattle)
-                ctx.SetState(new StartOfBattleState(0));
-            else
-                ctx.SetState(new InsertState(PhaseBattleController.Instance.DurationInsert));
-        }
+        outcome = CheckOutcome();
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx)
-    {}
+    {
+        if (Count < MaxCount)
+        {
+            Count += Time.deltaTime;
+        }
+        else
+        {
+            if (outcome)
+                ctx.SetState(null);
+            else
+            {
+                if (startOfBattle)
+                    ctx.SetState(new StartOfBattleState(0));
+                else
+                    ctx.SetState(new InsertState(PhaseBattleController.Instance.DurationInsert));
+            }
+        }
+    }
 
-
+    /// <summary>
+    /// Checks the outcome of battle.
+    /// </summary>
+    /// <returns></returns>
     private bool CheckOutcome()
     {
-        if (IsAnyoneIn(PhaseBattleController.Instance.Slot1))
+        if (IsAnyoneIn(PhaseBattleController.Instance.Slots1))
         {
-            if (IsAnyoneIn(PhaseBattleController.Instance.Slot2))
+            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2))
             {
                 return false; // Continue battle
             }
             else
             {
+                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player1.Name);
                 GameManager.Instance.UpdatePlayerStats(-1); // Left Wins
             }
             return true;
         }
         else
         {
-            if (IsAnyoneIn(PhaseBattleController.Instance.Slot2))
+            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2))
             {
+                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player2.Name);
                 GameManager.Instance.UpdatePlayerStats(1); // Right wins
             }
             else
             {
+                PhaseBattleView.Instance.ShowWinner("Nobody");
                 GameManager.Instance.UpdatePlayerStats(0); // Draw
             }
             return true;
         }
     }
 
+    /// <summary>
+    /// Checks if any unit is in slots.
+    /// </summary>
+    /// <param name="slots"></param>
+    /// <returns></returns>
     private bool IsAnyoneIn(Slot[] slots)
     {
         for (int i = 0; i < slots.Length; i++)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
@@ -17,8 +18,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     private Slot[] slots2;
 
     public float DurationInsert => durationInsert;
-    public Slot[] Slot1 => slots1;
-    public Slot[] Slot2 => slots2;
+    public Slot[] Slots1 => slots1;
+    public Slot[] Slots2 => slots2;
 
     private StateBase state { get;set; }
 
@@ -26,6 +27,24 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public Template Player1 => player1;
     public Template Player2 => player2;
 
+    public UnitController AttackingUnit1
+    {
+        get
+        {
+            return slots1[0].UnitController();
+        }
+    }
+
+    public UnitController AttackingUnit2
+    {
+        get
+        {
+            return slots2[0].UnitController();
+        }
+    }
+
+    public Queue<UnitController> Triggers { get; set; }
+ 
 
     private void Awake()
     {
@@ -73,41 +92,35 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         player1 = _player1;
         player2 = _player2;
 
-        if (Initialize())
-        {
-            SetState(new CheckOutcomeState(0, true));
-        }
+       SetState(new InitState(0.5f));
     }
 
     /// <summary>
-    /// Initializes the players.
+    /// Instantiate game object.
     /// </summary>
-    public bool Initialize()
+    /// <param name="gameObject"></param>
+    /// <returns></returns>
+    public GameObject Spawn(GameObject gameObject)
     {
-        PhaseBattleView.Instance.Initialize(player1, player2 );
-
-        SetUnitsToPosition(player1, slots1, false);
-        SetUnitsToPosition(player2, slots2, true);
-
-        return true;
+        return Instantiate(gameObject);
     }
 
-    /// <summary>
-    /// Instantiates the units.
-    /// </summary>
-    private void SetUnitsToPosition(Template player, Slot[] slots, bool isRight)
+    public void DestroyFaint()
     {
-        for (int i = 0; i < player.TeamSlots.Length; i++)
+        for (int i = 0; i < slots1.Length; i++)
         {
-            var unit = player.TeamSlots[i].Unit();
-            if (unit != null)
+            var unit = slots1[i].UnitController();
+            if (unit != null && unit.Model.IsFaint)
             {
-                var unitOnScene = Instantiate(unit);
-                unitOnScene.GetComponent<UnitController>().SetModel(unit.GetComponent<UnitController>().Model);
-                unitOnScene.transform.SetParent(slots[i].transform, false);
-
-                if (isRight)
-                    unitOnScene.GetComponent<UnitView>().SetRightSide();
+                Destroy(unit.gameObject);
+            }
+        }
+        for (int i = 0; i < slots2.Length; i++)
+        {
+            var unit = slots2[i].UnitController();
+            if (unit != null && unit.Model.IsFaint)
+            {
+                Destroy(unit.gameObject);
             }
         }
     }

@@ -6,8 +6,8 @@
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        TriggerAbility(PhaseBattleController.Instance.Slot1);
-        TriggerAbility(PhaseBattleController.Instance.Slot2);
+        TriggerAbility(PhaseBattleController.Instance.Slots1);
+        TriggerAbility(PhaseBattleController.Instance.Slots2);
 
         ctx.SetState(new InsertState(PhaseBattleController.Instance.DurationInsert));
     }

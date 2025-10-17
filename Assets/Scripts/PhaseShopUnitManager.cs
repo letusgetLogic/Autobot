@@ -194,8 +194,8 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <returns></returns>
     public bool IsFusible(UnitController onSlot, UnitController onDrag)
     {
-        if (onSlot.IsMaxed() ||
-            onDrag.IsMaxed())
+        if (onSlot.Model.IsMaxed ||
+            onDrag.Model.IsMaxed)
             return false;
 
         if (onSlot.name == onDrag.name)

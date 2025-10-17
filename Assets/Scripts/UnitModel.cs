@@ -1,4 +1,6 @@
-﻿public class UnitModel
+﻿using UnityEngine.Rendering;
+
+public class UnitModel
 {
     public UnitModel(SoUnit _data)
     {
@@ -15,7 +17,19 @@
     public Level CurrentLevel { get; set; }
     public int BattleHealth { get; set; }
     public int BattleAttack { get; set; }
-    public int XP { get; set; }
+    public int XP 
+    { 
+        get;
+        private set;
+    }
+    public void SetXP(int value) 
+    {
+        if (value > StarterPack.Instance.XpToLv3)
+            XP = StarterPack.Instance.XpToLv3;
+        else XP = value;
+    }
+    public bool IsMaxed => CurrentLevel.Number == Data.Levels.Length;
+    public bool IsFaint => BattleHealth <= 0;
     public UnitState ManageState { get; set; }
 
     /// <summary>
