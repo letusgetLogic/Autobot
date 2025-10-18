@@ -83,11 +83,6 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    /// <param name="_name"></param>
-    /// <param name="_description"></param>
-    /// <param name="_cost"></param>
-    /// <param name="_health"></param>
-    /// <param name="_attack"></param>
     public void SetData(Sprite _sprite, string _name, string _description,
         int _cost, int _health, int _attack)
     {
@@ -199,15 +194,6 @@ public class UnitView : MonoBehaviour
 
         var pos = level.transform.localPosition;
         level.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);
-    }
-
-    /// <summary>
-    /// Updates the health.
-    /// </summary>
-    /// <param name="_health"></param>
-    public void UpdateHealth(int _health)
-    {
-        health.text = _health.ToString();
     }
 
     /// <summary>

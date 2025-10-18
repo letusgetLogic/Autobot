@@ -12,7 +12,7 @@
         ctx.SetState(new InsertState(PhaseBattleController.Instance.DurationInsert));
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx)
+    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
 
     }

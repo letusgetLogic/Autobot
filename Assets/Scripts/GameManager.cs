@@ -70,11 +70,11 @@ public class GameManager : MonoBehaviour
             case GameMode.Single:
                 PlayerCount = 0;
                 PlayerAmount = 2;
-                templates = new[]
-                    {
-                    new Template("Player 1", PlayerHealth, WinsCondition),
-                    new Template("Player 2", PlayerHealth, WinsCondition)
-                    };
+                templates = new Template[PlayerAmount];
+                templates[0] = gameObject.AddComponent<Template>();
+                templates[0].Init("Player 1", PlayerHealth, WinsCondition);
+                templates[1] = gameObject.AddComponent<Template>();
+                templates[1].Init("Player 2", PlayerHealth, WinsCondition);
                 RunSingle();
                 break;
 
@@ -133,21 +133,14 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Ends the phase of shop.
     /// </summary>
-    public void EndShopPhase(Slot[] battleSlots, Slot[] shopUnitSlots)
+    public void EndShopPhase(UnitController[] battleUnits, UnitController[] frezzedUnits)
     {
-        foreach (Slot slot in battleSlots)
-        {
-            slot.transform.position = new Vector3(1000, 1000);
-            slot.transform.SetParent(transform);
-        }
-        foreach (Slot slot in shopUnitSlots)
-        {
-            slot.transform.position = new Vector3(1000, 1000);
-            slot.transform.SetParent(transform);
-        }
+        
         state = GameState.EndOfTurn;
+
         RunSingle();
     }
+
 
     private IEnumerator RunPhaseBattle()
     {

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class CheckOutcomeState : StateBase
+﻿public class CheckOutcomeState : StateBase
 {
     private bool startOfBattle { get; set; }
     private bool outcome { get; set; }
@@ -15,11 +13,11 @@ public class CheckOutcomeState : StateBase
         outcome = CheckOutcome();
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx)
+    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
         if (Count < MaxCount)
         {
-            Count += Time.deltaTime;
+            Count += speed;
         }
         else
         {

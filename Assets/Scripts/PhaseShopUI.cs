@@ -85,6 +85,9 @@ public class PhaseShopUI : MonoBehaviour
         PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 
+
+        #region Manage Button
+
     /// <summary>
     /// Activates button, which manages units und items, or deactives with ManageButton.None.
     /// </summary>
@@ -118,8 +121,6 @@ public class PhaseShopUI : MonoBehaviour
                 break;
         }
     }
-
-    #region Manage Button
 
     /// <summary>
     /// Freeze the attached object.
@@ -174,6 +175,7 @@ public class PhaseShopUI : MonoBehaviour
 
     #endregion
 
+    
     /// <summary>
     /// Ends turn.
     /// </summary>

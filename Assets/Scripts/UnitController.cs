@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    public UnitView View => view;
     [SerializeField]
     private UnitView view;
 
-    private UnitModel model;
     public UnitModel Model => model;
+    private UnitModel model;
     
 
     /// <summary>
@@ -180,7 +181,7 @@ public class UnitController : MonoBehaviour
 
         model.BattleHealth -= damage;
         view.ShowDamage(damage);
-        view.UpdateHealth(model.BattleHealth);
+        UpdateData(false);
     }
 
     public AbilityBase TriggerAbility(TriggerType triggerType)
@@ -196,6 +197,8 @@ public class UnitController : MonoBehaviour
     {
         model.BattleHealth += addHealth;
         model.BattleAttack += addAttack;
+        view.ShowBuff(addHealth, addAttack);
+        UpdateData(false);
     }
 
     #endregion

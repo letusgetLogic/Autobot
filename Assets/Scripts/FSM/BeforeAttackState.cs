@@ -9,7 +9,7 @@
         ctx.SetState(new AttackState(0));
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx)
+    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
         
     }

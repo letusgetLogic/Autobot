@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class Template
+public class Template : MonoBehaviour
 {
     public string Name { get; private set; }
     public int Lives { get; set; }
     public int WinsCondition { get; set; }
     public int Turns { get; set; }
     public int Wins { get; set; }
-    public Slot[] TeamSlots { get; set; }
-    public Slot[] FreezedUnitSlots { get; set; }
+    public UnitController[] BattleUnits { get; set; }
+    public UnitController[] FreezedUnits { get; set; }
     public int Coins { get; set; }
 
     /// <summary>
@@ -17,7 +18,7 @@ public class Template
     /// <param name="_name"></param>
     /// <param name="_lives"></param>
     /// <param name="_wins"></param>
-    public Template(string _name, int _lives, int _wins)
+    public void Init(string _name, int _lives, int _wins)
     {
         Lives = _lives;
         WinsCondition = _wins;
@@ -44,18 +45,34 @@ public class Template
     /// </summary>
     public void EndShop()
     {
-        TeamSlots = new Slot[PhaseShopUnitManager.Instance.BattleSlots.Length];
-        for (int i = 0; i < PhaseShopUnitManager.Instance.BattleSlots.Length; i++)
+        BattleUnits = new UnitController[PhaseShopUnitManager.Instance.BattleSlots.Length];
+        for (int i = 0; i < BattleUnits.Length; i++)
         {
-            TeamSlots[i] = PhaseShopUnitManager.Instance.BattleSlots[i];
+            var unit = PhaseShopUnitManager.Instance.BattleSlots[i].UnitController();
+            BattleUnits[i] = unit;
+            if (unit != null)
+            {
+                unit.transform.SetParent(null);
+                unit.transform.position = new Vector3(100, 100, 0);
+                DontDestroyOnLoad(unit.gameObject);
+            }
         }
 
-        FreezedUnitSlots = new Slot[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
-        for (int i = 0; i < PhaseShopUnitManager.Instance.ShopUnitSlots.Length; i++)
+        FreezedUnits = new UnitController[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
+        for (int i = 0; i < FreezedUnits.Length; i++)
         {
-            FreezedUnitSlots[i] = PhaseShopUnitManager.Instance.ShopUnitSlots[i];
+            var unit = PhaseShopUnitManager.Instance.ShopUnitSlots[i].UnitController();
+            if (unit != null && unit.Model.ManageState == UnitState.Freezed)
+            {
+                FreezedUnits[i] = unit;
+                unit.transform.SetParent(null);
+                unit.transform.position = new Vector3(100, 100, 0);
+                DontDestroyOnLoad(unit.gameObject);
+            }
+            else
+                FreezedUnits[i] = null;
         }
 
-        GameManager.Instance.EndShopPhase(TeamSlots, FreezedUnitSlots);
+        GameManager.Instance.EndShopPhase(BattleUnits, FreezedUnits);
     }
 }

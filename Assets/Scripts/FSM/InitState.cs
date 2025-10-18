@@ -11,11 +11,11 @@ public class InitState : StateBase
         Initialize();
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx)
+    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
         if (Count < MaxCount)
         {
-            Count += Time.deltaTime;
+            Count += speed;
         }
         else
         {
@@ -46,19 +46,18 @@ public class InitState : StateBase
     /// </summary>
     private void SetUnitsToPosition(Template player, Slot[] slots, bool isRight)
     {
-        for (int i = 0; i < player.TeamSlots.Length; i++)
+        for (int i = 0; i < player.BattleUnits.Length; i++)
         {
-            var unit = player.TeamSlots[i].Unit();
+            var unit = player.BattleUnits[i];
             if (unit != null)
             {
-                var unitOnScene = PhaseBattleController.Instance.Spawn(unit);
-                unitOnScene.GetComponent<UnitController>().SetModel(unit.GetComponent<UnitController>().Model);
-                unitOnScene.transform.SetParent(slots[i].transform, false);
+                unit.transform.SetParent(slots[i].transform, false);
+                unit.transform.localPosition = Vector3.zero;
 
                 if (isRight)
                 {
-                    unitOnScene.GetComponent<UnitView>().SetRightSide();
-                    unitOnScene.GetComponent<UnitController>().Model.IsTeam1 = false;
+                    unit.View.SetRightSide();
+                    unit.Model.IsTeam1 = false;
                 }
             }
         }

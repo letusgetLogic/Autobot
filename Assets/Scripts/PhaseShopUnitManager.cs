@@ -52,18 +52,26 @@ public class PhaseShopUnitManager : MonoBehaviour
        battleSlotScripts = InitializeArray( battleSlots);
        shopUnitSlotScripts = InitializeArray(shopUnitSlots);
 
-        if (player.TeamSlots != null)
+        if (player.BattleUnits != null)
         {
-            for (int i = 0; i < player.TeamSlots.Length; i++)
+            for (int i = 0; i < player.BattleUnits.Length; i++)
             {
-                battleSlotScripts[i] = player.TeamSlots[i];
+                var unit = player.BattleUnits[i];
+                if (unit != null)
+                {
+                    unit.transform.SetParent(battleSlots[i].transform, false);
+                }
             }
         }
-        if (player.FreezedUnitSlots != null)
+        if (player.FreezedUnits != null)
         {
-            for (int i = 0; i <= player.FreezedUnitSlots.Length; i++)
+            for (int i = 0; i <= player.FreezedUnits.Length; i++)
             {
-                shopUnitSlotScripts[i] = player.FreezedUnitSlots[i];
+                var unit = player.FreezedUnits[i];
+                if (unit != null)
+                {
+                    unit.transform.SetParent(shopUnitSlots[i].transform, false);
+                }
             }
         }
     }
@@ -94,10 +102,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             if (unitController != null)
             {
                 if (unitController.Model.ManageState == UnitState.Freezed)
-                {
-                    unitController.gameObject.transform.SetParent(shopUnitSlots[i].transform, false);
                     continue;
-                }
 
                 Destroy(unitController.gameObject);
             }
@@ -112,19 +117,6 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
 
         GameManager.Instance.SetShopPhase();
-    }
-
-    public void SpawnBattleUnits()
-    {
-        for (int i = 0; i < battleSlotScripts.Length; i++)
-        {
-            var unit = battleSlotScripts[i].Unit();
-            if (unit != null)
-            {
-                Instantiate(unit);
-                unit.transform.SetParent(battleSlots[i].transform, false);
-            }
-        }
     }
 
     public void SetAttachedGameObject(GameObject target)

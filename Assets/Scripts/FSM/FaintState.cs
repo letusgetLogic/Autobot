@@ -10,7 +10,7 @@
         ctx.SetState(new CheckOutcomeState(0.5f, false));
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx)
+    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
         
     }

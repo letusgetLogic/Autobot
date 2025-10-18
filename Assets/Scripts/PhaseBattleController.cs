@@ -63,7 +63,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         if (state == null)
             return;
 
-        state.OnUpdate(this);
+        state.OnUpdate(this, Time.deltaTime);
     }
 
     public void SetState(StateBase _state)
@@ -93,16 +93,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         player2 = _player2;
 
        SetState(new InitState(0.5f));
-    }
-
-    /// <summary>
-    /// Instantiate game object.
-    /// </summary>
-    /// <param name="gameObject"></param>
-    /// <returns></returns>
-    public GameObject Spawn(GameObject gameObject)
-    {
-        return Instantiate(gameObject);
     }
 
     /// <summary>

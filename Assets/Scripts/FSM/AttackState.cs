@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class AttackState : StateBase
+﻿public class AttackState : StateBase
 {
     public AttackState(float maxCount) : base(maxCount)
     {
@@ -11,11 +9,11 @@ public class AttackState : StateBase
         AttackEachOther();
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx)
+    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        if (Count < 0.5f)
+        if (Count < 1f)
         {
-            Count += Time.deltaTime;
+            Count += speed;
         }
         else
         {

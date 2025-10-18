@@ -17,7 +17,7 @@
     /// <summary>
     /// OnUpdate is called every frame while the state is active.
     /// </summary>
-    public abstract void OnUpdate(IFiniteStateMachine ctx);
+    public abstract void OnUpdate(IFiniteStateMachine ctx, float speed);
 
     /// <summary>
     /// OnExit is called when the state is exited.
