@@ -19,7 +19,7 @@ public class InitState : StateBase
         }
         else
         {
-            ctx.SetState(new CheckOutcomeState(0.5f, true));
+            ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, true));
         }
     }
 

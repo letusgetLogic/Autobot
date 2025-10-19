@@ -5,7 +5,7 @@ public class Template : MonoBehaviour
 {
     public string Name { get; private set; }
     public int Lives { get; set; }
-    public int WinsCondition { get; set; }
+    public int WinCondition { get; set; }
     public int Turns { get; set; }
     public int Wins { get; set; }
     public UnitController[] BattleUnits { get; set; }
@@ -18,10 +18,10 @@ public class Template : MonoBehaviour
     /// <param name="_name"></param>
     /// <param name="_lives"></param>
     /// <param name="_wins"></param>
-    public void Init(string _name, int _lives, int _wins)
+    public Template(string _name, int _lives, int _wins)
     {
         Lives = _lives;
-        WinsCondition = _wins;
+        WinCondition = _wins;
         Turns = 0;
         Name = _name;
     }
@@ -74,5 +74,26 @@ public class Template : MonoBehaviour
         }
 
         GameManager.Instance.EndShopPhase(BattleUnits, FreezedUnits);
+    }
+
+
+    /// <summary>
+    /// Move the fainted units out of scene.
+    /// </summary>
+    public void HideFaintUnits(Slot[] slots)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            var unit = slots[i].UnitController();
+            if (unit != null && unit.Model.IsFaint)
+            {
+                var ability = unit.TriggerAbility(TriggerType.Faint);
+                if (ability != null)
+                    ability.Activate();
+
+                unit.transform.SetParent(null);
+                unit.transform.position = new Vector3(100, 100, 0);
+            }
+        }
     }
 }

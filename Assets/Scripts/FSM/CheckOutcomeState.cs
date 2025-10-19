@@ -22,7 +22,7 @@
         else
         {
             if (outcome)
-                ctx.SetState(null);
+                ctx.SetState(new BattleOverState(1f));
             else
             {
                 if (startOfBattle)
@@ -47,7 +47,7 @@
             }
             else
             {
-                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player1.Name);
+                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player1.Name, false);
                 GameManager.Instance.UpdatePlayerStats(-1); // Left Wins
             }
             return true;
@@ -56,12 +56,12 @@
         {
             if (IsAnyoneIn(PhaseBattleController.Instance.Slots2))
             {
-                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player2.Name);
+                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player2.Name, false);
                 GameManager.Instance.UpdatePlayerStats(1); // Right wins
             }
             else
             {
-                PhaseBattleView.Instance.ShowWinner("Nobody");
+                PhaseBattleView.Instance.ShowWinner("Nobody", false);
                 GameManager.Instance.UpdatePlayerStats(0); // Draw
             }
             return true;

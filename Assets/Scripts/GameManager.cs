@@ -10,26 +10,13 @@ public class GameManager : MonoBehaviour
     [Header("Mode Development")]
 
     [SerializeField]
-    private int setHealth = 3;
-    [SerializeField]
-    private int setWins = 5;
-    [SerializeField]
     private bool isDeveloper;
 
-    private GameState state;
-    private Template[] templates;
+    private GameData gameData { get; set; }
+    private Game currentGame { get; set; }
+    public Game CurrentGame => currentGame;
+    private Template[] templates { get; set; }
 
-    [HideInInspector]
-    public List<SoUnit> AvaiableUnits = new();
-    [HideInInspector]
-    public List<SoItem> AvaiableItems = new();
-
-    public GameMode Mode { get; set; }
-    public int PlayerAmount { get; private set; }
-    public int PlayerCount { get; private set; }
-    public bool WithTimer { get; private set; }
-    public int WinsCondition { get; set; }
-    public int PlayerHealth { get; set; }
 
     /// <summary>
     /// Awake method.
@@ -42,11 +29,34 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Instance = this; 
+            Instance = this;
             DontDestroyOnLoad(this);
         }
+
+    }
+
+    private void Start()
+    {
         if (isDeveloper)
         {
+            templates = new Template[]
+            {
+                new Template("Player 1", 6, 0),
+                new Template("Player 2", 6, 0)
+            };
+            currentGame = new Game(
+                    GameMode.Single,
+                    2,
+                    90,
+                    6,
+                    0,
+                    GameState.LoadGame,
+                    templates[0],
+                    templates[1]
+                    );
+            gameData = new GameData();
+            gameData.SavedGames.Add(currentGame);
+
             LoadGame();
         }
     }
@@ -56,26 +66,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void LoadGame()
     {
-        state = GameState.LoadGame;
-
-        switch (Mode)
+        switch (currentGame.Mode)
         {
             case GameMode.None:
-                Mode = GameMode.Single;
-                PlayerHealth = setHealth;
-                WinsCondition = setWins;
-                LoadGame();
                 break;
 
             case GameMode.Single:
-                PlayerCount = 0;
-                PlayerAmount = 2;
-                templates = new Template[PlayerAmount];
-                templates[0] = gameObject.AddComponent<Template>();
-                templates[0].Init("Player 1", PlayerHealth, WinsCondition);
-                templates[1] = gameObject.AddComponent<Template>();
-                templates[1].Init("Player 2", PlayerHealth, WinsCondition);
-                RunSingle();
+                RunModeSingle();
                 break;
 
             case GameMode.AI:
@@ -88,20 +85,19 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts game mode single.
+    /// Starts game mode singleplayer.
     /// </summary>
-    private void RunSingle()
+    public void RunModeSingle()
     {
-        state = GameState.StartOfTurn;
-        PlayerCount++;
-
-        if (PlayerCount <= templates.Length)
+        if (currentGame.CurrentPlayerIndex < templates.Length)
         {
             SceneManager.LoadScene("PhaseShop");
-            StartCoroutine(StartTurn(templates[PlayerCount - 1]));
+            StartCoroutine(StartTurn(templates[currentGame.CurrentPlayerIndex]));
+            currentGame.CurrentPlayerIndex++;
         }
         else
         {
+            currentGame.CurrentPlayerIndex = 0;
             SceneManager.LoadScene("PhaseBattle");
             StartCoroutine(RunPhaseBattle());
         }
@@ -117,8 +113,8 @@ public class GameManager : MonoBehaviour
             PhaseShopUnitManager.Instance != null &&
             PhaseShopUI.Instance != null &&
             StarterPack.Instance != null);
-       
-        state = GameState.StartOfTurn;
+
+        currentGame.State = GameState.StartOfTurn;
         _template.StartShop();
     }
 
@@ -127,7 +123,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void SetShopPhase()
     {
-        state = GameState.ShopPhase;
+        currentGame.State = GameState.ShopPhase;
     }
 
     /// <summary>
@@ -135,10 +131,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndShopPhase(UnitController[] battleUnits, UnitController[] frezzedUnits)
     {
-        
-        state = GameState.EndOfTurn;
-
-        RunSingle();
+        currentGame.State = GameState.EndOfTurn;
+        RunModeSingle();
     }
 
 
@@ -149,7 +143,7 @@ public class GameManager : MonoBehaviour
         PhaseBattleView.Instance != null
         );
 
-        state = GameState.StartOfBattle;
+        currentGame.State = GameState.StartOfBattle;
         PhaseBattleController.Instance.Run(templates[0], templates[1]);
     }
 
@@ -159,14 +153,15 @@ public class GameManager : MonoBehaviour
     /// <param name="outcome"></param>
     public void UpdatePlayerStats(int outcome)
     {
-
+        templates[1].Lives += outcome;
+        templates[0].Lives += -outcome;
     }
 
     public void EndGame()
     {
-        state = GameState.EndOfGame;
-        AvaiableUnits.Clear();
-        AvaiableItems.Clear();
+        currentGame.State = GameState.EndOfGame;
+
+        SceneManager.LoadScene("Menu");
     }
 
 }

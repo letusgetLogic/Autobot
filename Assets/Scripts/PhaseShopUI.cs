@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +16,9 @@ public class PhaseShopUI : MonoBehaviour
     public int StartCoins => startCoins;
 
     [SerializeField]
+    private float durationCoinsRedDefault = 0.2f;
+
+    [SerializeField]
     private TextMeshProUGUI
         nameText,
         coinsText,
@@ -27,7 +32,7 @@ public class PhaseShopUI : MonoBehaviour
         freezeButton,
         unfreezeButton;
 
-    private Template player { get; set; }
+    public Template Player { get; set; }
 
     private void Awake()
     {
@@ -50,12 +55,12 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="max_trophy"></param>
     public void UpdateUI(Template _template)
     {
-        player = _template;
-        nameText.text = player.Name;
-        coinsText.text = player.Coins.ToString();
-        heartText.text = player.Lives.ToString();
-        turnText.text = player.Turns.ToString();
-        trophyText.text = player.Wins.ToString() + " / " + player.WinsCondition.ToString();
+        Player = _template;
+        nameText.text = Player.Name;
+        coinsText.text = Player.Coins.ToString();
+        heartText.text = Player.Lives.ToString();
+        turnText.text = Player.Turns.ToString();
+        trophyText.text = Player.Wins.ToString() + " / " + Player.WinCondition.ToString();
     }
 
     /// <summary>
@@ -64,8 +69,21 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="amount">The current amount of coins.</param>
     public void UpdateCoin(int deviation)
     {
-        player.Coins += deviation;
-        coinsText.text = player.Coins.ToString();
+        Player.Coins += deviation;
+        coinsText.text = Player.Coins.ToString();
+    }
+
+    public void HintNotEnoughCoins()
+    {
+        coinsText.color = Color.red;
+        StartCoroutine(CoinsTextColorDefault());
+    }
+
+    private IEnumerator CoinsTextColorDefault()
+    {
+        yield return new WaitForSeconds(durationCoinsRedDefault);
+
+        coinsText.color = Color.black;
     }
 
     #region Button
@@ -75,9 +93,9 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Roll()
     {
-        if (player.Coins < rollCost)
+        if (Player.Coins < rollCost)
         {
-            // hint no enough coins
+            HintNotEnoughCoins();
             return;
         }
 
@@ -181,7 +199,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void EndTurn()
     {
-        player.EndShop();
+        Player.EndShop();
     }
 
     #endregion

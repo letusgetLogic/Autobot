@@ -49,9 +49,10 @@ public class PhaseBattleView : MonoBehaviour
         lives2.text = player2.Lives.ToString();
     }
 
-    public void ShowWinner(string winner)
+    public void ShowWinner(string winner, bool isGameOver)
     {
-        label.text = $"{winner} won this battle!";
+        label.text = $"{winner} won this {(isGameOver ? "duel" : "battle")}!";
         label.enabled = true;
     }
+
 }

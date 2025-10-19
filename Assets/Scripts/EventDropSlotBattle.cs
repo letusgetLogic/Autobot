@@ -19,21 +19,31 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
             return;
 
         var draggingUnit = eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit();
-        var draggingUnitController = draggingUnit.GetComponent<UnitController>();
-        var model = draggingUnitController.Model;
+        if (draggingUnit == null) 
+            return;
+
+        var draggingController = draggingUnit.GetComponent<UnitController>();
+        var draggingModel = draggingController.Model;
 
         var unitOnSlot = slot.UnitController();
+
+        if (PhaseShopUI.Instance.Player.Coins <= 0)
+        {
+            PhaseShopUI.Instance.HintNotEnoughCoins();
+            return;
+        }
+
         if (unitOnSlot != null)
         {
-            if (model.ManageState == UnitState.InSlotShop)
-                PhaseShopUI.Instance.UpdateCoin(-model.Data.Cost);
-
-            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, draggingUnitController))
+            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, draggingController))
             {
+                if (draggingModel.ManageState == UnitState.InSlotShop)
+                    PhaseShopUI.Instance.UpdateCoin(-draggingModel.Data.Cost);
+
                 unitOnSlot.UpdateLevel(
-                    model.XP,
-                    model.BattleHealth - model.Data.Health,
-                    model.BattleAttack - model.Data.Attack
+                    draggingModel.XP,
+                    draggingModel.BattleHealth - draggingModel.Data.Health,
+                    draggingModel.BattleAttack - draggingModel.Data.Attack
                     );
 
                 Destroy(draggingUnit);
@@ -41,8 +51,8 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
         }
         else
         {
-            if (model.ManageState == UnitState.InSlotShop)
-                PhaseShopUI.Instance.UpdateCoin(-model.Data.Cost);
+            if (draggingModel.ManageState == UnitState.InSlotShop)
+                PhaseShopUI.Instance.UpdateCoin(-draggingModel.Data.Cost);
 
             PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
         }

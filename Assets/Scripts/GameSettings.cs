@@ -7,7 +7,6 @@ public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance { get; private set; }
 
-    public TMP_InputField ModeSingleTrophy;
     public TMP_InputField ModeSingleHeart;
 
     [SerializeField]
@@ -28,7 +27,6 @@ public class GameSettings : MonoBehaviour
         }
 
         Instance = this;
-        GameManager.Instance.Mode = GameMode.Single;
     }
 
     /// <summary>
@@ -36,21 +34,19 @@ public class GameSettings : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        switch (GameManager.Instance.Mode)
-        {
-            case GameMode.Single:
-                int a = int.Parse(ModeSingleTrophy.text);
-                if (a < minWins || a > maxWins) 
-                    return;
-                int b = int.Parse(ModeSingleHeart.text);
-                if (b < minHealth || b > maxHealth) 
-                    return;
-                GameManager.Instance.WinsCondition = a;
-                GameManager.Instance.PlayerHealth = b;
-                GameManager.Instance.LoadGame();
+        //switch (GameManager.Instance.Mode)
+        //{
+        //    case GameMode.Single:
                 
-                break;
-        }
+        //        int b = int.Parse(ModeSingleHeart.text);
+        //        if (b < minHealth || b > maxHealth) 
+        //            return;
+        //        GameManager.Instance.WinsCondition = a;
+        //        GameManager.Instance.PlayerLives = b;
+        //        GameManager.Instance.LoadGame();
+                
+        //        break;
+        //}
     }
 
 }

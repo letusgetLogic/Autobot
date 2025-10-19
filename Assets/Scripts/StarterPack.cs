@@ -100,7 +100,7 @@ public class StarterPack : MonoBehaviour
         {
         foreach (var unit in _tier)
         {
-            GameManager.Instance.AvaiableUnits.Add(unit);
+            GameManager.Instance.CurrentGame.AvaiableUnits.Add(unit);
         }
     }
 }

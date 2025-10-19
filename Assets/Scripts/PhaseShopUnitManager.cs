@@ -34,6 +34,9 @@ public class PhaseShopUnitManager : MonoBehaviour
 
     public GameObject AttachedGameObject { get; set; }
 
+    public bool IsDragging { get; set; } = false;
+    
+
     private void Awake()
     {
         if (Instance != null)
@@ -60,17 +63,19 @@ public class PhaseShopUnitManager : MonoBehaviour
                 if (unit != null)
                 {
                     unit.transform.SetParent(battleSlots[i].transform, false);
+                    unit.transform.localPosition = Vector3.zero;
                 }
             }
         }
         if (player.FreezedUnits != null)
         {
-            for (int i = 0; i <= player.FreezedUnits.Length; i++)
+            for (int i = 0; i < player.FreezedUnits.Length; i++)
             {
                 var unit = player.FreezedUnits[i];
                 if (unit != null)
                 {
                     unit.transform.SetParent(shopUnitSlots[i].transform, false);
+                    unit.transform.localPosition = Vector3.zero;
                 }
             }
         }
@@ -107,8 +112,8 @@ public class PhaseShopUnitManager : MonoBehaviour
                 Destroy(unitController.gameObject);
             }
 
-            var unitData = GameManager.Instance.AvaiableUnits
-                [UnityEngine.Random.Range(0, GameManager.Instance.AvaiableUnits.Count)];
+            var unitData = GameManager.Instance.CurrentGame.AvaiableUnits
+                [UnityEngine.Random.Range(0, GameManager.Instance.CurrentGame.AvaiableUnits.Count)];
 
             GameObject unit = Instantiate(unitPrefab);
             unit.GetComponent<UnitController>().Initialize(unitData);

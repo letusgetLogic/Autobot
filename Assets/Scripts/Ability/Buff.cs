@@ -40,10 +40,18 @@ public class Buff : AbilityBase
                 }
             }
 
+            List<int> alreadyBuffed = new List<int>();
+
             for (int i = 0; i < toWhoCount && i < index.Count; i++)
             {
                 Random rnd = new Random();
                 int n = rnd.Next(index[0], index.Count);
+
+                if (alreadyBuffed.Contains(n))
+                {
+                    i--;
+                    continue;
+                }
 
                 var unit = slots[n].UnitController();
                 unit.Buff(health, attack);

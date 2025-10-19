@@ -10,6 +10,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     private float durationInsert = 0.5f;
     [SerializeField]
     private float delayDeath = 0.5f;
+    [SerializeField]
+    private float durationShowOutcome = 1.0f;
 
     [Header("Slots")]
     [SerializeField]
@@ -18,6 +20,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     private Slot[] slots2;
 
     public float DurationInsert => durationInsert;
+    public float DurationShowOutcome => durationShowOutcome;
     public Slot[] Slots1 => slots1;
     public Slot[] Slots2 => slots2;
 
@@ -95,35 +98,5 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
        SetState(new InitState(0.5f));
     }
 
-    /// <summary>
-    /// Destroy the fainted units.
-    /// </summary>
-    public void DestroyFaint()
-    {
-        for (int i = 0; i < slots1.Length; i++)
-        {
-            var unit = slots1[i].UnitController();
-            if (unit != null && unit.Model.IsFaint)
-            {
-                var ability = unit.TriggerAbility(TriggerType.Faint);
-                if (ability != null)
-                    ability.Activate();
-
-                Destroy(unit.gameObject);
-            }
-        }
-        for (int i = 0; i < slots2.Length; i++)
-        {
-            var unit = slots2[i].UnitController();
-            if (unit != null && unit.Model.IsFaint)
-            {
-                var ability = unit.TriggerAbility(TriggerType.Faint);
-                if (ability != null)
-                    ability.Activate();
-
-                Destroy(unit.gameObject);
-            }
-        }
-    }
 
 }

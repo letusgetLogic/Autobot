@@ -122,8 +122,7 @@ public class Slot : MonoBehaviour
 
         var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
         if (border.enabled &&
-            eventDrag != null &&
-            (eventDrag.IsDragging || attached == null || attached != Unit()) &&
+            (PhaseShopUnitManager.Instance.IsDragging || attached == null || attached != Unit()) &&
             border != null)
         {
             border.enabled = false;
