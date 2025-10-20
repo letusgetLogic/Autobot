@@ -36,7 +36,7 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     /// <param name="_player1"></param>
     /// <param name="_player2"></param>
-    public void Initialize(Template player1, Template player2)
+    public void Initialize(PlayerData player1, PlayerData player2)
     {
         name1.text = player1.Name;
         turn1.text = player1.Turns.ToString();

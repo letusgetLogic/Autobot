@@ -26,9 +26,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     private StateBase state { get;set; }
 
-    private Template player1, player2;
-    public Template Player1 => player1;
-    public Template Player2 => player2;
+    public Player Player1 { get; private set; }
+    public Player Player2 {  get; private set; }
 
     public UnitController AttackingUnit1
     {
@@ -90,10 +89,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     /// </summary>
     /// <param name="_player1"></param>
     /// <param name="_player2"></param>
-    public void Run(Template _player1, Template _player2)
+    public void Run(Player _player1, Player _player2)
     {
-        player1 = _player1;
-        player2 = _player2;
+        Player1 = _player1;
+        Player2 = _player2;
 
        SetState(new InitState(0.5f));
     }

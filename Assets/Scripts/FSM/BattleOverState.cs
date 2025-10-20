@@ -8,8 +8,8 @@
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        var player1 = PhaseBattleController.Instance.Player1;
-        var player2 = PhaseBattleController.Instance.Player2;
+        var player1 = PhaseBattleController.Instance.Player1.Data;
+        var player2 = PhaseBattleController.Instance.Player2.Data;
 
         if (player1.Lives > 0 && player2.Lives > 0)
         {

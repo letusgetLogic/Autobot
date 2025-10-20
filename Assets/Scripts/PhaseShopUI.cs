@@ -32,7 +32,7 @@ public class PhaseShopUI : MonoBehaviour
         freezeButton,
         unfreezeButton;
 
-    public Template Player { get; set; }
+    public Player Player { get; set; }
 
     private void Awake()
     {
@@ -53,14 +53,14 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="_turn"></param>
     /// <param name="_trophy"></param>
     /// <param name="max_trophy"></param>
-    public void UpdateUI(Template _template)
+    public void UpdateUI(Player player)
     {
-        Player = _template;
-        nameText.text = Player.Name;
-        coinsText.text = Player.Coins.ToString();
-        heartText.text = Player.Lives.ToString();
-        turnText.text = Player.Turns.ToString();
-        trophyText.text = Player.Wins.ToString() + " / " + Player.WinCondition.ToString();
+        Player = player;
+        nameText.text = Player.Data.Name;
+        coinsText.text = Player.Data.Coins.ToString();
+        heartText.text = Player.Data.Lives.ToString();
+        turnText.text = Player.Data.Turns.ToString();
+        trophyText.text = Player.Data.Wins.ToString() + " / " + Player.Data.WinCondition.ToString();
     }
 
     /// <summary>
@@ -69,8 +69,8 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="amount">The current amount of coins.</param>
     public void UpdateCoin(int deviation)
     {
-        Player.Coins += deviation;
-        coinsText.text = Player.Coins.ToString();
+        Player.Data.Coins += deviation;
+        coinsText.text = Player.Data.Coins.ToString();
     }
 
     public void HintNotEnoughCoins()
@@ -93,7 +93,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Roll()
     {
-        if (Player.Coins < rollCost)
+        if (Player.Data.Coins < rollCost)
         {
             HintNotEnoughCoins();
             return;

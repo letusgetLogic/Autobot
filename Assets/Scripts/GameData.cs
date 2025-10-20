@@ -8,7 +8,7 @@ public class GameData
     
     // Settings
 
-    public GameData()
+    public GameData(Game game)
     {
         SavedGames = new List<Game>();
     }

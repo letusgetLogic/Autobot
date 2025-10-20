@@ -50,7 +50,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// Initializes the slots.
     /// </summary>
     /// <param name="player"></param>
-    public void Initialize(Template player)
+    public void Initialize(PlayerData player)
     {
        battleSlotScripts = InitializeArray( battleSlots);
        shopUnitSlotScripts = InitializeArray(shopUnitSlots);

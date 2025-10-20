@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     private GameData gameData { get; set; }
     private Game currentGame { get; set; }
     public Game CurrentGame => currentGame;
-    private Template[] templates { get; set; }
+    private Player[] players { get; set; }
 
 
     /// <summary>
@@ -39,34 +39,16 @@ public class GameManager : MonoBehaviour
     {
         if (isDeveloper)
         {
-            templates = new Template[]
-            {
-                new Template("Player 1", 6, 0),
-                new Template("Player 2", 6, 0)
-            };
-            currentGame = new Game(
-                    GameMode.Single,
-                    2,
-                    90,
-                    6,
-                    0,
-                    GameState.LoadGame,
-                    templates[0],
-                    templates[1]
-                    );
-            gameData = new GameData();
-            gameData.SavedGames.Add(currentGame);
-
-            LoadGame();
+            LoadGame(GameMode.Single);
         }
     }
 
     /// <summary>
     /// Loads game.
     /// </summary>
-    public void LoadGame()
+    public void LoadGame(GameMode mode)
     {
-        switch (currentGame.Mode)
+        switch (mode)
         {
             case GameMode.None:
                 break;
@@ -89,10 +71,28 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RunModeSingle()
     {
-        if (currentGame.CurrentPlayerIndex < templates.Length)
+        var playerDatas = new PlayerData[]
+                {
+                new PlayerData("Player 1", 6, 0),
+                new PlayerData("Player 2", 6, 0)
+                };
+        currentGame = new Game(
+                GameMode.Single,
+                2,
+                90,
+                6,
+                0,
+                GameState.LoadGame,
+                playerDatas[0],
+                playerDatas[1]
+                );
+        players[0].Data = playerDatas[0];
+        players[1].Data = playerDatas[1];
+
+        if (currentGame.CurrentPlayerIndex < players.Length)
         {
             SceneManager.LoadScene("PhaseShop");
-            StartCoroutine(StartTurn(templates[currentGame.CurrentPlayerIndex]));
+            StartCoroutine(StartTurn(players[currentGame.CurrentPlayerIndex]));
             currentGame.CurrentPlayerIndex++;
         }
         else
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     /// Waits until the <see cref="PhaseShopUnitManager.Instance"/> is initialized and then transitions the game state to the start
     /// of the turn.
     /// </summary>
-    private IEnumerator StartTurn(Template _template)
+    private IEnumerator StartTurn(Player player)
     {
         yield return new WaitUntil(() =>
             PhaseShopUnitManager.Instance != null &&
@@ -115,7 +115,8 @@ public class GameManager : MonoBehaviour
             StarterPack.Instance != null);
 
         currentGame.State = GameState.StartOfTurn;
-        _template.StartShop();
+        gameData = new GameData(currentGame);
+        player.StartShop();
     }
 
     /// <summary>
@@ -144,7 +145,7 @@ public class GameManager : MonoBehaviour
         );
 
         currentGame.State = GameState.StartOfBattle;
-        PhaseBattleController.Instance.Run(templates[0], templates[1]);
+        PhaseBattleController.Instance.Run(players[0], players[1]);
     }
 
     /// <summary>
@@ -153,8 +154,8 @@ public class GameManager : MonoBehaviour
     /// <param name="outcome"></param>
     public void UpdatePlayerStats(int outcome)
     {
-        templates[1].Lives += outcome;
-        templates[0].Lives += -outcome;
+        players[1].Data.Lives += outcome;
+        players[0].Data.Lives += -outcome;
     }
 
     public void EndGame()

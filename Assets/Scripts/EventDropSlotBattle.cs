@@ -27,7 +27,7 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
 
         var unitOnSlot = slot.UnitController();
 
-        if (PhaseShopUI.Instance.Player.Coins <= 0)
+        if (PhaseShopUI.Instance.Player.Data.Coins <= 0)
         {
             PhaseShopUI.Instance.HintNotEnoughCoins();
             return;

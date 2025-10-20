@@ -29,26 +29,26 @@ public class InitState : StateBase
     private void Initialize()
     {
         PhaseBattleView.Instance.Initialize(
-            PhaseBattleController.Instance.Player1,
-            PhaseBattleController.Instance.Player2);
+            PhaseBattleController.Instance.Player1.Data,
+            PhaseBattleController.Instance.Player2.Data);
 
         SetUnitsToPosition(
-            PhaseBattleController.Instance.Player1,
+            PhaseBattleController.Instance.Player1.Data,
             PhaseBattleController.Instance.Slots1, false);
 
         SetUnitsToPosition(
-            PhaseBattleController.Instance.Player2,
+            PhaseBattleController.Instance.Player2.Data,
             PhaseBattleController.Instance.Slots2, true);
     }
 
     /// <summary>
     /// Instantiates the units.
     /// </summary>
-    private void SetUnitsToPosition(Template player, Slot[] slots, bool isRight)
+    private void SetUnitsToPosition(PlayerData data, Slot[] slots, bool isRight)
     {
-        for (int i = 0; i < player.BattleUnits.Length; i++)
+        for (int i = 0; i < data.BattleUnits.Length; i++)
         {
-            var unit = player.BattleUnits[i];
+            var unit = data.BattleUnits[i];
             if (unit != null)
             {
                 unit.transform.SetParent(slots[i].transform, false);
