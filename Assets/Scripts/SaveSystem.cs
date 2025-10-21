@@ -8,7 +8,7 @@ public static class SaveSystem
     {
         BinaryFormatter formatter = new BinaryFormatter();
 
-        string path = Application.persistentDataPath + "/game.fun";
+        string path = Application.persistentDataPath + $"/game.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         GameData data = new GameData(game);

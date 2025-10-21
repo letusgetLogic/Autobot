@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -10,8 +11,6 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StartShop()
     {
-        Data.Turns++;
-        Data.Coins = PhaseShopUI.Instance.StartCoins;
         PhaseShopUnitManager.Instance.Initialize(Data);
         PhaseShopUnitManager.Instance.TriggerStartOfTurn();
         StarterPack.Instance.AddUnitsByTier(Data.Turns);
@@ -53,6 +52,12 @@ public class Player : MonoBehaviour
         }
 
         GameManager.Instance.EndShopPhase(Data.BattleUnits, Data.FreezedUnits);
+    }
+
+    public void SetDefault()
+    {
+        Data.Turns++;
+        Data.Coins = GameManager.Instance.StartCoins;
     }
 
 

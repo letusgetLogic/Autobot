@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,15 +13,22 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private bool isDeveloper;
 
+    private string name1 = "Player 1";
+    private string name2 = "Player 2";
+
+    [SerializeField] private int lives = 6;
+    [SerializeField] private float timer = 90.0f;
+    public int StartCoins => startCoins;
+    [SerializeField] private int startCoins = 10;
+    public int RollCost => rollCost;
+    [SerializeField] private int rollCost = 1;
+
     private GameData gameData { get; set; }
     private Game currentGame { get; set; }
     public Game CurrentGame => currentGame;
     private Player[] players { get; set; }
 
 
-    /// <summary>
-    /// Awake method.
-    /// </summary>
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -54,6 +62,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameMode.Single:
+                InitSingle();
                 RunModeSingle();
                 break;
 
@@ -71,24 +80,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RunModeSingle()
     {
-        var playerDatas = new PlayerData[]
-                {
-                new PlayerData("Player 1", 6, 0),
-                new PlayerData("Player 2", 6, 0)
-                };
-        currentGame = new Game(
-                GameMode.Single,
-                2,
-                90,
-                6,
-                0,
-                GameState.LoadGame,
-                playerDatas[0],
-                playerDatas[1]
-                );
-        players[0].Data = playerDatas[0];
-        players[1].Data = playerDatas[1];
-
         if (currentGame.CurrentPlayerIndex < players.Length)
         {
             SceneManager.LoadScene("PhaseShop");
@@ -104,8 +95,50 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Waits until the <see cref="PhaseShopUnitManager.Instance"/> is initialized and then transitions the game state to the start
-    /// of the turn.
+    /// Initialize game with mode Singleplayer.
+    /// </summary>
+    private void InitSingle()
+    {
+        // Initialize player monobehaviours.
+        players = new Player[2];
+        players[0] = gameObject.AddComponent<Player>();
+        players[1] = gameObject.AddComponent<Player>();
+
+        // Load saved game.
+        var gameData = SaveSystem.LoadGame();
+
+        if (gameData != null)
+        {
+            var savedGame = gameData.SavedGames.Find(game => game.Mode == GameMode.Single);
+
+            if (savedGame != null)
+            {
+                players[0].Data = savedGame.Player1;
+                players[1].Data = savedGame.Player2;
+                currentGame = savedGame;
+                return;
+            }
+        }
+
+        // Create a new game.
+        players[0].Data = new PlayerData(name1, lives, 0, startCoins);
+        players[1].Data = new PlayerData(name2, lives, 0, startCoins);
+
+        currentGame = new Game(
+                GameMode.Single,
+                2,
+                timer,
+                lives,
+                0,
+                GameState.LoadGame,
+                players[0].Data,
+                players[1].Data
+                );
+       
+    }
+
+    /// <summary>
+    /// Starts the phase shop.
     /// </summary>
     private IEnumerator StartTurn(Player player)
     {
@@ -115,8 +148,16 @@ public class GameManager : MonoBehaviour
             StarterPack.Instance != null);
 
         currentGame.State = GameState.StartOfTurn;
-        gameData = new GameData(currentGame);
+
         player.StartShop();
+    }
+
+    /// <summary>
+    /// Saves game.
+    /// </summary>
+    public void SaveGame()
+    {
+        SaveSystem.SaveGame(currentGame);
     }
 
     /// <summary>
@@ -136,7 +177,10 @@ public class GameManager : MonoBehaviour
         RunModeSingle();
     }
 
-
+    /// <summary>
+    /// Runs the phase battle.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator RunPhaseBattle()
     {
         yield return new WaitUntil(() =>
@@ -158,6 +202,9 @@ public class GameManager : MonoBehaviour
         players[0].Data.Lives += -outcome;
     }
 
+    /// <summary>
+    /// Ends game.
+    /// </summary>
     public void EndGame()
     {
         currentGame.State = GameState.EndOfGame;

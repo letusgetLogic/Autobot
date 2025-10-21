@@ -1273,12 +1273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9fdfc6a6a73734589f9b086c656e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
-  ModeSingleTrophy: {fileID: 1680994003}
   ModeSingleHeart: {fileID: 2004077453}
-  maxHealth: 10
-  minHealth: 3
-  maxWins: 10
-  minWins: 3
 --- !u!4 &1435448138
 Transform:
   m_ObjectHideFlags: 0
@@ -1452,6 +1447,10 @@ PrefabInstance:
     - target: {fileID: 1940831500881889265, guid: a32194354054d694db567d3a56426303, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3947300327799054874, guid: a32194354054d694db567d3a56426303, type: 3}
+      propertyPath: startCoins
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3947300327799054874, guid: a32194354054d694db567d3a56426303, type: 3}
       propertyPath: isDeveloper

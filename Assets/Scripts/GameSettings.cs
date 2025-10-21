@@ -9,12 +9,6 @@ public class GameSettings : MonoBehaviour
 
     public TMP_InputField ModeSingleHeart;
 
-    [SerializeField]
-    private int 
-        maxHealth = 10,
-        minHealth = 3,
-        maxWins = 10,
-        minWins = 3;
 
     /// <summary>
     /// Awake method.

@@ -8,21 +8,23 @@
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        var player1 = PhaseBattleController.Instance.Player1.Data;
-        var player2 = PhaseBattleController.Instance.Player2.Data;
+        var player1 = PhaseBattleController.Instance.Player1;
+        var player2 = PhaseBattleController.Instance.Player2;
 
-        if (player1.Lives > 0 && player2.Lives > 0)
+        if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
         {
+            player1.SetDefault();
+            player2.SetDefault();
             GameManager.Instance.RunModeSingle();
             return;
         }
-        if (player1.Lives == 0)
+        if (player1.Data.Lives == 0)
         {
-            PhaseBattleView.Instance.ShowWinner(player2.Name, true);
+            PhaseBattleView.Instance.ShowWinner(player2.Data.Name, true);
         }
-        else if (player2.Lives == 0)
+        else if (player2.Data.Lives == 0)
         {
-            PhaseBattleView.Instance.ShowWinner(player1.Name, true);
+            PhaseBattleView.Instance.ShowWinner(player1.Data.Name, true);
         }
         isGameOver = true;
     }

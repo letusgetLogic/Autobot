@@ -4,7 +4,7 @@ public class Game
 {
     public GameMode Mode { get; set; }
     public int PlayerAmount { get; set; }
-    public int Timer { get; set; }
+    public float Timer { get; set; }
     public int Lives { get; set; }
     public int WinCondition { get; set; }
     public GameState State { get; set; }
@@ -14,7 +14,7 @@ public class Game
     public List<SoItem> AvaiableItems { get; set; }
     public int CurrentPlayerIndex { get; set; }
 
-    public Game(GameMode mode, int playerAmount, int timer, int lives, int winCondition, 
+    public Game(GameMode mode, int playerAmount, float timer, int lives, int winCondition, 
         GameState state, PlayerData player1, PlayerData player2)
     {
         Mode = mode;

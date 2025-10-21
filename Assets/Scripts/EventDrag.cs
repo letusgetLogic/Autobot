@@ -23,8 +23,6 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (slot.UnitView() == null)
             return;
 
-        PhaseShopUnitManager.Instance.IsDragging = true;
-
         slot.UnitView().BeingAttached(eventData);
 
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
@@ -34,7 +32,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (PhaseShopUnitManager.Instance.IsDragging == false)
+        if (PhaseShopUnitManager.Instance.StopDragging)
             return;
 
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -52,6 +50,8 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        PhaseShopUnitManager.Instance.StopDragging = false;
+
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
@@ -61,8 +61,6 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         if (slot.UnitView() == null)
             return;
-
-        PhaseShopUnitManager.Instance.IsDragging = false;
 
         slot.UnitView().BeingReleased(eventData);
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);

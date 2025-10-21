@@ -9,13 +9,6 @@ public class PhaseShopUI : MonoBehaviour
     public static PhaseShopUI Instance { get; private set; }
 
     [SerializeField]
-    private int
-       startCoins = 11,
-       rollCost = 1;
-
-    public int StartCoins => startCoins;
-
-    [SerializeField]
     private float durationCoinsRedDefault = 0.2f;
 
     [SerializeField]
@@ -93,13 +86,13 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Roll()
     {
-        if (Player.Data.Coins < rollCost)
+        if (Player.Data.Coins < GameManager.Instance.RollCost)
         {
             HintNotEnoughCoins();
             return;
         }
 
-        UpdateCoin(-rollCost);
+        UpdateCoin(-GameManager.Instance.RollCost);
         PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 

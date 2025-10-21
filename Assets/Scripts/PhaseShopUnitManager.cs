@@ -34,8 +34,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
     public GameObject AttachedGameObject { get; set; }
 
-    public bool IsDragging { get; set; } = false;
-    
+    public bool StopDragging { get; set; } = false;
 
     private void Awake()
     {
@@ -52,8 +51,8 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <param name="player"></param>
     public void Initialize(PlayerData player)
     {
-       battleSlotScripts = InitializeArray( battleSlots);
-       shopUnitSlotScripts = InitializeArray(shopUnitSlots);
+        battleSlotScripts = InitializeArray(battleSlots);
+        shopUnitSlotScripts = InitializeArray(shopUnitSlots);
 
         if (player.BattleUnits != null)
         {
@@ -157,7 +156,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     public void Transport(GameObject attached, Transform dropSlot,
         bool mouseRelease, bool disableShadow)
     {
-        if (attached == null || 
+        if (attached == null ||
             attached.GetComponent<UnitController>().Model.ManageState == UnitState.Freezed)
             return;
 
@@ -216,20 +215,31 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         while (search >= 0 && search < battleSlotScripts.Length)
         {
-            if (battleSlotScripts[search].Unit() != null) // slot is occupied
+            if (battleSlotScripts[search].Unit() != null && 
+                battleSlotScripts[search].Unit() != AttachedGameObject) // slot is occupied
             {
-                search += direction; // search for an emnpty space
+                search += direction; // continue search for an emnpty space
             }
-            else // slot is empty
+            else // search is on empty slot
             {
-                for (int i = search; i != target; i -= direction)
+                for (int empty = search; empty != target; empty -= direction)
                 {
-                    int previous = i - direction; // swap the previous slot to the empty slot
+                    int previous = empty - direction; // swap the previous slot to the empty slot
 
-                    var attached = battleSlotScripts[previous].Unit();
-                    if (attached == null)
+                    var movedUnit = battleSlotScripts[previous].Unit();
+                    if (movedUnit == null || 
+                        movedUnit == AttachedGameObject)
                         break;
-                    Transport(attached, battleSlots[i].transform, false, false);
+                    Transport(movedUnit, battleSlots[empty].transform, false, false);
+                }
+
+                if (AttachedGameObject.GetComponent<UnitController>().Model.ManageState
+                    == UnitState.InSlotBattle)
+                {
+                    Transport(AttachedGameObject, battleSlots[target].transform, false, false);
+                    AttachedGameObject.GetComponent<UnitView>().BeingReleased(null);
+
+                    StopDragging = true;
                 }
                 return;
             }

@@ -16,6 +16,7 @@ public class Slot : MonoBehaviour
 
     [SerializeField]
     private EventDrag eventDrag;
+    public EventDrag EventDrag => eventDrag;
 
     public int Index { get; set; }
 
@@ -122,8 +123,7 @@ public class Slot : MonoBehaviour
 
         var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
         if (border.enabled &&
-            (PhaseShopUnitManager.Instance.IsDragging || attached == null || attached != Unit()) &&
-            border != null)
+            (attached == null || attached != Unit()))
         {
             border.enabled = false;
         }
