@@ -104,21 +104,21 @@ public class GameManager : MonoBehaviour
         players[0] = gameObject.AddComponent<Player>();
         players[1] = gameObject.AddComponent<Player>();
 
-        // Load saved game.
-        var gameData = SaveSystem.LoadGame();
+        //// Load saved game.
+        //var gameData = SaveSystem.LoadGame();
 
-        if (gameData != null)
-        {
-            var savedGame = gameData.SavedGames.Find(game => game.Mode == GameMode.Single);
+        //if (gameData != null)
+        //{
+        //    var savedGame = gameData.SavedGames.Find(game => game.Mode == GameMode.Single);
 
-            if (savedGame != null)
-            {
-                players[0].Data = savedGame.Player1;
-                players[1].Data = savedGame.Player2;
-                currentGame = savedGame;
-                return;
-            }
-        }
+        //    if (savedGame != null)
+        //    {
+        //        players[0].Data = savedGame.Player1;
+        //        players[1].Data = savedGame.Player2;
+        //        currentGame = savedGame;
+        //        return;
+        //    }
+        //}
 
         // Create a new game.
         players[0].Data = new PlayerData(name1, lives, 0, startCoins);
@@ -153,17 +153,9 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Saves game.
+    /// Sets the phase of shop.
     /// </summary>
-    public void SaveGame()
-    {
-        SaveSystem.SaveGame(currentGame);
-    }
-
-    /// <summary>
-    /// Sets the shop phase.
-    /// </summary>
-    public void SetShopPhase()
+    public void SetPhaseShop()
     {
         currentGame.State = GameState.ShopPhase;
     }
@@ -171,9 +163,10 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Ends the phase of shop.
     /// </summary>
-    public void EndShopPhase(UnitController[] battleUnits, UnitController[] frezzedUnits)
+    public void EndPhaseShop()
     {
         currentGame.State = GameState.EndOfTurn;
+        SaveSystem.SaveGame(currentGame);
         RunModeSingle();
     }
 
@@ -190,6 +183,13 @@ public class GameManager : MonoBehaviour
 
         currentGame.State = GameState.StartOfBattle;
         PhaseBattleController.Instance.Run(players[0], players[1]);
+    }
+
+    public void EndPhaseBattle()
+    {
+        currentGame.State = GameState.EndOfBattle;
+        SaveSystem.SaveGame(currentGame);
+        RunModeSingle();
     }
 
     /// <summary>

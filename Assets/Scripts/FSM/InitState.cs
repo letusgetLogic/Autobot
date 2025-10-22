@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class InitState : StateBase
 {
@@ -32,34 +33,36 @@ public class InitState : StateBase
             PhaseBattleController.Instance.Player1.Data,
             PhaseBattleController.Instance.Player2.Data);
 
-        SetUnitsToPosition(
-            PhaseBattleController.Instance.Player1.Data,
+        SpawnUnits(
+            PhaseBattleController.Instance.Player1,
             PhaseBattleController.Instance.Slots1, false);
 
-        SetUnitsToPosition(
-            PhaseBattleController.Instance.Player2.Data,
+        SpawnUnits(
+            PhaseBattleController.Instance.Player2,
             PhaseBattleController.Instance.Slots2, true);
     }
 
     /// <summary>
-    /// Instantiates the units.
+    /// Instantiates and initializes the units.
     /// </summary>
-    private void SetUnitsToPosition(PlayerData data, Slot[] slots, bool isRight)
+    private void SpawnUnits(Player player, Slot[] slots, bool isRight)
     {
-        for (int i = 0; i < data.BattleUnits.Length; i++)
-        {
-            var unit = data.BattleUnits[i];
-            if (unit != null)
-            {
-                unit.transform.SetParent(slots[i].transform, false);
-                unit.transform.localPosition = Vector3.zero;
+        //for (int i = 0; i < player.BattleUnits.Length; i++)
+        //{
+        //    if (player.BattleUnits[i] != null)
+        //    {
+        //        var unit = PhaseBattleController.Instance.Spawn();
+        //        unit.transform.SetParent(slots[i].transform, false);
 
-                if (isRight)
-                {
-                    unit.View.SetRightSide();
-                    unit.Model.IsTeam1 = false;
-                }
-            }
-        }
+        //        var controller = unit.GetComponent<UnitController>();
+        //        controller.Initialize(player.BattleUnits[i].Model.Data);
+
+        //        if (isRight)
+        //        {
+        //            controller.View.SetRightSide();
+        //            controller.Model.IsTeam1 = false;
+        //        }
+        //    }
+        //}
     }
 }

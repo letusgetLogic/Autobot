@@ -1,7 +1,11 @@
-﻿public class UnitModel
+﻿using System;
+
+[System.Serializable]
+public class UnitModel
 {
     public UnitController Controller { get; private set; }
     public SoUnit Data { get; private set; }
+    public int Index { get; private set; }
     public Level CurrentLevel { get; set; }
     public int BattleHealth { get; set; }
     public int BattleAttack { get; set; }
@@ -17,10 +21,11 @@
         else XP = value;
     }
     public UnitState ManageState { get; set; }
-    public UnitModel(UnitController controller, SoUnit _data)
+    public UnitModel(UnitController controller, SoUnit _data, int index)
     {
         Controller = controller;
         Data = _data;
+        Index = index;
         CurrentLevel = Data.Levels[0];
         BattleHealth = Data.Health;
         BattleAttack = Data.Attack;

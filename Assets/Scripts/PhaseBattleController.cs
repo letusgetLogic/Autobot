@@ -19,6 +19,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [SerializeField]
     private Slot[] slots2;
 
+    [SerializeField]
+    private GameObject unitPrefab;
+
     public float DurationInsert => durationInsert;
     public float DurationShowOutcome => durationShowOutcome;
     public Slot[] Slots1 => slots1;
@@ -97,5 +100,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
        SetState(new InitState(0.5f));
     }
 
-
+    public GameObject Spawn()
+    {
+        return Instantiate(unitPrefab);
+    }
 }

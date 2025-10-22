@@ -1,16 +1,27 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+[System.Serializable]
+public class PlayerData
 {
     public string Name { get; private set; }
     public int Lives { get; set; }
     public int WinCondition { get; set; }
     public int Turns { get; set; }
     public int Wins { get; set; }
-    public UnitController[] BattleUnits { get; set; }
-    public UnitController[] FreezedUnits { get; set; }
     public int Coins { get; set; }
+    public UnitData[] BattleUnitDatas {  get; set; }
+    public UnitData[] ShopUnitDatas {  get; set; }
+
+    [System.Serializable]
+    public struct UnitData
+    {
+        public int Index { get; set; }
+        public int XP { get; set; }
+        public int BattleHealth { get; set; }
+        public int BattleAttack { get; set; }
+        public UnitState ManageState { get; set; }
+    }
 
     /// <summary>
     /// Assigns the template values.

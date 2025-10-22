@@ -25,7 +25,7 @@ public class PhaseShopUI : MonoBehaviour
         freezeButton,
         unfreezeButton;
 
-    public Player Player { get; set; }
+    public Player Player { get; private set; }
 
     private void Awake()
     {

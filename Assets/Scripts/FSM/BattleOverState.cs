@@ -15,7 +15,7 @@
         {
             player1.SetDefault();
             player2.SetDefault();
-            GameManager.Instance.RunModeSingle();
+            GameManager.Instance.EndPhaseBattle();
             return;
         }
         if (player1.Data.Lives == 0)

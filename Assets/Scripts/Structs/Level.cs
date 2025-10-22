@@ -1,5 +1,4 @@
-﻿[System.Serializable]
-public struct Level
+﻿public struct Level
     {
     public int Number;
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -31,9 +32,8 @@ public class PhaseShopUnitManager : MonoBehaviour
     [SerializeField]
     private float delayPushingFusion = 1f;
     public float DelayPushingFusion => delayPushingFusion;
-
+    public Player Player { get; private set; }
     public GameObject AttachedGameObject { get; set; }
-
     public bool StopDragging { get; set; } = false;
 
     private void Awake()
@@ -49,35 +49,45 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// Initializes the slots.
     /// </summary>
     /// <param name="player"></param>
-    public void Initialize(PlayerData player)
+    public void Initialize(Player player)
     {
+        Player = player;
         battleSlotScripts = InitializeArray(battleSlots);
         shopUnitSlotScripts = InitializeArray(shopUnitSlots);
+        SpawnUnits();
+    }
 
-        if (player.BattleUnits != null)
+    private void SpawnUnits()
+    {
+        if (Player.Data.BattleUnitDatas != null)
         {
-            for (int i = 0; i < player.BattleUnits.Length; i++)
+            for (int i = 0; i < Player.Data.BattleUnitDatas.Length; i++)
             {
-                var unit = player.BattleUnits[i];
-                if (unit != null)
-                {
-                    unit.transform.SetParent(battleSlots[i].transform, false);
-                    unit.transform.localPosition = Vector3.zero;
-                }
+                var unitData = Player.Data.BattleUnitDatas[i];
+                if (unitData.Index == -1)
+                    continue;
+
+                var unit = Instantiate(unitPrefab);
+                unit.transform.SetParent(battleSlots[i].transform, false);
+
+                var controller = unit.GetComponent<UnitController>();
+                controller.Initialize(StarterPack.Instance.Units[unitData.Index], unitData.Index);
+                controller.Initialize(unitData.XP, unitData.BattleHealth, unitData.BattleAttack, unitData.ManageState);
+                
             }
         }
-        if (player.FreezedUnits != null)
-        {
-            for (int i = 0; i < player.FreezedUnits.Length; i++)
-            {
-                var unit = player.FreezedUnits[i];
-                if (unit != null)
-                {
-                    unit.transform.SetParent(shopUnitSlots[i].transform, false);
-                    unit.transform.localPosition = Vector3.zero;
-                }
-            }
-        }
+        //if (player.FreezedUnits != null)
+        //{
+        //    for (int i = 0; i < player.FreezedUnits.Length; i++)
+        //    {
+        //        var unit = player.FreezedUnits[i];
+        //        if (unit != null)
+        //        {
+        //            unit.transform.SetParent(shopUnitSlots[i].transform, false);
+        //            unit.transform.localPosition = Vector3.zero;
+        //        }
+        //    }
+        //}
     }
 
     /// <summary>
@@ -110,17 +120,16 @@ public class PhaseShopUnitManager : MonoBehaviour
 
                 Destroy(unitController.gameObject);
             }
-
-            var unitData = GameManager.Instance.CurrentGame.AvaiableUnits
-                [UnityEngine.Random.Range(0, GameManager.Instance.CurrentGame.AvaiableUnits.Count)];
+            int index = UnityEngine.Random.Range(0, StarterPack.Instance.Units.Count);
+            var unitData = StarterPack.Instance.Units[index];
 
             GameObject unit = Instantiate(unitPrefab);
-            unit.GetComponent<UnitController>().Initialize(unitData);
+            unit.GetComponent<UnitController>().Initialize(unitData, index);
 
             unit.transform.SetParent(shopUnitSlots[i].transform, false);
         }
 
-        GameManager.Instance.SetShopPhase();
+        GameManager.Instance.SetPhaseShop();
     }
 
     public void SetAttachedGameObject(GameObject target)
@@ -179,6 +188,8 @@ public class PhaseShopUnitManager : MonoBehaviour
 
             controller.Model.ManageState = UnitState.InSlotBattle;
             controller.UpdateData(false);
+
+            Player.UpdateUnitID();
         }
     }
 

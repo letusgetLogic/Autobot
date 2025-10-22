@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
 public class UnitController : MonoBehaviour
 {
     public UnitView View => view;
@@ -16,21 +17,26 @@ public class UnitController : MonoBehaviour
     /// Initializes data.
     /// </summary>
     /// <param name="_data"></param>
-    public void Initialize(SoUnit _data)
+    public void Initialize(SoUnit _data, int index)
     {
-        model = new UnitModel(this, _data);
+        model = new UnitModel(this, _data, index);
         model.InitializeLevel();
         UpdateData(true);
     }
 
     /// <summary>
-    /// Sets the data in model.
+    /// Initializes data.
     /// </summary>
-    public void SetModel(UnitModel _model)
+    /// <param name="_data"></param>
+    public void Initialize(int xp, int battleHealth, int battleAttack, UnitState manageState)
     {
-        model = _model;
+        model.SetXP(xp);
+        model.BattleHealth = battleHealth;
+        model.BattleAttack = battleAttack;
+        model.ManageState = manageState;
+        model.InitializeLevel();
+        UpdateData(true);
     }
-
 
     #region Mouse Event
 
@@ -87,6 +93,15 @@ public class UnitController : MonoBehaviour
     
 
         #region Update Level
+
+    /// <summary>
+    /// Updates the level, xp, health and attack.
+    /// </summary>
+    public void UpdateLevel()
+    {
+        UpdateLevelXP(model.XP);
+        UpdateData(false);
+    }
 
     /// <summary>
     /// Updates the level, xp, health and attack.

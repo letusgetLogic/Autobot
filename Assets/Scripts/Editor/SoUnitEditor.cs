@@ -28,7 +28,7 @@ class SoUnitEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("ID", GUILayout.Width(50));
-        data.ID = EditorGUILayout.TextField(data.ID);
+        data.ID = EditorGUILayout.IntField(data.ID);
         EditorGUILayout.LabelField("Name", GUILayout.Width(50));
         data.Name = EditorGUILayout.TextField(data.Name);
         EditorGUILayout.EndHorizontal();

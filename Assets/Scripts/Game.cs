@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+[System.Serializable]
 public class Game
 {
     public GameMode Mode { get; set; }
@@ -10,8 +11,6 @@ public class Game
     public GameState State { get; set; }
     public PlayerData Player1 { get; set; }
     public PlayerData Player2 { get; set; }
-    public List<SoUnit> AvaiableUnits { get; set; }
-    public List<SoItem> AvaiableItems { get; set; }
     public int CurrentPlayerIndex { get; set; }
 
     public Game(GameMode mode, int playerAmount, float timer, int lives, int winCondition, 
@@ -25,8 +24,6 @@ public class Game
         State = state;
         Player1 = player1;
         Player2 = player2;
-        AvaiableUnits = new();
-        AvaiableItems = new();
         CurrentPlayerIndex = 0;
     }
 }

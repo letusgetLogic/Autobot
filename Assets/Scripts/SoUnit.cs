@@ -9,9 +9,8 @@ public class SoUnit : ScriptableObject
 {
     public Sprite Sprite;
 
-    public string 
-        ID,
-        Name;
+    public int ID;
+    public string Name;
 
     public int
         Health,

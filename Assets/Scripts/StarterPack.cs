@@ -18,6 +18,8 @@ public class StarterPack : MonoBehaviour
     [SerializeField] int tier5AvaiableAtTurn = 9;
     [SerializeField] int tier6AvaiableAtTurn = 11;
 
+    public List<SoUnit> Units { get; private set; } = new List<SoUnit>();
+
     public SoUnit[] UnitsTier1 = null;
     public SoUnit[] UnitsTier2 = null;
     public SoUnit[] UnitsTier3 = null;
@@ -45,6 +47,27 @@ public class StarterPack : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
+        }
+    }
+
+    private void Start()
+    {
+        AddID(UnitsTier1);
+        AddID(UnitsTier2);
+        AddID(UnitsTier3);
+        AddID(UnitsTier4);
+        AddID(UnitsTier5);
+        AddID(UnitsTier6);
+    }
+
+    private void AddID(SoUnit[] units)
+    {
+        if (units != null)
+        {
+            for (int i = 0; i < units.Length; i++)
+            {
+                Units.Add(units[i]);
+            }
         }
     }
 
@@ -97,10 +120,22 @@ public class StarterPack : MonoBehaviour
     /// the game. Ensure that the array is not null and contains valid units before calling this method.</remarks>
     /// <param name="_tier">An array of units to be added. Each unit in the array will be added to the game's unit collection.</param>
     private void AddUnits(SoUnit[] _tier)
-        {
+    {
         foreach (var unit in _tier)
         {
-            GameManager.Instance.CurrentGame.AvaiableUnits.Add(unit);
+            Units.Add(unit);
+        }
+    }
+
+    /// <summary>
+    /// Assigns the list when being loaded from saved data.
+    /// </summary>
+    /// <param name="turns"></param>
+    public void AssignList(int turns)
+    {
+        for (int i = 1; i <= turns; i++)
+        {
+            AddUnitsByTier(i);
         }
     }
 }
