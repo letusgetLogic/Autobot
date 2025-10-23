@@ -34,9 +34,7 @@ public class StarterPack : MonoBehaviour
     public SoItem[] ItemsTier5 = null;
     public SoItem[] ItemsTier6 = null;
 
-    /// <summary>
-    /// Awake method.
-    /// </summary>
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -46,21 +44,21 @@ public class StarterPack : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
     }
 
     private void Start()
     {
-        AddID(UnitsTier1);
-        AddID(UnitsTier2);
-        AddID(UnitsTier3);
-        AddID(UnitsTier4);
-        AddID(UnitsTier5);
-        AddID(UnitsTier6);
+        Add(UnitsTier1);
+        Add(UnitsTier2);
+        Add(UnitsTier3);
+        Add(UnitsTier4);
+        Add(UnitsTier5);
+        Add(UnitsTier6);
     }
 
-    private void AddID(SoUnit[] units)
+    private void Add(SoUnit[] units)
     {
         if (units != null)
         {

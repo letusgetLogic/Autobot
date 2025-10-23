@@ -95,20 +95,6 @@ public class PhaseShopUnitManager : MonoBehaviour
                     StarterPack.Instance.Units[unitModel.Index], unitModel.Index, unitModel);
             }
         }
-        else
-        {
-            for (int i = 0; i < shopUnitSlots.Length; i++)
-            {
-                var unit = Instantiate(unitPrefab);
-                unit.transform.SetParent(battleSlots[i].transform, false);
-
-                int rand = Random.Range(0, StarterPack.Instance.Units.Count);
-                var data = StarterPack.Instance.Units[rand];
-
-                var controller = unit.GetComponent<UnitController>();
-                controller.Initialize(data, rand, null);
-            }
-        }
     }
 
     /// <summary>
@@ -141,13 +127,15 @@ public class PhaseShopUnitManager : MonoBehaviour
 
                 Destroy(unitController.gameObject);
             }
-            int index = UnityEngine.Random.Range(0, StarterPack.Instance.Units.Count);
-            var unitData = StarterPack.Instance.Units[index];
 
-            GameObject unit = Instantiate(unitPrefab);
-            //unit.GetComponent<UnitController>().Initialize(unitData, index);
-
+            var unit = Instantiate(unitPrefab);
             unit.transform.SetParent(shopUnitSlots[i].transform, false);
+
+            int rand = Random.Range(0, StarterPack.Instance.Units.Count);
+            var data = StarterPack.Instance.Units[rand];
+
+            var controller = unit.GetComponent<UnitController>();
+            controller.Initialize(data, rand, null);
         }
 
         GameManager.Instance.SetPhaseShop();

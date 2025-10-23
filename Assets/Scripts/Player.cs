@@ -84,6 +84,8 @@ public class Player : MonoBehaviour
 
             Data.ShopUnitModels[i] = unit.Model;
         }
+
+        SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 }
 

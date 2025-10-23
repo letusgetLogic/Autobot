@@ -23,9 +23,7 @@ public class GameManager : MonoBehaviour
     public int RollCost => rollCost;
     [SerializeField] private int rollCost = 1;
 
-    private GameData gameData { get; set; }
-    private Game currentGame { get; set; }
-    public Game CurrentGame => currentGame;
+    public Game CurrentGame { get; set; }
     private Player[] players { get; set; }
 
 
@@ -38,7 +36,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
 
     }
@@ -80,15 +78,15 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RunModeSingle()
     {
-        if (currentGame.CurrentPlayerIndex < players.Length)
+        if (CurrentGame.CurrentPlayerIndex < players.Length)
         {
             SceneManager.LoadScene("PhaseShop");
-            StartCoroutine(StartTurn(players[currentGame.CurrentPlayerIndex]));
-            currentGame.CurrentPlayerIndex++;
+            StartCoroutine(StartTurn(players[CurrentGame.CurrentPlayerIndex]));
+            CurrentGame.CurrentPlayerIndex++;
         }
         else
         {
-            currentGame.CurrentPlayerIndex = 0;
+            CurrentGame.CurrentPlayerIndex = 0;
             SceneManager.LoadScene("PhaseBattle");
             StartCoroutine(RunPhaseBattle());
         }
@@ -114,7 +112,7 @@ public class GameManager : MonoBehaviour
             {
                 players[0].Data = savedGame.PlayerData1;
                 players[1].Data = savedGame.PlayerData2;
-                currentGame = savedGame;
+                CurrentGame = savedGame;
                 return;
             }
         }
@@ -123,7 +121,7 @@ public class GameManager : MonoBehaviour
         players[0].Data = new PlayerData(name1, lives, 0, startCoins);
         players[1].Data = new PlayerData(name2, lives, 0, startCoins);
 
-        currentGame = new Game(
+        CurrentGame = new Game(
                 GameMode.Single,
                 2,
                 timer,
@@ -143,10 +141,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitUntil(() =>
             PhaseShopUnitManager.Instance != null &&
-            PhaseShopUI.Instance != null &&
-            StarterPack.Instance != null);
+            PhaseShopUI.Instance != null);
 
-        currentGame.State = GameState.StartOfTurn;
+        CurrentGame.State = GameState.StartOfTurn;
 
         player.StartShop();
     }
@@ -156,7 +153,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void SetPhaseShop()
     {
-        currentGame.State = GameState.ShopPhase;
+        CurrentGame.State = GameState.ShopPhase;
     }
 
     /// <summary>
@@ -164,8 +161,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndPhaseShop()
     {
-        currentGame.State = GameState.EndOfTurn;
-        SaveSystem.SaveGame(currentGame);
+        CurrentGame.State = GameState.EndOfTurn;
+        SaveSystem.SaveGame(CurrentGame);
         RunModeSingle();
     }
 
@@ -180,14 +177,14 @@ public class GameManager : MonoBehaviour
         PhaseBattleView.Instance != null
         );
 
-        currentGame.State = GameState.StartOfBattle;
+        CurrentGame.State = GameState.StartOfBattle;
         PhaseBattleController.Instance.Run(players[0], players[1]);
     }
 
     public void EndPhaseBattle()
     {
-        currentGame.State = GameState.EndOfBattle;
-        SaveSystem.SaveGame(currentGame);
+        CurrentGame.State = GameState.EndOfBattle;
+        SaveSystem.SaveGame(CurrentGame);
         RunModeSingle();
     }
 
@@ -206,7 +203,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndGame()
     {
-        currentGame.State = GameState.EndOfGame;
+        CurrentGame.State = GameState.EndOfGame;
 
         SceneManager.LoadScene("Menu");
     }

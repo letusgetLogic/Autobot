@@ -305,8 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273ee789f10627d4ba5f62891d6f6f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhaseShopUI
-  startCoins: 10
-  rollCost: 1
   durationCoinsRedDefault: 0.2
   nameText: {fileID: 1447329010790009410}
   coinsText: {fileID: 247628768}
@@ -2183,81 +2181,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4064368057441830690, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
   m_PrefabInstance: {fileID: 1466856440}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1932326060
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1932326062}
-  - component: {fileID: 1932326061}
-  m_Layer: 0
-  m_Name: StarterPack
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1932326061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932326060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 882816279e7ece644bfdabb6efe10b6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StartPack
-  XpToLv2: 3
-  XpToLv3: 6
-  AddHealth: 1
-  AddAttack: 1
-  tier1AvaiableAtTurn: 1
-  tier2AvaiableAtTurn: 0
-  tier3AvaiableAtTurn: 0
-  tier4AvaiableAtTurn: 0
-  tier5AvaiableAtTurn: 0
-  tier6AvaiableAtTurn: 0
-  UnitsTier1:
-  - {fileID: 11400000, guid: 799c1947d8109934fa2579f5d2061a63, type: 2}
-  - {fileID: 11400000, guid: 7ac86034f154ac9498f1cdcbbe4138b8, type: 2}
-  - {fileID: 11400000, guid: 2037b822d16632941be28296cd59cb1e, type: 2}
-  - {fileID: 11400000, guid: e2e9fb2a475fa634f9618347502e5383, type: 2}
-  - {fileID: 11400000, guid: d30caaa0cce24c845a92e0af6aff2051, type: 2}
-  - {fileID: 11400000, guid: 00fb7145e2ecc0d4f8fe8704c3fbf16b, type: 2}
-  - {fileID: 11400000, guid: f73427021a13f8847a8416f1756a0ea1, type: 2}
-  - {fileID: 11400000, guid: 1d05926159be9e743982e01553402257, type: 2}
-  - {fileID: 11400000, guid: c396b9a781cb73a4f8fbf7218b0883ea, type: 2}
-  UnitsTier2: []
-  UnitsTier3: []
-  UnitsTier4: []
-  UnitsTier5: []
-  UnitsTier6: []
-  ItemsTier1: []
-  ItemsTier2: []
-  ItemsTier3: []
-  ItemsTier4: []
-  ItemsTier5: []
-  ItemsTier6: []
---- !u!4 &1932326062
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932326060}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.22691, y: 0.03485, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1993504824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3256,6 +3179,5 @@ SceneRoots:
   - {fileID: 1331529833}
   - {fileID: 121358782}
   - {fileID: 757930069}
-  - {fileID: 1932326062}
   - {fileID: 155894681}
   - {fileID: 1663862021}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net.Core;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -46,7 +47,13 @@ class SoUnitEditor : Editor
         if (data.Levels == null || data.Levels.Length != data.LevelLimit)
             data.Levels = new Level[data.LevelLimit];
         if (showLevelSections == null || showLevelSections.Length != data.Levels.Length)
+        {
             showLevelSections = new bool[data.Levels.Length];
+            for (int i = 0; i < showLevelSections.Length; i++)
+            {
+                showLevelSections[i] = true;
+            }
+        }
         if (showTriggerSections == null || showTriggerSections.Length != data.Levels.Length)
             showTriggerSections = new bool[data.Levels.Length];
 
@@ -56,6 +63,7 @@ class SoUnitEditor : Editor
             {
                 data.Levels[i] = data.Levels[0];
                 data.Levels[i].Sell = data.Levels[i - 1].Sell + 1;
+                data.Levels[i].SummonUnits = null;
             }
         }
 
@@ -63,6 +71,7 @@ class SoUnitEditor : Editor
 
         for (int i = 0; i < data.LevelLimit; i++)
         {
+            data.Levels[i].Number = i + 1;
             DrawLevel(ref data.Levels[i], i);
         }
 
@@ -116,7 +125,7 @@ class SoUnitEditor : Editor
             _level.SummonForOpponent = false;
         }
 
-            EditorGUI.indentLevel--;
+        EditorGUI.indentLevel--;
     }
 
     /// <summary>
@@ -164,7 +173,7 @@ class SoUnitEditor : Editor
             case DoType.Deal:
                 DrawDealAttributes(ref _level);
                 break;
-            case DoType.GainCoin:   
+            case DoType.GainCoin:
                 DrawGainCoinAttributes(ref _level);
                 break;
         }

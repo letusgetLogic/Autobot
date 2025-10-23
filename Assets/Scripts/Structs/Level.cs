@@ -1,34 +1,36 @@
-﻿public struct Level
+﻿using UnityEngine;
+
+public struct Level
     {
-    public int Number { get; set; }
-
-    public string Description { get; set; }
-    public int Sell { get; set; }
-
-    public bool HasAbility { get; set; }
-
-    public TriggerType TriggerType { get; set; }
-    public int TriggerTimes { get; set; }
-    public int TriggerTimesLimit { get; set; }
-    public DoType DoType { get; set; }
-    public FromWho FromWho { get; set; }
-    public ToWho ToWho { get; set; }
-    public int ToWhoCount { get; set; }
-    public AbilityDuration AbilityDuration { get; set; }
-
-    // Buff
-    public int HealthBuff { get; set; }
-    public int AttackBuff { get; set; }
-
-    // Summon
-    public int UnitLimit { get; set; }
-    public SoUnit[] SummonUnits { get; set; }
-    public bool SummonForOpponent { get; set; }
-
-    // Deal
-    public int DealDamage { get; set; }
-
-    // Gain
-    public int GainCoin { get; set; }
+    [field: SerializeField] public int Number { get; set; }
+   
+    [field: SerializeField] public string Description { get; set; }
+    [field: SerializeField] public int Sell { get; set; }
+  
+    [field: SerializeField] public bool HasAbility { get; set; }
+ 
+    [field: SerializeField] public TriggerType TriggerType { get; set; }
+    [field: SerializeField] public int TriggerTimes { get; set; }
+    [field: SerializeField] public int TriggerTimesLimit { get; set; }
+    [field: SerializeField] public DoType DoType { get; set; }
+    [field: SerializeField] public FromWho FromWho { get; set; }
+    [field: SerializeField] public ToWho ToWho { get; set; }
+    [field: SerializeField] public int ToWhoCount { get; set; }
+    [field: SerializeField] public AbilityDuration AbilityDuration { get; set; }
+  
+     // Buff
+    [field: SerializeField] public int HealthBuff { get; set; }
+    [field: SerializeField] public int AttackBuff { get; set; }
+   
+     // Summon
+    [field: SerializeField] public int UnitLimit { get; set; }
+    [field: SerializeField] public SoUnit[] SummonUnits { get; set; }
+    [field: SerializeField] public bool SummonForOpponent { get; set; }
+  
+     // Deal
+    [field: SerializeField] public int DealDamage { get; set; }
+  
+     // Gain
+    [field: SerializeField] public int GainCoin { get; set; }
 }
 

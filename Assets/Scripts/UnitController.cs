@@ -33,20 +33,8 @@ public class UnitController : MonoBehaviour
         else
             model = _model;
 
-        InitializeLevel();
-        UpdateData(true);
-    }
-
-    /// <summary>
-    /// Initializes the level number and the current level of unit.
-    /// </summary>
-    public void InitializeLevel()
-    {
-        for (int i = 0; i < Data.Levels.Length; i++)
-        {
-            Data.Levels[i].Number = i + 1;
-        }
         CurrentLevel = Data.Levels[model.CurrentLevelIndex];
+        UpdateData(true);
     }
 
     #region Mouse Event
