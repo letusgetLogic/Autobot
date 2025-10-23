@@ -1,4 +1,6 @@
-﻿public abstract class AbilityBase
+﻿using NUnit.Framework;
+
+public abstract class AbilityBase
 {
     protected UnitController Controller { get; private set; }
     protected AbilityDuration Duration { get; private set; }
@@ -8,7 +10,7 @@
         Duration = duration;
     }
 
-    public abstract void Activate();
+    public abstract void Activate(bool isBattle);
 
     public static AbilityBase GetAbility(UnitController controller, Level level)
     {
@@ -22,5 +24,16 @@
         }
 
         return null;
+    }
+    
+    public static bool IsPernament(AbilityDuration duration, bool isBattle)
+    {
+        if (duration == AbilityDuration.Permanent)
+            return true;
+
+        if (duration == AbilityDuration.Both && !isBattle)
+            return true;
+
+        return false;
     }
 }

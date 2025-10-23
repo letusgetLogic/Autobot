@@ -24,7 +24,7 @@
             var unit = slot.UnitController();
             if (unit != null)
             {
-                var trigger = unit.Model.CurrentLevel.TriggerType;
+                var trigger = unit.CurrentLevel.TriggerType;
                 if (trigger == TriggerType.StartOfBattle)
                 {
 

@@ -38,13 +38,9 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
             if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, draggingController))
             {
                 if (draggingModel.ManageState == UnitState.InSlotShop)
-                    PhaseShopUI.Instance.UpdateCoin(-draggingModel.Data.Cost);
+                    PhaseShopUI.Instance.UpdateCoin(-draggingController.Data.Cost.Value);
 
-                unitOnSlot.UpdateLevel(
-                    draggingModel.XP,
-                    draggingModel.BattleHealth - draggingModel.Data.Health,
-                    draggingModel.BattleAttack - draggingModel.Data.Attack
-                    );
+                unitOnSlot.UpdateLevel(draggingModel);
 
                 Destroy(draggingUnit);
             }
@@ -52,7 +48,7 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
         else
         {
             if (draggingModel.ManageState == UnitState.InSlotShop)
-                PhaseShopUI.Instance.UpdateCoin(-draggingModel.Data.Cost);
+                PhaseShopUI.Instance.UpdateCoin(-draggingController.Data.Cost.Value);
 
             PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
         }

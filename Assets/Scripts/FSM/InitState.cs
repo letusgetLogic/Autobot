@@ -47,22 +47,24 @@ public class InitState : StateBase
     /// </summary>
     private void SpawnUnits(Player player, Slot[] slots, bool isRight)
     {
-        //for (int i = 0; i < player.BattleUnits.Length; i++)
-        //{
-        //    if (player.BattleUnits[i] != null)
-        //    {
-        //        var unit = PhaseBattleController.Instance.Spawn();
-        //        unit.transform.SetParent(slots[i].transform, false);
+        for (int i = 0; i < slots.Length; i++)
+        {
+            var unitModel = player.Data.BattleUnitModels[i];
+            if (unitModel != null)
+            {
+                var unit = PhaseBattleController.Instance.Spawn();
+                unit.transform.SetParent(slots[i].transform, false);
 
-        //        var controller = unit.GetComponent<UnitController>();
-        //        controller.Initialize(player.BattleUnits[i].Model.Data);
+                var controller = unit.GetComponent<UnitController>();
+                controller.Initialize(
+                    StarterPack.Instance.Units[unitModel.Index], unitModel.Index, unitModel);
 
-        //        if (isRight)
-        //        {
-        //            controller.View.SetRightSide();
-        //            controller.Model.IsTeam1 = false;
-        //        }
-        //    }
-        //}
+                if (isRight)
+                {
+                    controller.View.SetRightSide();
+                    controller.Model.IsTeam1 = false;
+                }
+            }
+        }
     }
 }

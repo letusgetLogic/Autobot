@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 [System.Serializable]
 public class UnitController : MonoBehaviour
@@ -10,32 +11,42 @@ public class UnitController : MonoBehaviour
     private UnitView view;
 
     public UnitModel Model => model;
-    private UnitModel model;
-    
+    private UnitModel model { get; set; }
+
+    public SoUnit Data { get; private set; }
+    public int BattleHealth { get; set; }
+    public int BattleAttack { get; set; }
+    public Level CurrentLevel { get; set; }
+    public AbilityBase Ability => AbilityBase.GetAbility(this, CurrentLevel);
+    public bool IsMaxed => CurrentLevel.Number == Data.Levels.Length;
 
     /// <summary>
     /// Initializes data.
     /// </summary>
     /// <param name="_data"></param>
-    public void Initialize(SoUnit _data, int index)
+    public void Initialize(SoUnit _data, int index, UnitModel _model)
     {
-        model = new UnitModel(this, _data, index);
-        model.InitializeLevel();
+        Data = _data;
+
+        if (model == null)
+            model = new UnitModel(_data, index);
+        else
+            model = _model;
+
+        InitializeLevel();
         UpdateData(true);
     }
 
     /// <summary>
-    /// Initializes data.
+    /// Initializes the level number and the current level of unit.
     /// </summary>
-    /// <param name="_data"></param>
-    public void Initialize(int xp, int battleHealth, int battleAttack, UnitState manageState)
+    public void InitializeLevel()
     {
-        model.SetXP(xp);
-        model.BattleHealth = battleHealth;
-        model.BattleAttack = battleAttack;
-        model.ManageState = manageState;
-        model.InitializeLevel();
-        UpdateData(true);
+        for (int i = 0; i < Data.Levels.Length; i++)
+        {
+            Data.Levels[i].Number = i + 1;
+        }
+        CurrentLevel = Data.Levels[model.CurrentLevelIndex];
     }
 
     #region Mouse Event
@@ -61,7 +72,7 @@ public class UnitController : MonoBehaviour
 
     #region PhaseShop
 
-        #region Manage buttons
+    #region Manage buttons
 
     /// <summary>
     /// Sets the manage state freezed and set the sprite active.
@@ -89,13 +100,13 @@ public class UnitController : MonoBehaviour
         Destroy(gameObject);
     }
 
-        #endregion
-    
+    #endregion
 
-        #region Update Level
+
+    #region Update Level
 
     /// <summary>
-    /// Updates the level, xp, health and attack.
+    /// Updates stats.
     /// </summary>
     public void UpdateLevel()
     {
@@ -104,13 +115,17 @@ public class UnitController : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the level, xp, health and attack.
+    /// Updates stats while fusioning.
     /// </summary>
-    public void UpdateLevel(int addXp, int addHealth, int addAttack)
+    public void UpdateLevel(UnitModel draggingModel)
     {
-        model.SetXP(model.XP + addXp);
-        model.BattleHealth += addHealth + StarterPack.Instance.AddHealth;
-        model.BattleAttack += addAttack + StarterPack.Instance.AddAttack;
+        model.XP += draggingModel.XP;
+        model.BuffHealth += draggingModel.BuffHealth;
+        model.BuffAttack += draggingModel.BuffAttack;
+        model.BuffHealthTemp += draggingModel.BuffHealthTemp;
+        model.BuffAttackTemp += draggingModel.BuffAttackTemp;
+        model.BasisHealth += StarterPack.Instance.AddHealthWhileFusion + draggingModel.BuffHealth;
+        model.BasisAttack += StarterPack.Instance.AddAttackWhileFusion + draggingModel.BuffAttack;
         UpdateLevelXP(model.XP);
         UpdateData(false);
     }
@@ -125,28 +140,28 @@ public class UnitController : MonoBehaviour
         {//                       level  box1   box2  step1  step2  box3  step3  step4  step5  
             case 1:
                 view.SetStepActive("1", false, true, false, false, false, false, false, false);
-                Model.CurrentLevel = Model.Data.Levels[0];
+                SetCurrentLevel(0);
                 break;
             case 2:
                 view.SetStepActive("1", false, true, true, false, false, false, false, false);
-                Model.CurrentLevel = Model.Data.Levels[0];
+                SetCurrentLevel(0);
                 break;
             case 3:
                 view.SetStepActive("1", false, true, true, true, false, false, false, false);
-                Model.CurrentLevel = Model.Data.Levels[0];
+                SetCurrentLevel(0);
                 StartCoroutine(DelayLevel2());
                 break;
             case 4:
                 view.SetStepActive("2", false, false, false, false, true, true, false, false);
-                Model.CurrentLevel = Model.Data.Levels[1];
+                SetCurrentLevel(1);
                 break;
             case 5:
                 view.SetStepActive("2", false, false, false, false, true, true, true, false);
-                Model.CurrentLevel = Model.Data.Levels[1];
+                SetCurrentLevel(1);
                 break;
             case 6:
                 view.SetStepActive("2", false, false, false, false, true, true, true, true);
-                Model.CurrentLevel = Model.Data.Levels[1];
+                SetCurrentLevel(1);
                 StartCoroutine(DelayLevel3());
                 break;
         }
@@ -161,7 +176,7 @@ public class UnitController : MonoBehaviour
         yield return new WaitForSeconds(view.DelayUpdateLevel);
 
         view.SetStepActive("2", false, false, false, false, true, false, false, false);
-        Model.CurrentLevel = Model.Data.Levels[1];
+        SetCurrentLevel(1);
         UpdateData(false);
     }
 
@@ -174,11 +189,21 @@ public class UnitController : MonoBehaviour
         yield return new WaitForSeconds(view.DelayUpdateLevel);
 
         view.SetStepActive("3", true, false, false, false, false, false, false, false);
-        Model.CurrentLevel = Model.Data.Levels[2];
+        SetCurrentLevel(2);
         UpdateData(false);
     }
 
-        #endregion
+    /// <summary>
+    /// Sets the current level and index for saving data.
+    /// </summary>
+    /// <param name="index"></param>
+    private void SetCurrentLevel(int index)
+    {
+        CurrentLevel = Data.Levels[index];
+        Model.CurrentLevelIndex = index;
+    }
+
+    #endregion
 
     #endregion
 
@@ -191,27 +216,37 @@ public class UnitController : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(int damage)
     {
-        if (damage < 0) 
+        if (damage < 0)
             damage = 0;
 
-        model.BattleHealth -= damage;
+        model.BasisHealth -= damage;
         view.ShowDamage(damage);
         UpdateData(false);
     }
 
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
-        if (triggerType == model.CurrentLevel.TriggerType)
+        if (triggerType == CurrentLevel.TriggerType)
         {
-            return model.Ability;
+            return Ability;
         }
         return null;
     }
 
-    public void Buff(int addHealth, int addAttack)
+    public void Buff(bool isPernament, int addHealth, int addAttack)
     {
-        model.BattleHealth += addHealth;
-        model.BattleAttack += addAttack;
+        if (isPernament)
+        {
+            model.BuffHealth += addHealth;
+            model.BuffAttack += addAttack;
+        }
+        else
+        {
+            model.BuffHealthTemp += addHealth;
+            model.BuffAttackTemp += addAttack;
+        }
+
+        UpdateHealthAttack();
         view.ShowBuff(addHealth, addAttack);
         UpdateData(false);
     }
@@ -224,13 +259,19 @@ public class UnitController : MonoBehaviour
     public void UpdateData(bool isCoinCost)
     {
         view.SetData(
-           model.Data.Sprite,
-           model.Data.Name,
-           model.CurrentLevel.Description,
-           isCoinCost ? model.Data.Cost : model.CurrentLevel.Sell,
-           model.BattleHealth,
-           model.BattleAttack
+           Data.Sprite,
+           Data.Name,
+           CurrentLevel.Description,
+           isCoinCost ? Data.Cost.Value : CurrentLevel.Sell,
+           model.BasisHealth,
+           model.BasisAttack
            );
+    }
+
+    public void UpdateHealthAttack()
+    {
+        model.BasisHealth += model.BuffHealth + model.BuffHealthTemp;
+        model.BasisAttack += model.BuffAttack + model.BuffAttackTemp;
     }
 
     public void MoveTo(Vector3 target)

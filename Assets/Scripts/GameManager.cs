@@ -104,21 +104,20 @@ public class GameManager : MonoBehaviour
         players[0] = gameObject.AddComponent<Player>();
         players[1] = gameObject.AddComponent<Player>();
 
-        //// Load saved game.
-        //var gameData = SaveSystem.LoadGame();
+        // Load saved game.
+        var gameData = SaveSystem.LoadGame();
+        if (gameData != null)
+        {
+            var savedGame = gameData.SavedGames.Find(game => game.Mode == GameMode.Single);
 
-        //if (gameData != null)
-        //{
-        //    var savedGame = gameData.SavedGames.Find(game => game.Mode == GameMode.Single);
-
-        //    if (savedGame != null)
-        //    {
-        //        players[0].Data = savedGame.Player1;
-        //        players[1].Data = savedGame.Player2;
-        //        currentGame = savedGame;
-        //        return;
-        //    }
-        //}
+            if (savedGame != null)
+            {
+                players[0].Data = savedGame.PlayerData1;
+                players[1].Data = savedGame.PlayerData2;
+                currentGame = savedGame;
+                return;
+            }
+        }
 
         // Create a new game.
         players[0].Data = new PlayerData(name1, lives, 0, startCoins);

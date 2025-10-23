@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -57,37 +56,59 @@ public class PhaseShopUnitManager : MonoBehaviour
         SpawnUnits();
     }
 
+    /// <summary>
+    /// Instantiate prefab and initialize it with data.
+    /// </summary>
     private void SpawnUnits()
     {
-        if (Player.Data.BattleUnitDatas != null)
+        if (Player.Data.BattleUnitModels != null)
         {
-            for (int i = 0; i < Player.Data.BattleUnitDatas.Length; i++)
+            for (int i = 0; i < Player.Data.BattleUnitModels.Length; i++)
             {
-                var unitData = Player.Data.BattleUnitDatas[i];
-                if (unitData.Index == -1)
+                var unitModel = Player.Data.BattleUnitModels[i];
+                if (unitModel.Index == -1)
                     continue;
 
                 var unit = Instantiate(unitPrefab);
                 unit.transform.SetParent(battleSlots[i].transform, false);
 
                 var controller = unit.GetComponent<UnitController>();
-                controller.Initialize(StarterPack.Instance.Units[unitData.Index], unitData.Index);
-                controller.Initialize(unitData.XP, unitData.BattleHealth, unitData.BattleAttack, unitData.ManageState);
-                
+                controller.Initialize(
+                    StarterPack.Instance.Units[unitModel.Index], unitModel.Index, unitModel);
+
             }
         }
-        //if (player.FreezedUnits != null)
-        //{
-        //    for (int i = 0; i < player.FreezedUnits.Length; i++)
-        //    {
-        //        var unit = player.FreezedUnits[i];
-        //        if (unit != null)
-        //        {
-        //            unit.transform.SetParent(shopUnitSlots[i].transform, false);
-        //            unit.transform.localPosition = Vector3.zero;
-        //        }
-        //    }
-        //}
+        
+        if (Player.Data.ShopUnitModels != null)
+        {
+            for (int i = 0; i < Player.Data.ShopUnitModels.Length; i++)
+            {
+                var unitModel = Player.Data.ShopUnitModels[i];
+                if (unitModel.Index == -1)
+                    continue;
+
+                var unit = Instantiate(unitPrefab);
+                unit.transform.SetParent(shopUnitSlots[i].transform, false);
+
+                var controller = unit.GetComponent<UnitController>();
+                controller.Initialize(
+                    StarterPack.Instance.Units[unitModel.Index], unitModel.Index, unitModel);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < shopUnitSlots.Length; i++)
+            {
+                var unit = Instantiate(unitPrefab);
+                unit.transform.SetParent(battleSlots[i].transform, false);
+
+                int rand = Random.Range(0, StarterPack.Instance.Units.Count);
+                var data = StarterPack.Instance.Units[rand];
+
+                var controller = unit.GetComponent<UnitController>();
+                controller.Initialize(data, rand, null);
+            }
+        }
     }
 
     /// <summary>
@@ -124,7 +145,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             var unitData = StarterPack.Instance.Units[index];
 
             GameObject unit = Instantiate(unitPrefab);
-            unit.GetComponent<UnitController>().Initialize(unitData, index);
+            //unit.GetComponent<UnitController>().Initialize(unitData, index);
 
             unit.transform.SetParent(shopUnitSlots[i].transform, false);
         }
@@ -189,7 +210,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             controller.Model.ManageState = UnitState.InSlotBattle;
             controller.UpdateData(false);
 
-            Player.UpdateUnitID();
+            Player.UpdateUnitData();
         }
     }
 
@@ -201,8 +222,8 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <returns></returns>
     public bool IsFusible(UnitController onSlot, UnitController onDrag)
     {
-        if (onSlot.Model.IsMaxed ||
-            onDrag.Model.IsMaxed)
+        if (onSlot.IsMaxed ||
+            onDrag.IsMaxed)
             return false;
 
         if (onSlot.name == onDrag.name)

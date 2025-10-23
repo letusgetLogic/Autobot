@@ -9,12 +9,12 @@ public class Game
     public int Lives { get; set; }
     public int WinCondition { get; set; }
     public GameState State { get; set; }
-    public PlayerData Player1 { get; set; }
-    public PlayerData Player2 { get; set; }
+    public PlayerData PlayerData1 { get; set; }
+    public PlayerData PlayerData2 { get; set; }
     public int CurrentPlayerIndex { get; set; }
 
     public Game(GameMode mode, int playerAmount, float timer, int lives, int winCondition, 
-        GameState state, PlayerData player1, PlayerData player2)
+        GameState state, PlayerData playerData1, PlayerData playerData2)
     {
         Mode = mode;
         PlayerAmount = playerAmount;
@@ -22,8 +22,8 @@ public class Game
         Lives = lives;
         WinCondition = winCondition;
         State = state;
-        Player1 = player1;
-        Player2 = player2;
+        PlayerData1 = playerData1;
+        PlayerData2 = playerData2;
         CurrentPlayerIndex = 0;
     }
 }

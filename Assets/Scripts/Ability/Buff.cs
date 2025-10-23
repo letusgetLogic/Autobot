@@ -21,7 +21,7 @@ public class Buff : AbilityBase
         this.attack = attack;
     }
 
-    public override void Activate()
+    public override void Activate(bool isBattle)
     {
         if (toWho == ToWho.RandomFriend)
         {
@@ -29,34 +29,28 @@ public class Buff : AbilityBase
                 PhaseBattleController.Instance.Slots1 :
                 PhaseBattleController.Instance.Slots2;
 
-            List<int> index = new List<int>();
+            List<UnitController> unitOnSlot = new List<UnitController>();
 
             for (int i = 0; i < slots.Length; i++)
             {
                 var unit = slots[i].UnitController();
                 if (unit != null && unit != Controller)
                 {
-                    index.Add(i);
+                    unitOnSlot.Add(unit);
                 }
             }
 
-            List<int> alreadyBuffed = new List<int>();
-
-            for (int i = 0; i < toWhoCount && i < index.Count; i++)
+            for (int i = 0; i < toWhoCount && i < unitOnSlot.Count; i++)
             {
                 Random rnd = new Random();
-                int n = rnd.Next(index[0], index.Count);
+                int index = rnd.Next(0, unitOnSlot.Count);
 
-                if (alreadyBuffed.Contains(n))
-                {
-                    i--;
-                    continue;
-                }
+                var unit = unitOnSlot[index];
 
-                var unit = slots[n].UnitController();
-                unit.Buff(health, attack);
+                unit.Buff(AbilityBase.IsPernament(Duration, isBattle), health, attack);
+
+                unitOnSlot.Remove(unit);
             }
         }
     }
-
 }

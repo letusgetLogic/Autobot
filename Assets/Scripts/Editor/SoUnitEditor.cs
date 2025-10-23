@@ -40,7 +40,7 @@ class SoUnitEditor : Editor
         data.Health = EditorGUILayout.IntField(data.Health);
         EditorGUILayout.EndHorizontal();
 
-        data.Cost = EditorGUILayout.IntField("Cost", data.Cost);
+        data.Cost = (SoIntVariable)EditorGUILayout.ObjectField("Cost", data.Cost, typeof(SoIntVariable), false);
         data.LevelLimit = EditorGUILayout.IntField("Level Limit", data.LevelLimit);
 
         if (data.Levels == null || data.Levels.Length != data.LevelLimit)

@@ -10,18 +10,8 @@ public class PlayerData
     public int Turns { get; set; }
     public int Wins { get; set; }
     public int Coins { get; set; }
-    public UnitData[] BattleUnitDatas {  get; set; }
-    public UnitData[] ShopUnitDatas {  get; set; }
-
-    [System.Serializable]
-    public struct UnitData
-    {
-        public int Index { get; set; }
-        public int XP { get; set; }
-        public int BattleHealth { get; set; }
-        public int BattleAttack { get; set; }
-        public UnitState ManageState { get; set; }
-    }
+    public UnitModel[] BattleUnitModels {  get; set; }
+    public UnitModel[] ShopUnitModels {  get; set; }
 
     /// <summary>
     /// Assigns the template values.

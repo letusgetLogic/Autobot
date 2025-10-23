@@ -6,8 +6,11 @@
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        PhaseBattleController.Instance.Player1.HideFaintUnits(PhaseBattleController.Instance.Slots1);
-        PhaseBattleController.Instance.Player2.HideFaintUnits(PhaseBattleController.Instance.Slots2);
+        PhaseBattleController.Instance.Player1.ManageFaintUnits(
+            PhaseBattleController.Instance.Slots1, true);
+
+        PhaseBattleController.Instance.Player2.ManageFaintUnits(
+            PhaseBattleController.Instance.Slots2, true);
 
         ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, false));
     }
