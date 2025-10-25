@@ -83,15 +83,35 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(Sprite _sprite, string _name, string _description,
-        int _cost, int _health, int _attack)
+    public void SetData(Sprite _sprite, string _name)
     {
         dragSpriteRenderer.sprite = _sprite;
         shadowSpriteRenderer.sprite = _sprite;
         myName.text = _name;
         gameObject.name = _name;
+    }
+
+    /// <summary>
+    /// Sets the data for the unit view.
+    /// </summary>
+    public void SetData(string _description)
+    {
         ability.text = _description;
-        coin.text = _cost.ToString();
+    }
+
+    /// <summary>
+    /// Sets the data for the unit view.
+    /// </summary>
+    public void SetData(int _coin)
+    {
+        coin.text = _coin.ToString();
+    }
+
+    /// <summary>
+    /// Sets the data for the unit view.
+    /// </summary>
+    public void SetData(int _health, int _attack)
+    {
         health.text = _health.ToString();
         attack.text = _attack.ToString();
     }
@@ -197,10 +217,11 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows damage.
+    /// Shows damage and update health.
     /// </summary>
-    public void ShowDamage(int _damage)
+    public void ShowDamage(int _damage, int _health)
     {
+        health.text = _health.ToString();
         damage.enabled = true;
         damage.text = _damage.ToString();
         StartCoroutine(HideDamage());
@@ -217,13 +238,13 @@ public class UnitView : MonoBehaviour
         damage.enabled = false;
     }
 
-    public void ShowBuff(int health, int attack)
+    public void ShowBuff(int _health, int _attack)
     {
-        buffHealth.text = health.ToString();
-        buffHealth.enabled = health > 0;
+        buffHealth.text = _health.ToString();
+        buffHealth.enabled = _health > 0;
 
-        buffAttack.text = attack.ToString();
-        buffAttack.enabled = attack > 0;
+        buffAttack.text = _attack.ToString();
+        buffAttack.enabled = _attack > 0;
 
         StartCoroutine(HideBuff());
     }

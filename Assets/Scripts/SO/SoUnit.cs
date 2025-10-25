@@ -7,17 +7,17 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "Unit", menuName = "ScriptableObject/Unit")]
 public class SoUnit : ScriptableObject
 {
-    [field: SerializeField] public Sprite Sprite { get; set; }
+    public Sprite Sprite;
 
-    [field: SerializeField] public int ID { get; set; }
-    [field: SerializeField] public string Name { get; set; }
+    public int ID;
+    public string Name;
 
-    [field: SerializeField] public int Health { get; set; }
-    [field: SerializeField] public int Attack { get; set; }
-    [field: SerializeField] public SoIntVariable Cost { get; set; }
+    public int Health;
+    public int Attack;
+    public SoIntVariable Cost;
 
-    [field: SerializeField] public int LevelLimit { get; set; }
-    [field: SerializeField] public Level[] Levels { get; set; }
+    public int LevelLimit;
+    public Level[] Levels ;
 
     private void OnEnable()
     {

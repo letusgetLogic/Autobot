@@ -57,7 +57,12 @@ public class InitState : StateBase
 
                 var controller = unit.GetComponent<UnitController>();
                 controller.Initialize(
-                    StarterPack.Instance.Units[unitModel.Index], unitModel.Index, unitModel);
+                    StarterPack.Instance.Units[unitModel.Index], 
+                    unitModel.Index, 
+                    unitModel, 
+                    UnitState.InPhaseBattle);
+
+                unit.GetComponent<UnitView>().Shadow.enabled = false;
 
                 if (isRight)
                 {

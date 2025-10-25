@@ -1,15 +1,17 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 {
     public static PhaseBattleController Instance { get; private set; }
 
+    public UnityAction StartBattle {  get; private set; }
+
     [Header("Setting")]
     [SerializeField] 
     private float durationInsert = 0.5f;
-    [SerializeField]
-    private float delayDeath = 0.5f;
     [SerializeField]
     private float durationShowOutcome = 1.0f;
 
@@ -21,6 +23,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     [SerializeField]
     private GameObject unitPrefab;
+
+    public float SpeedMultiplier { get; set; } = 1f;
+    public float MaxMultiplier { get; set; } = 2f;
+
 
     public float DurationInsert => durationInsert;
     public float DurationShowOutcome => durationShowOutcome;
@@ -68,7 +74,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         if (state == null)
             return;
 
-        state.OnUpdate(this, Time.deltaTime);
+        state.OnUpdate(this, Time.deltaTime * SpeedMultiplier);
     }
 
     public void SetState(StateBase _state)
@@ -97,7 +103,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         Player1 = _player1;
         Player2 = _player2;
 
-       SetState(new InitState(0.5f));
+        StartBattle?.Invoke();
+        PhaseBattleView.Instance.SetSpeedButton(true);
+        SetState(new InitState(0.5f));
     }
 
     public GameObject Spawn()

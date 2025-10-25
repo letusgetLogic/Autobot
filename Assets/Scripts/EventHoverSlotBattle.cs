@@ -30,7 +30,7 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
         if (attached == null ||
-            attached.GetComponent<UnitController>().Model.ManageState == UnitState.Freezed)
+            attached.GetComponent<UnitController>().Model.UnitState == UnitState.Freezed)
             return;
 
         if (slot.Unit() == null ||

@@ -1,6 +1,4 @@
-﻿using log4net.Core;
-using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(SoUnit))]
@@ -46,6 +44,7 @@ class SoUnitEditor : Editor
 
         if (data.Levels == null || data.Levels.Length != data.LevelLimit)
             data.Levels = new Level[data.LevelLimit];
+
         if (showLevelSections == null || showLevelSections.Length != data.Levels.Length)
         {
             showLevelSections = new bool[data.Levels.Length];

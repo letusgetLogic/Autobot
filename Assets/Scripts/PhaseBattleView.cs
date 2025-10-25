@@ -21,7 +21,14 @@ public class PhaseBattleView : MonoBehaviour
     [Header("Info Label")]
     [SerializeField]
     private TextMeshProUGUI label;
-    
+
+    [SerializeField]
+    private GameObject
+        speedButton,
+        defaultMult,
+        maxMult;
+
+
     private void Awake()
     {
         if (Instance != null)
@@ -53,6 +60,34 @@ public class PhaseBattleView : MonoBehaviour
     {
         label.text = $"{winner} won this {(isGameOver ? "duel" : "battle")}!";
         label.enabled = true;
+    }
+
+    private bool isDefaultMult = true;
+
+    /// <summary>
+    /// Sets the speed multiplier active true/false.
+    /// </summary>
+    /// <param name="activ"></param>
+    public void SetSpeedButton(bool activ)
+    {
+        speedButton.SetActive(activ);
+    }
+
+    /// <summary>
+    /// Switchs speed multipliers.
+    /// </summary>
+    public void SetMultiplier()
+    {
+        isDefaultMult = !isDefaultMult;
+
+        var instance = PhaseBattleController.Instance;
+        instance.SpeedMultiplier =
+            isDefaultMult
+            ? 1f
+            : instance.MaxMultiplier;
+
+        defaultMult.SetActive(isDefaultMult);
+        maxMult.SetActive(!isDefaultMult);
     }
 
 }

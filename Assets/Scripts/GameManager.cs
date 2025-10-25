@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Mode Development")]
 
-    [SerializeField]
-    private bool isDeveloper;
+    [SerializeField] private bool isDeveloper;
+    [SerializeField] private bool deleteSaveGame;
 
     private string name1 = "Player 1";
     private string name2 = "Player 2";
@@ -72,6 +72,42 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// Initialize game with mode Singleplayer.
+    /// </summary>
+    private void InitSingle()
+    {
+        // Initialize player monobehaviours.
+        players = new Player[2];
+        players[0] = gameObject.AddComponent<Player>();
+        players[1] = gameObject.AddComponent<Player>();
+
+        // Load saved game.
+        var savedGame = SaveSystem.LoadGame(deleteSaveGame, GameMode.Single);
+        if (savedGame != null)
+        {
+            players[0].Data = savedGame.PlayerData1;
+            players[1].Data = savedGame.PlayerData2;
+            CurrentGame = savedGame;
+            return;
+        }
+
+        // Create a new game.
+        players[0].Data = new PlayerData(name1, lives, 0);
+        players[1].Data = new PlayerData(name2, lives, 0);
+
+        CurrentGame = new Game(
+                GameMode.Single,
+                2,
+                timer,
+                lives,
+                0,
+                GameState.LoadGame,
+                players[0].Data,
+                players[1].Data
+                );
+
+    }
 
     /// <summary>
     /// Starts game mode singleplayer.
@@ -92,47 +128,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Initialize game with mode Singleplayer.
-    /// </summary>
-    private void InitSingle()
-    {
-        // Initialize player monobehaviours.
-        players = new Player[2];
-        players[0] = gameObject.AddComponent<Player>();
-        players[1] = gameObject.AddComponent<Player>();
-
-        // Load saved game.
-        var gameData = SaveSystem.LoadGame();
-        if (gameData != null)
-        {
-            var savedGame = gameData.SavedGames.Find(game => game.Mode == GameMode.Single);
-
-            if (savedGame != null)
-            {
-                players[0].Data = savedGame.PlayerData1;
-                players[1].Data = savedGame.PlayerData2;
-                CurrentGame = savedGame;
-                return;
-            }
-        }
-
-        // Create a new game.
-        players[0].Data = new PlayerData(name1, lives, 0, startCoins);
-        players[1].Data = new PlayerData(name2, lives, 0, startCoins);
-
-        CurrentGame = new Game(
-                GameMode.Single,
-                2,
-                timer,
-                lives,
-                0,
-                GameState.LoadGame,
-                players[0].Data,
-                players[1].Data
-                );
-       
-    }
 
     /// <summary>
     /// Starts the phase shop.
@@ -194,8 +189,17 @@ public class GameManager : MonoBehaviour
     /// <param name="outcome"></param>
     public void UpdatePlayerStats(int outcome)
     {
-        players[1].Data.Lives += outcome;
-        players[0].Data.Lives += -outcome;
+        switch (outcome)
+        {
+            case 0:
+                break;
+            case -1:
+                players[1].Data.Lives--;
+                break;
+            case 1:
+                players[0].Data.Lives--;
+                break;
+        }
     }
 
     /// <summary>

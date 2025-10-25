@@ -22,7 +22,10 @@
         else
         {
             if (outcome)
-                ctx.SetState(new BattleOverState(1f));
+            {
+               
+                ctx.SetState(new BattleOverState(0.5f));
+            }
             else
             {
                 if (startOfBattle)
@@ -50,6 +53,8 @@
                 PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player1.Data.Name, false);
                 GameManager.Instance.UpdatePlayerStats(-1); // Left Wins
             }
+
+            PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
         }
         else
@@ -64,6 +69,8 @@
                 PhaseBattleView.Instance.ShowWinner("Nobody", false);
                 GameManager.Instance.UpdatePlayerStats(0); // Draw
             }
+
+            PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
         }
     }

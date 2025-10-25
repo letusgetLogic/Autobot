@@ -1,7 +1,5 @@
 ﻿public class BattleOverState : StateBase
 {
-    private bool isGameOver = false;
-
     public BattleOverState(float maxCount) : base(maxCount)
     {
     }
@@ -13,8 +11,6 @@
 
         if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
         {
-            player1.SetDefault();
-            player2.SetDefault();
             GameManager.Instance.EndPhaseBattle();
             return;
         }
@@ -26,12 +22,11 @@
         {
             PhaseBattleView.Instance.ShowWinner(player1.Data.Name, true);
         }
-        isGameOver = true;
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        if (Count < 1f)
+        if (Count < MaxCount)
         {
             Count += speed;
         }

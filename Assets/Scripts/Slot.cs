@@ -98,7 +98,7 @@ public class Slot : MonoBehaviour
             return;
 
         if (UnitController() == null ||
-            UnitController().Model.ManageState == UnitState.Freezed)
+            UnitController().Model.UnitState == UnitState.Freezed)
             return;
 
         if (UnitView() == null)

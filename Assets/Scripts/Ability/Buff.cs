@@ -47,7 +47,7 @@ public class Buff : AbilityBase
 
                 var unit = unitOnSlot[index];
 
-                unit.Buff(AbilityBase.IsPernament(Duration, isBattle), health, attack);
+                unit.Buff(AbilityBase.IsPernament(Duration, isBattle), health, attack, isBattle);
 
                 unitOnSlot.Remove(unit);
             }

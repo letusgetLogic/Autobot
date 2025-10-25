@@ -23,13 +23,13 @@
 
     private void AttackEachOther()
     {
-        var unit1 = PhaseBattleController.Instance.AttackingUnit1;
-        var unit2 = PhaseBattleController.Instance.AttackingUnit2;
+        UnitController unit1 = PhaseBattleController.Instance.AttackingUnit1;
+        UnitController unit2 = PhaseBattleController.Instance.AttackingUnit2;
 
         if (unit1 == null || unit2 == null)
             return;
 
-        unit1.TakeDamage(unit2.Model.BasisAttack);
-        unit2.TakeDamage(unit1.Model.BasisAttack);
+        unit1.TakeDamage(unit2.BattleAttack);
+        unit2.TakeDamage(unit1.BattleAttack);
     }
 }

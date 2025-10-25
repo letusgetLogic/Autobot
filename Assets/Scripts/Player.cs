@@ -11,8 +11,8 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StartShop()
     {
+        SetDefault();
         PhaseShopUnitManager.Instance.Initialize(this);
-        PhaseShopUnitManager.Instance.TriggerStartOfTurn();
         StarterPack.Instance.AddUnitsByTier(Data.Turns);
         PhaseShopUI.Instance.UpdateUI(this);
         PhaseShopUnitManager.Instance.SpawnShopUnits();
@@ -44,14 +44,14 @@ public class Player : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            var unit = slots[i].UnitController();
-            if (unit != null && unit.Model.IsFaint)
+            var controller = slots[i].UnitController();
+            if (controller != null && controller.IsFaint)
             {
-                var ability = unit.TriggerAbility(TriggerType.Faint);
+                var ability = controller.TriggerAbility(TriggerType.Faint);
                 if (ability != null)
                     ability.Activate(isBattle);
 
-                Destroy(unit);
+                Destroy(controller.gameObject);
             }
         }
     }

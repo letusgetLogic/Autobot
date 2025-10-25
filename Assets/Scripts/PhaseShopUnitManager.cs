@@ -34,7 +34,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     public Player Player { get; private set; }
     public GameObject AttachedGameObject { get; set; }
     public bool StopDragging { get; set; } = false;
-
     private void Awake()
     {
         if (Instance != null)
@@ -66,7 +65,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             for (int i = 0; i < Player.Data.BattleUnitModels.Length; i++)
             {
                 var unitModel = Player.Data.BattleUnitModels[i];
-                if (unitModel.Index == -1)
+                if (unitModel == null)
                     continue;
 
                 var unit = Instantiate(unitPrefab);
@@ -74,17 +73,20 @@ public class PhaseShopUnitManager : MonoBehaviour
 
                 var controller = unit.GetComponent<UnitController>();
                 controller.Initialize(
-                    StarterPack.Instance.Units[unitModel.Index], unitModel.Index, unitModel);
+                    StarterPack.Instance.Units[unitModel.Index],
+                    unitModel.Index,
+                    unitModel,
+                    unitModel.UnitState);
 
             }
         }
-        
+
         if (Player.Data.ShopUnitModels != null)
         {
             for (int i = 0; i < Player.Data.ShopUnitModels.Length; i++)
             {
                 var unitModel = Player.Data.ShopUnitModels[i];
-                if (unitModel.Index == -1)
+                if (unitModel == null)
                     continue;
 
                 var unit = Instantiate(unitPrefab);
@@ -92,7 +94,10 @@ public class PhaseShopUnitManager : MonoBehaviour
 
                 var controller = unit.GetComponent<UnitController>();
                 controller.Initialize(
-                    StarterPack.Instance.Units[unitModel.Index], unitModel.Index, unitModel);
+                    StarterPack.Instance.Units[unitModel.Index],
+                    unitModel.Index,
+                    unitModel,
+                    unitModel.UnitState);
             }
         }
     }
@@ -122,7 +127,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             var unitController = shopUnitSlotScripts[i].UnitController();
             if (unitController != null)
             {
-                if (unitController.Model.ManageState == UnitState.Freezed)
+                if (unitController.Model.UnitState == UnitState.Freezed)
                     continue;
 
                 Destroy(unitController.gameObject);
@@ -135,12 +140,16 @@ public class PhaseShopUnitManager : MonoBehaviour
             var data = StarterPack.Instance.Units[rand];
 
             var controller = unit.GetComponent<UnitController>();
-            controller.Initialize(data, rand, null);
+            controller.Initialize(data, rand, null, UnitState.InSlotShop);
         }
 
         GameManager.Instance.SetPhaseShop();
     }
 
+    /// <summary>
+    /// Sets attached game object being clicked or dragged.
+    /// </summary>
+    /// <param name="target"></param>
     public void SetAttachedGameObject(GameObject target)
     {
         if (target == null)
@@ -159,11 +168,6 @@ public class PhaseShopUnitManager : MonoBehaviour
         AttachedGameObject = target;
     }
 
-    public void TriggerStartOfTurn()
-    {
-
-    }
-
     /// <summary>
     /// Transports the attached game object to the drop slot.
     /// </summary>
@@ -175,7 +179,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         bool mouseRelease, bool disableShadow)
     {
         if (attached == null ||
-            attached.GetComponent<UnitController>().Model.ManageState == UnitState.Freezed)
+            attached.GetComponent<UnitController>().Model.UnitState == UnitState.Freezed)
             return;
 
         attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
@@ -184,22 +188,19 @@ public class PhaseShopUnitManager : MonoBehaviour
         attached.transform.SetParent(dropSlot, false);
         attached.transform.localPosition = Vector3.zero;
 
-        if (attached.CompareTag("Unit"))
-        {
-            var unitView = attached.GetComponent<UnitView>();
-            var controller = attached.GetComponent<UnitController>();
+        var unitView = attached.GetComponent<UnitView>();
+        var controller = attached.GetComponent<UnitController>();
 
-            if (mouseRelease)
-                unitView.BeingReleased(null);
+        if (mouseRelease)
+            unitView.BeingReleased(null);
 
-            if (disableShadow)
-                unitView.Shadow.enabled = false;
+        if (disableShadow)
+            unitView.Shadow.enabled = false;
 
-            controller.Model.ManageState = UnitState.InSlotBattle;
-            controller.UpdateData(false);
+        controller.Model.UnitState = UnitState.InSlotBattle;
+        controller.View.SetData(controller.CurrentLevel.Sell);
 
-            Player.UpdateUnitData();
-        }
+        Player.UpdateUnitData();
     }
 
     /// <summary>
@@ -235,7 +236,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         while (search >= 0 && search < battleSlotScripts.Length)
         {
-            if (battleSlotScripts[search].Unit() != null && 
+            if (battleSlotScripts[search].Unit() != null &&
                 battleSlotScripts[search].Unit() != AttachedGameObject) // slot is occupied
             {
                 search += direction; // continue search for an emnpty space
@@ -247,13 +248,13 @@ public class PhaseShopUnitManager : MonoBehaviour
                     int previous = empty - direction; // swap the previous slot to the empty slot
 
                     var movedUnit = battleSlotScripts[previous].Unit();
-                    if (movedUnit == null || 
+                    if (movedUnit == null ||
                         movedUnit == AttachedGameObject)
                         break;
                     Transport(movedUnit, battleSlots[empty].transform, false, false);
                 }
 
-                if (AttachedGameObject.GetComponent<UnitController>().Model.ManageState
+                if (AttachedGameObject.GetComponent<UnitController>().Model.UnitState
                     == UnitState.InSlotBattle)
                 {
                     Transport(AttachedGameObject, battleSlots[target].transform, false, false);

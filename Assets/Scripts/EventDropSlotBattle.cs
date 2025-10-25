@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class EventDropSlotBattle : MonoBehaviour, IDropHandler
 {
     public UnityAction OnDropWhileOccupied { get; set; }
-   
+
     private Slot slot { get; set; }
 
     private void Start()
@@ -19,7 +19,7 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
             return;
 
         var draggingUnit = eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit();
-        if (draggingUnit == null) 
+        if (draggingUnit == null)
             return;
 
         var draggingController = draggingUnit.GetComponent<UnitController>();
@@ -27,32 +27,46 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
 
         var unitOnSlot = slot.UnitController();
 
-        if (PhaseShopUI.Instance.Player.Data.Coins <= 0)
+        if (draggingModel.UnitState == UnitState.InSlotShop)
         {
-            PhaseShopUI.Instance.HintNotEnoughCoins();
-            return;
-        }
-
-        if (unitOnSlot != null)
-        {
-            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, draggingController))
+            int cost = draggingController.Data.Cost.Value;
+            if (PhaseShopUI.Instance.Player.Data.Coins < cost) // case: buy but not enough coins.
             {
-                if (draggingModel.ManageState == UnitState.InSlotShop)
+                PhaseShopUI.Instance.HintNotEnoughCoins();
+                return;
+            }
+
+            if (unitOnSlot != null) 
+            {
+                if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, draggingController)) // case: buy, units are fusible.
+                {
                     PhaseShopUI.Instance.UpdateCoin(-draggingController.Data.Cost.Value);
-
-                unitOnSlot.UpdateLevel(draggingModel);
-
-                Destroy(draggingUnit);
+                    unitOnSlot.UpdateLevel(draggingModel, true);
+                    Destroy(draggingUnit);
+                }
+            }
+            else // case: buy and place dragging unit on empty slot.
+            {
+                PhaseShopUI.Instance.UpdateCoin(-draggingController.Data.Cost.Value);
+                PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
             }
         }
-        else
+        else if (draggingModel.UnitState == UnitState.InSlotBattle)
         {
-            if (draggingModel.ManageState == UnitState.InSlotShop)
-                PhaseShopUI.Instance.UpdateCoin(-draggingController.Data.Cost.Value);
-
-            PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
+            if (unitOnSlot != null)
+            {
+                if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, draggingController)) // case: only fusion.
+                {
+                    unitOnSlot.UpdateLevel(draggingModel, true);
+                    Destroy(draggingUnit);
+                }
+            }
+            else // case: move dragging unit to empty slot.
+            {
+                PhaseShopUnitManager.Instance.Transport(draggingUnit, transform.parent, true, true);
+            }
         }
-       
+
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
     }
 }

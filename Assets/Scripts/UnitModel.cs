@@ -4,7 +4,6 @@
 public class UnitModel
 {
     public int Index { get; private set; }
-    public int CurrentLevelIndex { get; set; }  
     public int BasisHealth { get; set; }
     public int BasisAttack { get; set; }
     private int xp;
@@ -18,21 +17,23 @@ public class UnitModel
             else xp = value;
         }
     }
-    public UnitState ManageState { get; set; }
-    public UnitModel(SoUnit _data, int index)
+    public UnitState UnitState { get; set; }
+    public UnitModel(SoUnit _data, int index, UnitState unitState)
     {
         Index = index;
-        CurrentLevelIndex = 0;
+        UnitState = unitState;
         BasisHealth = _data.Health;
         BasisAttack = _data.Attack;
         XP = 1;
-        ManageState = UnitState.InSlotShop;
+        UnitState = unitState;
+
+        BuffHealthTemp = 0;
+        BuffAttackTemp = 0;
     }
     public int BuffHealth { get; set; }
     public int BuffAttack { get; set; }
     public int BuffHealthTemp { get; set; }
     public int BuffAttackTemp { get; set; }
-    public bool IsFaint => BasisHealth <= 0;
     public bool IsTeam1 { get; set;} = true;
 
 }

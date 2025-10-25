@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Zombie Cricket 2
   m_EditorClassIdentifier: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <ID>k__BackingField: 0
-  <Name>k__BackingField: 
-  <Health>k__BackingField: 0
-  <Attack>k__BackingField: 0
-  <Cost>k__BackingField: {fileID: 0}
-  <LevelLimit>k__BackingField: 0
+  Sprite: {fileID: 0}
+  ID: 0
+  Name: 'Zombie Cricket '
+  Health: 2
+  Attack: 2
+  Cost: {fileID: 0}
+  LevelLimit: 0
+  Levels: []

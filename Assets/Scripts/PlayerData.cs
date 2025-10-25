@@ -19,12 +19,11 @@ public class PlayerData
     /// <param name="_name"></param>
     /// <param name="_lives"></param>
     /// <param name="_wins"></param>
-    public PlayerData(string _name, int _lives, int _wins, int coins)
+    public PlayerData(string _name, int _lives, int _wins)
     {
         Name = _name;
         Lives = _lives;
         WinCondition = _wins;
-        Turns = 1;
-        Coins = coins;
+        Turns = 0;
     }
 }

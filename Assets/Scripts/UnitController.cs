@@ -14,60 +14,80 @@ public class UnitController : MonoBehaviour
     private UnitModel model { get; set; }
 
     public SoUnit Data { get; private set; }
-    public int BattleHealth { get; set; }
-    public int BattleAttack { get; set; }
     public Level CurrentLevel { get; set; }
     public AbilityBase Ability => AbilityBase.GetAbility(this, CurrentLevel);
     public bool IsMaxed => CurrentLevel.Number == Data.Levels.Length;
+    public bool IsFaint => BattleHealth <= 0;
 
     /// <summary>
     /// Initializes data.
     /// </summary>
     /// <param name="_data"></param>
-    public void Initialize(SoUnit _data, int index, UnitModel _model)
+    public void Initialize(SoUnit _data, int index, UnitModel _model, UnitState unitState)
     {
         Data = _data;
 
-        if (model == null)
-            model = new UnitModel(_data, index);
+        if (_model == null)
+            model = new UnitModel(_data, index, unitState);
         else
             model = _model;
 
-        CurrentLevel = Data.Levels[model.CurrentLevelIndex];
-        UpdateData(true);
+        UpdateLevelXP(model.XP, IsPhaseShop(unitState));
+        UpdateHealthAttack();
+
+        view.SetData(Data.Sprite, Data.Name);
+        view.SetData(CurrentLevel.Description);
+        view.SetData(Coin(unitState));
+        view.SetData(BattleHealth, BattleAttack);
+
+        if (unitState == UnitState.Freezed)
+            GetFrezzed();
     }
 
-    #region Mouse Event
-
-    /// <summary>
-    /// Shows the description.
-    /// </summary>
-    public void ShowStats()
+    private int Coin(UnitState unitState)
     {
-        view.SetDescriptionActive(true);
+        switch (unitState)
+        {
+            case UnitState.InSlotShop:
+                return Data.Cost.Value;
+            case UnitState.Freezed:
+                return Data.Cost.Value;
+            case UnitState.InSlotBattle:
+                return CurrentLevel.Sell;
+            case UnitState.InPhaseBattle:
+                return 0;
+        }
+
+        return -1;
     }
 
-    /// <summary>
-    /// Hides the description.
-    /// </summary>
-    public void HideStats()
+    private bool IsPhaseShop(UnitState unitState)
     {
-        view.SetDescriptionActive(false);
+        switch (unitState)
+        {
+            case UnitState.InSlotShop:
+                return true;
+            case UnitState.Freezed:
+                return true;
+            case UnitState.InSlotBattle:
+                return true;
+            case UnitState.InPhaseBattle:
+                return false;
+        }
+
+        return default;
     }
-
-    #endregion
-
 
     #region PhaseShop
 
-    #region Manage buttons
+    #region Manage Buttons
 
     /// <summary>
     /// Sets the manage state freezed and set the sprite active.
     /// </summary>
     public void GetFrezzed()
     {
-        model.ManageState = UnitState.Freezed;
+        model.UnitState = UnitState.Freezed;
         view.IceCube.SetActive(true);
     }
 
@@ -76,7 +96,7 @@ public class UnitController : MonoBehaviour
     /// </summary>
     public void GetUnfrezzed()
     {
-        model.ManageState = UnitState.InSlotShop;
+        model.UnitState = UnitState.InSlotShop;
         view.IceCube.SetActive(false);
     }
 
@@ -94,35 +114,28 @@ public class UnitController : MonoBehaviour
     #region Update Level
 
     /// <summary>
-    /// Updates stats.
-    /// </summary>
-    public void UpdateLevel()
-    {
-        UpdateLevelXP(model.XP);
-        UpdateData(false);
-    }
-
-    /// <summary>
     /// Updates stats while fusioning.
     /// </summary>
-    public void UpdateLevel(UnitModel draggingModel)
+    public void UpdateLevel(UnitModel draggingModel, bool isPhaseShop)
     {
         model.XP += draggingModel.XP;
         model.BuffHealth += draggingModel.BuffHealth;
         model.BuffAttack += draggingModel.BuffAttack;
         model.BuffHealthTemp += draggingModel.BuffHealthTemp;
         model.BuffAttackTemp += draggingModel.BuffAttackTemp;
-        model.BasisHealth += StarterPack.Instance.AddHealthWhileFusion + draggingModel.BuffHealth;
-        model.BasisAttack += StarterPack.Instance.AddAttackWhileFusion + draggingModel.BuffAttack;
-        UpdateLevelXP(model.XP);
-        UpdateData(false);
+        model.BasisHealth += draggingModel.XP;
+        model.BasisAttack += draggingModel.XP;
+        UpdateLevelXP(model.XP, isPhaseShop);
+        UpdateHealthAttack();
+        view.SetData(BattleHealth, BattleAttack);
+        
     }
 
     /// <summary>
     /// Updates the level and xp.
     /// </summary>
     /// <param name="xp"></param>
-    private void UpdateLevelXP(int xp)
+    private void UpdateLevelXP(int xp, bool isPhaseShop)
     {
         switch (xp)
         {//                       level  box1   box2  step1  step2  box3  step3  step4  step5  
@@ -137,7 +150,7 @@ public class UnitController : MonoBehaviour
             case 3:
                 view.SetStepActive("1", false, true, true, true, false, false, false, false);
                 SetCurrentLevel(0);
-                StartCoroutine(DelayLevel2());
+                StartCoroutine(DelayLevel2(isPhaseShop));
                 break;
             case 4:
                 view.SetStepActive("2", false, false, false, false, true, true, false, false);
@@ -150,7 +163,7 @@ public class UnitController : MonoBehaviour
             case 6:
                 view.SetStepActive("2", false, false, false, false, true, true, true, true);
                 SetCurrentLevel(1);
-                StartCoroutine(DelayLevel3());
+                StartCoroutine(DelayLevel3(isPhaseShop));
                 break;
         }
     }
@@ -159,26 +172,28 @@ public class UnitController : MonoBehaviour
     /// Delays level 2.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayLevel2()
+    private IEnumerator DelayLevel2(bool isPhaseShop)
     {
-        yield return new WaitForSeconds(view.DelayUpdateLevel);
+        yield return new WaitForSeconds(isPhaseShop ? 
+            view.DelayUpdateLevel :
+            0f);
 
         view.SetStepActive("2", false, false, false, false, true, false, false, false);
         SetCurrentLevel(1);
-        UpdateData(false);
     }
 
     /// <summary>
     /// Delays level 3.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayLevel3()
+    private IEnumerator DelayLevel3(bool isPhaseShop)
     {
-        yield return new WaitForSeconds(view.DelayUpdateLevel);
+        yield return new WaitForSeconds(isPhaseShop ?
+            view.DelayUpdateLevel :
+            0f);
 
         view.SetStepActive("3", true, false, false, false, false, false, false, false);
         SetCurrentLevel(2);
-        UpdateData(false);
     }
 
     /// <summary>
@@ -188,7 +203,8 @@ public class UnitController : MonoBehaviour
     private void SetCurrentLevel(int index)
     {
         CurrentLevel = Data.Levels[index];
-        Model.CurrentLevelIndex = index;
+        view.SetData(CurrentLevel.Description);
+        view.SetData(CurrentLevel.Sell);
     }
 
     #endregion
@@ -197,6 +213,9 @@ public class UnitController : MonoBehaviour
 
 
     #region Phase Battle
+
+    public int BattleHealth { get; set; }
+    public int BattleAttack { get; set; }
 
     /// <summary>
     /// Takes damage.
@@ -207,10 +226,12 @@ public class UnitController : MonoBehaviour
         if (damage < 0)
             damage = 0;
 
-        model.BasisHealth -= damage;
-        view.ShowDamage(damage);
-        UpdateData(false);
+        BattleHealth -= damage;
+        view.ShowDamage(damage, BattleHealth);
     }
+
+
+    #endregion
 
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
@@ -221,45 +242,40 @@ public class UnitController : MonoBehaviour
         return null;
     }
 
-    public void Buff(bool isPernament, int addHealth, int addAttack)
+    public void Buff(bool isPernament, int addHealth, int addAttack, bool isBattle)
     {
         if (isPernament)
         {
             model.BuffHealth += addHealth;
             model.BuffAttack += addAttack;
+            UpdateHealthAttack();
         }
         else
         {
-            model.BuffHealthTemp += addHealth;
-            model.BuffAttackTemp += addAttack;
+            if (isBattle)
+            {
+                BattleHealth += addHealth;
+                BattleAttack += addAttack;
+            }
+            else
+            {
+                model.BuffHealthTemp += addHealth;
+                model.BuffAttackTemp += addAttack;
+                UpdateHealthAttack();
+            }
         }
 
-        UpdateHealthAttack();
+        view.SetData(BattleHealth, BattleAttack);
         view.ShowBuff(addHealth, addAttack);
-        UpdateData(false);
     }
-
-    #endregion
 
     /// <summary>
-    /// Updates the data.
+    /// Updates battle health/attack.
     /// </summary>
-    public void UpdateData(bool isCoinCost)
-    {
-        view.SetData(
-           Data.Sprite,
-           Data.Name,
-           CurrentLevel.Description,
-           isCoinCost ? Data.Cost.Value : CurrentLevel.Sell,
-           model.BasisHealth,
-           model.BasisAttack
-           );
-    }
-
     public void UpdateHealthAttack()
     {
-        model.BasisHealth += model.BuffHealth + model.BuffHealthTemp;
-        model.BasisAttack += model.BuffAttack + model.BuffAttackTemp;
+        BattleHealth = model.BasisHealth + model.BuffHealth + model.BuffHealthTemp;
+        BattleAttack = model.BasisAttack + model.BuffAttack + model.BuffAttackTemp;
     }
 
     public void MoveTo(Vector3 target)
