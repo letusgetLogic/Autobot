@@ -311,6 +311,7 @@ MonoBehaviour:
   heartText: {fileID: 57376819}
   turnText: {fileID: 1027300545}
   trophyText: {fileID: 1352017381}
+  trophyLabel: {fileID: 1148594904}
   sellButton: {fileID: 1922058701}
   freezeButton: {fileID: 208350686}
   unfreezeButton: {fileID: 1402279688}
@@ -2363,11 +2364,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4738740502242848382, guid: af68ffcdfa275c94884aa8f4bbcce68a, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8485674326662330347, guid: af68ffcdfa275c94884aa8f4bbcce68a, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

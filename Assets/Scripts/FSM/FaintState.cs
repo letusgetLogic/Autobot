@@ -6,10 +6,10 @@
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        PhaseBattleController.Instance.Player1.ManageFaintUnits(
+        ManageFaintUnits(
             PhaseBattleController.Instance.Slots1, true);
 
-        PhaseBattleController.Instance.Player2.ManageFaintUnits(
+       ManageFaintUnits(
             PhaseBattleController.Instance.Slots2, true);
 
         ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, false));
@@ -19,4 +19,21 @@
     {
         
     }
+
+
+    /// <summary>
+    /// Destroy the faint unit and trigger ability
+    /// </summary>
+    public void ManageFaintUnits(Slot[] slots, bool isBattle)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            var controller = slots[i].UnitController();
+            if (controller != null && controller.IsFaint)
+            {
+
+            }
+        }
+    }
+
 }

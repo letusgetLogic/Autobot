@@ -38,25 +38,6 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroy the faint unit and trigger ability
-    /// </summary>
-    public void ManageFaintUnits(Slot[] slots, bool isBattle)
-    {
-        for (int i = 0; i < slots.Length; i++)
-        {
-            var controller = slots[i].UnitController();
-            if (controller != null && controller.IsFaint)
-            {
-                var ability = controller.TriggerAbility(TriggerType.Faint);
-                if (ability != null)
-                    ability.Activate(isBattle);
-
-                Destroy(controller.gameObject);
-            }
-        }
-    }
-
-    /// <summary>
     /// Updates the data of units for saving data.
     /// </summary>
     public void UpdateUnitData()

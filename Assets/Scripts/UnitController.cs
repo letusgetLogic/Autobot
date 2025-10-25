@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem.XR;
 
 [System.Serializable]
 public class UnitController : MonoBehaviour
 {
+    public UnityAction Attack { get; private set; }
+    public UnityAction Faint { get; private set; }
+
     public UnitView View => view;
     [SerializeField]
     private UnitView view;
@@ -18,6 +22,19 @@ public class UnitController : MonoBehaviour
     public AbilityBase Ability => AbilityBase.GetAbility(this, CurrentLevel);
     public bool IsMaxed => CurrentLevel.Number == Data.Levels.Length;
     public bool IsFaint => BattleHealth <= 0;
+    public int SlotIndex
+    {
+        get
+        {
+            var parent = transform.parent;
+            if (parent != null &&
+                (parent.CompareTag("Slot Battle") || parent.CompareTag("Slot Team")))
+            {
+                return parent.GetComponent<Slot>().Index;
+            }
+            return -1;
+        }
+    }
 
     /// <summary>
     /// Initializes data.
@@ -105,6 +122,10 @@ public class UnitController : MonoBehaviour
     /// </summary>
     public void GetSelled()
     {
+        var ability = TriggerAbility(TriggerType.Sell);
+        if (ability != null)
+            ability.Activate();
+
         Destroy(gameObject);
     }
 
@@ -128,7 +149,7 @@ public class UnitController : MonoBehaviour
         UpdateLevelXP(model.XP, isPhaseShop);
         UpdateHealthAttack();
         view.SetData(BattleHealth, BattleAttack);
-        
+
     }
 
     /// <summary>
@@ -174,7 +195,7 @@ public class UnitController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator DelayLevel2(bool isPhaseShop)
     {
-        yield return new WaitForSeconds(isPhaseShop ? 
+        yield return new WaitForSeconds(isPhaseShop ?
             view.DelayUpdateLevel :
             0f);
 
@@ -217,6 +238,25 @@ public class UnitController : MonoBehaviour
     public int BattleHealth { get; set; }
     public int BattleAttack { get; set; }
 
+    public int TriggerAttack()
+    {
+        var ability = TriggerAbility(TriggerType.BeforeAttack);
+        if (ability != null)
+        {
+            ability.Activate();
+        }
+
+        Attack?.Invoke();
+
+        ability = TriggerAbility(TriggerType.AfterAttack);
+        if (ability != null)
+        {
+            PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
+        }
+
+        return BattleAttack;
+    }
+
     /// <summary>
     /// Takes damage.
     /// </summary>
@@ -228,6 +268,9 @@ public class UnitController : MonoBehaviour
 
         BattleHealth -= damage;
         view.ShowDamage(damage, BattleHealth);
+
+        if (BattleHealth <= 0)
+            TriggerFaint();
     }
 
 
@@ -242,7 +285,7 @@ public class UnitController : MonoBehaviour
         return null;
     }
 
-    public void Buff(bool isPernament, int addHealth, int addAttack, bool isBattle)
+    public void Buff(bool isPernament, int addHealth, int addAttack)
     {
         if (isPernament)
         {
@@ -252,7 +295,7 @@ public class UnitController : MonoBehaviour
         }
         else
         {
-            if (isBattle)
+            if (GameManager.Instance.IsPhaseBattle)
             {
                 BattleHealth += addHealth;
                 BattleAttack += addAttack;
@@ -276,6 +319,18 @@ public class UnitController : MonoBehaviour
     {
         BattleHealth = model.BasisHealth + model.BuffHealth + model.BuffHealthTemp;
         BattleAttack = model.BasisAttack + model.BuffAttack + model.BuffAttackTemp;
+    }
+
+    public void TriggerFaint()
+    {
+        var ability = TriggerAbility(TriggerType.Faint);
+        if (ability != null)
+        {
+            PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
+            Faint?.Invoke();
+        }
+
+        PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
     }
 
     public void MoveTo(Vector3 target)

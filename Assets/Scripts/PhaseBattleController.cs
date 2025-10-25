@@ -38,24 +38,52 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public Player Player1 { get; private set; }
     public Player Player2 {  get; private set; }
 
-    public UnitController AttackingUnit1
+    public UnitController AttackingUnit1 => slots1[0].UnitController();
+    public UnitController AttackingUnit2 => slots2[0].UnitController();
+
+    public Queue<AbilityBase> UnitAbilities
     {
         get
         {
-            return slots1[0].UnitController();
+            if (unitAbilities == null)
+                unitAbilities = new Queue<AbilityBase>();
+            return unitAbilities;
+        }
+        set
+        {
+            unitAbilities = value;
         }
     }
-
-    public UnitController AttackingUnit2
+    private Queue<AbilityBase> unitAbilities;
+    public Queue<GameObject> FaintUnits 
     {
         get
         {
-            return slots2[0].UnitController();
+            if (faintUnits == null)
+                faintUnits = new Queue<GameObject>();
+            return faintUnits;
+        }
+        set
+        {
+            faintUnits = value;
         }
     }
-
-    public Queue<AbilityBase> UnitAbilities { get; set; }
- 
+    private Queue<GameObject> faintUnits;
+    
+    public Queue<Summon> SummonUnits 
+    {
+        get
+        {
+            if (summonUnits == null)
+                summonUnits = new Queue<Summon>();
+            return summonUnits;
+        }
+        set
+        {
+            summonUnits = value;
+        }
+    }
+    private Queue<Summon> summonUnits;
 
     private void Awake()
     {

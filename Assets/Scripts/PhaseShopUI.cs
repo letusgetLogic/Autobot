@@ -21,6 +21,7 @@ public class PhaseShopUI : MonoBehaviour
 
     [SerializeField]
     private GameObject
+        trophyLabel,
         sellButton,
         freezeButton,
         unfreezeButton;
@@ -53,6 +54,12 @@ public class PhaseShopUI : MonoBehaviour
         coinsText.text = Player.Data.Coins.ToString();
         heartText.text = Player.Data.Lives.ToString();
         turnText.text = Player.Data.Turns.ToString();
+
+        if (Player.Data.WinCondition <= 0)
+        {
+            trophyLabel.SetActive(false);
+            return;
+        }
         trophyText.text = Player.Data.Wins.ToString() + " / " + Player.Data.WinCondition.ToString();
     }
 

@@ -29,7 +29,7 @@
         if (unit1 == null || unit2 == null)
             return;
 
-        unit1.TakeDamage(unit2.BattleAttack);
-        unit2.TakeDamage(unit1.BattleAttack);
+        unit1.TakeDamage(unit2.TriggerAttack());
+        unit2.TakeDamage(unit1.TriggerAttack());
     }
 }

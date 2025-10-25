@@ -9,25 +9,32 @@ public class Buff : AbilityBase
     private int health;
     private int attack;
 
-    public Buff(UnitController controller, AbilityDuration duration, 
-        FromWho fromWho, ToWho toWho, int count,
-        int health, int attack) : 
-        base(controller, duration)
+    public Buff(UnitController controller, AbilityDuration duration, Level currentLevel) :
+        base(controller, duration, currentLevel)
     {
-        this.fromWho = fromWho;
-        this.toWho = toWho;
-        this.toWhoCount = count;
-        this.health = health;
-        this.attack = attack;
+        this.fromWho = currentLevel.FromWho;
+        this.toWho = currentLevel.ToWho;
+        this.toWhoCount = currentLevel.ToWhoCount;
+        this.health = currentLevel.HealthBuff;
+        this.attack = currentLevel.AttackBuff;
     }
 
-    public override void Activate(bool isBattle)
+    public override void Activate()
     {
         if (toWho == ToWho.RandomFriend)
         {
-            var slots = Controller.Model.IsTeam1 ? 
-                PhaseBattleController.Instance.Slots1 :
-                PhaseBattleController.Instance.Slots2;
+            Slot[] slots;
+
+            if (GameManager.Instance.IsPhaseBattle)
+            {
+                slots = Controller.Model.IsTeam1 ?
+                    PhaseBattleController.Instance.Slots1 :
+                    PhaseBattleController.Instance.Slots2;
+            }
+            else
+            {
+                slots = PhaseShopUnitManager.Instance.BattleSlots;
+            }
 
             List<UnitController> unitOnSlot = new List<UnitController>();
 
@@ -40,14 +47,20 @@ public class Buff : AbilityBase
                 }
             }
 
-            for (int i = 0; i < toWhoCount && i < unitOnSlot.Count; i++)
+            if (unitOnSlot.Count <= 0)
+                return;
+
+            for (int i = 0; i < toWhoCount; i++)
             {
                 Random rnd = new Random();
                 int index = rnd.Next(0, unitOnSlot.Count);
 
                 var unit = unitOnSlot[index];
 
-                unit.Buff(AbilityBase.IsPernament(Duration, isBattle), health, attack, isBattle);
+                unit.Buff(
+                    AbilityBase.IsPernament(Duration), 
+                    health, 
+                    attack);
 
                 unitOnSlot.Remove(unit);
             }
