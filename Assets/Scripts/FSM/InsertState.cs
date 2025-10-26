@@ -18,7 +18,7 @@
         }
         else
         {
-            ctx.SetState(new BeforeAttackState(0));
+            ctx.SetState(new AttackState(0));
         }
     }
 

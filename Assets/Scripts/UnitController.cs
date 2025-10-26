@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.XR;
 
 [System.Serializable]
 public class UnitController : MonoBehaviour
@@ -36,28 +34,43 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    //public AbilityBase ActiveAbility
+    //{
+    //    get
+    //    {
+    //        var ability = activeAbility;
+    //        activeAbility = null;
+    //        return ability;
+    //    }
+    //    private set
+    //    {
+    //        activeAbility = value;
+    //    }
+    //}
+    //private AbilityBase activeAbility;
+
     /// <summary>
     /// Initializes data.
     /// </summary>
     /// <param name="_data"></param>
-    public void Initialize(SoUnit _data, int index, UnitModel _model, UnitState unitState)
+    public void Initialize(SoUnit _data, int _index, UnitModel _model, UnitState _unitState)
     {
         Data = _data;
 
         if (_model == null)
-            model = new UnitModel(_data, index, unitState);
+            model = new UnitModel(_data, _index, _unitState);
         else
             model = _model;
 
-        UpdateLevelXP(model.XP, IsPhaseShop(unitState));
+        UpdateLevelXP(model.XP, IsPhaseShop(_unitState));
         UpdateHealthAttack();
 
         view.SetData(Data.Sprite, Data.Name);
         view.SetData(CurrentLevel.Description);
-        view.SetData(Coin(unitState));
+        view.SetData(Coin(_unitState));
         view.SetData(BattleHealth, BattleAttack);
 
-        if (unitState == UnitState.Freezed)
+        if (_unitState == UnitState.Freezed)
             GetFrezzed();
     }
 
@@ -323,14 +336,19 @@ public class UnitController : MonoBehaviour
 
     public void TriggerFaint()
     {
+        Debug.Log($"{name} faint");
         var ability = TriggerAbility(TriggerType.Faint);
         if (ability != null)
         {
             PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
             Faint?.Invoke();
+            Debug.Log($"{ability.ToString()} enqueue");
+            Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
         }
 
         PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
+        Debug.Log($"{gameObject.name} enqueue");
+        Debug.Log($"{PhaseBattleController.Instance.FaintUnits.Count} FaintUnits");
     }
 
     public void MoveTo(Vector3 target)

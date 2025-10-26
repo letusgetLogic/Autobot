@@ -12,11 +12,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Zombie Cricket 2
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: 45d50eafae6d17242962b702c55df33e, type: 3}
   ID: 0
   Name: 'Zombie Cricket '
   Health: 2
   Attack: 2
   Cost: {fileID: 0}
-  LevelLimit: 0
-  Levels: []
+  LevelLimit: 3
+  Levels:
+  - Number: 1
+    Description: 
+    Sell: 1
+    HasAbility: 0
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Number: 2
+    Description: 
+    Sell: 2
+    HasAbility: 0
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Number: 3
+    Description: 
+    Sell: 3
+    HasAbility: 0
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0

@@ -4,23 +4,15 @@ using UnityEngine.Rendering;
 public class PhaseShopUnitManager : MonoBehaviour
 {
     public static PhaseShopUnitManager Instance { get; private set; }
-
+    
+    [Header("Slots")]
+    [SerializeField] 
+    private Slot[] battleSlots;
     [SerializeField]
-    private GameObject unitPrefab;
+    private Slot[] shopUnitSlots;
+    public Slot[] BattleSlots => battleSlots;
+    public Slot[] ShopUnitSlots => shopUnitSlots;
 
-    [Tooltip("Slots")]
-    [SerializeField]
-    private GameObject[]
-        battleSlots,
-        shopUnitSlots,
-        extraShopUnitsSlots,
-        shopItemsSlots,
-        extraShopItemsSlots;
-
-    private Slot[] battleSlotScripts { get; set; }
-    public Slot[] BattleSlots => battleSlotScripts;
-    private Slot[] shopUnitSlotScripts { get; set; }
-    public Slot[] ShopUnitSlots => shopUnitSlotScripts;
 
     [Tooltip("Delay pushing other unit to make space")]
     [SerializeField]
@@ -34,6 +26,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     public Player Player { get; private set; }
     public GameObject AttachedGameObject { get; set; }
     public bool StopDragging { get; set; } = false;
+
     private void Awake()
     {
         if (Instance != null)
@@ -41,6 +34,18 @@ public class PhaseShopUnitManager : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+        SetIndex(battleSlots);
+        SetIndex(shopUnitSlots);
+    }
+
+    /// <summary>
+    /// Set index depend on draw order.
+    /// </summary>
+    private void SetIndex(Slot[] slots)
+    {
+        for (int i = 0; i < slots.Length; i++)
+            slots[i].Index = i;
     }
 
     /// <summary>
@@ -50,8 +55,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     public void Initialize(Player player)
     {
         Player = player;
-        battleSlotScripts = InitializeArray(battleSlots);
-        shopUnitSlotScripts = InitializeArray(shopUnitSlots);
         SpawnUnits();
     }
 
@@ -68,15 +71,12 @@ public class PhaseShopUnitManager : MonoBehaviour
                 if (unitModel == null)
                     continue;
 
-                var unit = Instantiate(unitPrefab);
-                unit.transform.SetParent(battleSlots[i].transform, false);
-
-                var controller = unit.GetComponent<UnitController>();
-                controller.Initialize(
+                SpawnManager.Instance.Spawn(
                     StarterPack.Instance.Units[unitModel.Index],
                     unitModel.Index,
                     unitModel,
-                    unitModel.UnitState);
+                    unitModel.UnitState,
+                    battleSlots[i].transform);
 
             }
         }
@@ -89,32 +89,14 @@ public class PhaseShopUnitManager : MonoBehaviour
                 if (unitModel == null)
                     continue;
 
-                var unit = Instantiate(unitPrefab);
-                unit.transform.SetParent(shopUnitSlots[i].transform, false);
-
-                var controller = unit.GetComponent<UnitController>();
-                controller.Initialize(
+                SpawnManager.Instance.Spawn(
                     StarterPack.Instance.Units[unitModel.Index],
                     unitModel.Index,
                     unitModel,
-                    unitModel.UnitState);
+                    unitModel.UnitState,
+                    shopUnitSlots[i].transform);
             }
         }
-    }
-
-    /// <summary>
-    /// Initializes array.
-    /// </summary>
-    private Slot[] InitializeArray(GameObject[] slots)
-    {
-        var slotScripts = new Slot[slots.Length];
-
-        for (int i = 0; i < slots.Length; i++)
-        {
-            slotScripts[i] = slots[i].GetComponent<Slot>();
-            slotScripts[i].Index = i;
-        }
-        return slotScripts;
     }
 
     /// <summary>
@@ -124,7 +106,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     {
         for (int i = 0; i < shopUnitSlots.Length; i++)
         {
-            var unitController = shopUnitSlotScripts[i].UnitController();
+            var unitController = shopUnitSlots[i].UnitController();
             if (unitController != null)
             {
                 if (unitController.Model.UnitState == UnitState.Freezed)
@@ -133,14 +115,15 @@ public class PhaseShopUnitManager : MonoBehaviour
                 Destroy(unitController.gameObject);
             }
 
-            var unit = Instantiate(unitPrefab);
-            unit.transform.SetParent(shopUnitSlots[i].transform, false);
-
             int rand = Random.Range(0, StarterPack.Instance.Units.Count);
             var data = StarterPack.Instance.Units[rand];
 
-            var controller = unit.GetComponent<UnitController>();
-            controller.Initialize(data, rand, null, UnitState.InSlotShop);
+            SpawnManager.Instance.Spawn(
+                data,
+                rand,
+                null,
+                UnitState.InSlotShop,
+                shopUnitSlots[i].transform);
         }
 
         GameManager.Instance.SetPhaseShop();
@@ -234,10 +217,10 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         int search = target + direction;
 
-        while (search >= 0 && search < battleSlotScripts.Length)
+        while (search >= 0 && search < battleSlots.Length)
         {
-            if (battleSlotScripts[search].Unit() != null &&
-                battleSlotScripts[search].Unit() != AttachedGameObject) // slot is occupied
+            if (battleSlots[search].Unit() != null &&
+                battleSlots[search].Unit() != AttachedGameObject) // slot is occupied
             {
                 search += direction; // continue search for an emnpty space
             }
@@ -247,7 +230,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 {
                     int previous = empty - direction; // swap the previous slot to the empty slot
 
-                    var movedUnit = battleSlotScripts[previous].Unit();
+                    var movedUnit = battleSlots[previous].Unit();
                     if (movedUnit == null ||
                         movedUnit == AttachedGameObject)
                         break;

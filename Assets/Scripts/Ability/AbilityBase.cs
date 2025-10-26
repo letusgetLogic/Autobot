@@ -22,7 +22,7 @@ public abstract class AbilityBase
             case DoType.Buff:
                 return new Buff(controller, level.AbilityDuration, level);
             case DoType.Summon:
-                return new Summon(controller, level.AbilityDuration, level, controller.SlotIndex);
+                return new Summon(controller, level.AbilityDuration, controller.Model, level, controller.SlotIndex);
         }
 
         return null;

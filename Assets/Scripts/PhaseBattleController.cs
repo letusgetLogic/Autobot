@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,6 +21,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     private Slot[] slots1;
     [SerializeField]
     private Slot[] slots2;
+    public Slot[] Slots1 => slots1;
+    public Slot[] Slots2 => slots2;
 
     [SerializeField]
     private GameObject unitPrefab;
@@ -30,8 +33,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     public float DurationInsert => durationInsert;
     public float DurationShowOutcome => durationShowOutcome;
-    public Slot[] Slots1 => slots1;
-    public Slot[] Slots2 => slots2;
 
     private StateBase state { get;set; }
 
@@ -85,6 +86,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     }
     private Queue<Summon> summonUnits;
 
+    public int IsAnyAbilityThere { get; set; }
+
     private void Awake()
     {
         if (Instance != null)
@@ -92,6 +95,18 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+        SetIndex(slots1);
+        SetIndex(slots2);
+    }
+
+    /// <summary>
+    /// Set index depend on draw order.
+    /// </summary>
+    private void SetIndex(Slot[] slots)
+    {
+        for (int i = 0; i < slots.Length; i++)
+            slots[i].Index = i;
     }
 
 
@@ -136,8 +151,20 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         SetState(new InitState(0.5f));
     }
 
-    public GameObject Spawn()
+    public bool DestroyUnit()
     {
-        return Instantiate(unitPrefab);
+        StartCoroutine(PleaseDie());
+        return true;
+    }
+
+    private IEnumerator PleaseDie()
+    {
+        while (FaintUnits.Count > 0)
+        {
+            var unit = FaintUnits.Dequeue();
+            GameObject.Destroy(unit); Debug.Log($"Fainted unit {unit.name} destroyed");
+            yield return new WaitForEndOfFrame();
+        }
+
     }
 }

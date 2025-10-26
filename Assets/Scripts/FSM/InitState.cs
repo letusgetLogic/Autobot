@@ -1,5 +1,6 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class InitState : StateBase
 {
@@ -52,17 +53,14 @@ public class InitState : StateBase
             var unitModel = player.Data.BattleUnitModels[i];
             if (unitModel != null)
             {
-                var unit = PhaseBattleController.Instance.Spawn();
-                unit.transform.SetParent(slots[i].transform, false);
+                var controller = SpawnManager.Instance.Spawn(
+                    StarterPack.Instance.Units[unitModel.Index],
+                    unitModel.Index,
+                    unitModel,
+                    UnitState.InPhaseBattle,
+                    slots[i].transform);
 
-                var controller = unit.GetComponent<UnitController>();
-                controller.Initialize(
-                    StarterPack.Instance.Units[unitModel.Index], 
-                    unitModel.Index, 
-                    unitModel, 
-                    UnitState.InPhaseBattle);
-
-                unit.GetComponent<UnitView>().Shadow.enabled = false;
+                controller.View.Shadow.enabled = false;
 
                 if (isRight)
                 {

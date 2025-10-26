@@ -1,39 +1,33 @@
-﻿public class FaintState : StateBase
+﻿using System.Collections;
+using UnityEngine;
+
+public class FaintState : StateBase
 {
+    bool isDone = false;
     public FaintState(float maxCount) : base(maxCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
-        ManageFaintUnits(
-            PhaseBattleController.Instance.Slots1, true);
+        Debug.Log("--- FaintState");
 
-       ManageFaintUnits(
-            PhaseBattleController.Instance.Slots2, true);
-
-        ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, false));
+        isDone = PhaseBattleController.Instance.DestroyUnit();
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        
-    }
-
-
-    /// <summary>
-    /// Destroy the faint unit and trigger ability
-    /// </summary>
-    public void ManageFaintUnits(Slot[] slots, bool isBattle)
-    {
-        for (int i = 0; i < slots.Length; i++)
+        if (isDone)
         {
-            var controller = slots[i].UnitController();
-            if (controller != null && controller.IsFaint)
-            {
-
-            }
+            if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
+                ctx.SetState(new HandleAbilityState(0));
+            else
+           if (PhaseBattleController.Instance.SummonUnits.Count > 0)
+                ctx.SetState(new SummonState(0));
+            else
+                ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, false));
         }
     }
 
+   
 }
