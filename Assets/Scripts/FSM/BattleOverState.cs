@@ -1,4 +1,6 @@
-﻿public class BattleOverState : StateBase
+﻿using  UnityEngine;
+
+public class BattleOverState : StateBase
 {
     public BattleOverState(float maxCount) : base(maxCount)
     {
@@ -12,6 +14,7 @@
         if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
         {
             GameManager.Instance.EndPhaseBattle();
+            Debug.Log("-------------------------------");
             return;
         }
         if (player1.Data.Lives == 0)

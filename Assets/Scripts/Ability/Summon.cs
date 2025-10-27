@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem.XR;
 public class Summon : AbilityBase
 {
     private UnitModel model;
     private SoUnit[] summonedUnits;
     private int slotIndex;
-    public Summon(UnitController controller, AbilityDuration duration, 
+    public Summon(UnitController controller, AbilityDuration duration,
         UnitModel model, Level currentLevel, int slotIndex) :
         base(controller, duration, currentLevel)
     {
@@ -29,9 +30,14 @@ public class Summon : AbilityBase
 
     }
 
-    public bool SpawnSummonedUnit()
+    public void SpawnSummonedUnit()
     {
-        Debug.Log("-Summon SpawnSummonedUnit");
+       
+       
+    }
+
+    public IEnumerator SpawnUnit()
+    {
         Slot[] slots;
         var isRight = false;
 
@@ -66,12 +72,13 @@ public class Summon : AbilityBase
                 {
                     controller.View.SetRightSide();
                     controller.Model.IsTeam1 = false;
+                    yield return new WaitUntil(() => controller != null);
                 }
             }
+           
         }
-        slotIndex = -1;
 
-        return false;
+        slotIndex = -1;
     }
 
 }

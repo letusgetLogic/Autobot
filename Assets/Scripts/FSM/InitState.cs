@@ -1,6 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.InputSystem.XR;
+﻿using UnityEngine;
 
 public class InitState : StateBase
 {
@@ -10,6 +8,8 @@ public class InitState : StateBase
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
+        Debug.Log(PhaseBattleController.Instance.Player1.Data.Turns);
+        Debug.Log("--- InitState");
         Initialize();
     }
 

@@ -1,4 +1,6 @@
-﻿public class CheckOutcomeState : StateBase
+﻿using UnityEngine;
+
+public class CheckOutcomeState : StateBase
 {
     private bool startOfBattle { get; set; }
     private bool outcome { get; set; }
@@ -9,7 +11,7 @@
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
-    {
+    {Debug.Log("--- CheckOutcomeState");
         outcome = CheckOutcome();
     }
 

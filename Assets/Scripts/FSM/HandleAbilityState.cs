@@ -31,7 +31,8 @@ public class HandleAbilityState : StateBase
             var ability = PhaseBattleController.Instance.UnitAbilities.Dequeue();
             Debug.Log($"{ability.ToString()} dequeue/activate");
             Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
-            ability.Activate();
+            ability.ShowAbility();
+            ability.Handle();
         }
 
         return true;

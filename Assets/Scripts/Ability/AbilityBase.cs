@@ -1,18 +1,42 @@
-﻿using NUnit.Framework;
+﻿using System.Collections;
+using UnityEngine;
 
 public abstract class AbilityBase
 {
     protected UnitController Controller { get; private set; }
     protected AbilityDuration Duration { get; private set; }
     protected Level CurrentLevel { get; private set; }
+    private bool _isDone 
+    { 
+        get
+        {
+            return isDone;
+        }
+        set
+        {
+            if (value == true)
+                Controller.View.SetDescriptionActive(false);
+
+            isDone = value;
+        }
+    }
+    private bool isDone = false;
+
     public AbilityBase(UnitController controller, AbilityDuration duration, Level currentLevel)
     {
         Controller = controller;
         Duration = duration;
         CurrentLevel = currentLevel;
     }
+    public IEnumerator Handle()
+    {
+        Controller.View.SetDescriptionActive(true);
+        _isDone = Activate();
 
-    public abstract void Activate();
+        yield return new WaitUntil(() => _isDone == true);
+    }
+
+    protected abstract IEnumerator Activate();
 
     public static AbilityBase GetAbility(UnitController controller, Level level)
     {

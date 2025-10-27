@@ -16,11 +16,9 @@ public class SummonState : StateBase
            var summon = PhaseBattleController.Instance.SummonUnits.Dequeue();
             Debug.Log($"{this.ToString()} Dequeue");
             Debug.Log($"{PhaseBattleController.Instance.SummonUnits.Count} SummonUnits");
-            bool summonRun = true;
-            while (summonRun)
-            {
-                summonRun = summon.SpawnSummonedUnit();
-            }
+            
+            Debug.Log("-Summon SpawnSummonedUnit");
+            SpawnManager.Instance.StartCoroutine(summon.SpawnUnit());
         }
         isDone = true;
     }

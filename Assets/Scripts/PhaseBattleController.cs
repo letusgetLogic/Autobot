@@ -15,6 +15,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     private float durationInsert = 0.5f;
     [SerializeField]
     private float durationShowOutcome = 1.0f;
+    public float DurationInsert => durationInsert;
+    public float DurationShowOutcome => durationShowOutcome;
 
     [Header("Slots")]
     [SerializeField]
@@ -24,15 +26,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public Slot[] Slots1 => slots1;
     public Slot[] Slots2 => slots2;
 
-    [SerializeField]
-    private GameObject unitPrefab;
-
+    [Header("Speed Settings")]
     public float SpeedMultiplier { get; set; } = 1f;
     public float MaxMultiplier { get; set; } = 2f;
-
-
-    public float DurationInsert => durationInsert;
-    public float DurationShowOutcome => durationShowOutcome;
 
     private StateBase state { get;set; }
 
@@ -86,7 +82,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     }
     private Queue<Summon> summonUnits;
 
-    public int IsAnyAbilityThere { get; set; }
 
     private void Awake()
     {
@@ -151,20 +146,4 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         SetState(new InitState(0.5f));
     }
 
-    public bool DestroyUnit()
-    {
-        StartCoroutine(PleaseDie());
-        return true;
-    }
-
-    private IEnumerator PleaseDie()
-    {
-        while (FaintUnits.Count > 0)
-        {
-            var unit = FaintUnits.Dequeue();
-            GameObject.Destroy(unit); Debug.Log($"Fainted unit {unit.name} destroyed");
-            yield return new WaitForEndOfFrame();
-        }
-
-    }
 }
