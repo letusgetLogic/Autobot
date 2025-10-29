@@ -1,12 +1,12 @@
 ﻿public abstract class StateBase
 {
-    protected float Count {  get; set; }
-    protected float MaxCount {  get; set; }
+    protected float TimeCount {  get; set; }
+    protected float MaxTimeCount {  get; set; }
 
-    public StateBase(float maxCount)
+    public StateBase(float maxTimeCount)
     {
-        Count = 0;
-        MaxCount = maxCount;
+        TimeCount = 0;
+        MaxTimeCount = maxTimeCount;
     }
 
     /// <summary>

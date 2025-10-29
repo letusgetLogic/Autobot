@@ -17,25 +17,10 @@ public class Summon : AbilityBase
 
     public override void Activate()
     {
-        if (summonedUnits == null || summonedUnits.Length == 0)
-            return;
-
-        foreach (var unit in summonedUnits)
-        {
-            if (GameManager.Instance.IsPhaseBattle)
-            {
-                PhaseBattleController.Instance.SummonUnits.Enqueue(this);
-            }
-        }
-
+        Controller.transform.SetParent(null, true);
+        Controller.DeactivateInteraction();
+        SpawnManager.Instance.StartCoroutine(SpawnUnit());
     }
-
-    public void SpawnSummonedUnit()
-    {
-       
-       
-    }
-
     public IEnumerator SpawnUnit()
     {
         Slot[] slots;
@@ -58,24 +43,24 @@ public class Summon : AbilityBase
             if (slots[slotIndex].Unit() == null)
             {
                 Debug.Log($"-Summon SpawnSummonedUnit at slot {slotIndex}");
-                var go = SpawnManager.Instance.Spawn(
+                var unit = SpawnManager.Instance.Spawn(
                     summonedUnits[i],
                     -1,
                     null,
                     model.UnitState,
                     slots[slotIndex].transform);
 
-                var controller = go.GetComponent<UnitController>();
+                yield return new WaitUntil(() => unit != null);
+
+                var controller = unit.GetComponent<UnitController>();
                 controller.View.Shadow.enabled = false;
 
                 if (isRight)
                 {
                     controller.View.SetRightSide();
                     controller.Model.IsTeam1 = false;
-                    yield return new WaitUntil(() => controller != null);
                 }
             }
-           
         }
 
         slotIndex = -1;

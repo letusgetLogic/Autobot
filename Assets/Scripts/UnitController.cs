@@ -34,21 +34,6 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    //public AbilityBase ActiveAbility
-    //{
-    //    get
-    //    {
-    //        var ability = activeAbility;
-    //        activeAbility = null;
-    //        return ability;
-    //    }
-    //    private set
-    //    {
-    //        activeAbility = value;
-    //    }
-    //}
-    //private AbilityBase activeAbility;
-
     /// <summary>
     /// Initializes data.
     /// </summary>
@@ -349,6 +334,13 @@ public class UnitController : MonoBehaviour
         PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
         Debug.Log($"{gameObject.name} enqueue");
         Debug.Log($"{PhaseBattleController.Instance.FaintUnits.Count} FaintUnits");
+    }
+
+    public void DeactivateInteraction()
+    {
+        View.HideVisuals();
+        View.enabled = false;
+        this.enabled = false;
     }
 
     public void MoveTo(Vector3 target)

@@ -1,40 +1,63 @@
-﻿using UnityEngine;
+﻿using System.Threading;
+using UnityEngine;
 public class HandleAbilityState : StateBase
 {
     private bool isDone = false;
-
-    public HandleAbilityState(float maxCount) : base(maxCount)
+    private bool isRunning = false;
+    public HandleAbilityState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
     {
         Debug.Log("--- HandleAbilityState");
-        isDone = HandleAbilities();
+        HandleAbility();
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
+        if (TimeCount < PhaseBattleController.Instance.Process.DurationEachAbility)
+        {
+            TimeCount += speed;
+        }
+        else
+        {
+            TimeCount = 0f;
+            HandleAbility();
+        }
+
         if (isDone)
         {
             if (PhaseBattleController.Instance.FaintUnits.Count > 0)
-                ctx.SetState(new FaintState(0));
+                ctx.SetState(new FaintState(
+                     PhaseBattleController.Instance.Process.DurationFaint));
             else 
-                ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, false));
+                ctx.SetState(new CheckOutcomeState(
+                    PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
         }
     }
 
-    private bool HandleAbilities()
+    private void HandleAbility()
     {
-        while (PhaseBattleController.Instance.UnitAbilities.Count > 0)
+        if (isRunning)
+            return;
+
+        isRunning = true;
+
+        if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
         {
             var ability = PhaseBattleController.Instance.UnitAbilities.Dequeue();
             Debug.Log($"{ability.ToString()} dequeue/activate");
-            Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
-            ability.ShowAbility();
-            ability.Handle();
+            Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities left");
+            PhaseBattleController.Instance.StartCoroutine(
+                ability.Handle(
+                    PhaseBattleController.Instance.Process.DurationEachAbility));
+        }
+        else
+        {
+            isDone = true;
         }
 
-        return true;
+        isRunning = false;
     }
 }

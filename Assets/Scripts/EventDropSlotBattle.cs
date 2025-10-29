@@ -15,6 +15,9 @@ public class EventDropSlotBattle : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        if (PhaseShopUnitManager.Instance.StopDragging)
+            return;
+
         if (eventData.pointerDrag == null)
             return;
 

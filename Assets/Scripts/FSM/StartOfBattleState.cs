@@ -1,15 +1,18 @@
-﻿public class StartOfBattleState : StateBase
+﻿using System.Diagnostics;
+
+public class StartOfBattleState : StateBase
 {
     public StartOfBattleState(float maxCount) : base(maxCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
-    {
+    {Debug.WriteLine("--- StartOfBattleState");
         TriggerAbility(PhaseBattleController.Instance.Slots1);
         TriggerAbility(PhaseBattleController.Instance.Slots2);
 
-        ctx.SetState(new InsertState(PhaseBattleController.Instance.DurationInsert));
+        ctx.SetState(new InsertState(
+            PhaseBattleController.Instance.Process.DurationInsert));
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)

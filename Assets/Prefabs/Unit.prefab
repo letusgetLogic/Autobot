@@ -1639,7 +1639,7 @@ GameObject:
   - component: {fileID: 7611915292521428106}
   - component: {fileID: 1708875098253315830}
   m_Layer: 0
-  m_Name: Attack
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1652,16 +1652,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4292144620616768301}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8644829789456954850}
+  m_Father: {fileID: 5652270745230826452}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.3, y: -0.9}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7611915292521428106
@@ -2361,7 +2361,7 @@ GameObject:
   - component: {fileID: 5630558302048099179}
   - component: {fileID: 7573786022878088153}
   m_Layer: 0
-  m_Name: Health
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2374,16 +2374,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6069913259082512735}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8644829789456954850}
+  m_Father: {fileID: 2815906826059942133}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.3, y: -0.9}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5630558302048099179
@@ -2516,6 +2516,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5887503095011246891}
+  - {fileID: 5337990664914856555}
   m_Father: {fileID: 8644829789456954850}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2573,7 +2574,7 @@ GameObject:
   - component: {fileID: 2998003922823675623}
   - component: {fileID: 1778946669878951573}
   m_Layer: 0
-  m_Name: Level
+  m_Name: Level Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3108,9 +3109,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5652270745230826452}
-  - {fileID: 5337990664914856555}
   - {fileID: 2815906826059942133}
-  - {fileID: 422933847762640863}
   - {fileID: 5870968745957611585}
   - {fileID: 6858586291706090894}
   m_Father: {fileID: 8643658486882797714}
@@ -3320,14 +3319,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  hideVisuals:
+  - {fileID: 5368551801802832055}
+  - {fileID: 7406705955813022837}
+  - {fileID: 3632601388607071418}
+  - {fileID: 6897067196927149076}
+  - {fileID: 9125587581227406384}
+  - {fileID: 6899803353669743496}
+  - {fileID: 600686263613422802}
   shadowSpriteRenderer: {fileID: 7646287376905958447}
   dragSpriteRenderer: {fileID: 1651141544470514720}
-  canvas: {fileID: 7924404934901620359}
-  description: {fileID: 2245560921931257665}
-  heartIcon: {fileID: 9125587581227406384}
-  attackIcon: {fileID: 6897067196927149076}
   iceCube: {fileID: 3632601388607071418}
-  level: {fileID: 6899803353669743496}
+  description: {fileID: 2245560921931257665}
+  myName: {fileID: 7890613846352825661}
+  ability: {fileID: 2492435810721597870}
+  coin: {fileID: 4721028244520927221}
+  levelDisplay: {fileID: 6899803353669743496}
+  levelAmount: {fileID: 1928829948808132805}
   box1StepFilled: {fileID: 5241585773372317109}
   box2Step: {fileID: 2620607938872067631}
   step1Filled: {fileID: 7591108105226699626}
@@ -3336,15 +3344,14 @@ MonoBehaviour:
   step3Filled: {fileID: 2878225049030730016}
   step4Filled: {fileID: 1765497669665244816}
   step5Filled: {fileID: 8784029744814109890}
-  myName: {fileID: 7890613846352825661}
-  ability: {fileID: 2492435810721597870}
-  coin: {fileID: 4721028244520927221}
+  heartIcon: {fileID: 9125587581227406384}
+  attackIcon: {fileID: 6897067196927149076}
   health: {fileID: 7573786022878088153}
   attack: {fileID: 1708875098253315830}
-  levelAmount: {fileID: 1928829948808132805}
   damage: {fileID: 2899208842751319119}
   buffHealth: {fileID: 4503978753441490764}
   buffAttack: {fileID: 7335062922852664063}
+  canvas: {fileID: 879442083360165133}
   scale: 1.1
   delayUpdateLevel: 0.3
   durationDamage: 0.5
@@ -3542,7 +3549,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 422933847762640863}
   m_Father: {fileID: 8644829789456954850}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

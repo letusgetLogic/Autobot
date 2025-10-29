@@ -2,7 +2,7 @@
 
 public class InitState : StateBase
 {
-    public InitState(float maxCount) : base(maxCount)
+    public InitState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
@@ -15,13 +15,14 @@ public class InitState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        if (Count < MaxCount)
+        if (TimeCount < MaxTimeCount)
         {
-            Count += speed;
+            TimeCount += speed;
         }
         else
         {
-            ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, true));
+            ctx.SetState(new CheckOutcomeState(
+                PhaseBattleController.Instance.Process.DurationCheckOutcome, true));
         }
     }
 

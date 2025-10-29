@@ -1,24 +1,27 @@
-﻿public class InsertState : StateBase
+﻿using UnityEngine;
+
+public class InsertState : StateBase
 {
-    public InsertState(float maxCount) : base(maxCount)
+    public InsertState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
-    {
+    {Debug.Log("--- InsertState");
         MoveCloserTogether(PhaseBattleController.Instance.Slots1);
         MoveCloserTogether(PhaseBattleController.Instance.Slots2);
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        if (Count < MaxCount)
+        if (TimeCount < MaxTimeCount)
         {
-            Count += speed;
+            TimeCount += speed;
         }
         else
         {
-            ctx.SetState(new AttackState(0));
+            ctx.SetState(new AttackState(
+                PhaseBattleController.Instance.Process.DurationAttack));
         }
     }
 

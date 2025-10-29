@@ -1,19 +1,21 @@
-﻿public class AttackState : StateBase
+﻿using System.Diagnostics;
+
+public class AttackState : StateBase
 {
-    public AttackState(float maxCount) : base(maxCount)
+    public AttackState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
-    {
+    {Debug.WriteLine("--- AttackState");
         AttackEachOther();
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        if (Count < 1f)
+        if (TimeCount < MaxTimeCount)
         {
-            Count += speed;
+            TimeCount += speed;
         }
         else
         {

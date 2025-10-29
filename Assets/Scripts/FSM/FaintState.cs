@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FaintState : StateBase
 {
-    public FaintState(float maxCount) : base(maxCount)
+    public FaintState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
@@ -13,17 +13,23 @@ public class FaintState : StateBase
 
         PhaseBattleController.Instance.StartCoroutine(DestroyUnit());
 
-        if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
-            ctx.SetState(new HandleAbilityState(0));
-        else
-           if (PhaseBattleController.Instance.SummonUnits.Count > 0)
-            ctx.SetState(new SummonState(0));
-        else
-            ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.DurationShowOutcome, false));
+
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
+        if (TimeCount < MaxTimeCount)
+        {
+            TimeCount += speed;
+        }
+        else
+        {
+            if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
+                ctx.SetState(new HandleAbilityState(0));
+            else
+                ctx.SetState(new CheckOutcomeState(
+                    PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
+        }
     }
 
     private IEnumerator DestroyUnit()
@@ -31,10 +37,10 @@ public class FaintState : StateBase
         while (PhaseBattleController.Instance.FaintUnits.Count > 0)
         {
             var unit = PhaseBattleController.Instance.FaintUnits.Dequeue();
-            GameObject.Destroy(unit); 
+            GameObject.Destroy(unit);
             Debug.Log($"Fainted unit {unit.name} destroyed");
 
-            yield return new WaitUntil(() => unit == null );
+            yield return new WaitUntil(() => unit == null);
         }
     }
 }

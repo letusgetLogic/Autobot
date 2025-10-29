@@ -4,5 +4,6 @@
     Self,
     MostHealthyFriend,
     NearestFriendAhead,
+    FaintedFriend,
 }
 

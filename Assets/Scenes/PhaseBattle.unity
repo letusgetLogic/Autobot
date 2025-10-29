@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &58208295
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2689,8 +2689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564b2f0ab1501e44a93ded34e3033877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhaseBattleController
-  durationInsert: 0.5
-  durationShowOutcome: 1
+  process: {fileID: 11400000, guid: 6dde8ff2711022041b2e25f855857172, type: 2}
   slots1:
   - {fileID: 4360740961735561920}
   - {fileID: 343665125}
@@ -2703,7 +2702,6 @@ MonoBehaviour:
   - {fileID: 1885367259}
   - {fileID: 528286161}
   - {fileID: 1761195188}
-  unitPrefab: {fileID: 8212703507569859520, guid: ecd6da0f071fbf4469b3cf3f94381c90, type: 3}
 --- !u!1 &1134889084
 GameObject:
   m_ObjectHideFlags: 0

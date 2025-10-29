@@ -10,13 +10,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     public UnityAction StartBattle {  get; private set; }
 
-    [Header("Setting")]
-    [SerializeField] 
-    private float durationInsert = 0.5f;
+    [Header("Duration of each state")]
     [SerializeField]
-    private float durationShowOutcome = 1.0f;
-    public float DurationInsert => durationInsert;
-    public float DurationShowOutcome => durationShowOutcome;
+    private SoBattleProcess process;
+    public SoBattleProcess Process => process;
 
     [Header("Slots")]
     [SerializeField]
@@ -66,22 +63,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         }
     }
     private Queue<GameObject> faintUnits;
-    
-    public Queue<Summon> SummonUnits 
-    {
-        get
-        {
-            if (summonUnits == null)
-                summonUnits = new Queue<Summon>();
-            return summonUnits;
-        }
-        set
-        {
-            summonUnits = value;
-        }
-    }
-    private Queue<Summon> summonUnits;
-
 
     private void Awake()
     {
@@ -105,7 +86,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     }
 
 
-    #region FSM
+    #region Finite State Machine
 
     public void Update()
     {
@@ -143,7 +124,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
         StartBattle?.Invoke();
         PhaseBattleView.Instance.SetSpeedButton(true);
-        SetState(new InitState(0.5f));
+        SetState(new InitState(Process.DurationInit));
     }
 
 }

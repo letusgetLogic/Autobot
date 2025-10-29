@@ -2,7 +2,7 @@
 
 public class BattleOverState : StateBase
 {
-    public BattleOverState(float maxCount) : base(maxCount)
+    public BattleOverState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
@@ -29,9 +29,9 @@ public class BattleOverState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        if (Count < MaxCount)
+        if (TimeCount < MaxTimeCount)
         {
-            Count += speed;
+            TimeCount += speed;
         }
         else
         {

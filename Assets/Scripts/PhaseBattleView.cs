@@ -58,7 +58,7 @@ public class PhaseBattleView : MonoBehaviour
 
     public void ShowWinner(string winner, bool isGameOver)
     {
-        label.text = $"{winner} won this {(isGameOver ? "duel" : "battle")}!";
+        label.text = $"{winner} won this {(isGameOver ? "tournament" : "battle")}!";
         label.enabled = true;
     }
 

@@ -9,21 +9,26 @@ public class UnitView : MonoBehaviour
     #region Variables
 
     [SerializeField]
-    private SpriteRenderer shadowSpriteRenderer;
+    private GameObject[] hideVisuals;
+
+    [Header("Sprites")]
+    [SerializeField] private SpriteRenderer shadowSpriteRenderer;
+    [SerializeField] private SpriteRenderer dragSpriteRenderer;
+    [SerializeField] private GameObject iceCube;
     public SpriteRenderer Shadow => shadowSpriteRenderer;
+    public GameObject IceCube => iceCube;
 
-    [SerializeField]
-    private SpriteRenderer
-        dragSpriteRenderer;
+    [Header("Description")]
+    [SerializeField] private GameObject description;
+    [SerializeField] private TextMeshProUGUI
+        myName,
+        ability,
+        coin;
 
-    [SerializeField]
-    private GameObject
-        canvas,
-        description,
-        heartIcon,
-        attackIcon,
-        iceCube,
-        level,
+    [Header("Level Display")]
+    [SerializeField] private GameObject levelDisplay;
+    [SerializeField] private TextMeshProUGUI levelAmount;
+    [SerializeField] private GameObject
         box1StepFilled,
         box2Step,
         step1Filled,
@@ -33,26 +38,21 @@ public class UnitView : MonoBehaviour
         step4Filled,
         step5Filled;
 
-    public GameObject IceCube => iceCube;
-
-    [SerializeField]
-    private TextMeshProUGUI
-        myName,
-        ability,
-        coin,
+    [Header("Stats")]
+    [SerializeField] private GameObject heartIcon;
+    [SerializeField] private GameObject attackIcon;
+    [SerializeField] private TextMeshProUGUI
         health,
         attack,
-        levelAmount,
         damage,
         buffHealth,
         buffAttack;
 
-    [SerializeField]
-    private float scale = 1.1f;
-
-    [SerializeField]
-    private float
-        delayUpdateLevel = 0.5f,
+    [Header("Settings")]
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private float 
+        scale = 1.1f,
+        delayUpdateLevel = 0.3f,
         durationDamage = 0.5f,
         durationBuff = 0.5f;
     public float DelayUpdateLevel => delayUpdateLevel;
@@ -71,7 +71,7 @@ public class UnitView : MonoBehaviour
     {
         description.SetActive(false);
         iceCube.gameObject.SetActive(false);
-        levelPosition = level.transform.localPosition;
+        levelPosition = levelDisplay.transform.localPosition;
     }
 
     private void Start()
@@ -212,8 +212,8 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.flipX = true;
 
-        var pos = level.transform.localPosition;
-        level.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);
+        var pos = levelDisplay.transform.localPosition;
+        levelDisplay.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);
     }
 
     /// <summary>
@@ -254,5 +254,11 @@ public class UnitView : MonoBehaviour
         yield return new WaitForSeconds(durationBuff);
         buffHealth.enabled = false;
         buffAttack.enabled = false;
+    }
+
+    public void HideVisuals()
+    {
+        foreach (var go in hideVisuals)
+            go.SetActive(false);
     }
 }

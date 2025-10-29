@@ -2,10 +2,10 @@
 
 public class CheckOutcomeState : StateBase
 {
-    private bool startOfBattle { get; set; }
-    private bool outcome { get; set; }
+    private bool startOfBattle;
+    private bool outcome;
 
-    public CheckOutcomeState(float maxCount, bool startOfBattle) : base(maxCount)
+    public CheckOutcomeState(float maxTimeCount, bool startOfBattle) : base(maxTimeCount)
     {
         this.startOfBattle = startOfBattle;
     }
@@ -17,23 +17,24 @@ public class CheckOutcomeState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
     {
-        if (Count < MaxCount)
+        if (TimeCount < MaxTimeCount)
         {
-            Count += speed;
+            TimeCount += speed;
         }
         else
         {
             if (outcome)
             {
-               
-                ctx.SetState(new BattleOverState(0.5f));
+                ctx.SetState(new BattleOverState(
+                    PhaseBattleController.Instance.Process.DurationBattleOver));
             }
             else
             {
                 if (startOfBattle)
                     ctx.SetState(new StartOfBattleState(0));
                 else
-                    ctx.SetState(new InsertState(PhaseBattleController.Instance.DurationInsert));
+                    ctx.SetState(new InsertState(
+                        PhaseBattleController.Instance.Process.DurationInsert));
             }
         }
     }
