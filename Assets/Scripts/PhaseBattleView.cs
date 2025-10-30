@@ -81,10 +81,10 @@ public class PhaseBattleView : MonoBehaviour
         isDefaultMult = !isDefaultMult;
 
         var instance = PhaseBattleController.Instance;
-        instance.SpeedMultiplier =
+        instance.DefaultSpeedMultiplier =
             isDefaultMult
             ? 1f
-            : instance.MaxMultiplier;
+            : instance.MaxSpeedMultiplier;
 
         defaultMult.SetActive(isDefaultMult);
         maxMult.SetActive(!isDefaultMult);

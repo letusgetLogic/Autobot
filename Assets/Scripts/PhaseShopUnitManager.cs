@@ -72,7 +72,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                     continue;
 
                 SpawnManager.Instance.Spawn(
-                    StarterPack.Instance.Units[unitModel.Index],
+                    PackManager.Instance.Units[unitModel.Index],
                     unitModel.Index,
                     unitModel,
                     unitModel.UnitState,
@@ -90,7 +90,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                     continue;
 
                 SpawnManager.Instance.Spawn(
-                    StarterPack.Instance.Units[unitModel.Index],
+                    PackManager.Instance.Units[unitModel.Index],
                     unitModel.Index,
                     unitModel,
                     unitModel.UnitState,
@@ -115,8 +115,8 @@ public class PhaseShopUnitManager : MonoBehaviour
                 Destroy(unitController.gameObject);
             }
 
-            int rand = Random.Range(0, StarterPack.Instance.Units.Count);
-            var data = StarterPack.Instance.Units[rand];
+            int rand = Random.Range(0, PackManager.Instance.Units.Count);
+            var data = PackManager.Instance.Units[rand];
 
             SpawnManager.Instance.Spawn(
                 data,

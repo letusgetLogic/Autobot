@@ -12,8 +12,8 @@ public class UnitModel
         get { return xp; }
         set
         {
-            if (value > StarterPack.Instance.XpToLv3)
-                xp = StarterPack.Instance.XpToLv3;
+            if (value > PackManager.Instance.MyPack.XpToLv3.Value)
+                xp = PackManager.Instance.MyPack.XpToLv3.Value;
             else xp = value;
         }
     }

@@ -1,36 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class StarterPack : MonoBehaviour
+public class PackManager : MonoBehaviour
 {
-    public static StarterPack Instance { get; private set; }
+    public static PackManager Instance { get; private set; }
 
-    public int XpToLv2 = 3;
-    public int XpToLv3 = 6;
-
-    [SerializeField] int tier1AvaiableAtTurn = 1;
-    [SerializeField] int tier2AvaiableAtTurn = 3;
-    [SerializeField] int tier3AvaiableAtTurn = 5;
-    [SerializeField] int tier4AvaiableAtTurn = 7;
-    [SerializeField] int tier5AvaiableAtTurn = 9;
-    [SerializeField] int tier6AvaiableAtTurn = 11;
+    public SoPack MyPack;
 
     public List<SoUnit> Units { get; private set; } = new List<SoUnit>();
-
-    public SoUnit[] UnitsTier1 = null;
-    public SoUnit[] UnitsTier2 = null;
-    public SoUnit[] UnitsTier3 = null;
-    public SoUnit[] UnitsTier4 = null;
-    public SoUnit[] UnitsTier5 = null;
-    public SoUnit[] UnitsTier6 = null;
-
-    public SoItem[] ItemsTier1 = null;
-    public SoItem[] ItemsTier2 = null;
-    public SoItem[] ItemsTier3 = null;
-    public SoItem[] ItemsTier4 = null;
-    public SoItem[] ItemsTier5 = null;
-    public SoItem[] ItemsTier6 = null;
-
 
     private void Awake()
     {
@@ -47,12 +24,12 @@ public class StarterPack : MonoBehaviour
 
     private void Start()
     {
-        Add(UnitsTier1);
-        Add(UnitsTier2);
-        Add(UnitsTier3);
-        Add(UnitsTier4);
-        Add(UnitsTier5);
-        Add(UnitsTier6);
+        Add(MyPack.UnitsTier1);
+        Add(MyPack.UnitsTier2);
+        Add(MyPack.UnitsTier3);
+        Add(MyPack.UnitsTier4);
+        Add(MyPack.UnitsTier5);
+        Add(MyPack.UnitsTier6);
     }
 
     private void Add(SoUnit[] units)
@@ -75,36 +52,36 @@ public class StarterPack : MonoBehaviour
     /// <param name="turns">The current turn number. Determines which tier of units will be added.</param>
     public void AddUnitsByTier(int turns)
     {
-        int a = tier1AvaiableAtTurn;
-        int b = tier2AvaiableAtTurn;
-        int c = tier3AvaiableAtTurn;
-        int d = tier4AvaiableAtTurn;
-        int e = tier5AvaiableAtTurn;
-        int f = tier6AvaiableAtTurn;
+        int a = MyPack.Tier1AvaiableAtTurn.Value;
+        int b = MyPack.Tier2AvaiableAtTurn.Value;
+        int c = MyPack.Tier3AvaiableAtTurn.Value;
+        int d = MyPack.Tier4AvaiableAtTurn.Value;
+        int e = MyPack.Tier5AvaiableAtTurn.Value;
+        int f = MyPack.Tier6AvaiableAtTurn.Value;
 
         if (turns == a)
         {
-            AddUnits(UnitsTier1);
+            AddUnits(MyPack.UnitsTier1);
         }
         else if (turns == b)
         {
-            AddUnits(UnitsTier2);
+            AddUnits(MyPack.UnitsTier2);
         }
         else if (turns == c)
         {
-            AddUnits(UnitsTier3);
+            AddUnits(MyPack.UnitsTier3);
         }
         else if (turns == d)
         {
-            AddUnits(UnitsTier4);
+            AddUnits(MyPack.UnitsTier4);
         }
         else if (turns == e)
         {
-            AddUnits(UnitsTier5);
+            AddUnits(MyPack.UnitsTier5);
         }
         else if (turns == f)
         {
-            AddUnits(UnitsTier6);
+            AddUnits(MyPack.UnitsTier6);
         }
     }
 

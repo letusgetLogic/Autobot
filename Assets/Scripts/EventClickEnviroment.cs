@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
 {
     private bool paused = false;
+    private float currentSpeed;
     public void OnPointerClick(PointerEventData eventData)
     {
         switch(GameManager.Instance.SceneName)
@@ -14,9 +15,13 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                 PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
                 break;
             case "PhaseBattle":
+                if (paused == false)
+                    currentSpeed = PhaseBattleController.Instance.DefaultSpeedMultiplier;
+                
                 paused = !paused;
-                int value = paused ? 0 : 1;
-                Time.timeScale = value;
+
+                PhaseBattleController.Instance.DefaultSpeedMultiplier = 
+                    paused ? 0f : currentSpeed;
                 break;
 
         }

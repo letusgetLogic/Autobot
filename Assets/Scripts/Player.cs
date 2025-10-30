@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     {
         SetDefault();
         PhaseShopUnitManager.Instance.Initialize(this);
-        StarterPack.Instance.AddUnitsByTier(Data.Turns);
+        PackManager.Instance.AddUnitsByTier(Data.Turns);
         PhaseShopUI.Instance.UpdateUI(this);
         PhaseShopUnitManager.Instance.SpawnShopUnits();
         UpdateUnitData();

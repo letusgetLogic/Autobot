@@ -55,7 +55,7 @@ public class InitState : StateBase
             if (unitModel != null)
             {
                 var controller = SpawnManager.Instance.Spawn(
-                    StarterPack.Instance.Units[unitModel.Index],
+                    PackManager.Instance.Units[unitModel.Index],
                     unitModel.Index,
                     unitModel,
                     UnitState.InPhaseBattle,
