@@ -96,7 +96,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         if (state == null)
             return;
 
-        state.OnUpdate(this, Time.deltaTime * CurrentSpeedMultiplier);
+        float speed = Time.deltaTime * CurrentSpeedMultiplier;
+        Debug.Log("CurrentSpeedMultiplier: " + CurrentSpeedMultiplier);
+        Debug.Log("Speed Delta Time: " + speed);
+        state.OnUpdate(this, speed);
     }
 
     public void SetState(StateBase _state)

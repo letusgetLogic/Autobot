@@ -16,11 +16,11 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                 break;
             case "PhaseBattle":
                 if (paused == false)
-                    currentSpeed = PhaseBattleController.Instance.DefaultSpeedMultiplier;
+                    currentSpeed = PhaseBattleController.Instance.CurrentSpeedMultiplier;
                 
                 paused = !paused;
 
-                PhaseBattleController.Instance.DefaultSpeedMultiplier = 
+                PhaseBattleController.Instance.CurrentSpeedMultiplier = 
                     paused ? 0f : currentSpeed;
                 break;
 
