@@ -10,13 +10,15 @@ public class SpawnManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance != null)
         {
-            Destroy(Instance.gameObject);
+            Destroy(gameObject);
         }
-
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     public UnitController Spawn(SoUnit _data, int _index, UnitModel _model, UnitState _unitState,

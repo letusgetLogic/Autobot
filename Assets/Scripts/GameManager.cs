@@ -208,6 +208,10 @@ public class GameManager : MonoBehaviour
     {
         CurrentGame.State = GameState.EndOfGame;
 
+        Destroy(PackManager.Instance.gameObject);
+        Destroy(SpawnManager.Instance.gameObject);
+        Destroy(gameObject);
+
         SceneManager.LoadScene("Menu");
     }
 

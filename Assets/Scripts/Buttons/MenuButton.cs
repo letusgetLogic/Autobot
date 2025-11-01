@@ -4,7 +4,7 @@ public class MenuButton : MonoBehaviour
 {
     public void OnButtonClick()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+        GameManager.Instance.EndGame();
         Time.timeScale = 1;
     }
 }
