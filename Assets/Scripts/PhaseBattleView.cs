@@ -30,6 +30,8 @@ public class PhaseBattleView : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+        ShowSpeedMult();
     }
 
     /// <summary>
@@ -76,17 +78,20 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     public void SetMultiplier()
     {
-        var instance = PhaseBattleController.Instance;
+        GameManager.Instance.IsDefaultMult = !GameManager.Instance.IsDefaultMult;
 
-        instance.IsDefaultMult = !instance.IsDefaultMult;
+        GameManager.Instance.CurrentSpeedMultiplier =
+            GameManager.Instance.IsDefaultMult
+            ? PhaseBattleController.Instance.DefaultSpeedMultiplier
+            : PhaseBattleController.Instance.MaxSpeedMultiplier;
 
-        instance.CurrentSpeedMultiplier =
-            instance.IsDefaultMult
-            ? instance.DefaultSpeedMultiplier
-            : instance.MaxSpeedMultiplier;
+       ShowSpeedMult();
+    }
 
-        defaultMult.enabled = instance.IsDefaultMult;
-        maxMult.enabled = !instance.IsDefaultMult;
+    private void ShowSpeedMult()
+    {
+        defaultMult.enabled = GameManager.Instance.IsDefaultMult;
+        maxMult.enabled = !GameManager.Instance.IsDefaultMult;
     }
 
     #endregion

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public GameMode Mode { get; set; }
 
     public string Name1 { get; set; }
-    public string Name2 { get;set;}
+    public string Name2 { get; set; }
 
     public int PlayerLives { get; set; }
     public int Timer { get; set; } = 0;
@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-
+    public float CurrentSpeedMultiplier { get; set; }
+    public bool IsDefaultMult { get; set; } = true;
 
     private void Awake()
     {
