@@ -75,15 +75,11 @@ public class PhaseShopUI : MonoBehaviour
 
     public void HintNotEnoughCoins()
     {
-        coinsText.color = Color.red;
-        StartCoroutine(CoinsTextColorDefault());
-    }
+        var markColorRed = GetComponent<MarkColorRed>();
+        if (markColorRed == null)
+            markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-    private IEnumerator CoinsTextColorDefault()
-    {
-        yield return new WaitForSeconds(durationCoinsRedDefault);
-
-        coinsText.color = Color.black;
+        markColorRed.SetComponent(coinsText, durationCoinsRedDefault);
     }
 
     #region Button

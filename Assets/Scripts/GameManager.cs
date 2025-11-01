@@ -8,20 +8,16 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [Header("Mode Development")]
-
-    [SerializeField] private bool isDeveloper;
     [SerializeField] private bool deleteSaveGame;
+    public GameMode Mode { get; set; }
 
-    private string name1 = "Player 1";
-    private string name2 = "Player 2";
+    public string Name1 { get; set; }
+    public string Name2 { get;set;}
 
-    [SerializeField] private int lives = 6;
-    [SerializeField] private float timer = 90.0f;
-    public int StartCoins => startCoins;
-    [SerializeField] private int startCoins = 10;
-    public int RollCost => rollCost;
-    [SerializeField] private int rollCost = 1;
+    public int PlayerLives { get; set; }
+    public int Timer { get; set; } = 0;
+    public int StartCoins { get; set; }
+    public int RollCost { get; set; }
 
     public Game CurrentGame { get; set; }
     private Player[] players { get; set; }
@@ -37,34 +33,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance != null)
         {
-            Destroy(Instance.gameObject);
+            Destroy(gameObject);
         }
         else
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
-    }
-
-    private void Start()
-    {
-        if (isDeveloper)
-        {
-            LoadGame(GameMode.Single);
-        }
     }
 
     /// <summary>
     /// Loads game.
     /// </summary>
-    public void LoadGame(GameMode mode)
+    public void LoadGame()
     {
-        switch (mode)
+        switch (Mode)
         {
             case GameMode.None:
                 break;
@@ -103,14 +91,14 @@ public class GameManager : MonoBehaviour
         }
 
         // Create a new game.
-        players[0].Data = new PlayerData(name1, lives, 0);
-        players[1].Data = new PlayerData(name2, lives, 0);
+        players[0].Data = new PlayerData(Name1, PlayerLives, 0);
+        players[1].Data = new PlayerData(Name2, PlayerLives, 0);
 
         CurrentGame = new Game(
-                GameMode.Single,
+                Mode,
                 2,
-                timer,
-                lives,
+                Timer,
+                PlayerLives,
                 0,
                 GameState.LoadGame,
                 players[0].Data,
@@ -220,7 +208,6 @@ public class GameManager : MonoBehaviour
         CurrentGame.State = GameState.EndOfGame;
 
         SceneManager.LoadScene("Menu");
-        LoadGame(GameMode.Single);
     }
 
 }

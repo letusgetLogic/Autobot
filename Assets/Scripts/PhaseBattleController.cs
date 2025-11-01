@@ -24,9 +24,11 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public Slot[] Slots2 => slots2;
 
     [Header("Speed Settings")]
-    public float DefaultSpeedMultiplier { get; set; } = 1f;
-    public float MaxSpeedMultiplier { get; set; } = 2f;
-    [HideInInspector] public float CurrentSpeedMultiplier { get; set; }
+    public float DefaultSpeedMultiplier = 1f;
+    public float MaxSpeedMultiplier = 2f;
+    public float CurrentSpeedMultiplier { get; set; }
+    public bool IsDefaultMult { get; set; } = true;
+
 
     private StateBase state { get;set; }
 

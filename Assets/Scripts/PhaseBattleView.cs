@@ -7,26 +7,20 @@ public class PhaseBattleView : MonoBehaviour
     public static PhaseBattleView Instance { get; private set; }
 
     [Header("Player left")]
-    [SerializeField]
-    private TextMeshProUGUI name1;
-    [SerializeField]
-    private TextMeshProUGUI turn1, wins1, lives1;
+    [SerializeField] private TextMeshProUGUI name1;
+    [SerializeField] private TextMeshProUGUI turn1, wins1, lives1;
 
     [Header("Player right")]
-    [SerializeField]
-    private TextMeshProUGUI name2;
-    [SerializeField]
-    private TextMeshProUGUI turn2, wins2, lives2;
+    [SerializeField] private TextMeshProUGUI name2;
+    [SerializeField] private TextMeshProUGUI turn2, wins2, lives2;
 
     [Header("Info Label")]
-    [SerializeField]
-    private TextMeshProUGUI label;
+    [SerializeField] private TextMeshProUGUI label;
 
-    [SerializeField]
-    private GameObject
-        speedButton,
-        defaultMult,
-        maxMult;
+    [Header("Speed Controller")]
+    [SerializeField] private GameObject speedButton;
+    [SerializeField] private TextMeshProUGUI defaultMult;
+    [SerializeField] private TextMeshProUGUI maxMult;
 
 
     private void Awake()
@@ -54,6 +48,9 @@ public class PhaseBattleView : MonoBehaviour
         turn2.text = player2.Turns.ToString();
         wins2.text = player2.Wins.ToString();
         lives2.text = player2.Lives.ToString();
+
+        defaultMult.text = PhaseBattleController.Instance.DefaultSpeedMultiplier.ToString();
+        maxMult.text = PhaseBattleController.Instance.MaxSpeedMultiplier.ToString();
     }
 
     public void ShowWinner(string winner, bool isGameOver)
@@ -62,7 +59,8 @@ public class PhaseBattleView : MonoBehaviour
         label.enabled = true;
     }
 
-    private bool isDefaultMult = true;
+
+    #region Speed Controller
 
     /// <summary>
     /// Sets the speed multiplier active true/false.
@@ -78,16 +76,18 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     public void SetMultiplier()
     {
-        isDefaultMult = !isDefaultMult;
-
         var instance = PhaseBattleController.Instance;
-        instance.DefaultSpeedMultiplier =
-            isDefaultMult
-            ? 1f
+
+        instance.IsDefaultMult = !instance.IsDefaultMult;
+
+        instance.CurrentSpeedMultiplier =
+            instance.IsDefaultMult
+            ? instance.DefaultSpeedMultiplier
             : instance.MaxSpeedMultiplier;
 
-        defaultMult.SetActive(isDefaultMult);
-        maxMult.SetActive(!isDefaultMult);
+        defaultMult.enabled = instance.IsDefaultMult;
+        maxMult.enabled = !instance.IsDefaultMult;
     }
 
+    #endregion
 }

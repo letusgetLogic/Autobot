@@ -5,15 +5,15 @@ public class PackManager : MonoBehaviour
 {
     public static PackManager Instance { get; private set; }
 
-    public SoPack MyPack;
+    public SoPack MyPack { get; private set; }
 
     public List<SoUnit> Units { get; private set; } = new List<SoUnit>();
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance != null)
         {
-            Destroy(Instance.gameObject);
+            Destroy(gameObject);
         }
         else
         {
@@ -22,8 +22,13 @@ public class PackManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void InitPack(SoPack selectedPack)
     {
+        if ( MyPack != null)
+            MyPack = null;
+
+        MyPack = selectedPack;
+
         Add(MyPack.UnitsTier1);
         Add(MyPack.UnitsTier2);
         Add(MyPack.UnitsTier3);
