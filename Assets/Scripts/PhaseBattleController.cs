@@ -23,10 +23,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public Slot[] Slots1 => slots1;
     public Slot[] Slots2 => slots2;
 
-    [Header("Speed Settings")]
-    public float DefaultSpeedMultiplier = 1f;
-    public float MaxSpeedMultiplier = 2f;
-
     private StateBase state { get;set; }
 
     public Player Player1 { get; private set; }
@@ -74,8 +70,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
         SetIndex(slots1);
         SetIndex(slots2);
-
-        GameManager.Instance.CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
 
     /// <summary>
@@ -96,8 +90,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             return;
 
         float speed = Time.deltaTime * GameManager.Instance.CurrentSpeedMultiplier;
-        Debug.Log("CurrentSpeedMultiplier: " + GameManager.Instance.CurrentSpeedMultiplier);
-        Debug.Log("Speed Delta Time: " + speed);
+
         state.OnUpdate(this, speed);
     }
 

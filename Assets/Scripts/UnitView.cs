@@ -50,15 +50,8 @@ public class UnitView : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private Canvas canvas;
-    [SerializeField] private float 
-        scale = 1.1f,
-        delayUpdateLevel = 0.3f,
-        durationDamage = 0.5f,
-        durationBuff = 0.5f;
-    public float DelayUpdateLevel => delayUpdateLevel;
-
-    [SerializeField]
-    private Vector3 dragOverOther = Vector3.back; // offset while dragging over other
+    [SerializeField] private SoUnitSettings unitSettings;
+    public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
 
     private Camera mainCamera;
 
@@ -134,7 +127,7 @@ public class UnitView : MonoBehaviour
     /// <param name="eventData"></param>
     public void BeingAttached(PointerEventData eventData)
     {
-        dragSpriteRenderer.gameObject.transform.localScale *= scale;
+        dragSpriteRenderer.gameObject.transform.localScale *= unitSettings.DraggingScale;
 
         if (shadowSpriteRenderer.enabled == false)
         {
@@ -154,8 +147,8 @@ public class UnitView : MonoBehaviour
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
-        dragSpriteRenderer.gameObject.transform.position = worldPosition + dragOverOther;
-        canvas.transform.position = worldPosition + dragOverOther;
+        dragSpriteRenderer.gameObject.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
+        canvas.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
     }
 
     /// <summary>
@@ -233,7 +226,7 @@ public class UnitView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator HideDamage()
     {
-        yield return new WaitForSeconds(durationDamage);
+        yield return new WaitForSeconds(unitSettings.DurationShowDamage);
 
         damage.enabled = false;
     }
@@ -251,7 +244,7 @@ public class UnitView : MonoBehaviour
 
     private IEnumerator HideBuff()
     {
-        yield return new WaitForSeconds(durationBuff);
+        yield return new WaitForSeconds(unitSettings.DurationShowBuff);
         buffHealth.enabled = false;
         buffAttack.enabled = false;
     }

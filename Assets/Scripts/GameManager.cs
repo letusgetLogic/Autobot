@@ -9,6 +9,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private bool deleteSaveGame;
+
+
+    [Header("Battle Speed Settings")]
+    public float DefaultSpeedMultiplier = 1f;
+    public float MaxSpeedMultiplier = 2f;
+    public float CurrentSpeedMultiplier { get; set; }
+    public bool IsDefaultMult { get; set; } = true;
+
     public GameMode Mode { get; set; }
 
     public string Name1 { get; set; }
@@ -32,8 +40,7 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-    public float CurrentSpeedMultiplier { get; set; }
-    public bool IsDefaultMult { get; set; } = true;
+   
 
     private void Awake()
     {
@@ -106,6 +113,8 @@ public class GameManager : MonoBehaviour
                 players[1].Data
                 );
 
+        // Set default speed multiplier for phase battle
+        CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
 
     /// <summary>

@@ -17,26 +17,13 @@ public class EventClick : MonoBehaviour, IPointerClickHandler
             var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
 
             // Transports unit per click, only to slot battle.
-            if (attached != null && slot.CompareTag("Slot Shop") == false)
+            if (attached != null && slot.CompareTag("Slot Battle"))
             {
-                if (PhaseShopUI.Instance.Player.Data.Coins <= 0)
-                {
-                    PhaseShopUI.Instance.HintNotEnoughCoins();
-                    return;
-                }
-
-                PhaseShopUI.Instance.UpdateCoin(-attached.GetComponent<UnitController>().Data.Cost.Value);
-
-                PhaseShopUnitManager.Instance.Transport(
-                    PhaseShopUnitManager.Instance.AttachedGameObject,
-                    slot.transform,
-                    true,
-                    true);
-
+                PhaseShopUnitManager.Instance.ManageAttachedObject(slot);
                 PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
             }
         }
-        else
+        else // An unit is on the slot.
         {
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
             PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());

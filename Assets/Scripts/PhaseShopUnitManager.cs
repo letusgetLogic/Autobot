@@ -1,22 +1,23 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class PhaseShopUnitManager : MonoBehaviour
 {
     public static PhaseShopUnitManager Instance { get; private set; }
-    
+
     [Header("Slots")]
-    [SerializeField] 
+    [SerializeField]
     private Slot[] battleSlots;
     [SerializeField]
     private Slot[] shopUnitSlots;
     public Slot[] BattleSlots => battleSlots;
     public Slot[] ShopUnitSlots => shopUnitSlots;
 
-
+    [Header("Settings")]
     [Tooltip("Delay pushing other unit to make space")]
     [SerializeField]
-    private float delayPushing = .5f;
+    private float delayPushing = .1f;
     public float DelayPushing => delayPushing;
 
     [Tooltip("Delay pushing other unit to make space, while a fusion between 2 units is possible")]
@@ -24,8 +25,9 @@ public class PhaseShopUnitManager : MonoBehaviour
     private float delayPushingFusion = 1f;
     public float DelayPushingFusion => delayPushingFusion;
     public Player Player { get; private set; }
-    public GameObject AttachedGameObject { get; set; }
-    public bool StopDragging { get; set; } = false;
+    public GameObject AttachedGameObject { get; set; } // save the reference of unit being dragged or clicked
+    public bool PreventDragging { get; set; } = false;
+    // to prevent dragging from a slot after an another unit is pushed there, while mouse is still holding down.
 
     private void Awake()
     {
@@ -57,6 +59,9 @@ public class PhaseShopUnitManager : MonoBehaviour
         Player = player;
         SpawnUnits();
     }
+
+
+    #region Spawn objects
 
     /// <summary>
     /// Instantiate prefab and initialize it with data.
@@ -129,26 +134,74 @@ public class PhaseShopUnitManager : MonoBehaviour
         GameManager.Instance.SetPhaseShop();
     }
 
-    /// <summary>
-    /// Sets attached game object being clicked or dragged.
-    /// </summary>
-    /// <param name="target"></param>
-    public void SetAttachedGameObject(GameObject target)
+    #endregion
+
+
+    public void ManageAttachedObject(Slot slot)
     {
-        if (target == null)
-        {
-            if (AttachedGameObject != null)
-                AttachedGameObject.transform.parent.
-                    GetComponent<Slot>().Border.enabled = false;
+        if (AttachedGameObject == null)
+            return;
 
-            PhaseShopUI.Instance.SetButtonActive(UnitState.None);
-        }
-        else
+        var attachedModel = AttachedGameObject.GetComponent<UnitController>().Model;
+
+        if (attachedModel.UnitState == UnitState.InSlotShop)
         {
-            target.transform.parent.GetComponent<Slot>().Border.enabled = true;
+            PhaseShopUnitManager.Instance.Buy(slot);
+        }
+        else if (attachedModel.UnitState == UnitState.InSlotBattle)
+        {
+            PhaseShopUnitManager.Instance.TransportOrFusion(slot);
+        }
+    }
+
+
+    public void Buy(Slot slot)
+    {
+        var unitOnSlot = slot.UnitController();
+        var attachedController = AttachedGameObject.GetComponent<UnitController>();
+
+        if (PhaseShopUI.Instance.Player.Data.Coins < attachedController.Data.Cost.Value) // case: buy but not enough coins.
+        {
+            PhaseShopUI.Instance.HintNotEnoughCoins();
+            return;
         }
 
-        AttachedGameObject = target;
+        if (unitOnSlot != null)
+        {
+            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, attachedController)) // case: buy, units are fusible.
+            {
+                PhaseShopUI.Instance.UpdateCoin(-attachedController.Data.Cost.Value);
+                unitOnSlot.UpdateLevel(attachedController.Model, true);
+                Destroy(AttachedGameObject);
+            }
+        }
+        else // case: buy and place dragging unit on empty slot.
+        {
+            PhaseShopUI.Instance.UpdateCoin(-attachedController.Data.Cost.Value);
+            Transport(AttachedGameObject, slot.transform, true, true);
+        }
+    }
+
+    public void TransportOrFusion(Slot slot)
+    {
+        var unitOnSlot = slot.UnitController();
+        var attachedController = AttachedGameObject.GetComponent<UnitController>();
+
+        if (unitOnSlot != null)
+        {
+            if (unitOnSlot == attachedController) // attached unit shouldn't be unit on the slot.
+                return;
+
+            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, attachedController)) // case: only fusion.
+            {
+                unitOnSlot.UpdateLevel(attachedController.Model, true);
+                Destroy(AttachedGameObject);
+            }
+        }
+        else // case: move dragging unit to empty slot.
+        {
+            PhaseShopUnitManager.Instance.Transport(AttachedGameObject, slot.transform, true, true);
+        }
     }
 
     /// <summary>
@@ -186,25 +239,6 @@ public class PhaseShopUnitManager : MonoBehaviour
         Player.UpdateUnitData();
     }
 
-    /// <summary>
-    /// Checks fusible between 2 units.
-    /// </summary>
-    /// <param name="onSlot"></param>
-    /// <param name="onDrag"></param>
-    /// <returns></returns>
-    public bool IsFusible(UnitController onSlot, UnitController onDrag)
-    {
-        if (onSlot.IsMaxed ||
-            onDrag.IsMaxed)
-            return false;
-
-        if (onSlot.name == onDrag.name)
-            return true;
-
-        return false;
-    }
-
-
     ///summary>
     /// Pushes the other units away.
     /// </summary>
@@ -228,11 +262,11 @@ public class PhaseShopUnitManager : MonoBehaviour
             {
                 for (int empty = search; empty != target; empty -= direction)
                 {
-                    int previous = empty - direction; // swap the previous slot to the empty slot
+                    int previous = empty - direction; // swap the previous slot index to the empty slot index
 
                     var movedUnit = battleSlots[previous].Unit();
                     if (movedUnit == null ||
-                        movedUnit == AttachedGameObject)
+                        movedUnit == AttachedGameObject) // unit being moved is null or self, break foe loop
                         break;
                     Transport(movedUnit, battleSlots[empty].transform, false, false);
                 }
@@ -242,12 +276,57 @@ public class PhaseShopUnitManager : MonoBehaviour
                 {
                     Transport(AttachedGameObject, battleSlots[target].transform, false, false);
                     AttachedGameObject.GetComponent<UnitView>().BeingReleased(null);
+                    PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
 
-                    StopDragging = true;
+                    PreventDragging = true;
                 }
+                else if (AttachedGameObject.GetComponent<UnitController>().Model.UnitState
+                    == UnitState.InSlotShop)
+                {
+                    battleSlots[target].Border.enabled = true;
+                }
+
                 return;
             }
         }
     }
 
+    /// <summary>
+    /// Checks fusible between 2 units.
+    /// </summary>
+    /// <param name="onSlot"></param>
+    /// <param name="onDrag"></param>
+    /// <returns></returns>
+    public bool IsFusible(UnitController onSlot, UnitController onDrag)
+    {
+        if (onSlot.IsMaxed || onDrag.IsMaxed)
+            return false;
+
+        if (onSlot.name == onDrag.name)
+            return true;
+
+        return false;
+    }
+
+    /// <summary>
+    /// Sets attached game object being clicked or dragged.
+    /// </summary>
+    /// <param name="target"></param>
+    public void SetAttachedGameObject(GameObject target)
+    {
+        if (target == null)
+        {
+            if (AttachedGameObject != null)
+                AttachedGameObject.transform.parent.
+                    GetComponent<Slot>().Border.enabled = false;
+
+            PhaseShopUI.Instance.SetButtonActive(UnitState.None);
+        }
+        else
+        {
+            target.transform.parent.GetComponent<Slot>().Border.enabled = true;
+        }
+
+        AttachedGameObject = target;
+    }
 }

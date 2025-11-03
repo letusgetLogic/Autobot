@@ -32,7 +32,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (PhaseShopUnitManager.Instance.StopDragging)
+        if (PhaseShopUnitManager.Instance.PreventDragging)
             return;
 
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -50,7 +50,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        PhaseShopUnitManager.Instance.StopDragging = false;
+        PhaseShopUnitManager.Instance.PreventDragging = false;
 
         if (eventData.button != PointerEventData.InputButton.Left)
             return;

@@ -87,7 +87,7 @@ public class Slot : MonoBehaviour
     #endregion
 
 
-    #region Hover Event - Show description
+    #region Hover Event - Show/Hide description
 
     /// <summary>
     /// Shows the description.
@@ -97,8 +97,7 @@ public class Slot : MonoBehaviour
         if (eventHover.Data != null && eventHover.Data.pointerDrag != null)
             return;
 
-        if (UnitController() == null ||
-            UnitController().Model.UnitState == UnitState.Freezed)
+        if (UnitController() == null)
             return;
 
         if (UnitView() == null)

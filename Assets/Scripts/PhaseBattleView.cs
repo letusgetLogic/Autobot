@@ -30,8 +30,6 @@ public class PhaseBattleView : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
-
-        ShowSpeedMult();
     }
 
     /// <summary>
@@ -51,8 +49,9 @@ public class PhaseBattleView : MonoBehaviour
         wins2.text = player2.Wins.ToString();
         lives2.text = player2.Lives.ToString();
 
-        defaultMult.text = PhaseBattleController.Instance.DefaultSpeedMultiplier.ToString();
-        maxMult.text = PhaseBattleController.Instance.MaxSpeedMultiplier.ToString();
+        defaultMult.text = GameManager.Instance.DefaultSpeedMultiplier.ToString();
+        maxMult.text = GameManager.Instance.MaxSpeedMultiplier.ToString();
+        ShowSpeedMult();
     }
 
     public void ShowWinner(string winner, bool isGameOver)
@@ -82,8 +81,8 @@ public class PhaseBattleView : MonoBehaviour
 
         GameManager.Instance.CurrentSpeedMultiplier =
             GameManager.Instance.IsDefaultMult
-            ? PhaseBattleController.Instance.DefaultSpeedMultiplier
-            : PhaseBattleController.Instance.MaxSpeedMultiplier;
+            ? GameManager.Instance.DefaultSpeedMultiplier
+            : GameManager.Instance.MaxSpeedMultiplier;
 
        ShowSpeedMult();
     }
