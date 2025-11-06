@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Cricket
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 7770013588295071481, guid: 52f0fd634a3e632428b3f80cfd832e69, type: 3}
+  Sprite: {fileID: 21300000, guid: ffd091ae0215baa4c9f73e287bc59753, type: 3}
   ID: 0
-  Name: Cricket
+  Name: Gigadoge
   Health: 3
   Attack: 1
   Cost: {fileID: 11400000, guid: 3418196e9a887ec44ac10f553d036559, type: 2}
   LevelLimit: 3
   Levels:
   - Number: 1
-    Description: "Faint \u2192 Summon one 1/1 Zombie Cricket."
+    Description: "Faint \u2192 Summon one 1/1 Doge."
     Sell: 1
     HasAbility: 1
     TriggerType: 17
@@ -41,7 +41,7 @@ MonoBehaviour:
     DealDamage: 0
     GainCoin: 0
   - Number: 2
-    Description: "Faint \u2192 Summon one 2/2 Zombie Cricket."
+    Description: "Faint \u2192 Summon one 2/2 Doge."
     Sell: 2
     HasAbility: 1
     TriggerType: 17
@@ -61,7 +61,7 @@ MonoBehaviour:
     DealDamage: 0
     GainCoin: 0
   - Number: 3
-    Description: "Faint \u2192 Summon one 3/3 Zombie Cricket."
+    Description: "Faint \u2192 Summon one 3/3 Doge."
     Sell: 3
     HasAbility: 1
     TriggerType: 17

@@ -11,8 +11,13 @@ public class CheckOutcomeState : StateBase
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
-    {Debug.Log("--- CheckOutcomeState");
+    {
+        Debug.Log("--- CheckOutcomeState");
         outcome = CheckOutcome();
+        if (outcome)
+        {
+            MaxTimeCount += MaxTimeCount; // Extend time for showing winner
+        }
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
