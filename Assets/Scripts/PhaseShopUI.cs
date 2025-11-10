@@ -15,6 +15,7 @@ public class PhaseShopUI : MonoBehaviour
     private TextMeshProUGUI
         nameText,
         coinsText,
+        wppText, // water pump pliers (wpp)
         heartText,
         turnText,
         trophyText;
