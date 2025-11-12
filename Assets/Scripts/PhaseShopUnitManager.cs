@@ -233,7 +233,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (disableShadow)
             unitView.Shadow.enabled = false;
 
-        controller.Model.UnitState = UnitState.InSlotBattle;
+        controller.Model.SetData(UnitState.InSlotBattle);
         controller.View.SetData(controller.CurrentLevel.Sell);
 
         Player.UpdateUnitData();

@@ -23,7 +23,13 @@ public abstract class AbilityBase
             Controller.View.SetDescriptionActive(false);
     }
 
-    public abstract void Activate();
+    public void Activate()
+    {
+        Run();
+        if (Controller != null)
+            Controller.Model.Energy--;
+    }
+    public abstract void Run();
 
     public static AbilityBase GetAbility(UnitController controller, Level level)
     {

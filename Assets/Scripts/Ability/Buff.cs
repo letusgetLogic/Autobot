@@ -19,7 +19,7 @@ public class Buff : AbilityBase
         this.attack = currentLevel.AttackBuff;
     }
 
-    public override void Activate()
+    public override void Run()
     {
         if (toWho == ToWho.RandomFriend)
         {

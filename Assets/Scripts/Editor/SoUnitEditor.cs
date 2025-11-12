@@ -39,6 +39,11 @@ class SoUnitEditor : Editor
         data.Health = EditorGUILayout.IntField(data.Health);
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Energy", GUILayout.Width(50));
+        data.Energy = EditorGUILayout.IntField(data.Energy);
+        EditorGUILayout.EndHorizontal();
+
         data.Cost = (SoIntVariable)EditorGUILayout.ObjectField("Cost", data.Cost, typeof(SoIntVariable), false);
         data.LevelLimit = EditorGUILayout.IntField("Level Limit", data.LevelLimit);
 

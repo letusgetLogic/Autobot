@@ -15,7 +15,7 @@ public class Summon : AbilityBase
         this.slotIndex = slotIndex;
     }
 
-    public override void Activate()
+    public override void Run()
     {
         Controller.transform.SetParent(null, true);
         Controller.DeactivateInteraction();

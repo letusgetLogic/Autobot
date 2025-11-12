@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,12 +40,20 @@ public class UnitView : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private GameObject heartIcon;
     [SerializeField] private GameObject attackIcon;
+    [SerializeField] private GameObject energyIcon;
     [SerializeField] private TextMeshProUGUI
         health,
         attack,
+        energy,
         damage,
         buffHealth,
         buffAttack;
+
+    [Header("Repair Display")]
+    [SerializeField] private GameObject repairDisplay;
+    [SerializeField] private GameObject stepFilled1;
+    [SerializeField] private GameObject stepFilled2;
+    [SerializeField] private GameObject stepFilled3;
 
     [Header("Settings")]
     [SerializeField] private Canvas canvas;
@@ -56,7 +63,6 @@ public class UnitView : MonoBehaviour
     private Camera mainCamera;
 
     private Vector3 originalScale;
-    private Vector3 levelPosition;
 
     #endregion
 
@@ -64,7 +70,6 @@ public class UnitView : MonoBehaviour
     {
         description.SetActive(false);
         iceCube.gameObject.SetActive(false);
-        levelPosition = levelDisplay.transform.localPosition;
     }
 
     private void Start()
@@ -103,10 +108,11 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(int _health, int _attack)
+    public void SetData(int _health, int _attack, int _energy)
     {
         health.text = _health.ToString();
         attack.text = _attack.ToString();
+        energy.text = _energy.ToString();
     }
 
     /// <summary>
@@ -118,6 +124,10 @@ public class UnitView : MonoBehaviour
         description.SetActive(value);
     }
 
+    public void SetRepairDisplayActive(bool value)
+    {
+         repairDisplay.SetActive(value);
+    }
 
     #region Drag Event
 
@@ -133,8 +143,10 @@ public class UnitView : MonoBehaviour
         {
             heartIcon.gameObject.SetActive(false);
             attackIcon.gameObject.SetActive(false);
+            energyIcon.gameObject.SetActive(false);
             health.enabled = false;
             attack.enabled = false;
+            energy.enabled = false;
         }
     }
 
@@ -163,15 +175,17 @@ public class UnitView : MonoBehaviour
 
         heartIcon.gameObject.SetActive(true);
         attackIcon.gameObject.SetActive(true);
+        energyIcon.gameObject.SetActive(true);
         health.enabled = true;
         attack.enabled = true;
+        energy.enabled = true;
     }
 
     #endregion
 
 
     /// <summary>
-    /// Sets the step components active.
+    /// Sets the xp step components active.
     /// </summary>
     /// <param name="box1"></param>
     /// <param name="box2"></param>
@@ -181,7 +195,7 @@ public class UnitView : MonoBehaviour
     /// <param name="step3"></param>
     /// <param name="step4"></param>
     /// <param name="step5"></param>
-    public void SetStepActive(
+    public void SetXpStepActive(
         string level,
         bool box1,
         bool box2, bool step1, bool step2,
@@ -196,6 +210,12 @@ public class UnitView : MonoBehaviour
         step3Filled.SetActive(step3);
         step4Filled.SetActive(step4);
         step5Filled.SetActive(step5);
+    }
+    public void SetRepairStepActive(bool step1, bool step2,bool step3)
+    {
+        stepFilled1.SetActive(step1);
+        stepFilled2.SetActive(step2);
+        stepFilled3.SetActive(step3);
     }
 
     /// <summary>

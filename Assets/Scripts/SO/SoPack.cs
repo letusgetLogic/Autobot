@@ -5,6 +5,7 @@ public class SoPack : ScriptableObject
 {
     public SoIntVariable XpToLv2;
     public SoIntVariable XpToLv3;
+    public SoIntVariable HealthPortion;
 
     public SoIntVariable Tier1AvaiableAtTurn;
     public SoIntVariable Tier2AvaiableAtTurn;

@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable]
 public class UnitController : MonoBehaviour
 {
     public UnityAction Attack { get; private set; }
@@ -19,7 +18,6 @@ public class UnitController : MonoBehaviour
     public Level CurrentLevel { get; set; }
     public AbilityBase Ability => AbilityBase.GetAbility(this, CurrentLevel);
     public bool IsMaxed => CurrentLevel.Number == Data.Levels.Length;
-    public bool IsFaint => BattleHealth <= 0;
     public int SlotIndex
     {
         get
@@ -33,7 +31,9 @@ public class UnitController : MonoBehaviour
             return -1;
         }
     }
-
+    public int BattleHealth { get; set; }
+    public int BattleAttack { get; set; }
+    
     /// <summary>
     /// Initializes data.
     /// </summary>
@@ -43,20 +43,21 @@ public class UnitController : MonoBehaviour
         Data = _data;
 
         if (_model == null)
-            model = new UnitModel(_data, _index, _unitState);
+            model = new UnitModel(_data, _index);
         else
             model = _model;
 
-        UpdateLevelXP(model.XP, IsPhaseShop(_unitState));
-        UpdateHealthAttack();
+        model.SetData(view);
+        model.SetData(PackManager.Instance.MyPack.HealthPortion.Value);
+        model.SetData(_unitState);
+
+        UpdateLevelXP(model.XP, IsPhaseShop(model.UnitState));
+        UpdateStats();
 
         view.SetData(Data.Sprite, Data.Name);
         view.SetData(CurrentLevel.Description);
-        view.SetData(Coin(_unitState));
-        view.SetData(BattleHealth, BattleAttack);
-
-        if (_unitState == UnitState.Freezed)
-            GetFrezzed();
+        view.SetData(Coin(model.UnitState));
+        view.SetData(BattleHealth, BattleAttack, model.Energy);
     }
 
     private int Coin(UnitState unitState)
@@ -95,26 +96,6 @@ public class UnitController : MonoBehaviour
 
     #region PhaseShop
 
-    #region Manage Buttons
-
-    /// <summary>
-    /// Sets the manage state freezed and set the sprite active.
-    /// </summary>
-    public void GetFrezzed()
-    {
-        model.UnitState = UnitState.Freezed;
-        view.IceCube.SetActive(true);
-    }
-
-    /// <summary>
-    /// Sets the manage state unfreezed and set the sprite active.
-    /// </summary>
-    public void GetUnfrezzed()
-    {
-        model.UnitState = UnitState.InSlotShop;
-        view.IceCube.SetActive(false);
-    }
-
     /// <summary>
     /// Destroys the game object.
     /// </summary>
@@ -126,9 +107,6 @@ public class UnitController : MonoBehaviour
 
         Destroy(gameObject);
     }
-
-    #endregion
-
 
     #region Update Level
 
@@ -145,8 +123,8 @@ public class UnitController : MonoBehaviour
         model.BasisHealth += draggingModel.XP;
         model.BasisAttack += draggingModel.XP;
         UpdateLevelXP(model.XP, isPhaseShop);
-        UpdateHealthAttack();
-        view.SetData(BattleHealth, BattleAttack);
+        UpdateStats();
+        view.SetData(BattleHealth, BattleAttack, model.Energy);
 
     }
 
@@ -159,28 +137,28 @@ public class UnitController : MonoBehaviour
         switch (xp)
         {//                       level  box1   box2  step1  step2  box3  step3  step4  step5  
             case 1:
-                view.SetStepActive("1", false, true, false, false, false, false, false, false);
+                view.SetXpStepActive("1", false, true, false, false, false, false, false, false);
                 SetCurrentLevel(0);
                 break;
             case 2:
-                view.SetStepActive("1", false, true, true, false, false, false, false, false);
+                view.SetXpStepActive("1", false, true, true, false, false, false, false, false);
                 SetCurrentLevel(0);
                 break;
             case 3:
-                view.SetStepActive("1", false, true, true, true, false, false, false, false);
+                view.SetXpStepActive("1", false, true, true, true, false, false, false, false);
                 SetCurrentLevel(0);
                 StartCoroutine(DelayLevel2(isPhaseShop));
                 break;
             case 4:
-                view.SetStepActive("2", false, false, false, false, true, true, false, false);
+                view.SetXpStepActive("2", false, false, false, false, true, true, false, false);
                 SetCurrentLevel(1);
                 break;
             case 5:
-                view.SetStepActive("2", false, false, false, false, true, true, true, false);
+                view.SetXpStepActive("2", false, false, false, false, true, true, true, false);
                 SetCurrentLevel(1);
                 break;
             case 6:
-                view.SetStepActive("2", false, false, false, false, true, true, true, true);
+                view.SetXpStepActive("2", false, false, false, false, true, true, true, true);
                 SetCurrentLevel(1);
                 StartCoroutine(DelayLevel3(isPhaseShop));
                 break;
@@ -197,7 +175,7 @@ public class UnitController : MonoBehaviour
             view.DelayUpdateLevel :
             0f);
 
-        view.SetStepActive("2", false, false, false, false, true, false, false, false);
+        view.SetXpStepActive("2", false, false, false, false, true, false, false, false);
         SetCurrentLevel(1);
     }
 
@@ -211,7 +189,7 @@ public class UnitController : MonoBehaviour
             view.DelayUpdateLevel :
             0f);
 
-        view.SetStepActive("3", true, false, false, false, false, false, false, false);
+        view.SetXpStepActive("3", true, false, false, false, false, false, false, false);
         SetCurrentLevel(2);
     }
 
@@ -233,20 +211,19 @@ public class UnitController : MonoBehaviour
 
     #region Phase Battle
 
-    public int BattleHealth { get; set; }
-    public int BattleAttack { get; set; }
-
     public int TriggerAttack()
     {
-        var ability = TriggerAbility(TriggerType.BeforeAttack);
-        if (ability != null)
-        {
-            ability.Activate();
-        }
+        //var ability = TriggerAbility(TriggerType.BeforeAttack);
+        //if (ability != null)
+        //{
+        //    PhaseBattleController.Instance.StartCoroutine(
+        //       ability.Handle(
+        //           PhaseBattleController.Instance.Process.DurationEachAbility));
+        //}
 
         Attack?.Invoke();
 
-        ability = TriggerAbility(TriggerType.AfterAttack);
+        var ability = TriggerAbility(TriggerType.AfterAttack);
         if (ability != null)
         {
             PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
@@ -276,7 +253,7 @@ public class UnitController : MonoBehaviour
 
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
-        if (triggerType == CurrentLevel.TriggerType)
+        if (triggerType == CurrentLevel.TriggerType && Model.Energy > 0)
         {
             return Ability;
         }
@@ -289,7 +266,7 @@ public class UnitController : MonoBehaviour
         {
             model.BuffHealth += addHealth;
             model.BuffAttack += addAttack;
-            UpdateHealthAttack();
+            UpdateStats();
         }
         else
         {
@@ -302,18 +279,18 @@ public class UnitController : MonoBehaviour
             {
                 model.BuffHealthTemp += addHealth;
                 model.BuffAttackTemp += addAttack;
-                UpdateHealthAttack();
+                UpdateStats();
             }
         }
 
-        view.SetData(BattleHealth, BattleAttack);
+        view.SetData(BattleHealth, BattleAttack, model.Energy);
         view.ShowBuff(addHealth, addAttack);
     }
 
     /// <summary>
-    /// Updates battle health/attack.
+    /// Updates stats.
     /// </summary>
-    public void UpdateHealthAttack()
+    public void UpdateStats()
     {
         BattleHealth = model.BasisHealth + model.BuffHealth + model.BuffHealthTemp;
         BattleAttack = model.BasisAttack + model.BuffAttack + model.BuffAttackTemp;

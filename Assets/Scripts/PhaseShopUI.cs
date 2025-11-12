@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -15,7 +12,7 @@ public class PhaseShopUI : MonoBehaviour
     private TextMeshProUGUI
         nameText,
         coinsText,
-        wppText, // water pump pliers (wpp)
+        toolText,
         heartText,
         turnText,
         trophyText;
@@ -147,7 +144,7 @@ public class PhaseShopUI : MonoBehaviour
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             PhaseShopUnitManager.Instance.AttachedGameObject.
-               GetComponent<UnitController>().GetFrezzed();
+               GetComponent<UnitController>().Model.SetData(UnitState.Freezed);
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
@@ -163,7 +160,7 @@ public class PhaseShopUI : MonoBehaviour
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             PhaseShopUnitManager.Instance.AttachedGameObject.
-                GetComponent<UnitController>().GetUnfrezzed();
+                GetComponent<UnitController>().Model.SetData(UnitState.InSlotShop);
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
