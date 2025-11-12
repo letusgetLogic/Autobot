@@ -6,19 +6,19 @@ public static class SaveSystem
 {
     public static void SaveGame(Game game)
     {
-        //GameData savedData = LoadGameData();
-        //if (savedData != null)
-        //    Add(savedData, game);
-        //else
-        //    savedData = new GameData(game);
+        GameData savedData = LoadGameData();
+        if (savedData != null)
+            Add(savedData, game);
+        else
+            savedData = new GameData(game);
 
-        //BinaryFormatter formatter = new BinaryFormatter();
+        BinaryFormatter formatter = new BinaryFormatter();
 
-        //string path = Application.persistentDataPath + $"/game.fun";
-        //FileStream stream = new FileStream(path, FileMode.Create);
+        string path = Application.persistentDataPath + $"/game.fun";
+        FileStream stream = new FileStream(path, FileMode.Create);
 
-        //formatter.Serialize(stream, savedData);
-        //stream.Close();
+        formatter.Serialize(stream, savedData);
+        stream.Close();
     }
 
     public static Game LoadGame(bool delete, GameMode gameMode)

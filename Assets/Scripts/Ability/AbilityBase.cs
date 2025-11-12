@@ -4,12 +4,10 @@ using UnityEngine;
 public abstract class AbilityBase
 {
     protected UnitController Controller { get; private set; }
-    protected AbilityDuration Duration { get; private set; }
     protected Level CurrentLevel { get; private set; }
-    public AbilityBase(UnitController controller, AbilityDuration duration, Level currentLevel)
+    public AbilityBase(UnitController controller, Level currentLevel)
     {
         Controller = controller;
-        Duration = duration;
         CurrentLevel = currentLevel;
     }
     public IEnumerator Handle(float duration)
@@ -27,7 +25,10 @@ public abstract class AbilityBase
     {
         Run();
         if (Controller != null)
-            Controller.Model.Energy--;
+        {
+            Controller.Model.Data.Energy -= PackManager.Instance.MyPack.
+                EnergyConsumption.Value;
+        }
     }
     public abstract void Run();
 

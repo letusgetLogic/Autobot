@@ -3,31 +3,19 @@ using System.Collections.Generic;
 
 public class Buff : AbilityBase
 {
-    private FromWho fromWho;
-    private ToWho toWho;
-    private int toWhoCount;
-    private int health;
-    private int attack;
-
-    public Buff(UnitController controller, AbilityDuration duration, Level currentLevel) :
-        base(controller, duration, currentLevel)
+    public Buff(UnitController controller, Level currentLevel) : base(controller, currentLevel)
     {
-        this.fromWho = currentLevel.FromWho;
-        this.toWho = currentLevel.ToWho;
-        this.toWhoCount = currentLevel.ToWhoCount;
-        this.health = currentLevel.HealthBuff;
-        this.attack = currentLevel.AttackBuff;
     }
 
     public override void Run()
     {
-        if (toWho == ToWho.RandomFriend)
+        if (CurrentLevel.ToWho == ToWho.RandomFriend)
         {
             Slot[] slots;
 
             if (GameManager.Instance.IsPhaseBattle)
             {
-                slots = Controller.Model.IsTeam1 ?
+                slots = Controller.Model.Data.IsTeam1 ?
                     PhaseBattleController.Instance.Slots1 :
                     PhaseBattleController.Instance.Slots2;
             }
@@ -50,7 +38,7 @@ public class Buff : AbilityBase
             if (unitOnSlot.Count <= 0)
                 return;
 
-            for (int i = 0; i < toWhoCount; i++)
+            for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
             {
                 Random rnd = new Random();
                 int index = rnd.Next(0, unitOnSlot.Count);
@@ -58,9 +46,9 @@ public class Buff : AbilityBase
                 var unit = unitOnSlot[index];
 
                 unit.Buff(
-                    AbilityBase.IsPernament(Duration), 
-                    health, 
-                    attack);
+                    AbilityBase.IsPernament(CurrentLevel.AbilityDuration), 
+                    CurrentLevel.HealthBuff, 
+                    CurrentLevel.AttackBuff);
 
                 unitOnSlot.Remove(unit);
             }

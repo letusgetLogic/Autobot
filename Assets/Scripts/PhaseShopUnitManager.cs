@@ -160,7 +160,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         var unitOnSlot = slot.UnitController();
         var attachedController = AttachedGameObject.GetComponent<UnitController>();
 
-        if (PhaseShopUI.Instance.Player.Data.Coins < attachedController.Data.Cost.Value) // case: buy but not enough coins.
+        if (PhaseShopUI.Instance.Player.Data.Coins < attachedController.SoUnit.Cost.Value) // case: buy but not enough coins.
         {
             PhaseShopUI.Instance.HintNotEnoughCoins();
             return;
@@ -170,14 +170,14 @@ public class PhaseShopUnitManager : MonoBehaviour
         {
             if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, attachedController)) // case: buy, units are fusible.
             {
-                PhaseShopUI.Instance.UpdateCoin(-attachedController.Data.Cost.Value);
+                PhaseShopUI.Instance.UpdateCoin(-attachedController.SoUnit.Cost.Value);
                 unitOnSlot.UpdateLevel(attachedController.Model, true);
                 Destroy(AttachedGameObject);
             }
         }
         else // case: buy and place dragging unit on empty slot.
         {
-            PhaseShopUI.Instance.UpdateCoin(-attachedController.Data.Cost.Value);
+            PhaseShopUI.Instance.UpdateCoin(-attachedController.SoUnit.Cost.Value);
             Transport(AttachedGameObject, slot.transform, true, true);
         }
     }

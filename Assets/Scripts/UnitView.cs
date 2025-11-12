@@ -22,7 +22,8 @@ public class UnitView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI
         myName,
         ability,
-        coin;
+        coin,
+        energyConsumption;
 
     [Header("Level Display")]
     [SerializeField] private GameObject levelDisplay;
@@ -51,9 +52,9 @@ public class UnitView : MonoBehaviour
 
     [Header("Repair Display")]
     [SerializeField] private GameObject repairDisplay;
-    [SerializeField] private GameObject stepFilled1;
-    [SerializeField] private GameObject stepFilled2;
-    [SerializeField] private GameObject stepFilled3;
+    [SerializeField] private GameObject repairStep1;
+    [SerializeField] private GameObject repairStep2;
+    [SerializeField] private GameObject repairStep3;
 
     [Header("Settings")]
     [SerializeField] private Canvas canvas;
@@ -95,6 +96,8 @@ public class UnitView : MonoBehaviour
     public void SetData(string _description)
     {
         ability.text = _description;
+        energyConsumption.text = PackManager.Instance.MyPack.
+            EnergyConsumption.Value.ToString();
     }
 
     /// <summary>
@@ -213,9 +216,9 @@ public class UnitView : MonoBehaviour
     }
     public void SetRepairStepActive(bool step1, bool step2,bool step3)
     {
-        stepFilled1.SetActive(step1);
-        stepFilled2.SetActive(step2);
-        stepFilled3.SetActive(step3);
+        repairStep1.SetActive(step1);
+        repairStep2.SetActive(step2);
+        repairStep3.SetActive(step3);
     }
 
     /// <summary>

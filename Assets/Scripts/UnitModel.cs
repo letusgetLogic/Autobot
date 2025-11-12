@@ -1,46 +1,61 @@
-﻿[System.Serializable]
+﻿using System.Collections;
+using UnityEngine;
+
+[System.Serializable]
 public class UnitModel
 {
+    public SaveUnitData Data;
+    public SoUnit SoUnit { get; private set; }
     public UnitView View { get; set; }
-    public int Index { get; private set; }
-    public int BasisHealth { get; set; }
-    public int BasisAttack { get; set; }
-    public int HealthState => healthState;
-    private int healthState;
-    public int Energy { get; set; }
-    public int XP
+    public Level CurrentLevel { get; set; }
+    public bool IsMaxed => CurrentLevel.Number == SoUnit.Levels.Length;
+    public UnitModel(SoUnit _soUnit, int _index) // For new unit
     {
-        get { return xp; }
-        set
-        {
-            if (value > PackManager.Instance.MyPack.XpToLv3.Value)
-                xp = PackManager.Instance.MyPack.XpToLv3.Value;
-            else xp = value;
-        }
+        SoUnit = _soUnit;
+        Data.HasReference = true;
+        Data.Index = _index;
+        Data.BasisHp = _soUnit.Health;
+        Data.BasisAtk = _soUnit.Attack;
+        Data.Hp = _soUnit.Health;
+        Data.Atk = _soUnit.Attack;
+        Data.Energy = _soUnit.Energy;
+        Data.XP = 1;
     }
-    private int xp;
-    public UnitState UnitState => unitState;
-    private UnitState unitState;
-    public UnitModel(SoUnit _data, int index)
-    {
-        Index = index;
-        BasisHealth = _data.Health;
-        BasisAttack = _data.Attack;
-        Energy = _data.Energy;
-        XP = 1;
 
-        BuffHealthTemp = 0;
-        BuffAttackTemp = 0;
+    public UnitModel(SoUnit _soUnit, SaveUnitData _data) // For loaded unit
+    {
+        SoUnit = _soUnit;
+        Data = _data;
+        Data.Hp -= Data.BuffTempHp;
+        Data.Atk -= Data.BuffTempAtk;
+        Data.BuffTempHp = 0;
+        Data.BuffTempAtk = 0;
     }
-    public int BuffHealth { get; set; }
-    public int BuffAttack { get; set; }
-    public int BuffHealthTemp { get; set; }
-    public int BuffAttackTemp { get; set; }
-    public bool IsTeam1 { get; set; } = true;
 
     public void SetData(UnitView _view)
     {
         View = _view;
+        View.SetData(SoUnit.Sprite, SoUnit.Name);
+        View.SetData(CurrentLevel.Description);
+        View.SetData(Data.Hp, Data.Atk, Data.Energy);
+        UpdateLevelXP(IsPhaseShop(Data.UnitState));
+    }
+
+    private bool IsPhaseShop(UnitState unitState)
+    {
+        switch (unitState)
+        {
+            case UnitState.InSlotShop:
+                return true;
+            case UnitState.Freezed:
+                return true;
+            case UnitState.InSlotBattle:
+                return true;
+            case UnitState.InPhaseBattle:
+                return false;
+        }
+
+        return default;
     }
 
     public void SetData(UnitState _unitState)
@@ -69,14 +84,130 @@ public class UnitModel
             }
         }
 
-        unitState = _unitState;
+        Data.UnitState = _unitState;
+        View.SetData(Coin(Data.UnitState));
     }
 
-    public void SetData(int _healthState)
+    private int Coin(UnitState unitState)
+    {
+        switch (unitState)
+        {
+            case UnitState.InSlotShop:
+                return SoUnit.Cost.Value;
+            case UnitState.Freezed:
+                return SoUnit.Cost.Value;
+            case UnitState.InSlotBattle:
+                return CurrentLevel.Sell;
+            case UnitState.InPhaseBattle:
+                return 0;
+        }
+
+        return -1;
+    }
+
+    #region Update Level
+
+    /// <summary>
+    /// Updates the level and xp.
+    /// </summary>
+    /// <param name="xp"></param>
+    public void UpdateLevelXP(bool isPhaseShop)
+    {
+        switch (Data.XP)
+        {//                       level  box1   box2  step1  step2  box3  step3  step4  step5  
+            case 1:
+                View.SetXpStepActive("1", false, true, false, false, false, false, false, false);
+                SetCurrentLevel(0);
+                break;
+            case 2:
+                View.SetXpStepActive("1", false, true, true, false, false, false, false, false);
+                SetCurrentLevel(0);
+                break;
+            case 3:
+                View.SetXpStepActive("1", false, true, true, true, false, false, false, false);
+                SetCurrentLevel(0);
+                View.StartCoroutine(DelayLevel2(isPhaseShop));
+                break;
+            case 4:
+                View.SetXpStepActive("2", false, false, false, false, true, true, false, false);
+                SetCurrentLevel(1);
+                break;
+            case 5:
+                View.SetXpStepActive("2", false, false, false, false, true, true, true, false);
+                SetCurrentLevel(1);
+                break;
+            case 6:
+                View.SetXpStepActive("2", false, false, false, false, true, true, true, true);
+                SetCurrentLevel(1);
+                View.StartCoroutine(DelayLevel3(isPhaseShop));
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Delays level 2.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DelayLevel2(bool isPhaseShop)
+    {
+        yield return new WaitForSeconds(isPhaseShop ?
+            View.DelayUpdateLevel :
+            0f);
+
+        View.SetXpStepActive("2", false, false, false, false, true, false, false, false);
+        SetCurrentLevel(1);
+    }
+
+    /// <summary>
+    /// Delays level 3.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DelayLevel3(bool isPhaseShop)
+    {
+        yield return new WaitForSeconds(isPhaseShop ?
+            View.DelayUpdateLevel :
+            0f);
+
+        View.SetXpStepActive("3", true, false, false, false, false, false, false, false);
+        SetCurrentLevel(2);
+    }
+
+    /// <summary>
+    /// Sets the current level and index for saving data.
+    /// </summary>
+    /// <param name="index"></param>
+    private void SetCurrentLevel(int index)
+    {
+        CurrentLevel = SoUnit.Levels[index];
+        View.SetData(CurrentLevel.Description);
+        View.SetData(CurrentLevel.Sell);
+    }
+
+    #endregion
+
+    public void Add(
+        int basisHp, int basisAtk,
+        int buffHp, int buffAtk,
+        int buffTempHp, int buffTempAtk)
+    {
+        Data.BasisHp += basisHp;
+        Data.BasisAtk += basisAtk;
+        Data.BuffHp += buffHp;
+        Data.BuffAtk += buffAtk;
+        Data.BuffTempHp += buffTempHp;
+        Data.BuffTempAtk += buffTempAtk;
+
+        Data.Hp += basisHp + buffHp + buffTempHp;
+        Data.Atk += basisAtk + buffAtk + buffTempAtk;
+        View.SetData(Data.Hp, Data.Atk, Data.Energy);
+    }
+
+
+    public void SetDurability(int _state)
     {
         if (View != null)
         {
-            switch (_healthState)
+            switch (_state)
             {
                 case 0:
                     View.SetRepairStepActive(false, false, false);
@@ -93,12 +224,12 @@ public class UnitModel
             }
         }
 
-        if (_healthState > PackManager.Instance.MyPack.HealthPortion.Value)
-            healthState = PackManager.Instance.MyPack.HealthPortion.Value;
-        else healthState = _healthState;
+        if (_state > PackManager.Instance.MyPack.HealthPortion.Value)
+            Data.Durability = PackManager.Instance.MyPack.HealthPortion.Value;
+        else Data.Durability = _state;
     }
 
-    public void UpdateHealthState()
+    public void UpdateDurability()
     {
 
     }

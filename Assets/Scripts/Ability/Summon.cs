@@ -6,9 +6,8 @@ public class Summon : AbilityBase
     private UnitModel model;
     private SoUnit[] summonedUnits;
     private int slotIndex;
-    public Summon(UnitController controller, AbilityDuration duration,
-        UnitModel model, Level currentLevel, int slotIndex) :
-        base(controller, duration, currentLevel)
+    public Summon(UnitController controller, UnitModel model, Level currentLevel, int slotIndex) :
+        base(controller, currentLevel)
     {
         this.model = model;
         summonedUnits = CurrentLevel.SummonUnits;
@@ -28,11 +27,11 @@ public class Summon : AbilityBase
 
         if (GameManager.Instance.IsPhaseBattle)
         {
-            slots = model.IsTeam1 ?
+            slots = model.Data.IsTeam1 ?
                 PhaseBattleController.Instance.Slots1 :
                 PhaseBattleController.Instance.Slots2;
 
-            isRight = !model.IsTeam1;
+            isRight = !model.Data.IsTeam1;
         }
         else
         {
@@ -47,7 +46,7 @@ public class Summon : AbilityBase
                     summonedUnits[i],
                     -1,
                     null,
-                    model.UnitState,
+                    model.Data.UnitState,
                     slots[slotIndex].transform);
 
                 yield return new WaitUntil(() => unit != null);
@@ -58,7 +57,7 @@ public class Summon : AbilityBase
                 if (isRight)
                 {
                     controller.View.SetRightSide();
-                    controller.Model.IsTeam1 = false;
+                    controller.Model.Data.IsTeam1 = false;
                 }
             }
         }
