@@ -27,7 +27,7 @@ public class StartOfBattleState : StateBase
             var unit = slot.UnitController();
             if (unit != null)
             {
-                var trigger = unit.CurrentLevel.TriggerType;
+                var trigger = unit.Model.CurrentLevel.TriggerType;
                 if (trigger == TriggerType.StartOfBattle)
                 {
 

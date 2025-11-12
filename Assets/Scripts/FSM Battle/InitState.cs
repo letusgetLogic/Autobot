@@ -51,13 +51,13 @@ public class InitState : StateBase
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            var unitModel = player.Data.BattleUnitModels[i];
-            if (unitModel != null)
+            var unitData = player.Data.BattleUnitDatas[i];
+            if (unitData.HasReference)
             {
                 var controller = SpawnManager.Instance.Spawn(
-                    PackManager.Instance.Units[unitModel.Index],
-                    unitModel.Index,
-                    unitModel,
+                    PackManager.Instance.Units[unitData.Index],
+                    unitData.Index,
+                    unitData,
                     UnitState.InPhaseBattle,
                     slots[i].transform);
 
@@ -66,7 +66,7 @@ public class InitState : StateBase
                 if (isRight)
                 {
                     controller.View.SetRightSide();
-                    controller.Model.IsTeam1 = false;
+                    controller.Model.Data.IsTeam1 = false;
                 }
             }
         }

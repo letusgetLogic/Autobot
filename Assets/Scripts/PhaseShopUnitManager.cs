@@ -68,37 +68,37 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     private void SpawnUnits()
     {
-        if (Player.Data.BattleUnitModels != null)
+        if (Player.Data.BattleUnitDatas != null)
         {
-            for (int i = 0; i < Player.Data.BattleUnitModels.Length; i++)
+            for (int i = 0; i < Player.Data.BattleUnitDatas.Length; i++)
             {
-                var unitModel = Player.Data.BattleUnitModels[i];
-                if (unitModel == null)
+                var unitData = Player.Data.BattleUnitDatas[i];
+                if (unitData.HasReference != true)
                     continue;
 
                 SpawnManager.Instance.Spawn(
-                    PackManager.Instance.Units[unitModel.Index],
-                    unitModel.Index,
-                    unitModel,
-                    unitModel.UnitState,
+                    PackManager.Instance.Units[unitData.Index],
+                    unitData.Index,
+                    unitData,
+                    unitData.UnitState,
                     battleSlots[i].transform);
 
             }
         }
 
-        if (Player.Data.ShopUnitModels != null)
+        if (Player.Data.ShopUnitDatas != null)
         {
-            for (int i = 0; i < Player.Data.ShopUnitModels.Length; i++)
+            for (int i = 0; i < Player.Data.ShopUnitDatas.Length; i++)
             {
-                var unitModel = Player.Data.ShopUnitModels[i];
-                if (unitModel == null)
+                var unitData = Player.Data.ShopUnitDatas[i];
+                if (unitData.HasReference != true)
                     continue;
 
                 SpawnManager.Instance.Spawn(
-                    PackManager.Instance.Units[unitModel.Index],
-                    unitModel.Index,
-                    unitModel,
-                    unitModel.UnitState,
+                    PackManager.Instance.Units[unitData.Index],
+                    unitData.Index,
+                    unitData,
+                    unitData.UnitState,
                     shopUnitSlots[i].transform);
             }
         }
@@ -114,7 +114,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             var unitController = shopUnitSlots[i].UnitController();
             if (unitController != null)
             {
-                if (unitController.Model.UnitState == UnitState.Freezed)
+                if (unitController.Model.Data.UnitState == UnitState.Freezed)
                     continue;
 
                 Destroy(unitController.gameObject);
@@ -126,7 +126,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             SpawnManager.Instance.Spawn(
                 data,
                 rand,
-                null,
+                new(),
                 UnitState.InSlotShop,
                 shopUnitSlots[i].transform);
         }
@@ -144,13 +144,13 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         var attachedModel = AttachedGameObject.GetComponent<UnitController>().Model;
 
-        if (attachedModel.UnitState == UnitState.InSlotShop)
+        if (attachedModel.Data.UnitState == UnitState.InSlotShop)
         {
-            PhaseShopUnitManager.Instance.Buy(slot);
+            Buy(slot);
         }
-        else if (attachedModel.UnitState == UnitState.InSlotBattle)
+        else if (attachedModel.Data.UnitState == UnitState.InSlotBattle)
         {
-            PhaseShopUnitManager.Instance.TransportOrFusion(slot);
+            TransportOrFusion(slot);
         }
     }
 
@@ -160,7 +160,9 @@ public class PhaseShopUnitManager : MonoBehaviour
         var unitOnSlot = slot.UnitController();
         var attachedController = AttachedGameObject.GetComponent<UnitController>();
 
-        if (PhaseShopUI.Instance.Player.Data.Coins < attachedController.SoUnit.Cost.Value) // case: buy but not enough coins.
+        // case: buy but not enough coins.
+        if (PhaseShopUI.Instance.Player.Data.Coins < 
+            attachedController.Model.SoUnit.Cost.Value) 
         {
             PhaseShopUI.Instance.HintNotEnoughCoins();
             return;
@@ -168,16 +170,17 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         if (unitOnSlot != null)
         {
-            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, attachedController)) // case: buy, units are fusible.
+            // case: buy, units are fusible.
+            if (IsFusible(unitOnSlot, attachedController)) 
             {
-                PhaseShopUI.Instance.UpdateCoin(-attachedController.SoUnit.Cost.Value);
+                PhaseShopUI.Instance.UpdateCoin(-attachedController.Model.SoUnit.Cost.Value);
                 unitOnSlot.UpdateLevel(attachedController.Model, true);
                 Destroy(AttachedGameObject);
             }
         }
         else // case: buy and place dragging unit on empty slot.
         {
-            PhaseShopUI.Instance.UpdateCoin(-attachedController.SoUnit.Cost.Value);
+            PhaseShopUI.Instance.UpdateCoin(-attachedController.Model.SoUnit.Cost.Value);
             Transport(AttachedGameObject, slot.transform, true, true);
         }
     }
@@ -192,7 +195,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             if (unitOnSlot == attachedController) // attached unit shouldn't be unit on the slot.
                 return;
 
-            if (PhaseShopUnitManager.Instance.IsFusible(unitOnSlot, attachedController)) // case: only fusion.
+            if (IsFusible(unitOnSlot, attachedController)) // case: only fusion.
             {
                 unitOnSlot.UpdateLevel(attachedController.Model, true);
                 Destroy(AttachedGameObject);
@@ -200,7 +203,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
         else // case: move dragging unit to empty slot.
         {
-            PhaseShopUnitManager.Instance.Transport(AttachedGameObject, slot.transform, true, true);
+            Transport(AttachedGameObject, slot.transform, true, true);
         }
     }
 
@@ -215,7 +218,8 @@ public class PhaseShopUnitManager : MonoBehaviour
         bool mouseRelease, bool disableShadow)
     {
         if (attached == null ||
-            attached.GetComponent<UnitController>().Model.UnitState == UnitState.Freezed)
+            attached.GetComponent<UnitController>().Model.Data.UnitState == 
+            UnitState.Freezed)
             return;
 
         attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
@@ -234,7 +238,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             unitView.Shadow.enabled = false;
 
         controller.Model.SetData(UnitState.InSlotBattle);
-        controller.View.SetData(controller.CurrentLevel.Sell);
+        controller.View.SetData(controller.Model.CurrentLevel.Sell);
 
         Player.UpdateUnitData();
     }
@@ -271,16 +275,16 @@ public class PhaseShopUnitManager : MonoBehaviour
                     Transport(movedUnit, battleSlots[empty].transform, false, false);
                 }
 
-                if (AttachedGameObject.GetComponent<UnitController>().Model.UnitState
+                if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
                     == UnitState.InSlotBattle)
                 {
                     Transport(AttachedGameObject, battleSlots[target].transform, false, false);
                     AttachedGameObject.GetComponent<UnitView>().BeingReleased(null);
-                    PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+                    SetAttachedGameObject(null);
 
                     PreventDragging = true;
                 }
-                else if (AttachedGameObject.GetComponent<UnitController>().Model.UnitState
+                else if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
                     == UnitState.InSlotShop)
                 {
                     battleSlots[target].Border.enabled = true;
@@ -299,7 +303,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <returns></returns>
     public bool IsFusible(UnitController onSlot, UnitController onDrag)
     {
-        if (onSlot.IsMaxed || onDrag.IsMaxed)
+        if (onSlot.Model.IsMaxed || onDrag.Model.IsMaxed)
             return false;
 
         if (onSlot.name == onDrag.name)

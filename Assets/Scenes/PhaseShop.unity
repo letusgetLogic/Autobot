@@ -684,7 +684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 30, y: 0}
+  m_AnchoredPosition: {x: 35, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &257255463
@@ -1714,6 +1714,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4764286518871201382, guid: ad92b87525cec0e4aa5a04928d493f96, type: 3}
+      propertyPath: m_fontSize
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4764286518871201382, guid: ad92b87525cec0e4aa5a04928d493f96, type: 3}
       propertyPath: m_fontColor.b
       value: 0.514151
       objectReference: {fileID: 0}
@@ -1724,6 +1728,10 @@ PrefabInstance:
     - target: {fileID: 4764286518871201382, guid: ad92b87525cec0e4aa5a04928d493f96, type: 3}
       propertyPath: m_fontColor.r
       value: 0.5185879
+      objectReference: {fileID: 0}
+    - target: {fileID: 4764286518871201382, guid: ad92b87525cec0e4aa5a04928d493f96, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4764286518871201382, guid: ad92b87525cec0e4aa5a04928d493f96, type: 3}
       propertyPath: m_fontColor32.rgba

@@ -21,14 +21,14 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public UnitController Spawn(SoUnit _data, int _index, UnitModel _model, UnitState _unitState,
+    public UnitController Spawn(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState,
         Transform parent)
     {
         var unit = Instantiate(unitPrefab);
         unit.transform.SetParent(parent, false);
 
         var controller = unit.GetComponent<UnitController>();
-        controller.Initialize(_data, _index, _model, _unitState);
+        controller.Initialize(_soUnit, _index, _data, _unitState);
 
         return controller;
     }

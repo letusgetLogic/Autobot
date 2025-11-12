@@ -17,7 +17,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             return;
 
         if (slot.UnitController() == null ||
-            slot.UnitController().Model.UnitState == UnitState.Freezed)
+            slot.UnitController().Model.Data.UnitState == UnitState.Freezed)
             return;
 
         if (slot.UnitView() == null)
@@ -39,7 +39,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             return;
        
         if (slot.UnitController() == null ||
-            slot.UnitController().Model.UnitState == UnitState.Freezed)
+            slot.UnitController().Model.Data.UnitState == UnitState.Freezed)
             return;
 
         if (slot.UnitView() == null)
@@ -56,7 +56,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             return;
 
         if (slot.UnitController() == null ||
-            slot.UnitController().Model.UnitState == UnitState.Freezed)
+            slot.UnitController().Model.Data.UnitState == UnitState.Freezed)
             return;
 
         if (slot.UnitView() == null)

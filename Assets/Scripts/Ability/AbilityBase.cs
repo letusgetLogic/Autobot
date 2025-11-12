@@ -38,9 +38,9 @@ public abstract class AbilityBase
         switch (type)
         {
             case DoType.Buff:
-                return new Buff(controller, level.AbilityDuration, level);
+                return new Buff(controller, level);
             case DoType.Summon:
-                return new Summon(controller, level.AbilityDuration, controller.Model, level, controller.SlotIndex);
+                return new Summon(controller, controller.Model, level, controller.SlotIndex);
         }
 
         return null;

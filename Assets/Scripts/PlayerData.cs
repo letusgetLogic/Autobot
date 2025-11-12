@@ -10,8 +10,8 @@ public class PlayerData
     public int Turns { get; set; }
     public int Wins { get; set; }
     public int Coins { get; set; }
-    public UnitModel[] BattleUnitModels {  get; set; }
-    public UnitModel[] ShopUnitModels {  get; set; }
+    public SaveUnitData[] BattleUnitDatas {  get; set; }
+    public SaveUnitData[] ShopUnitDatas {  get; set; }
 
     /// <summary>
     /// Assigns the template values.
@@ -24,6 +24,5 @@ public class PlayerData
         Name = _name;
         Lives = _lives;
         WinCondition = _wins;
-        Turns = 0;
     }
 }

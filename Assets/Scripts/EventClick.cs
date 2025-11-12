@@ -28,7 +28,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
             PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());
 
-            var state = slot.UnitController().Model.UnitState;
+            var state = slot.UnitController().Model.Data.UnitState;
             PhaseShopUI.Instance.SetButtonActive(state);
         }
     }

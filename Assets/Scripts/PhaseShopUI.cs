@@ -179,7 +179,7 @@ public class PhaseShopUI : MonoBehaviour
                 GetComponent<UnitController>();
 
             unit.GetSelled();
-            UpdateCoin(unit.CurrentLevel.Sell);
+            UpdateCoin(unit.Model.CurrentLevel.Sell);
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }

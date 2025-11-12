@@ -23,7 +23,7 @@ public static class SaveSystem
 
     public static Game LoadGame(bool delete, GameMode gameMode)
     {
-        GameData savedData = null/*LoadGameData()*/;
+        GameData savedData = LoadGameData();
 
         if (savedData != null)
         {
@@ -42,30 +42,30 @@ public static class SaveSystem
         }
         else
         {
-            Debug.LogError("Save data is null");
+            Debug.Log("Save data is null");
             return null;
         }
     }
 
-    //private static GameData LoadGameData()
-    //{
-    //    string path = Application.persistentDataPath + "/game.fun";
-    //    if (File.Exists(path))
-    //    {
-    //        BinaryFormatter formatter = new BinaryFormatter();
-    //        FileStream stream = new FileStream(path, FileMode.Open);
-    //        stream.Position = 0;
-    //        GameData gameData = formatter.Deserialize(stream) as GameData;
-    //        stream.Close();
+    private static GameData LoadGameData()
+    {
+        string path = Application.persistentDataPath + "/game.fun";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            stream.Position = 0;
+            GameData gameData = formatter.Deserialize(stream) as GameData;
+            stream.Close();
 
-    //        return gameData;
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("Save file not found in " + path);
-    //        return null;
-    //    }
-    //}
+            return gameData;
+        }
+        else
+        {
+            Debug.Log("Save file not found in " + path);
+            return null;
+        }
+    }
 
     private static void Add(GameData gameData, Game game)
     {

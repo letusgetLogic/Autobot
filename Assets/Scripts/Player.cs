@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using static PlayerData;
 
 public class Player : MonoBehaviour
 {
@@ -42,7 +41,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateUnitData()
     {
-        Data.BattleUnitModels = new UnitModel[PhaseShopUnitManager.Instance.BattleSlots.Length];
+        Data.BattleUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.BattleSlots.Length];
         for (int i = 0; i < PhaseShopUnitManager.Instance.BattleSlots.Length; i++)
         {
             var unit = PhaseShopUnitManager.Instance.BattleSlots[i].UnitController();
@@ -51,10 +50,10 @@ public class Player : MonoBehaviour
                 continue;
             }
 
-            Data.BattleUnitModels[i] = unit.Model;
+            Data.BattleUnitDatas[i] = unit.Model.Data;
         }
 
-        Data.ShopUnitModels = new UnitModel[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
+        Data.ShopUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
         for (int i = 0; i < PhaseShopUnitManager.Instance.ShopUnitSlots.Length; i++)
         {
             var unit = PhaseShopUnitManager.Instance.ShopUnitSlots[i].UnitController();
@@ -63,7 +62,7 @@ public class Player : MonoBehaviour
                 continue;
             }
 
-            Data.ShopUnitModels[i] = unit.Model;
+            Data.ShopUnitDatas[i] = unit.Model.Data;
         }
 
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);

@@ -45,7 +45,7 @@ public class Summon : AbilityBase
                 var unit = SpawnManager.Instance.Spawn(
                     summonedUnits[i],
                     -1,
-                    null,
+                    new(),
                     model.Data.UnitState,
                     slots[slotIndex].transform);
 
