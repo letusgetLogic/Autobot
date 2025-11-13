@@ -1,4 +1,6 @@
-﻿[System.Serializable]
+﻿using System;
+
+[Serializable]
 public struct SaveUnitData
 {
     public bool HasReference { get; set; }
@@ -17,7 +19,7 @@ public struct SaveUnitData
     public int BuffTempAtk { get => buffTempAtk; set { buffTempAtk = NegativToZero(value); } }
     private int buffTempAtk;
 
-    public int Hp { get; set; }
+    public int Hp { get; private set; }
     public int Atk { get; set; }
 
     public int Durability { get; set; }
@@ -47,6 +49,12 @@ public struct SaveUnitData
         if (value < 0)
             return 0;
         return value;
+    }
+
+    public void SetHp(int hp, Action updateDurability)
+    {
+        Hp = hp;
+        updateDurability?.Invoke();
     }
 }
 

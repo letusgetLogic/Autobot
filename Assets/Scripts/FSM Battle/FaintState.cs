@@ -37,7 +37,8 @@ public class FaintState : StateBase
         while (PhaseBattleController.Instance.FaintUnits.Count > 0)
         {
             var unit = PhaseBattleController.Instance.FaintUnits.Dequeue();
-            GameObject.Destroy(unit);
+            unit.SetActive(false);
+            unit.transform.parent = null;
             Debug.Log($"Fainted unit {unit.name} destroyed");
 
             yield return new WaitUntil(() => unit == null);

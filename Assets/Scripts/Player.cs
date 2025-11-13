@@ -1,9 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     public PlayerData Data { get; set; }
+
+    private UnitController[] battleUnits;
 
     /// <summary>
     /// Starts the phase shop.
@@ -25,6 +26,16 @@ public class Player : MonoBehaviour
     {
         UpdateUnitData();
         GameManager.Instance.EndPhaseShop();
+    }
+
+    public void StartBattle()
+    {
+
+    }
+
+    public void EndBattle()
+    {
+
     }
 
     /// <summary>

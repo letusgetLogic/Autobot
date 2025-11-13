@@ -40,7 +40,7 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(_soUnit, _data);
 
         model.SetData(view);
-        model.SetDurability(PackManager.Instance.MyPack.HealthPortion.Value);
+        
         model.SetData(_unitState);
     }
 
@@ -104,11 +104,7 @@ public class UnitController : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(int damage)
     {
-        if (damage < 0)
-            damage = 0;
-
-        model.Data.Hp -= damage;
-        view.ShowDamage(damage, model.Data.Hp);
+        model.SubstractHp(damage);
 
         if (model.Data.Hp <= 0)
             TriggerFaint();

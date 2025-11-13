@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 
 [System.Serializable]
@@ -16,17 +18,18 @@ public class UnitModel
         Data.Index = _index;
         Data.BasisHp = _soUnit.Health;
         Data.BasisAtk = _soUnit.Attack;
-        Data.Hp = _soUnit.Health;
+        Data.SetHp(_soUnit.Health, UpdateDurability);
         Data.Atk = _soUnit.Attack;
         Data.Energy = _soUnit.Energy;
         Data.XP = 1;
     }
+  
 
     public UnitModel(SoUnit _soUnit, SaveUnitData _data) // For loaded unit
     {
         SoUnit = _soUnit;
         Data = _data;
-        Data.Hp -= Data.BuffTempHp;
+        Data.SetHp(Data.Hp - Data.BuffTempHp, UpdateDurability);
         Data.Atk -= Data.BuffTempAtk;
         Data.BuffTempHp = 0;
         Data.BuffTempAtk = 0;
@@ -38,6 +41,7 @@ public class UnitModel
         View.SetData(SoUnit.Sprite, SoUnit.Name);
         View.SetData(CurrentLevel.Description);
         View.SetData(Data.Hp, Data.Atk, Data.Energy);
+        SetDurability(GetDurability());
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
 
@@ -197,12 +201,26 @@ public class UnitModel
         Data.BuffTempHp += buffTempHp;
         Data.BuffTempAtk += buffTempAtk;
 
-        Data.Hp += basisHp + buffHp + buffTempHp;
+        Data.SetHp(Data.Hp + basisHp + buffHp + buffTempHp, UpdateDurability);
         Data.Atk += basisAtk + buffAtk + buffTempAtk;
         View.SetData(Data.Hp, Data.Atk, Data.Energy);
     }
 
+    public void SubstractHp(int damage)
+    {
+        if (damage < 0)
+            damage = 0;
 
+        Data.SetHp(Data.Hp - damage, UpdateDurability);
+        View.ShowDamage(damage, Data.Hp);
+    }
+
+
+    #region Durability
+    private void UpdateDurability()
+    {
+        SetDurability(GetDurability());
+    }
     public void SetDurability(int _state)
     {
         if (View != null)
@@ -229,9 +247,28 @@ public class UnitModel
         else Data.Durability = _state;
     }
 
-    public void UpdateDurability()
+    public int GetDurability()
     {
+        float portion = 1 / (float)PackManager.Instance.MyPack.HealthPortion.Value;
+        float portion0 = portion / 2;
 
+        int maxHp = Data.BasisHp + Data.BuffHp;
+        float portionHp = Data.Hp / maxHp;
+        
+        for (int i = 0; i < PackManager.Instance.MyPack.HealthPortion.Value; i++)
+        {
+            float portionLimit = portion0 + (portion * i);
+            if (portionHp < portionLimit)
+                return i;
+
+            if (i == PackManager.Instance.MyPack.HealthPortion.Value - 1)
+            {
+                return PackManager.Instance.MyPack.HealthPortion.Value;
+            }
+        }
+        return 0;
     }
+
+    #endregion
 }
 
