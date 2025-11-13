@@ -120,6 +120,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
         StartBattle?.Invoke();
         PhaseBattleView.Instance.SetSpeedButton(true);
+
+        Player1.StartBattle();
+        Player2.StartBattle();
         SetState(new InitState(Process.DurationInit));
     }
 

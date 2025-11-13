@@ -30,12 +30,12 @@ public class Player : MonoBehaviour
 
     public void StartBattle()
     {
-
+        battleUnits = new UnitController[PhaseBattleController.Instance.Slots1.Length];
     }
 
     public void EndBattle()
     {
-
+        UpdateBattleUnitData();
     }
 
     /// <summary>
@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
     {
         Data.Turns++;
         Data.Coins = GameManager.Instance.StartCoins;
+        Data.Tools = GameManager.Instance.StartTools;
     }
 
     /// <summary>
@@ -77,6 +78,33 @@ public class Player : MonoBehaviour
         }
 
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
+    }
+
+    /// <summary>
+    /// Updates the data of battle units for saving data.
+    /// </summary>
+    public void UpdateBattleUnitData()
+    {
+        Data.BattleUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.BattleSlots.Length];
+        for (int i = 0; i < PhaseShopUnitManager.Instance.BattleSlots.Length; i++)
+        {
+            if (battleUnits[i] == null)
+            {
+                continue;
+            }
+
+            Data.BattleUnitDatas[i] = battleUnits[i].Model.Data;
+        }
+
+        SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
+    }
+
+    public void SaveUnit(UnitController[] _battleUnits)
+    {
+        for (int i = 0; i < _battleUnits.Length;i++)
+        {
+            battleUnits[i] = _battleUnits[i];
+        }
     }
 }
 

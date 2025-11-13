@@ -52,13 +52,18 @@ public class UnitView : MonoBehaviour
 
     [Header("Repair Display")]
     [SerializeField] private GameObject repairDisplay;
-    [SerializeField] private GameObject repairStep1;
-    [SerializeField] private GameObject repairStep2;
-    [SerializeField] private GameObject repairStep3;
+    [SerializeField] private GameObject 
+        repairStep1,
+        repairStep2,
+        repairStep3;
 
     [Header("Settings")]
     [SerializeField] private Canvas canvas;
     [SerializeField] private SoUnitSettings unitSettings;
+
+    [Header("Color")]
+    [SerializeField] private Color substractColor;
+    [SerializeField] private Color addColor;
     public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
 
     private Camera mainCamera;
@@ -95,7 +100,7 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void SetData(string _description)
     {
-        ability.text = _description;
+        ability.text = "          " + _description;
         energyConsumption.text = PackManager.Instance.MyPack.
             EnergyConsumption.Value.ToString();
     }
@@ -103,9 +108,10 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(int _coin)
+    public void SetData(int _coin, bool _isForBuying)
     {
         coin.text = _coin.ToString();
+        coin.color = _isForBuying ? substractColor : addColor;
     }
 
     /// <summary>

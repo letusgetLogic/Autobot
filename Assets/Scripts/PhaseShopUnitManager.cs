@@ -80,7 +80,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                     PackManager.Instance.Units[unitData.Index],
                     unitData.Index,
                     unitData,
-                    unitData.UnitState,
+                    UnitState.InSlotBattle,
                     battleSlots[i].transform);
 
             }
@@ -238,7 +238,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             unitView.Shadow.enabled = false;
 
         controller.Model.SetData(UnitState.InSlotBattle);
-        controller.View.SetData(controller.Model.CurrentLevel.Sell);
+        controller.View.SetData(controller.Model.CurrentLevel.Sell, false);
 
         Player.UpdateUnitData();
     }

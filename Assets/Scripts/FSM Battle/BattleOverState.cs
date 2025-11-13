@@ -11,6 +11,9 @@ public class BattleOverState : StateBase
         var player1 = PhaseBattleController.Instance.Player1;
         var player2 = PhaseBattleController.Instance.Player2;
 
+        player1.EndBattle();
+        player2.EndBattle();
+
         if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
         {
             GameManager.Instance.EndPhaseBattle();

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public int PlayerLives { get; set; }
     public int Timer { get; set; } = 0;
     public int StartCoins { get; set; }
+    public int StartTools { get; set; }
     public int RollCost { get; set; }
 
     public Game CurrentGame { get; set; }

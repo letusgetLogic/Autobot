@@ -8,18 +8,20 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField]
     private float durationCoinsRedDefault = 0.2f;
 
+    [Header("Text Components")]
+    [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField]
     private TextMeshProUGUI
-        nameText,
         coinsText,
         toolText,
         heartText,
-        turnText,
-        trophyText;
+        turnText;
 
+    [Header("Manage Buttons")]
+    [SerializeField] private GameObject[] manageButtons;
     [SerializeField]
     private GameObject
-        trophyLabel,
+        repairButton,
         sellButton,
         freezeButton,
         unfreezeButton;
@@ -40,44 +42,32 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Updates template.
     /// </summary>
-    /// <param name="_coins"></param>
-    /// <param name="_hearth"></param>
-    /// <param name="_turn"></param>
-    /// <param name="_trophy"></param>
-    /// <param name="max_trophy"></param>
     public void UpdateUI(Player player)
     {
         Player = player;
         nameText.text = Player.Data.Name;
         coinsText.text = Player.Data.Coins.ToString();
+        toolText.text = Player.Data.Tools.ToString();
         heartText.text = Player.Data.Lives.ToString();
         turnText.text = Player.Data.Turns.ToString();
-
-        if (Player.Data.WinCondition <= 0)
-        {
-            trophyLabel.SetActive(false);
-            return;
-        }
-        trophyText.text = Player.Data.Wins.ToString() + " / " + Player.Data.WinCondition.ToString();
     }
 
     /// <summary>
     /// Updates the coins display.
     /// </summary>
-    /// <param name="amount">The current amount of coins.</param>
     public void UpdateCoin(int deviation)
     {
         Player.Data.Coins += deviation;
         coinsText.text = Player.Data.Coins.ToString();
     }
 
-    public void HintNotEnoughCoins()
+    /// <summary>
+    /// Updates the tool display.
+    /// </summary>
+    public void UpdateTool(int deviation)
     {
-        var markColorRed = GetComponent<MarkColorRed>();
-        if (markColorRed == null)
-            markColorRed = gameObject.AddComponent<MarkColorRed>();
-
-        markColorRed.SetComponent(coinsText, durationCoinsRedDefault);
+        Player.Data.Tools += deviation;
+        toolText.text = Player.Data.Tools.ToString();
     }
 
     #region Button
@@ -97,40 +87,34 @@ public class PhaseShopUI : MonoBehaviour
         PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 
-
-        #region Manage Button
+    #region Manage Button
 
     /// <summary>
-    /// Activates button, which manages units und items, or deactives with ManageButton.None.
+    /// Destroys the attached object and adds sell coins. 
     /// </summary>
-    /// <param name="manageButton"></param>
-    public void SetButtonActive(UnitState manageButton)
+    public void Repair()
     {
-        switch (manageButton)
+        if (Player.Data.Tools <= 0)
         {
-            case UnitState.None:
-                sellButton.SetActive(false);
-                freezeButton.SetActive(false);
-                unfreezeButton.SetActive(false);
-                break;
+            HintNotEnoughTools();
+            return;
+        }
 
-            case UnitState.InSlotShop:
-                sellButton.SetActive(false);
-                freezeButton.SetActive(true);
-                unfreezeButton.SetActive(false);
-                break;
+        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        {
+            UpdateTool(-1);
 
-            case UnitState.Freezed:
-                sellButton.SetActive(false);
-                freezeButton.SetActive(false);
-                unfreezeButton.SetActive(true);
-                break;
+            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+                GetComponent<UnitController>();
 
-            case UnitState.InSlotBattle:
-                sellButton.SetActive(true);
-                freezeButton.SetActive(false);
-                unfreezeButton.SetActive(false);
-                break;
+            unit.Repair();
+            if (unit.Model.Data.Durability >= PackManager.Instance.MyPack.
+                HealthPortion.Value)
+            {
+                repairButton.SetActive(false);
+            }
+
+            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
     }
 
@@ -172,6 +156,7 @@ public class PhaseShopUI : MonoBehaviour
     public void Sell()
     {
         SetButtonActive(UnitState.None);
+        repairButton.SetActive(false);
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
@@ -183,6 +168,47 @@ public class PhaseShopUI : MonoBehaviour
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
+    }
+
+    /// <summary>
+    /// Activates button, which manages units und items, or deactives with ManageButton.None.
+    /// </summary>
+    /// <param name="manageButton"></param>
+    public void SetButtonActive(UnitState manageButton)
+    {
+        switch (manageButton)
+        {
+            case UnitState.None:
+                DeactivateManageButtons();
+                unfreezeButton.SetActive(false);
+                break;
+
+            case UnitState.InSlotShop:
+                DeactivateManageButtons();
+                freezeButton.SetActive(true);
+                break;
+
+            case UnitState.Freezed:
+                DeactivateManageButtons();
+                unfreezeButton.SetActive(true);
+                break;
+
+            case UnitState.InSlotBattle:
+                DeactivateManageButtons();
+                sellButton.SetActive(true);
+                break;
+        }
+    }
+
+    private void DeactivateManageButtons()
+    {
+        foreach (var button in manageButtons)
+            button.SetActive(false);
+    }
+
+    public void SetRepairButtonActiv()
+    {
+        repairButton.SetActive(true);
     }
 
     #endregion
@@ -197,4 +223,24 @@ public class PhaseShopUI : MonoBehaviour
     }
 
     #endregion
+
+
+    public void HintNotEnoughCoins()
+    {
+        var markColorRed = GetComponent<MarkColorRed>();
+        if (markColorRed == null)
+            markColorRed = gameObject.AddComponent<MarkColorRed>();
+
+        markColorRed.SetComponent(coinsText, durationCoinsRedDefault);
+    }
+
+    private void HintNotEnoughTools()
+    {
+        var markColorRed = GetComponent<MarkColorRed>();
+        if (markColorRed == null)
+            markColorRed = gameObject.AddComponent<MarkColorRed>();
+
+        markColorRed.SetComponent(toolText, durationCoinsRedDefault);
+    }
+
 }

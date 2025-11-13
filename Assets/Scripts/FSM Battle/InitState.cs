@@ -49,6 +49,8 @@ public class InitState : StateBase
     /// </summary>
     private void SpawnUnits(Player player, Slot[] slots, bool isRight)
     {
+        UnitController[] units = new UnitController[slots.Length];
+       
         for (int i = 0; i < slots.Length; i++)
         {
             var unitData = player.Data.BattleUnitDatas[i];
@@ -68,7 +70,15 @@ public class InitState : StateBase
                     controller.View.SetRightSide();
                     controller.Model.Data.IsTeam1 = false;
                 }
+                else
+                {
+                    controller.Model.Data.IsTeam1 = true;
+                }
+
+                    units[i] = controller;
             }
         }
+
+        player.SaveUnit(units);
     }
 }

@@ -38,6 +38,7 @@ public struct SaveUnitData
     public UnitState UnitState { get; set; }
 
     public bool IsTeam1 { get; set; }
+    public float DurabilityRatio { get; set; }
 
     /// <summary>
     /// Converts a negative integer to zero.
@@ -51,10 +52,9 @@ public struct SaveUnitData
         return value;
     }
 
-    public void SetHp(int hp, Action updateDurability)
+    public void SetHp(int hp)
     {
         Hp = hp;
-        updateDurability?.Invoke();
     }
 }
 

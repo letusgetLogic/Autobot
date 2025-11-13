@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FaintState : StateBase
 {
@@ -11,9 +10,7 @@ public class FaintState : StateBase
     {
         Debug.Log("--- FaintState");
 
-        PhaseBattleController.Instance.StartCoroutine(DestroyUnit());
-
-
+        HideUnit();
     }
 
     public override void OnUpdate(IFiniteStateMachine ctx, float speed)
@@ -32,7 +29,7 @@ public class FaintState : StateBase
         }
     }
 
-    private IEnumerator DestroyUnit()
+    private void HideUnit()
     {
         while (PhaseBattleController.Instance.FaintUnits.Count > 0)
         {
@@ -40,8 +37,6 @@ public class FaintState : StateBase
             unit.SetActive(false);
             unit.transform.parent = null;
             Debug.Log($"Fainted unit {unit.name} destroyed");
-
-            yield return new WaitUntil(() => unit == null);
         }
     }
 }

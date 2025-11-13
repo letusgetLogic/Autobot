@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-[System.Serializable]
+﻿[System.Serializable]
 public class PlayerData
 {
     public string Name { get; private set; }
@@ -9,6 +7,7 @@ public class PlayerData
     public int Turns { get; set; }
     public int Wins { get; set; }
     public int Coins { get; set; }
+    public int Tools { get; set; }
     public SaveUnitData[] BattleUnitDatas {  get; set; }
     public SaveUnitData[] ShopUnitDatas {  get; set; }
 

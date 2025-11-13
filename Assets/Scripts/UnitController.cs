@@ -40,7 +40,6 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(_soUnit, _data);
 
         model.SetData(view);
-        
         model.SetData(_unitState);
     }
 
@@ -71,6 +70,10 @@ public class UnitController : MonoBehaviour
        
         model.UpdateLevelXP(isPhaseShop);
     }
+    public void Repair()
+    {
+        model.RiseHpByDurability();
+    }
 
     #endregion
 
@@ -91,11 +94,9 @@ public class UnitController : MonoBehaviour
 
         var ability = TriggerAbility(TriggerType.AfterAttack);
         if (ability != null)
-        {
             PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
-        }
 
-        return model.Data.Hp;
+        return model.Data.Atk;
     }
 
     /// <summary>
@@ -110,28 +111,22 @@ public class UnitController : MonoBehaviour
             TriggerFaint();
     }
 
-
     #endregion
 
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
         if (triggerType == model.CurrentLevel.TriggerType && model.Data.Energy > 0)
-        {
             return Ability;
-        }
+
         return null;
     }
 
     public void Buff(bool isPernament, int addHealth, int addAttack)
     {
         if (isPernament)
-        {
             model.Add(0, 0, addHealth, addAttack, 0, 0);
-        }
         else
-        {
             model.Add(0, 0, 0, 0, addHealth, addAttack);
-        }
 
         view.ShowBuff(addHealth, addAttack);
     }
@@ -166,4 +161,5 @@ public class UnitController : MonoBehaviour
         //transform.DoMove();
     }
 
+  
 }

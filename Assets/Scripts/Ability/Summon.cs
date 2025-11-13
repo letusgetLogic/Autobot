@@ -59,6 +59,10 @@ public class Summon : AbilityBase
                     controller.View.SetRightSide();
                     controller.Model.Data.IsTeam1 = false;
                 }
+                else 
+                {
+                    controller.Model.Data.IsTeam1 = true;
+                }
             }
         }
 
