@@ -20,7 +20,7 @@ public struct SaveUnitData
     private int buffTempAtk;
 
     public int Hp { get; private set; }
-    public int Atk { get; set; }
+    public int Atk { get; private set; }
 
     public int Durability { get; set; }
     public int Energy { get; set; }
@@ -55,6 +55,11 @@ public struct SaveUnitData
     public void SetHp(int hp)
     {
         Hp = hp;
+    }
+
+    public void SetAtk(int atk)
+    {
+        Atk = atk;
     }
 }
 

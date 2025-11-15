@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class UnitController : MonoBehaviour
@@ -39,7 +40,7 @@ public class UnitController : MonoBehaviour
         else
             model = new UnitModel(_soUnit, _data);
 
-        model.SetData(view);
+        model.InitView(view);
         model.SetData(_unitState);
     }
 
@@ -60,19 +61,24 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Updates stats while fusioning.
     /// </summary>
-    public void UpdateLevel(UnitModel draggingModel, bool isPhaseShop)
+    public void UpdateLevel(UnitModel _draggingModel, bool _isPhaseShop)
     {
-        model.Data.XP += draggingModel.Data.XP;
+        model.Data.XP += _draggingModel.Data.XP;
+        
         model.Add(
-            draggingModel.Data.XP, draggingModel.Data.XP,
-            draggingModel.Data.BuffHp, draggingModel.Data.BuffAtk,
-            draggingModel.Data.BuffTempHp, draggingModel.Data.BuffTempAtk);
-       
-        model.UpdateLevelXP(isPhaseShop);
+            _draggingModel.Data.XP, _draggingModel.Data.XP,
+            _draggingModel.Data.BuffHp, _draggingModel.Data.BuffAtk,
+            _draggingModel.Data.BuffTempHp, _draggingModel.Data.BuffTempAtk);
+
+        model.UpdateLevelXP(_isPhaseShop);
+
+        bool isDurabilityGreater = model.Data.Durability > _draggingModel.Data.Durability;
+        int durability = isDurabilityGreater ? _draggingModel.Data.Durability : model.Data.Durability;
+        model.SetDurability(false, durability);
     }
     public void Repair()
     {
-        model.RiseHpByDurability();
+        model.RiseDurability();
     }
 
     #endregion
@@ -108,13 +114,21 @@ public class UnitController : MonoBehaviour
         model.SubstractHp(damage);
 
         if (model.Data.Hp <= 0)
+        {
             TriggerFaint();
+            PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
+            Debug.Log($"{gameObject.name} enqueue");
+            Debug.Log($"{PhaseBattleController.Instance.FaintUnits.Count} FaintUnits");
+        }
     }
 
     #endregion
 
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
+        if (model.Data.Energy <= 0)
+            return null;
+
         if (triggerType == model.CurrentLevel.TriggerType && model.Data.Energy > 0)
             return Ability;
 
@@ -128,6 +142,7 @@ public class UnitController : MonoBehaviour
         else
             model.Add(0, 0, 0, 0, addHealth, addAttack);
 
+        View.SetData(Model.FullHp, Model.FullAtk, Model.Data.Hp, Model.Data.Atk, Model.Data.Energy);
         view.ShowBuff(addHealth, addAttack);
     }
 
@@ -143,10 +158,6 @@ public class UnitController : MonoBehaviour
             Debug.Log($"{ability.ToString()} enqueue");
             Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
         }
-
-        PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
-        Debug.Log($"{gameObject.name} enqueue");
-        Debug.Log($"{PhaseBattleController.Instance.FaintUnits.Count} FaintUnits");
     }
 
     public void DeactivateInteraction()

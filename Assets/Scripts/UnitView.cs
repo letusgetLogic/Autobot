@@ -19,11 +19,15 @@ public class UnitView : MonoBehaviour
 
     [Header("Description")]
     [SerializeField] private GameObject description;
+    [SerializeField] private GameObject[] hideDuringBattle;
     [SerializeField] private TextMeshProUGUI
         myName,
+        energyConsumption,
         ability,
-        coin,
-        energyConsumption;
+        fullAttack,
+        fullHealth,
+        buy,
+        coin;
 
     [Header("Level Display")]
     [SerializeField] private GameObject levelDisplay;
@@ -50,12 +54,19 @@ public class UnitView : MonoBehaviour
         buffHealth,
         buffAttack;
 
-    [Header("Repair Display")]
-    [SerializeField] private GameObject repairDisplay;
+    [Header("Repair Display Health")]
+    [SerializeField] private GameObject repairDisplayHp;
     [SerializeField] private GameObject 
-        repairStep1,
-        repairStep2,
-        repairStep3;
+        repairStepHp1,
+        repairStepHp2,
+        repairStepHp3;
+
+    [Header("Repair Display Attack")]
+    [SerializeField] private GameObject repairDisplayAtk;
+    [SerializeField] private GameObject 
+        repairStepAtk1,
+        repairStepAtk2,
+        repairStepAtk3;
 
     [Header("Settings")]
     [SerializeField] private Canvas canvas;
@@ -100,7 +111,7 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void SetData(string _description)
     {
-        ability.text = "          " + _description;
+        ability.text = _description;
         energyConsumption.text = PackManager.Instance.MyPack.
             EnergyConsumption.Value.ToString();
     }
@@ -111,16 +122,18 @@ public class UnitView : MonoBehaviour
     public void SetData(int _coin, bool _isForBuying)
     {
         coin.text = _coin.ToString();
-        coin.color = _isForBuying ? substractColor : addColor;
+        buy.text = _isForBuying ? "craft" : "recycl";
     }
 
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(int _health, int _attack, int _energy)
+    public void SetData(int _fullHp, int _fullAtk, int _hp, int _atk, int _energy)
     {
-        health.text = _health.ToString();
-        attack.text = _attack.ToString();
+        fullHealth.text = _fullHp.ToString();
+        fullAttack.text = _fullAtk.ToString();
+        health.text = _hp.ToString();
+        attack.text = _atk.ToString();
         energy.text = _energy.ToString();
     }
 
@@ -135,7 +148,8 @@ public class UnitView : MonoBehaviour
 
     public void SetRepairDisplayActive(bool value)
     {
-         repairDisplay.SetActive(value);
+         repairDisplayHp.SetActive(value);
+         repairDisplayAtk.SetActive(value);
     }
 
     #region Drag Event
@@ -222,9 +236,13 @@ public class UnitView : MonoBehaviour
     }
     public void SetRepairStepActive(bool step1, bool step2,bool step3)
     {
-        repairStep1.SetActive(step1);
-        repairStep2.SetActive(step2);
-        repairStep3.SetActive(step3);
+        repairStepHp1.SetActive(step1);
+        repairStepHp2.SetActive(step2);
+        repairStepHp3.SetActive(step3);
+
+        repairStepAtk1.SetActive(step1);
+        repairStepAtk2.SetActive(step2);
+        repairStepAtk3.SetActive(step3);
     }
 
     /// <summary>
@@ -283,4 +301,12 @@ public class UnitView : MonoBehaviour
         foreach (var go in hideVisuals)
             go.SetActive(false);
     }
+
+
+    public void HideDescriptionStats()
+    {
+        foreach (var element in hideDuringBattle)
+            element.SetActive(false);
+    }
+
 }
