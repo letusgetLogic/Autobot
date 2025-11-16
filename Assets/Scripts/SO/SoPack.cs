@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "SoPack", menuName = "ScriptableObject/SoPack", order = 1)]
+[CreateAssetMenu(fileName = "Pack", menuName = "ScriptableObject/Pack", order = 1)]
 public class SoPack : ScriptableObject
 {
     public SoIntVariable XpToLv2;
     public SoIntVariable XpToLv3;
     public SoIntVariable MaxXp;
-    public SoIntVariable HealthPortion;
-    public SoIntVariable EnergyConsumption;
+
+    public SoTradingCurrency TradingData;
 
     public SoIntVariable Tier1AvaiableAtTurn;
     public SoIntVariable Tier2AvaiableAtTurn;

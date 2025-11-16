@@ -20,19 +20,27 @@ public class UnitView : MonoBehaviour
     [Header("Description")]
     [SerializeField] private GameObject description;
     [SerializeField] private GameObject[] hideDuringBattle;
-    [SerializeField] private TextMeshProUGUI
+    [SerializeField]
+    private TextMeshProUGUI
         myName,
         energyConsumption,
         ability,
         fullAttack,
-        fullHealth,
-        buy,
-        coin;
+        fullHealth;
+    [Header("Craft / Recycle")]
+    [SerializeField] private GameObject tool;
+    [SerializeField] private GameObject coin;
+    [SerializeField]
+    private TextMeshProUGUI
+        craftText,
+        toolValue,
+        coinValue;
 
     [Header("Level Display")]
     [SerializeField] private GameObject levelDisplay;
     [SerializeField] private TextMeshProUGUI levelAmount;
-    [SerializeField] private GameObject
+    [SerializeField]
+    private GameObject
         box1StepFilled,
         box2Step,
         step1Filled,
@@ -46,7 +54,8 @@ public class UnitView : MonoBehaviour
     [SerializeField] private GameObject heartIcon;
     [SerializeField] private GameObject attackIcon;
     [SerializeField] private GameObject energyIcon;
-    [SerializeField] private TextMeshProUGUI
+    [SerializeField]
+    private TextMeshProUGUI
         health,
         attack,
         energy,
@@ -56,14 +65,16 @@ public class UnitView : MonoBehaviour
 
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
-    [SerializeField] private GameObject 
+    [SerializeField]
+    private GameObject
         repairStepHp1,
         repairStepHp2,
         repairStepHp3;
 
     [Header("Repair Display Attack")]
     [SerializeField] private GameObject repairDisplayAtk;
-    [SerializeField] private GameObject 
+    [SerializeField]
+    private GameObject
         repairStepAtk1,
         repairStepAtk2,
         repairStepAtk3;
@@ -119,10 +130,30 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(int _coin, bool _isForBuying)
+    public void SetData(int _tool, int _coin, bool _isForBuying)
     {
-        coin.text = _coin.ToString();
-        buy.text = _isForBuying ? "craft" : "recycl";
+        craftText.text = _isForBuying ? "craft" : "recycle";
+
+        if (_tool != 0)
+        {
+            toolValue.text = _tool.ToString();
+            tool.SetActive(true);
+        }
+        else
+        {
+            toolValue.text = "";
+            tool.SetActive(false);
+        }
+        if (_coin != 0)
+        {
+            coinValue.text = _coin.ToString();
+            coin.SetActive(true);
+        }
+        else
+        {
+            coinValue.text = "";
+            coin.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -148,8 +179,8 @@ public class UnitView : MonoBehaviour
 
     public void SetRepairDisplayActive(bool value)
     {
-         repairDisplayHp.SetActive(value);
-         repairDisplayAtk.SetActive(value);
+        repairDisplayHp.SetActive(value);
+        repairDisplayAtk.SetActive(value);
     }
 
     #region Drag Event
@@ -234,7 +265,7 @@ public class UnitView : MonoBehaviour
         step4Filled.SetActive(step4);
         step5Filled.SetActive(step5);
     }
-    public void SetRepairStepActive(bool step1, bool step2,bool step3)
+    public void SetRepairStepActive(bool step1, bool step2, bool step3)
     {
         repairStepHp1.SetActive(step1);
         repairStepHp2.SetActive(step2);

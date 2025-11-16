@@ -1,8 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(SoUnit))]
-class SoUnitEditor : Editor
+[CustomEditor(typeof(SoTradingCurrency))]
+class SoTradingCurrencyEditor : Editor
 {
     private SoUnit data;
 
