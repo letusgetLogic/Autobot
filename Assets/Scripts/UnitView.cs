@@ -28,13 +28,13 @@ public class UnitView : MonoBehaviour
         fullAttack,
         fullHealth;
     [Header("Craft / Recycle")]
-    [SerializeField] private GameObject tool;
     [SerializeField] private GameObject coin;
+    [SerializeField] private GameObject tool;
     [SerializeField]
     private TextMeshProUGUI
         craftText,
-        toolValue,
-        coinValue;
+        coinValue,
+        toolValue;
 
     [Header("Level Display")]
     [SerializeField] private GameObject levelDisplay;
@@ -120,39 +120,39 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(string _description)
+    public void SetAbility(string _description, int _energy)
     {
         ability.text = _description;
-        energyConsumption.text = PackManager.Instance.MyPack.
-            EnergyConsumption.Value.ToString();
+        energyConsumption.text = _energy.ToString();
     }
 
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(int _tool, int _coin, bool _isForBuying)
+    public void SetBuyOrSell(Currency _cur, bool _isForBuying)
     {
         craftText.text = _isForBuying ? "craft" : "recycle";
 
-        if (_tool != 0)
+        if (_cur.Coin != 0)
         {
-            toolValue.text = _tool.ToString();
-            tool.SetActive(true);
-        }
-        else
-        {
-            toolValue.text = "";
-            tool.SetActive(false);
-        }
-        if (_coin != 0)
-        {
-            coinValue.text = _coin.ToString();
+            coinValue.text = _cur.Coin.ToString();
             coin.SetActive(true);
         }
         else
         {
             coinValue.text = "";
             coin.SetActive(false);
+        }
+
+        if (_cur.Tool != 0)
+        {
+            toolValue.text = _cur.Tool.ToString();
+            tool.SetActive(true);
+        }
+        else
+        {
+            toolValue.text = "";
+            tool.SetActive(false);
         }
     }
 

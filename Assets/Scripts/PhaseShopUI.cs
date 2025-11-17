@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField]
     private TextMeshProUGUI
-        coinsText,
+        coinText,
         toolText,
         heartText,
         turnText;
@@ -27,6 +28,8 @@ public class PhaseShopUI : MonoBehaviour
         unfreezeButton;
 
     public Player Player { get; private set; }
+
+    private Currency RollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
 
     private void Awake()
     {
@@ -46,7 +49,7 @@ public class PhaseShopUI : MonoBehaviour
     {
         Player = player;
         nameText.text = Player.Data.Name;
-        coinsText.text = Player.Data.Coins.ToString();
+        coinText.text = Player.Data.Coins.ToString();
         toolText.text = Player.Data.Tools.ToString();
         heartText.text = Player.Data.Lives.ToString();
         turnText.text = Player.Data.Turns.ToString();
@@ -55,18 +58,11 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Updates the coins display.
     /// </summary>
-    public void UpdateCoin(int deviation)
+    public void UpdateCurrency(int addCoins, int addTools)
     {
-        Player.Data.Coins += deviation;
-        coinsText.text = Player.Data.Coins.ToString();
-    }
-
-    /// <summary>
-    /// Updates the tool display.
-    /// </summary>
-    public void UpdateTool(int deviation)
-    {
-        Player.Data.Tools += deviation;
+        Player.Data.Coins += addCoins;
+        Player.Data.Tools += addTools;
+        coinText.text = Player.Data.Coins.ToString();
         toolText.text = Player.Data.Tools.ToString();
     }
 
@@ -77,13 +73,10 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Roll()
     {
-        if (Player.Data.Coins < GameManager.Instance.RollCost)
-        {
-            HintNotEnoughCoins();
+        if (!HasEnoughCurrency(RollCost.Coin, RollCost.Tool))
             return;
-        }
 
-        UpdateCoin(-GameManager.Instance.RollCost);
+        UpdateCurrency(RollCost.Coin, RollCost.Tool);
         PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 
@@ -94,22 +87,19 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Repair()
     {
-        if (Player.Data.Tools <= 0)
-        {
-            HintNotEnoughTools();
-            return;
-        }
-
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
-            UpdateTool(-1);
-
             var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
                 GetComponent<UnitController>();
 
+            if (!HasEnoughCurrency(unit.Model.RepairCost.Coin, unit.Model.RepairCost.Tool))
+                return;
+
+            UpdateCurrency(unit.Model.RepairCost.Coin, unit.Model.RepairCost.Tool);
+
             unit.Repair();
             if (unit.Model.Data.Durability >= PackManager.Instance.MyPack.
-                HealthPortion.Value)
+                CurrencyData.HealthPortion)
             {
                 repairButton.SetActive(false);
             }
@@ -156,15 +146,18 @@ public class PhaseShopUI : MonoBehaviour
     public void Sell()
     {
         SetButtonActive(UnitState.None);
-        repairButton.SetActive(false);
+        DeactivateManageButtons();
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
                 GetComponent<UnitController>();
 
+            if (!HasEnoughCurrency(unit.Model.Sell.Coin, unit.Model.Sell.Tool))
+                return;
+
             unit.GetSelled();
-            UpdateCoin(unit.Model.CurrentLevel.Sell);
+            UpdateCurrency(unit.Model.Sell.Coin, unit.Model.Sell.Tool);
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
@@ -224,14 +217,29 @@ public class PhaseShopUI : MonoBehaviour
 
     #endregion
 
+    public bool HasEnoughCurrency(int _coin, int _tool)
+    {
+        bool value = true;
+        if (Player.Data.Coins + _coin < 0)
+        {
+            HintNotEnoughCoins();
+            value = false;
+        }
 
-    public void HintNotEnoughCoins()
+        if (Player.Data.Tools + _tool < 0)
+        {
+            HintNotEnoughTools();
+            value = false;
+        }
+        return value;
+    }
+    private void HintNotEnoughCoins()
     {
         var markColorRed = GetComponent<MarkColorRed>();
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(coinsText, durationCoinsRedDefault);
+        markColorRed.SetComponent(coinText, durationCoinsRedDefault);
     }
 
     private void HintNotEnoughTools()

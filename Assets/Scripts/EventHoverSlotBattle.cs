@@ -29,16 +29,19 @@ public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler, IPointe
     private void OnMouseOver()
     {
         var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+
+        // if attached game object is null or it is being frezzed, return.
         if (attached == null ||
             attached.GetComponent<UnitController>().Model.Data.UnitState == 
             UnitState.Freezed)
             return;
 
+        // if no game object is on the slot or it is self, return.
         if (slot.Unit() == null ||
             slot.Unit() == attached)
             return;
 
-        if (!isCounting)
+        if (!isCounting && PhaseShopUnitManager.Instance.IsDragging)
         {
             bool isFusible = PhaseShopUnitManager.Instance.IsFusible(
             slot.UnitController(),

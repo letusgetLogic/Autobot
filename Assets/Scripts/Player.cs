@@ -44,8 +44,8 @@ public class Player : MonoBehaviour
     public void SetDefault()
     {
         Data.Turns++;
-        Data.Coins = GameManager.Instance.StartCoins;
-        Data.Tools = GameManager.Instance.StartTools;
+        Data.Coins = PackManager.Instance.MyPack.CurrencyData.Capacity.Coin;
+        Data.Tools = PackManager.Instance.MyPack.CurrencyData.Capacity.Tool;
     }
 
     /// <summary>

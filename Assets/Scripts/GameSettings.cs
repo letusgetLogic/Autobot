@@ -26,9 +26,6 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hint;
 
     [Header("Game Settings")]
-    [SerializeField] private int startCoins = 10;
-    [SerializeField] private int startTools = 10;
-    [SerializeField] private int rollCost = 1;
     [SerializeField] private int minLives = 3;
     [SerializeField] private int maxLives = 10;
 
@@ -47,10 +44,6 @@ public class GameSettings : MonoBehaviour
         }
 
         Instance = this;
-
-        GameManager.Instance.StartCoins = startCoins;
-        GameManager.Instance.StartTools = startTools;
-        GameManager.Instance.RollCost = rollCost;
     }
 
     private void Start()

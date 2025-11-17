@@ -6,8 +6,13 @@ public class SoPack : ScriptableObject
     public SoIntVariable XpToLv2;
     public SoIntVariable XpToLv3;
     public SoIntVariable MaxXp;
+    public SoIntVariable MaxHp;
+    public SoIntVariable MaxAtk;
+    public SoIntVariable MaxEnergy;
 
-    public SoTradingCurrency TradingData;
+    public SoIntVariable ChargingEnergy;
+
+    public SoTradingCurrency CurrencyData;
 
     public SoIntVariable Tier1AvaiableAtTurn;
     public SoIntVariable Tier2AvaiableAtTurn;

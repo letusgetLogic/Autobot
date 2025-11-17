@@ -22,9 +22,6 @@ public class GameManager : MonoBehaviour
 
     public int PlayerLives { get; set; }
     public int Timer { get; set; } = 0;
-    public int StartCoins { get; set; }
-    public int StartTools { get; set; }
-    public int RollCost { get; set; }
 
     public Game CurrentGame { get; set; }
     private Player[] players { get; set; }
@@ -215,8 +212,6 @@ public class GameManager : MonoBehaviour
     public void EndGame()
     {
         CurrentGame.State = GameState.EndOfGame;
-
-       
     }
 
 }

@@ -25,9 +25,13 @@ public class PhaseShopUnitManager : MonoBehaviour
     private float delayPushingFusion = 1f;
     public float DelayPushingFusion => delayPushingFusion;
     public Player Player { get; private set; }
-    public GameObject AttachedGameObject { get; set; } // save the reference of unit being dragged or clicked
+
+    public GameObject AttachedGameObject { get; set; }
+    // Save the reference of unit being dragged or clicked
+    public bool IsDragging { get; set; } = false;
     public bool PreventDragging { get; set; } = false;
-    // to prevent dragging from a slot after an another unit is pushed there, while mouse is still holding down.
+    // to prevent dragging from a slot after an another unit is pushed in there,
+    // while mouse is still holding down.
 
     private void Awake()
     {
@@ -142,46 +146,54 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (AttachedGameObject == null)
             return;
 
-        var attachedModel = AttachedGameObject.GetComponent<UnitController>().Model;
-
-        if (attachedModel.Data.UnitState == UnitState.InSlotShop)
+        if (AttachedGameObject.CompareTag("Unit"))
         {
-            Buy(slot);
-        }
-        else if (attachedModel.Data.UnitState == UnitState.InSlotBattle)
-        {
-            TransportOrFusion(slot);
+            var attachedModel = AttachedGameObject.GetComponent<UnitController>().Model;
+            if (attachedModel.Data.UnitState == UnitState.InSlotShop)
+            {
+                Buy(slot);
+            }
+            else if (attachedModel.Data.UnitState == UnitState.InSlotBattle)
+            {
+                TransportOrFusion(slot);
+            }
         }
     }
 
 
-    public void Buy(Slot slot)
+    private void Buy(Slot slot)
     {
-        var unitOnSlot = slot.UnitController();
-        var attachedController = AttachedGameObject.GetComponent<UnitController>();
-
-        // case: buy but not enough coins.
-        if (PhaseShopUI.Instance.Player.Data.Coins < 
-            attachedController.Model.SoUnit.Cost.Value) 
+        if (AttachedGameObject.CompareTag("Unit"))
         {
-            PhaseShopUI.Instance.HintNotEnoughCoins();
-            return;
-        }
+            var unitOnSlot = slot.UnitController();
+            var attachedController = AttachedGameObject.GetComponent<UnitController>();
 
-        if (unitOnSlot != null)
-        {
-            // case: buy, units are fusible.
-            if (IsFusible(unitOnSlot, attachedController)) 
+            // case: buy but not enough currency.
+            if (!PhaseShopUI.Instance.HasEnoughCurrency(
+                attachedController.Model.Cost.Coin, attachedController.Model.Cost.Tool))
             {
-                PhaseShopUI.Instance.UpdateCoin(-attachedController.Model.SoUnit.Cost.Value);
-                unitOnSlot.UpdateLevel(attachedController.Model, true);
-                Destroy(AttachedGameObject);
+                return;
             }
-        }
-        else // case: buy and place dragging unit on empty slot.
-        {
-            PhaseShopUI.Instance.UpdateCoin(-attachedController.Model.SoUnit.Cost.Value);
-            Transport(AttachedGameObject, slot.transform, true, true);
+
+            if (unitOnSlot != null)
+            {
+                // case: buy, units are fusible.
+                if (IsFusible(unitOnSlot, attachedController))
+                {
+                    PhaseShopUI.Instance.UpdateCurrency(
+                        attachedController.Model.Cost.Coin, attachedController.Model.Cost.Tool);
+
+                    unitOnSlot.UpdateLevel(attachedController.Model, true);
+                    Destroy(AttachedGameObject);
+                }
+            }
+            else // case: buy and place dragging unit on empty slot.
+            {
+                PhaseShopUI.Instance.UpdateCurrency(
+                        attachedController.Model.Cost.Coin, attachedController.Model.Cost.Tool);
+
+                Transport(AttachedGameObject, slot.transform, true, true);
+            }
         }
     }
 
@@ -218,7 +230,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         bool mouseRelease, bool disableShadow)
     {
         if (attached == null ||
-            attached.GetComponent<UnitController>().Model.Data.UnitState == 
+            attached.GetComponent<UnitController>().Model.Data.UnitState ==
             UnitState.Freezed)
             return;
 
@@ -238,7 +250,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             unitView.Shadow.enabled = false;
 
         controller.Model.SetData(UnitState.InSlotBattle);
-        controller.View.SetData(controller.Model.CurrentLevel.Sell, false);
+        controller.View.SetBuyOrSell(controller.Model.Sell, false);
 
         Player.UpdateUnitData();
     }

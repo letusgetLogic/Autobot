@@ -1,24 +1,17 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "TradingCurrency", menuName = "ScriptableObject/TradingCurrency", order = 1)]
+[CreateAssetMenu(fileName = "TradingCurrency", menuName = "ScriptableObject/TradingCurrency")]
 public class SoTradingCurrency : ScriptableObject
 {
-    public int Capacity;
+    public Currency Capacity;
 
     public Currency RollCost;
     public Currency UnitCost;
 
-    public Currency[,] Sell;
-
-    // Repair System
+    public int LevelAmount;
     public int HealthPortion;
-    public Currency RepairCostLv1;
-    public Currency RepairCostLv2;
-    public Currency RepairCostLv3;
 
-    // Charging Energy System
-    public int ConsumedEnergy;
-    public int ChargingEnergy;
-
+    public Currency[,] Sell;
+    public Currency[] RepairCost;
 }
 

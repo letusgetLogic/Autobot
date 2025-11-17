@@ -18,61 +18,57 @@ MonoBehaviour:
   Health: 2
   Attack: 2
   Energy: 2
-  Cost: {fileID: 11400000, guid: 3418196e9a887ec44ac10f553d036559, type: 2}
   LevelLimit: 3
   Levels:
-  - Number: 1
-    Description: "Faint \u2192 Give one random friend +1 attack and +1 health."
-    Sell: 1
-    HasAbility: 1
-    TriggerType: 17
+  - Description: 
+    HasAbility: 0
+    ConsumedEnergy: 0
+    TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
-    FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 1
-    AttackBuff: 1
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Number: 2
-    Description: "Faint \u2192 Give one random friend +2 attack and +2 health."
-    Sell: 2
-    HasAbility: 1
-    TriggerType: 17
+  - Description: 
+    HasAbility: 0
+    ConsumedEnergy: 0
+    TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
-    FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 2
-    AttackBuff: 2
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Number: 3
-    Description: "Faint \u2192 Give one random friend +3 attack and +3 health."
-    Sell: 3
-    HasAbility: 1
-    TriggerType: 17
+  - Description: 
+    HasAbility: 0
+    ConsumedEnergy: 0
+    TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
-    FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 3
-    HealthBuff: 3
-    AttackBuff: 3
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0

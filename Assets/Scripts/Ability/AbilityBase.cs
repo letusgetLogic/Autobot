@@ -26,8 +26,7 @@ public abstract class AbilityBase
         Run();
         if (Controller != null)
         {
-            Controller.Model.Data.Energy -= PackManager.Instance.MyPack.
-                EnergyConsumption.Value;
+            Controller.Model.Data.Energy -= CurrentLevel.ConsumedEnergy;
         }
     }
     public abstract void Run();

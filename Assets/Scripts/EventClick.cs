@@ -33,7 +33,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler
             PhaseShopUI.Instance.SetButtonActive(state);
 
             if (controller.Model.Data.Durability < PackManager.Instance.MyPack.
-                HealthPortion.Value)
+                CurrencyData.HealthPortion)
             {
                 PhaseShopUI.Instance.SetRepairButtonActiv();
             }

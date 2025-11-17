@@ -9,12 +9,18 @@ public class UnitModel
     public SoUnit SoUnit { get; private set; }
     public UnitView View { get; set; }
     public Level CurrentLevel { get; set; }
-    public bool IsMaxed => CurrentLevel.Number == SoUnit.Levels.Length;
-    private bool wasCalculatedDurability {  get; set; }
-    private float portionSize => 1 / (float)PackManager.Instance.MyPack.HealthPortion.Value;
+    public bool IsMaxed => CurrentLevel.Index + 1 == SoUnit.Levels.Length;
+    private float portionSize => 1 / (float)PackManager.Instance.MyPack.CurrencyData.HealthPortion;
     public int FullHp => Data.BasisHp + Data.BuffHp + Data.BuffTempHp;
     public int FullAtk => Data.BasisAtk + Data.BuffAtk + Data.BuffTempAtk;
-    
+    public Currency Cost => 
+        PackManager.Instance.MyPack.CurrencyData.UnitCost;
+    public Currency Sell => 
+        PackManager.Instance.MyPack.CurrencyData.Sell[Data.Durability, CurrentLevel.Index];
+    public Currency RepairCost =>
+        PackManager.Instance.MyPack.CurrencyData.RepairCost[CurrentLevel.Index];
+
+
 
     public UnitModel(SoUnit _soUnit, int _index) // For new unit
     {
@@ -47,7 +53,7 @@ public class UnitModel
     {
         View = _view;
         View.SetData(SoUnit.Sprite, SoUnit.Name);
-        View.SetData(CurrentLevel.Description);
+        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy);
         SetDurability(true, 0);
         View.SetData(FullHp, FullAtk, Data.Hp, Data.Atk, Data.Energy);
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
@@ -99,24 +105,24 @@ public class UnitModel
 
         Data.UnitState = _unitState;
         bool isForBuying = _unitState == UnitState.InSlotShop;
-        View.SetData(Coin(Data.UnitState), isForBuying);
+        View.SetBuyOrSell(Currency(Data.UnitState), isForBuying);
     }
 
-    private int Coin(UnitState unitState)
+    private Currency Currency(UnitState unitState)
     {
         switch (unitState)
         {
             case UnitState.InSlotShop:
-                return SoUnit.Cost.Value;
+                return Cost;
             case UnitState.Freezed:
-                return SoUnit.Cost.Value;
+                return Cost;
             case UnitState.InSlotBattle:
-                return CurrentLevel.Sell;
+                return Sell;
             case UnitState.InPhaseBattle:
-                return 0;
+                return default;
         }
 
-        return -1;
+        return default;
     }
 
 
@@ -173,7 +179,7 @@ public class UnitModel
         int atk = (int)(FullAtk * portionHp);
         Data.SetAtk(atk);
 
-        for (int i = 0; i < PackManager.Instance.MyPack.HealthPortion.Value; i++)
+        for (int i = 0; i < PackManager.Instance.MyPack.CurrencyData.HealthPortion; i++)
         {
             float portionLimit = portion0 + (portionSize * i);
             if (portionHp < portionLimit)
@@ -182,9 +188,9 @@ public class UnitModel
                 return;
             }
 
-            if (i == PackManager.Instance.MyPack.HealthPortion.Value - 1)
+            if (i == PackManager.Instance.MyPack.CurrencyData.HealthPortion - 1)
             {
-                Data.Durability = PackManager.Instance.MyPack.HealthPortion.Value;
+                Data.Durability = PackManager.Instance.MyPack.CurrencyData.HealthPortion;
             }
         }
     }
@@ -193,13 +199,13 @@ public class UnitModel
     {
         Data.Durability++;
 
-        if (Data.Durability > PackManager.Instance.MyPack.HealthPortion.Value)
-            Data.Durability = PackManager.Instance.MyPack.HealthPortion.Value;
+        if (Data.Durability > PackManager.Instance.MyPack.CurrencyData.HealthPortion)
+            Data.Durability = PackManager.Instance.MyPack.CurrencyData.HealthPortion;
 
         Data.DurabilityRatio += portionSize;
 
         if (Data.DurabilityRatio > 1 ||
-             Data.Durability == PackManager.Instance.MyPack.HealthPortion.Value)
+             Data.Durability == PackManager.Instance.MyPack.CurrencyData.HealthPortion)
         {
             Data.DurabilityRatio = 1;
         }
@@ -295,8 +301,8 @@ public class UnitModel
     private void SetCurrentLevel(int index)
     {
         CurrentLevel = SoUnit.Levels[index];
-        View.SetData(CurrentLevel.Description);
-        View.SetData(CurrentLevel.Sell, false);
+        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy);
+        View.SetBuyOrSell(Sell, false);
     }
 
     #endregion

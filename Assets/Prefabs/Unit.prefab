@@ -5802,7 +5802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4797692034744356683}
   m_Layer: 0
-  m_Name: Recycle
+  m_Name: Craft / Recycle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5902,8 +5902,11 @@ MonoBehaviour:
   ability: {fileID: 2492435810721597870}
   fullAttack: {fileID: 6521038208500688318}
   fullHealth: {fileID: 2492288198385078847}
-  buy: {fileID: 5794780366264058788}
-  coin: {fileID: 4721028244520927221}
+  coin: {fileID: 1090001569759608285}
+  tool: {fileID: 5990860387098646207}
+  craftText: {fileID: 5794780366264058788}
+  coinValue: {fileID: 4721028244520927221}
+  toolValue: {fileID: 8299610185382189222}
   levelDisplay: {fileID: 6899803353669743496}
   levelAmount: {fileID: 1928829948808132805}
   box1StepFilled: {fileID: 5241585773372317109}

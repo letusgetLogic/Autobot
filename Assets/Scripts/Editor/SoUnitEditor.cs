@@ -6,6 +6,8 @@ class SoUnitEditor : Editor
 {
     private SoUnit data;
 
+    private static readonly int NumberWidth = 30;
+
     private bool[]
         showLevelSections,
         showTriggerSections;
@@ -27,24 +29,24 @@ class SoUnitEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("ID", GUILayout.Width(50));
-        data.ID = EditorGUILayout.IntField(data.ID);
+        data.ID = EditorGUILayout.IntField(data.ID, GUILayout.Width(NumberWidth));
         EditorGUILayout.LabelField("Name", GUILayout.Width(50));
         data.Name = EditorGUILayout.TextField(data.Name);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Attack", GUILayout.Width(50));
-        data.Attack = EditorGUILayout.IntField(data.Attack);
+        data.Attack = EditorGUILayout.IntField(data.Attack, GUILayout.Width(NumberWidth));
         EditorGUILayout.LabelField("Health", GUILayout.Width(50));
-        data.Health = EditorGUILayout.IntField(data.Health);
+        data.Health = EditorGUILayout.IntField(data.Health, GUILayout.Width(NumberWidth));
+        EditorGUILayout.LabelField("Energy", GUILayout.Width(50));
+        data.Energy = EditorGUILayout.IntField(data.Energy, GUILayout.Width(NumberWidth));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Energy", GUILayout.Width(50));
-        data.Energy = EditorGUILayout.IntField(data.Energy);
+        EditorGUILayout.LabelField("Level Limit", GUILayout.Width(100));
+        data.LevelLimit = EditorGUILayout.IntField(data.LevelLimit, GUILayout.Width(NumberWidth));
         EditorGUILayout.EndHorizontal();
-
-        data.LevelLimit = EditorGUILayout.IntField("Level Limit", data.LevelLimit);
 
         if (data.Levels == null || data.Levels.Length != data.LevelLimit)
             data.Levels = new Level[data.LevelLimit];
@@ -73,7 +75,7 @@ class SoUnitEditor : Editor
 
         for (int i = 0; i < data.LevelLimit; i++)
         {
-            data.Levels[i].Number = i + 1;
+            data.Levels[i].Index = i;
             DrawLevel(ref data.Levels[i], i);
         }
 
@@ -92,14 +94,25 @@ class SoUnitEditor : Editor
 
         EditorGUI.indentLevel++;
 
+        EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Description", GUILayout.Width(100));
         _level.Description = EditorGUILayout.TextArea(_level.Description);
+        EditorGUILayout.EndHorizontal();
 
         _level.HasAbility = EditorGUILayout.Toggle("Has Ability", _level.HasAbility);
 
         if (_level.HasAbility)
         {
-            _level.TriggerType = (TriggerType)EditorGUILayout.EnumPopup("Trigger", _level.TriggerType);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Consumed energy per ability", GUILayout.Width(200));
+            _level.ConsumedEnergy = EditorGUILayout.IntField(_level.ConsumedEnergy);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Trigger", GUILayout.Width(100));
+            _level.TriggerType = (TriggerType)EditorGUILayout.EnumPopup(_level.TriggerType);
+            EditorGUILayout.EndHorizontal();
+
             DrawTriggerTimes(ref _level, _i);
 
             DrawDoType(ref _level);
@@ -138,15 +151,15 @@ class SoUnitEditor : Editor
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.LabelField("> Times", GUILayout.Width(100));
-        showTriggerSections[_i] = EditorGUILayout.Toggle(showTriggerSections[_i]);
+        showTriggerSections[_i] = EditorGUILayout.Toggle(showTriggerSections[_i], GUILayout.Width(NumberWidth));
 
         if (showTriggerSections[_i])
         {
-            EditorGUILayout.LabelField("- Times", GUILayout.Width(90));
-            _level.TriggerTimes = EditorGUILayout.IntField(_level.TriggerTimes, GUILayout.Width(80));
+            EditorGUILayout.LabelField("- Times", GUILayout.Width(100));
+            _level.TriggerTimes = EditorGUILayout.IntField(_level.TriggerTimes, GUILayout.Width(100));
 
-            EditorGUILayout.LabelField("- Limit", GUILayout.Width(90));
-            _level.TriggerTimesLimit = EditorGUILayout.IntField(_level.TriggerTimesLimit, GUILayout.Width(80));
+            EditorGUILayout.LabelField("- Limit", GUILayout.Width(100));
+            _level.TriggerTimesLimit = EditorGUILayout.IntField(_level.TriggerTimesLimit, GUILayout.Width(100));
         }
 
         EditorGUILayout.EndHorizontal();
@@ -160,7 +173,11 @@ class SoUnitEditor : Editor
     /// <param name="_level"></param> 
     private void DrawDoType(ref Level _level)
     {
-        _level.DoType = (DoType)EditorGUILayout.EnumPopup("Do", _level.DoType);
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Do", GUILayout.Width(100));
+        _level.DoType = (DoType)EditorGUILayout.EnumPopup(_level.DoType);
+        EditorGUILayout.EndHorizontal();
+
         DrawFromWhoToWho(ref _level);
 
         switch (_level.DoType)

@@ -1,11 +1,13 @@
-﻿public struct Level
+﻿[System.Serializable]
+public struct Level
 {
-    public int Number;
+    public int Index {  get; set; }
 
     public string Description;
 
     public bool HasAbility;
 
+    public int ConsumedEnergy;
     public TriggerType TriggerType;
     public int TriggerTimes;
     public int TriggerTimesLimit;

@@ -45,12 +45,14 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (slot.UnitView() == null)
             return;
 
+        PhaseShopUnitManager.Instance.IsDragging = true;
         slot.UnitView().GetComponent<UnitView>().BeingMovedOnMouse(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         PhaseShopUnitManager.Instance.PreventDragging = false;
+        PhaseShopUnitManager.Instance.IsDragging = false;
 
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
