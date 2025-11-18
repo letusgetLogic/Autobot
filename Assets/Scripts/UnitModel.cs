@@ -15,8 +15,10 @@ public class UnitModel
     public int FullAtk => Data.BasisAtk + Data.BuffAtk + Data.BuffTempAtk;
     public Currency Cost => 
         PackManager.Instance.MyPack.CurrencyData.UnitCost;
+    public int SellIndex =>
+        PackManager.Instance.MyPack.CurrencyData.LevelAmount * Data.Durability + CurrentLevel.Index;
     public Currency Sell => 
-        PackManager.Instance.MyPack.CurrencyData.Sell[Data.Durability, CurrentLevel.Index];
+        PackManager.Instance.MyPack.CurrencyData.Sell[SellIndex];
     public Currency RepairCost =>
         PackManager.Instance.MyPack.CurrencyData.RepairCost[CurrentLevel.Index];
 
@@ -53,7 +55,6 @@ public class UnitModel
     {
         View = _view;
         View.SetData(SoUnit.Sprite, SoUnit.Name);
-        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy.Value);
         SetDurability(true, 0);
         View.SetData(FullHp, FullAtk, Data.Hp, Data.Atk, Data.Energy);
         UpdateLevelXP(IsPhaseShop(Data.UnitState));

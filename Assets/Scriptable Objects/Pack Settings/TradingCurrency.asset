@@ -12,5 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b52ff99d0a8baf4a868238adec8f6a4, type: 3}
   m_Name: TradingCurrency
   m_EditorClassIdentifier: 
-  LevelAmount: 0
-  HealthPortion: 0
+  Capacity:
+    Coin: 30
+    Tool: 10
+  RollCost:
+    Coin: -3
+    Tool: 0
+  UnitCost:
+    Coin: -9
+    Tool: 0
+  LevelAmount: 3
+  HealthPortion: 3
+  RepairCost:
+  - Coin: 0
+    Tool: -1
+  - Coin: 0
+    Tool: -1
+  - Coin: 0
+    Tool: -1

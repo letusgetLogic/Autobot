@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(SoTradingCurrency))]
@@ -57,11 +56,11 @@ class SoTradingCurrencyEditor : Editor
         data.HealthPortion = EditorGUILayout.IntField(data.HealthPortion, GUILayout.Width(NumberWidth));
         EditorGUILayout.EndHorizontal();
 
+        int length = (data.HealthPortion + 1) * data.LevelAmount;
         if (data.Sell == null || 
-            data.Sell.GetLength(0) != data.HealthPortion + 1 || 
-            data.Sell.GetLength(1) != data.LevelAmount )
+            data.Sell.Length !=  length)
         {
-            data.Sell = new Currency[data.HealthPortion + 1, data.LevelAmount];
+            data.Sell = new Currency[length];
         }
 
         if (data.RepairCost == null || data.RepairCost.Length != data.LevelAmount)
@@ -85,24 +84,24 @@ class SoTradingCurrencyEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.Width(100));
 
-        for (int i = 0; i < data.Sell.GetLength(1); i++)
+        for (int j = 0; j < data.LevelAmount; j++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            EditorGUILayout.LabelField($"  C", GUILayout.Width(ColumnNumberWidth));
-            EditorGUILayout.LabelField($"  T", GUILayout.Width(ColumnNumberWidth));
+            EditorGUILayout.LabelField($"      LV {j + 1}", GUILayout.Width(83));
         }
         EditorGUILayout.EndHorizontal();
 
-        for (int i = 0; i < data.Sell.GetLength(0); i++)
+        for (int i = 0; i < data.HealthPortion + 1; i++)
             DrawRow(i);
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.Width(100));
 
-        for (int i = 0; i < data.Sell.GetLength(1); i++)
+        for (int j = 0; j < data.LevelAmount; j++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            EditorGUILayout.LabelField($"      LV {i + 1}", GUILayout.Width(83));
+            EditorGUILayout.LabelField($"  C", GUILayout.Width(ColumnNumberWidth));
+            EditorGUILayout.LabelField($"  T", GUILayout.Width(ColumnNumberWidth));
         }
         EditorGUILayout.EndHorizontal();
 
@@ -114,11 +113,12 @@ class SoTradingCurrencyEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField($"Durability {i}", GUILayout.Width(100));
 
-        for (int j = 0; j < data.Sell.GetLength(1); j++)
+        for (int j = 0; j < data.LevelAmount; j++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            data.Sell[i, j].Coin = EditorGUILayout.IntField(data.Sell[i, j].Coin, GUILayout.Width(ColumnNumberWidth));
-            data.Sell[i, j].Tool = EditorGUILayout.IntField(data.Sell[i, j].Tool, GUILayout.Width(ColumnNumberWidth));
+            int index = i * data.HealthPortion + j;
+            data.Sell[index].Coin = EditorGUILayout.IntField(data.Sell[index].Coin, GUILayout.Width(ColumnNumberWidth));
+            data.Sell[index].Tool = EditorGUILayout.IntField(data.Sell[index].Tool, GUILayout.Width(ColumnNumberWidth));
         }
         EditorGUILayout.EndHorizontal();
     }

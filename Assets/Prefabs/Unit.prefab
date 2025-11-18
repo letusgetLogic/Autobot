@@ -4275,7 +4275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.21960784, g: 0.21960784, b: 0.21960784, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7162,7 +7162,8 @@ PrefabInstance:
       value: 0.55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3191352269878991131, guid: bf36cc9baf0c03e4a84120e46b2f465f, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 433549499516290916, guid: bf36cc9baf0c03e4a84120e46b2f465f, type: 3}
       insertIndex: 0

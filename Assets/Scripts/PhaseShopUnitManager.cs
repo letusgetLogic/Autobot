@@ -124,6 +124,9 @@ public class PhaseShopUnitManager : MonoBehaviour
                 Destroy(unitController.gameObject);
             }
 
+            if (PackManager.Instance.Units.Count == 0)
+                return;
+
             int rand = Random.Range(0, PackManager.Instance.Units.Count);
             var data = PackManager.Instance.Units[rand];
 
