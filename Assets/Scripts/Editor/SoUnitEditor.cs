@@ -22,7 +22,6 @@ class SoUnitEditor : Editor
     /// <summary> 
     /// Draw the inspector. 
     /// </summary> 
-    /// <exception cref="NotImplementedException"></exception> 
     private void Draw()
     {
         data.Sprite = (Sprite)EditorGUILayout.ObjectField("Sprite", data.Sprite, typeof(Sprite), false);
@@ -45,11 +44,17 @@ class SoUnitEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Level Limit", GUILayout.Width(100));
-        data.LevelLimit = EditorGUILayout.IntField(data.LevelLimit, GUILayout.Width(NumberWidth));
+        data.LevelLimit = (SoIntVariable)EditorGUILayout.ObjectField(data.LevelLimit, typeof(SoIntVariable), false);
         EditorGUILayout.EndHorizontal();
 
-        if (data.Levels == null || data.Levels.Length != data.LevelLimit)
-            data.Levels = new Level[data.LevelLimit];
+        if (data.LevelLimit == null)
+            return;
+
+        if (data.Levels == null || data.Levels.Length != data.LevelLimit.Value)
+            data.Levels = new Level[data.LevelLimit.Value];
+
+        if (data.Levels == null)
+            return;
 
         if (showLevelSections == null || showLevelSections.Length != data.Levels.Length)
         {
@@ -64,7 +69,7 @@ class SoUnitEditor : Editor
 
         if (GUILayout.Button("Synchronize Levels"))
         {
-            for (int i = 1; i < data.LevelLimit; i++)
+            for (int i = 1; i < data.LevelLimit.Value; i++)
             {
                 data.Levels[i] = data.Levels[0];
                 data.Levels[i].SummonUnits = null;
@@ -73,7 +78,7 @@ class SoUnitEditor : Editor
 
         EditorGUI.indentLevel++;
 
-        for (int i = 0; i < data.LevelLimit; i++)
+        for (int i = 0; i < data.LevelLimit.Value; i++)
         {
             data.Levels[i].Index = i;
             DrawLevel(ref data.Levels[i], i);
@@ -85,7 +90,6 @@ class SoUnitEditor : Editor
     /// <summary>
     /// Draw the data for a specific level. 
     /// </summary>
-    /// <param name="_i"></param>
     private void DrawLevel(ref Level _level, int _i)
     {
         showLevelSections[_i] = EditorGUILayout.Foldout(showLevelSections[_i], $"Level {_i + 1}");
@@ -105,7 +109,7 @@ class SoUnitEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Consumed energy per ability", GUILayout.Width(200));
-            _level.ConsumedEnergy = EditorGUILayout.IntField(_level.ConsumedEnergy);
+            _level.ConsumedEnergy = (SoIntVariable)EditorGUILayout.ObjectField(_level.ConsumedEnergy, typeof(SoIntVariable), false);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();

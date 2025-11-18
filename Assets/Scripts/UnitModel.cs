@@ -53,7 +53,7 @@ public class UnitModel
     {
         View = _view;
         View.SetData(SoUnit.Sprite, SoUnit.Name);
-        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy);
+        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy.Value);
         SetDurability(true, 0);
         View.SetData(FullHp, FullAtk, Data.Hp, Data.Atk, Data.Energy);
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
@@ -301,7 +301,7 @@ public class UnitModel
     private void SetCurrentLevel(int index)
     {
         CurrentLevel = SoUnit.Levels[index];
-        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy);
+        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy.Value);
         View.SetBuyOrSell(Sell, false);
     }
 

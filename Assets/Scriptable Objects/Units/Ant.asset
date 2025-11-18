@@ -18,11 +18,11 @@ MonoBehaviour:
   Health: 2
   Attack: 2
   Energy: 2
-  LevelLimit: 3
+  LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Description: 
-    HasAbility: 0
-    ConsumedEnergy: 0
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
@@ -39,8 +39,8 @@ MonoBehaviour:
     DealDamage: 0
     GainCoin: 0
   - Description: 
-    HasAbility: 0
-    ConsumedEnergy: 0
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
@@ -57,8 +57,8 @@ MonoBehaviour:
     DealDamage: 0
     GainCoin: 0
   - Description: 
-    HasAbility: 0
-    ConsumedEnergy: 0
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0

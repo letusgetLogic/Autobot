@@ -7,7 +7,7 @@ public struct Level
 
     public bool HasAbility;
 
-    public int ConsumedEnergy;
+    public SoIntVariable ConsumedEnergy;
     public TriggerType TriggerType;
     public int TriggerTimes;
     public int TriggerTimesLimit;

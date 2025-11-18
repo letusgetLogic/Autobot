@@ -18,5 +18,59 @@ MonoBehaviour:
   Health: 2
   Attack: 3
   Energy: 1
-  LevelLimit: 3
-  Levels: []
+  LevelLimit: {fileID: 0}
+  Levels:
+  - Description: "Faint \u2192 Give one random friend +1 attack and +1 health."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Description: 
+    HasAbility: 0
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Description: 
+    HasAbility: 0
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    HealthBuff: 0
+    AttackBuff: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0

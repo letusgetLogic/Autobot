@@ -16,7 +16,7 @@ public class SoUnit : ScriptableObject
     public int Attack;
     public int Energy;
 
-    public int LevelLimit;
+    public SoIntVariable LevelLimit;
     public Level[] Levels ;
 
     private void OnEnable()
