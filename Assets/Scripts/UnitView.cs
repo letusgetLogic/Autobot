@@ -135,7 +135,8 @@ public class UnitView : MonoBehaviour
 
         if (_cur.Coin != 0)
         {
-            coinValue.text = _cur.Coin.ToString();
+            string operation = _cur.Coin > 0 ? "+" : "";
+            coinValue.text = operation + _cur.Coin.ToString();
             coin.SetActive(true);
         }
         else
@@ -146,7 +147,8 @@ public class UnitView : MonoBehaviour
 
         if (_cur.Tool != 0)
         {
-            toolValue.text = _cur.Tool.ToString();
+            string operation = _cur.Tool > 0 ? "+" : "";
+            toolValue.text = operation + _cur.Tool.ToString();
             tool.SetActive(true);
         }
         else

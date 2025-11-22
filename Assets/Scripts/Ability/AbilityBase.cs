@@ -26,7 +26,7 @@ public abstract class AbilityBase
         Run();
         if (Controller != null)
         {
-            Controller.Model.Data.Energy -= CurrentLevel.ConsumedEnergy.Value;
+            Controller.Model.Data.Energy += CurrentLevel.ConsumedEnergy.Value;
         }
     }
     public abstract void Run();

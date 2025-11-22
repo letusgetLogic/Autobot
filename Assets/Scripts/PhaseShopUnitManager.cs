@@ -8,10 +8,10 @@ public class PhaseShopUnitManager : MonoBehaviour
 
     [Header("Slots")]
     [SerializeField]
-    private Slot[] battleSlots;
+    private Slot[] teamSlots;
     [SerializeField]
     private Slot[] shopUnitSlots;
-    public Slot[] BattleSlots => battleSlots;
+    public Slot[] TeamSlots => teamSlots;
     public Slot[] ShopUnitSlots => shopUnitSlots;
 
     [Header("Settings")]
@@ -41,7 +41,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
         Instance = this;
 
-        SetIndex(battleSlots);
+        SetIndex(teamSlots);
         SetIndex(shopUnitSlots);
     }
 
@@ -72,11 +72,11 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     private void SpawnUnits()
     {
-        if (Player.Data.BattleUnitDatas != null)
+        if (Player.Data.TeamUnitDatas != null)
         {
-            for (int i = 0; i < Player.Data.BattleUnitDatas.Length; i++)
+            for (int i = 0; i < Player.Data.TeamUnitDatas.Length; i++)
             {
-                var unitData = Player.Data.BattleUnitDatas[i];
+                var unitData = Player.Data.TeamUnitDatas[i];
                 if (unitData.HasReference != true)
                     continue;
 
@@ -84,8 +84,8 @@ public class PhaseShopUnitManager : MonoBehaviour
                     PackManager.Instance.Units[unitData.Index],
                     unitData.Index,
                     unitData,
-                    UnitState.InSlotBattle,
-                    battleSlots[i].transform);
+                    UnitState.InSlotTeam,
+                    teamSlots[i].transform);
 
             }
         }
@@ -156,7 +156,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             {
                 Buy(slot);
             }
-            else if (attachedModel.Data.UnitState == UnitState.InSlotBattle)
+            else if (attachedModel.Data.UnitState == UnitState.InSlotTeam)
             {
                 TransportOrFusion(slot);
             }
@@ -252,7 +252,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (disableShadow)
             unitView.Shadow.enabled = false;
 
-        controller.Model.SetData(UnitState.InSlotBattle);
+        controller.Model.SetData(UnitState.InSlotTeam);
         controller.View.SetBuyOrSell(controller.Model.Sell, false);
 
         Player.UpdateUnitData();
@@ -270,10 +270,10 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         int search = target + direction;
 
-        while (search >= 0 && search < battleSlots.Length)
+        while (search >= 0 && search < teamSlots.Length)
         {
-            if (battleSlots[search].Unit() != null &&
-                battleSlots[search].Unit() != AttachedGameObject) // slot is occupied
+            if (teamSlots[search].Unit() != null &&
+                teamSlots[search].Unit() != AttachedGameObject) // slot is occupied
             {
                 search += direction; // continue search for an emnpty space
             }
@@ -283,17 +283,17 @@ public class PhaseShopUnitManager : MonoBehaviour
                 {
                     int previous = empty - direction; // swap the previous slot index to the empty slot index
 
-                    var movedUnit = battleSlots[previous].Unit();
+                    var movedUnit = teamSlots[previous].Unit();
                     if (movedUnit == null ||
                         movedUnit == AttachedGameObject) // unit being moved is null or self, break foe loop
                         break;
-                    Transport(movedUnit, battleSlots[empty].transform, false, false);
+                    Transport(movedUnit, teamSlots[empty].transform, false, false);
                 }
 
                 if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
-                    == UnitState.InSlotBattle)
+                    == UnitState.InSlotTeam)
                 {
-                    Transport(AttachedGameObject, battleSlots[target].transform, false, false);
+                    Transport(AttachedGameObject, teamSlots[target].transform, false, false);
                     AttachedGameObject.GetComponent<UnitView>().BeingReleased(null);
                     SetAttachedGameObject(null);
 
@@ -302,7 +302,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 else if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
                     == UnitState.InSlotShop)
                 {
-                    battleSlots[target].Border.enabled = true;
+                    teamSlots[target].Border.enabled = true;
                 }
 
                 return;

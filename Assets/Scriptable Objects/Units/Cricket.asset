@@ -18,59 +18,62 @@ MonoBehaviour:
   Health: 3
   Attack: 1
   Energy: 2
-  LevelLimit: {fileID: 0}
+  LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
-  - Description: 
-    HasAbility: 0
-    ConsumedEnergy: {fileID: 0}
-    TriggerType: 0
+  - Description: "Faint \u2192 Summon one 1/1 Zombie Cricket."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 17
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
+    DoType: 2
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 3
     HealthBuff: 0
     AttackBuff: 0
-    UnitLimit: 0
-    SummonUnits: []
+    UnitLimit: 1
+    SummonUnits:
+    - {fileID: 11400000, guid: c4297eaaf3a7c0648a31305d15da2670, type: 2}
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: 
-    HasAbility: 0
-    ConsumedEnergy: {fileID: 0}
-    TriggerType: 0
+  - Description: "Faint \u2192 Summon one 2/2 Zombie Cricket."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 17
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
+    DoType: 2
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 3
     HealthBuff: 0
     AttackBuff: 0
-    UnitLimit: 0
-    SummonUnits: []
+    UnitLimit: 1
+    SummonUnits:
+    - {fileID: 11400000, guid: d03fc87eda19ce144813632a381b6047, type: 2}
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: 
-    HasAbility: 0
-    ConsumedEnergy: {fileID: 0}
-    TriggerType: 0
+  - Description: "Faint \u2192 Summon one 3/3 Zombie Cricket."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 17
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
+    DoType: 2
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 3
     HealthBuff: 0
     AttackBuff: 0
-    UnitLimit: 0
-    SummonUnits: []
+    UnitLimit: 1
+    SummonUnits:
+    - {fileID: 11400000, guid: 0a0ab765b3a94b24abab83dc478a252b, type: 2}
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0

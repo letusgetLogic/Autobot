@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     public void EndBattle()
     {
-        UpdateBattleUnitData();
+        UpdateTeamUnitData();
     }
 
     /// <summary>
@@ -49,22 +49,10 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the data of units for saving data.
+    /// Creates new datas and saves the data of units.
     /// </summary>
     public void UpdateUnitData()
     {
-        Data.BattleUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.BattleSlots.Length];
-        for (int i = 0; i < PhaseShopUnitManager.Instance.BattleSlots.Length; i++)
-        {
-            var unit = PhaseShopUnitManager.Instance.BattleSlots[i].UnitController();
-            if (unit == null)
-            {
-                continue;
-            }
-
-            Data.BattleUnitDatas[i] = unit.Model.Data;
-        }
-
         Data.ShopUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
         for (int i = 0; i < PhaseShopUnitManager.Instance.ShopUnitSlots.Length; i++)
         {
@@ -77,30 +65,42 @@ public class Player : MonoBehaviour
             Data.ShopUnitDatas[i] = unit.Model.Data;
         }
 
+        Data.TeamUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.TeamSlots.Length];
+        for (int i = 0; i < PhaseShopUnitManager.Instance.TeamSlots.Length; i++)
+        {
+            var unit = PhaseShopUnitManager.Instance.TeamSlots[i].UnitController();
+            if (unit == null)
+            {
+                continue;
+            }
+
+            Data.TeamUnitDatas[i] = unit.Model.Data;
+        }
+
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 
     /// <summary>
-    /// Updates the data of battle units for saving data.
+    /// Updates the data of team units for saving data.
     /// </summary>
-    public void UpdateBattleUnitData()
+    public void UpdateTeamUnitData()
     {
-        Data.BattleUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.BattleSlots.Length];
-        for (int i = 0; i < PhaseShopUnitManager.Instance.BattleSlots.Length; i++)
+        for (int i = 0; i < PhaseShopUnitManager.Instance.TeamSlots.Length; i++)
         {
             if (battleUnits[i] == null)
             {
                 continue;
             }
 
-            Data.BattleUnitDatas[i] = battleUnits[i].Model.Data;
+            Data.TeamUnitDatas[i] = battleUnits[i].Model.Data;
         }
 
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 
-    public void SaveUnit(UnitController[] _battleUnits)
+    public void SaveReference(UnitController[] _battleUnits)
     {
+        battleUnits = new UnitController[PhaseBattleController.Instance.Slots1.Length];
         for (int i = 0; i < _battleUnits.Length;i++)
         {
             battleUnits[i] = _battleUnits[i];

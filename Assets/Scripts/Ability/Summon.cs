@@ -35,7 +35,7 @@ public class Summon : AbilityBase
         }
         else
         {
-            slots = PhaseShopUnitManager.Instance.BattleSlots;
+            slots = PhaseShopUnitManager.Instance.TeamSlots;
         }
         for (int i = 0; i < summonedUnits.Length; i++)
         {

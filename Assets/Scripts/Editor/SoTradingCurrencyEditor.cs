@@ -100,8 +100,8 @@ class SoTradingCurrencyEditor : Editor
         for (int j = 0; j < data.LevelAmount; j++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            EditorGUILayout.LabelField($"  C", GUILayout.Width(ColumnNumberWidth));
-            EditorGUILayout.LabelField($"  T", GUILayout.Width(ColumnNumberWidth));
+            EditorGUILayout.LabelField($"Coins", GUILayout.Width(ColumnNumberWidth));
+            EditorGUILayout.LabelField($"Tools", GUILayout.Width(ColumnNumberWidth));
         }
         EditorGUILayout.EndHorizontal();
 
@@ -116,7 +116,7 @@ class SoTradingCurrencyEditor : Editor
         for (int j = 0; j < data.LevelAmount; j++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            int index = i * data.HealthPortion + j;
+            int index = SoTradingCurrency.ConvertToIndex1D(data.HealthPortion, i, j);
             data.Sell[index].Coin = EditorGUILayout.IntField(data.Sell[index].Coin, GUILayout.Width(ColumnNumberWidth));
             data.Sell[index].Tool = EditorGUILayout.IntField(data.Sell[index].Tool, GUILayout.Width(ColumnNumberWidth));
         }

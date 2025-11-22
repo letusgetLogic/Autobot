@@ -15,7 +15,7 @@ public class SoTradingCurrency : ScriptableObject
     public int LevelAmount;
     public int HealthPortion;
 
-    public Currency[] Sell { get; set; }
+    public Currency[] Sell;
     public Currency[] RepairCost;
 
     private void OnEnable()
@@ -23,6 +23,11 @@ public class SoTradingCurrency : ScriptableObject
 #if UNITY_EDITOR
         EditorUtility.SetDirty(this);
 #endif
+    }
+
+    public static int ConvertToIndex1D(int _healthPortion, int _durability, int _level)
+    {
+        return _durability * _healthPortion + _level;
     }
 }
 

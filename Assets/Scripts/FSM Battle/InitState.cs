@@ -53,8 +53,8 @@ public class InitState : StateBase
        
         for (int i = 0; i < slots.Length; i++)
         {
-            var unitData = player.Data.BattleUnitDatas[i];
-            if (unitData.HasReference)
+            var unitData = player.Data.TeamUnitDatas[i];
+            if (unitData.HasReference && unitData.Hp > 0)
             {
                 var controller = SpawnManager.Instance.Spawn(
                     PackManager.Instance.Units[unitData.Index],
@@ -64,6 +64,7 @@ public class InitState : StateBase
                     slots[i].transform);
 
                 controller.View.Shadow.enabled = false;
+                controller.Model.BattleID = i;
 
                 if (isRight)
                 {
@@ -79,6 +80,6 @@ public class InitState : StateBase
             }
         }
 
-        player.SaveUnit(units);
+        player.SaveReference(units);
     }
 }

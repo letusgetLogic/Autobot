@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventHoverSlotBattle : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private float offsetMoveOther = 0.3f;

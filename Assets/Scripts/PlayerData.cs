@@ -8,7 +8,7 @@ public class PlayerData
     public int Wins { get; set; }
     public int Coins { get; set; }
     public int Tools { get; set; }
-    public SaveUnitData[] BattleUnitDatas {  get; set; }
+    public SaveUnitData[] TeamUnitDatas {  get; set; }
     public SaveUnitData[] ShopUnitDatas {  get; set; }
 
     /// <summary>

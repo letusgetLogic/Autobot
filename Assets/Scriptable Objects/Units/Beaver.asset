@@ -18,57 +18,57 @@ MonoBehaviour:
   Health: 2
   Attack: 3
   Energy: 1
-  LevelLimit: {fileID: 0}
+  LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
-  - Description: "Faint \u2192 Give one random friend +1 attack and +1 health."
+  - Description: "Sell \u2192 Give two random friends +1 attack."
     HasAbility: 1
-    ConsumedEnergy: {fileID: 0}
-    TriggerType: 0
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 4
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
-    FromWho: 0
-    ToWho: 0
-    ToWhoCount: 0
-    AbilityDuration: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 3
+    ToWhoCount: 2
+    AbilityDuration: 2
     HealthBuff: 0
-    AttackBuff: 0
+    AttackBuff: 1
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: 
-    HasAbility: 0
-    ConsumedEnergy: {fileID: 0}
-    TriggerType: 0
+  - Description: "Sell \u2192 Give two random friends +2 attack."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 4
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
-    FromWho: 0
-    ToWho: 0
-    ToWhoCount: 0
-    AbilityDuration: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 3
+    ToWhoCount: 2
+    AbilityDuration: 2
     HealthBuff: 0
-    AttackBuff: 0
+    AttackBuff: 2
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: 
-    HasAbility: 0
-    ConsumedEnergy: {fileID: 0}
-    TriggerType: 0
+  - Description: "Sell \u2192 Give two random friends +3 attack."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 4
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
-    FromWho: 0
-    ToWho: 0
-    ToWhoCount: 0
-    AbilityDuration: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 3
+    ToWhoCount: 2
+    AbilityDuration: 2
     HealthBuff: 0
-    AttackBuff: 0
+    AttackBuff: 3
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0

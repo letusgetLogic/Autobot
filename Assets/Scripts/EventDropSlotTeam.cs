@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class EventDropSlotBattle : MonoBehaviour, IDropHandler
+public class EventDropSlotTeam : MonoBehaviour, IDropHandler
 {
     public UnityAction OnDropWhileOccupied { get; set; }
 

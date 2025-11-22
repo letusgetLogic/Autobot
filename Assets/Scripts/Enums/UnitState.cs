@@ -4,7 +4,7 @@ public enum UnitState
     None, 
     InSlotShop,
     Freezed,
-    InSlotBattle,
+    InSlotTeam,
     InSlotCharge,
     InPhaseBattle
 }

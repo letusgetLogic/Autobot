@@ -16,8 +16,8 @@ public class EventClick : MonoBehaviour, IPointerClickHandler
         {
             var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
 
-            // Transports unit per click, only to slot battle.
-            if (attached != null && slot.CompareTag("Slot Battle"))
+            // Transports unit per click, only to slot team.
+            if (attached != null && slot.CompareTag("Slot Team"))
             {
                 PhaseShopUnitManager.Instance.ManageAttachedObject(slot);
                 PhaseShopUnitManager.Instance.SetAttachedGameObject(null);

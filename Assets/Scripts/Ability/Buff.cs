@@ -21,7 +21,7 @@ public class Buff : AbilityBase
             }
             else
             {
-                slots = PhaseShopUnitManager.Instance.BattleSlots;
+                slots = PhaseShopUnitManager.Instance.TeamSlots;
             }
 
             List<UnitController> unitOnSlot = new List<UnitController>();

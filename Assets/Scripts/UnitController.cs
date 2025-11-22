@@ -141,7 +141,6 @@ public class UnitController : MonoBehaviour
         else
             model.Add(0, 0, 0, 0, addHealth, addAttack);
 
-        View.SetData(Model.FullHp, Model.FullAtk, Model.Data.Hp, Model.Data.Atk, Model.Data.Energy);
         view.ShowBuff(addHealth, addAttack);
     }
 

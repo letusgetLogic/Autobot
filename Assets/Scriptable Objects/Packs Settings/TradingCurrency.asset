@@ -20,9 +20,34 @@ MonoBehaviour:
     Tool: 0
   UnitCost:
     Coin: -9
-    Tool: 0
+    Tool: -1
   LevelAmount: 3
   HealthPortion: 3
+  Sell:
+  - Coin: 0
+    Tool: -1
+  - Coin: 0
+    Tool: -1
+  - Coin: 0
+    Tool: -1
+  - Coin: 1
+    Tool: -1
+  - Coin: 2
+    Tool: -1
+  - Coin: 3
+    Tool: -1
+  - Coin: 2
+    Tool: -1
+  - Coin: 4
+    Tool: -1
+  - Coin: 6
+    Tool: -1
+  - Coin: 3
+    Tool: -1
+  - Coin: 6
+    Tool: -1
+  - Coin: 9
+    Tool: -1
   RepairCost:
   - Coin: 0
     Tool: -1

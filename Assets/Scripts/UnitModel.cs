@@ -9,20 +9,19 @@ public class UnitModel
     public SoUnit SoUnit { get; private set; }
     public UnitView View { get; set; }
     public Level CurrentLevel { get; set; }
+    public SoPack Pack => PackManager.Instance.MyPack;
     public bool IsMaxed => CurrentLevel.Index + 1 == SoUnit.Levels.Length;
-    private float portionSize => 1 / (float)PackManager.Instance.MyPack.CurrencyData.HealthPortion;
+    private float portionSize => 1 / (float)Pack.CurrencyData.HealthPortion;
     public int FullHp => Data.BasisHp + Data.BuffHp + Data.BuffTempHp;
     public int FullAtk => Data.BasisAtk + Data.BuffAtk + Data.BuffTempAtk;
-    public Currency Cost => 
-        PackManager.Instance.MyPack.CurrencyData.UnitCost;
-    public int SellIndex =>
-        PackManager.Instance.MyPack.CurrencyData.LevelAmount * Data.Durability + CurrentLevel.Index;
-    public Currency Sell => 
-        PackManager.Instance.MyPack.CurrencyData.Sell[SellIndex];
-    public Currency RepairCost =>
-        PackManager.Instance.MyPack.CurrencyData.RepairCost[CurrentLevel.Index];
-
-
+    public Currency Cost => Pack.CurrencyData.UnitCost;
+    public int SellIndex => SoTradingCurrency.ConvertToIndex1D(
+        Pack.CurrencyData.HealthPortion,
+        Data.Durability, 
+        CurrentLevel.Index);
+    public Currency Sell => Pack.CurrencyData.Sell[SellIndex];
+    public Currency RepairCost => Pack.CurrencyData.RepairCost[CurrentLevel.Index];
+    public int BattleID {  get; set; }
 
     public UnitModel(SoUnit _soUnit, int _index) // For new unit
     {
@@ -68,7 +67,7 @@ public class UnitModel
                 return true;
             case UnitState.Freezed:
                 return true;
-            case UnitState.InSlotBattle:
+            case UnitState.InSlotTeam:
                 return true;
             case UnitState.InPhaseBattle:
                 return false;
@@ -91,7 +90,7 @@ public class UnitModel
                     View.IceCube.SetActive(true);
                     View.SetRepairDisplayActive(false);
                     break;
-                case UnitState.InSlotBattle:
+                case UnitState.InSlotTeam:
                     View.SetRepairDisplayActive(true);
                     break;
                 case UnitState.InSlotCharge:
@@ -117,7 +116,7 @@ public class UnitModel
                 return Cost;
             case UnitState.Freezed:
                 return Cost;
-            case UnitState.InSlotBattle:
+            case UnitState.InSlotTeam:
                 return Sell;
             case UnitState.InPhaseBattle:
                 return default;
@@ -189,9 +188,9 @@ public class UnitModel
                 return;
             }
 
-            if (i == PackManager.Instance.MyPack.CurrencyData.HealthPortion - 1)
+            if (i == Pack.CurrencyData.HealthPortion - 1)
             {
-                Data.Durability = PackManager.Instance.MyPack.CurrencyData.HealthPortion;
+                Data.Durability = Pack.CurrencyData.HealthPortion;
             }
         }
     }
@@ -200,19 +199,20 @@ public class UnitModel
     {
         Data.Durability++;
 
-        if (Data.Durability > PackManager.Instance.MyPack.CurrencyData.HealthPortion)
-            Data.Durability = PackManager.Instance.MyPack.CurrencyData.HealthPortion;
+        if (Data.Durability > Pack.CurrencyData.HealthPortion)
+            Data.Durability = Pack.CurrencyData.HealthPortion;
 
         Data.DurabilityRatio += portionSize;
 
         if (Data.DurabilityRatio > 1 ||
-             Data.Durability == PackManager.Instance.MyPack.CurrencyData.HealthPortion)
+             Data.Durability == Pack.CurrencyData.HealthPortion)
         {
             Data.DurabilityRatio = 1;
         }
 
         SetStatsBasedDurability();
         ShowDurability();
+        View.SetBuyOrSell(Sell, false);
     }
 
     private void SetStatsBasedDurability()
@@ -322,6 +322,7 @@ public class UnitModel
 
         Data.SetHp(Data.Hp + basisHp + buffHp + buffTempHp);
         Data.SetAtk(Data.Atk + basisAtk + buffAtk + buffTempAtk);
+        SetStatsBasedDurability();
     }
     public void SubstractHp(int damage)
     {

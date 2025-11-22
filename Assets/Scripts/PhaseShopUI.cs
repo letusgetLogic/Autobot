@@ -186,7 +186,7 @@ public class PhaseShopUI : MonoBehaviour
                 unfreezeButton.SetActive(true);
                 break;
 
-            case UnitState.InSlotBattle:
+            case UnitState.InSlotTeam:
                 DeactivateManageButtons();
                 sellButton.SetActive(true);
                 break;
