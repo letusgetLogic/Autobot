@@ -13,9 +13,9 @@ public class UnitView : MonoBehaviour
     [Header("Sprites")]
     [SerializeField] private SpriteRenderer shadowSpriteRenderer;
     [SerializeField] private SpriteRenderer dragSpriteRenderer;
-    [SerializeField] private GameObject iceCube;
+    [SerializeField] private SpriteRenderer iceCubeSpriteRenderer;
     public SpriteRenderer Shadow => shadowSpriteRenderer;
-    public GameObject IceCube => iceCube;
+    public GameObject IceCube => iceCubeSpriteRenderer.gameObject;
 
     [Header("Description")]
     [SerializeField] private GameObject description;
@@ -27,6 +27,7 @@ public class UnitView : MonoBehaviour
         ability,
         fullAttack,
         fullHealth;
+
     [Header("Craft / Recycle")]
     [SerializeField] private GameObject coin;
     [SerializeField] private GameObject tool;
@@ -92,18 +93,21 @@ public class UnitView : MonoBehaviour
 
     private Vector3 originalScale;
 
+    private int originalSortingOrder;
+
     #endregion
 
     private void Awake()
     {
         description.SetActive(false);
-        iceCube.gameObject.SetActive(false);
+        iceCubeSpriteRenderer.gameObject.SetActive(false);
     }
 
     private void Start()
     {
         mainCamera = Camera.main;
         originalScale = dragSpriteRenderer.gameObject.transform.localScale;
+        originalSortingOrder = dragSpriteRenderer.sortingOrder;
     }
 
     /// <summary>
@@ -204,6 +208,9 @@ public class UnitView : MonoBehaviour
             attack.enabled = false;
             energy.enabled = false;
         }
+
+        dragSpriteRenderer.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
+        canvas.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
     }
 
     /// <summary>
@@ -227,6 +234,8 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;
         dragSpriteRenderer.gameObject.transform.localScale = originalScale;
+        dragSpriteRenderer.sortingOrder = originalSortingOrder;
+        canvas.sortingOrder = originalSortingOrder;
         canvas.transform.localPosition = Vector3.zero;
 
         heartIcon.gameObject.SetActive(true);

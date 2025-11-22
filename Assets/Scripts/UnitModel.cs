@@ -91,9 +91,11 @@ public class UnitModel
                     View.SetRepairDisplayActive(false);
                     break;
                 case UnitState.InSlotTeam:
+                    View.IceCube.SetActive(false);
                     View.SetRepairDisplayActive(true);
                     break;
                 case UnitState.InSlotCharge:
+                    View.IceCube.SetActive(false);
                     View.SetRepairDisplayActive(true);
                     break;
                 case UnitState.InPhaseBattle:

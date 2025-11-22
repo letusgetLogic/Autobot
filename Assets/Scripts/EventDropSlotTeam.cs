@@ -4,8 +4,6 @@ using UnityEngine.EventSystems;
 
 public class EventDropSlotTeam : MonoBehaviour, IDropHandler
 {
-    public UnityAction OnDropWhileOccupied { get; set; }
-
     private Slot slot { get; set; }
 
     private void Start()

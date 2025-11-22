@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 714028337643914962}
   - component: {fileID: 8752032248158297725}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Temp Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,7 +423,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -847826981
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &714028337643914962
 MonoBehaviour:
@@ -2854,7 +2854,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -847826981
   m_SortingLayer: 2
-  m_SortingOrder: 10
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.39607844, g: 0.8333386, b: 0.9607843, a: 0.5019608}
   m_FlipX: 0
@@ -5891,7 +5891,7 @@ MonoBehaviour:
   - {fileID: 600686263613422802}
   shadowSpriteRenderer: {fileID: 7646287376905958447}
   dragSpriteRenderer: {fileID: 1651141544470514720}
-  iceCube: {fileID: 3632601388607071418}
+  iceCubeSpriteRenderer: {fileID: 6215985791303685730}
   description: {fileID: 2245560921931257665}
   hideDuringBattle:
   - {fileID: 8401456290826259785}

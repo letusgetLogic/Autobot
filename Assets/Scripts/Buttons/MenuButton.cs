@@ -7,9 +7,10 @@ public class MenuButton : MonoBehaviour
     {
         GameManager.Instance.EndGame();
 
-        Destroy(PackManager.Instance.gameObject);
-        Destroy(SpawnManager.Instance.gameObject);
-        Destroy(gameObject);
+        if (PackManager.Instance != null)
+            Destroy(PackManager.Instance.gameObject);
+        if (SpawnManager.Instance != null)
+            Destroy(SpawnManager.Instance.gameObject);
 
         SceneManager.LoadScene("Menu");
         Time.timeScale = 1;

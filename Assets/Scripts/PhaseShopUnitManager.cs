@@ -151,12 +151,12 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         if (AttachedGameObject.CompareTag("Unit"))
         {
-            var attachedModel = AttachedGameObject.GetComponent<UnitController>().Model;
-            if (attachedModel.Data.UnitState == UnitState.InSlotShop)
+            var unitState = AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState;
+            if (unitState == UnitState.InSlotShop || unitState == UnitState.Freezed)
             {
                 Buy(slot);
             }
-            else if (attachedModel.Data.UnitState == UnitState.InSlotTeam)
+            else if (unitState == UnitState.InSlotTeam)
             {
                 TransportOrFusion(slot);
             }
@@ -189,6 +189,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                     unitOnSlot.UpdateLevel(attachedController.Model, true);
                     Destroy(AttachedGameObject);
                 }
+                return;
             }
             else // case: buy and place dragging unit on empty slot.
             {
@@ -197,6 +198,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
                 Transport(AttachedGameObject, slot.transform, true, true);
             }
+
         }
     }
 
@@ -232,9 +234,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     public void Transport(GameObject attached, Transform dropSlot,
         bool mouseRelease, bool disableShadow)
     {
-        if (attached == null ||
-            attached.GetComponent<UnitController>().Model.Data.UnitState ==
-            UnitState.Freezed)
+        if (attached == null)
             return;
 
         attached.transform.parent.GetComponent<Slot>().Border.enabled = false;

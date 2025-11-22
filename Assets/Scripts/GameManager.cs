@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-   
+
 
     private void Awake()
     {
@@ -211,7 +211,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndGame()
     {
-        CurrentGame.State = GameState.EndOfGame;
+        if (CurrentGame != null)
+            CurrentGame.State = GameState.EndOfGame;
     }
 
 }

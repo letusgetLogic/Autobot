@@ -164,16 +164,15 @@ public class PhaseShopUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Activates button, which manages units und items, or deactives with ManageButton.None.
+    /// Deactivates all buttons and activates button, which manages units und items.
     /// </summary>
-    /// <param name="manageButton"></param>
-    public void SetButtonActive(UnitState manageButton)
+    /// <param name="_manage"></param>
+    public void SetButtonActive(UnitState _manage)
     {
-        switch (manageButton)
+        switch (_manage)
         {
             case UnitState.None:
                 DeactivateManageButtons();
-                unfreezeButton.SetActive(false);
                 break;
 
             case UnitState.InSlotShop:

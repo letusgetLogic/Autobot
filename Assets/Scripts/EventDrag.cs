@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.XR;
 
 public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -16,8 +17,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
-        if (slot.UnitController() == null ||
-            slot.UnitController().Model.Data.UnitState == UnitState.Freezed)
+        if (slot.UnitController() == null)
             return;
 
         if (slot.UnitView() == null)
@@ -26,8 +26,14 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         slot.UnitView().BeingAttached(eventData);
 
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
-        PhaseShopUnitManager.Instance.SetAttachedGameObject(
-            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit());
+        PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());
+        PhaseShopUI.Instance.SetButtonActive(slot.UnitController().Model.Data.UnitState);
+
+        if (slot.UnitController().Model.Data.Durability < PackManager.Instance.MyPack.
+               CurrencyData.HealthPortion)
+        {
+            PhaseShopUI.Instance.SetRepairButtonActiv();
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -38,15 +44,11 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
        
-        if (slot.UnitController() == null ||
-            slot.UnitController().Model.Data.UnitState == UnitState.Freezed)
-            return;
-
         if (slot.UnitView() == null)
             return;
 
         PhaseShopUnitManager.Instance.IsDragging = true;
-        slot.UnitView().GetComponent<UnitView>().BeingMovedOnMouse(eventData);
+        slot.UnitView().BeingMovedOnMouse(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -55,10 +57,6 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         PhaseShopUnitManager.Instance.IsDragging = false;
 
         if (eventData.button != PointerEventData.InputButton.Left)
-            return;
-
-        if (slot.UnitController() == null ||
-            slot.UnitController().Model.Data.UnitState == UnitState.Freezed)
             return;
 
         if (slot.UnitView() == null)

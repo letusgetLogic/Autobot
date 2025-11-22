@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SetRectLocalScaleClick : MonoBehaviour,
-    IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+    IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private float scaleFactor;
 
@@ -38,7 +38,16 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     }
 
     /// <summary>
-    /// OnPointerExit method to handle pointer exit events while holding the button.
+    /// OnPointerEnter method to handle pointer enter events.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        GetComponent<RectTransform>().localScale = originalScale * scaleFactor;
+    }
+
+    /// <summary>
+    /// OnPointerExit method to handle pointer exit events.
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
