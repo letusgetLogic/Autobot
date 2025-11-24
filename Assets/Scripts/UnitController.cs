@@ -62,12 +62,12 @@ public class UnitController : MonoBehaviour
     /// </summary>
     public void UpdateLevel(UnitModel _draggingModel, bool _isPhaseShop)
     {
-        model.Data.XP += _draggingModel.Data.XP;
+        model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
         
         model.Add(
             _draggingModel.Data.XP, _draggingModel.Data.XP,
-            _draggingModel.Data.BuffHp, _draggingModel.Data.BuffAtk,
-            _draggingModel.Data.BuffTempHp, _draggingModel.Data.BuffTempAtk);
+            _draggingModel.Data.Buff.HP, _draggingModel.Data.Buff.ATK,
+            _draggingModel.Data.TempBuff.HP, _draggingModel.Data.TempBuff.ATK);
 
         model.UpdateLevelXP(_isPhaseShop);
 
@@ -101,7 +101,7 @@ public class UnitController : MonoBehaviour
         if (ability != null)
             PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
 
-        return model.Data.Atk;
+        return model.Data.Cur.ATK;
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public class UnitController : MonoBehaviour
     {
         model.SubstractHp(damage);
 
-        if (model.Data.Hp <= 0)
+        if (model.Data.Cur.HP <= 0)
         {
             TriggerFaint();
             PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
@@ -125,10 +125,10 @@ public class UnitController : MonoBehaviour
 
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
-        if (model.Data.Energy <= 0)
+        if (model.Data.Cur.Energy <= 0)
             return null;
 
-        if (triggerType == model.CurrentLevel.TriggerType && model.Data.Energy > 0)
+        if (triggerType == model.CurrentLevel.TriggerType)
             return Ability;
 
         return null;

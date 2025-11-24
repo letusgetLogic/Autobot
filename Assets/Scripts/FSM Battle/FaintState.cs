@@ -37,6 +37,8 @@ public class FaintState : StateBase
             unit.SetActive(false);
             unit.transform.parent = null;
             Debug.Log($"Fainted unit {unit.name} destroyed");
+            PhaseBattleController.Instance.Player1.UpdateTeamUnitData();
+            PhaseBattleController.Instance.Player2.UpdateTeamUnitData();
         }
     }
 }

@@ -4,7 +4,7 @@ public class Player : MonoBehaviour
 {
     public PlayerData Data { get; set; }
 
-    private UnitController[] battleUnits;
+    public UnitController[] BattleUnits;
 
     /// <summary>
     /// Starts the phase shop.
@@ -15,8 +15,12 @@ public class Player : MonoBehaviour
         PhaseShopUnitManager.Instance.Initialize(this);
         PackManager.Instance.AddUnitsByTier(Data.Turns);
         PhaseShopUI.Instance.UpdateUI(this);
+        PhaseShopUnitManager.Instance.SpawnSavedUnits();
         PhaseShopUnitManager.Instance.SpawnShopUnits();
         UpdateUnitData();
+        PhaseShopUnitManager.Instance.ChargeUnit();
+
+        GameManager.Instance.SetPhaseShop();
     }
 
     /// <summary>
@@ -30,7 +34,7 @@ public class Player : MonoBehaviour
 
     public void StartBattle()
     {
-        battleUnits = new UnitController[PhaseBattleController.Instance.Slots1.Length];
+        BattleUnits = new UnitController[PhaseBattleController.Instance.Slots1.Length];
     }
 
     public void EndBattle()
@@ -77,6 +81,13 @@ public class Player : MonoBehaviour
             Data.TeamUnitDatas[i] = unit.Model.Data;
         }
 
+        Data.ChargeUnitData = default;
+        var chargeUnit = PhaseShopUnitManager.Instance.ChargeSlot.UnitController();
+        if (chargeUnit != null)
+        {
+            Data.ChargeUnitData = chargeUnit.Model.Data;
+        }
+
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 
@@ -87,24 +98,15 @@ public class Player : MonoBehaviour
     {
         for (int i = 0; i < PhaseShopUnitManager.Instance.TeamSlots.Length; i++)
         {
-            if (battleUnits[i] == null)
+            if (BattleUnits[i] == null)
             {
                 continue;
             }
 
-            Data.TeamUnitDatas[i] = battleUnits[i].Model.Data;
+            Data.TeamUnitDatas[i] = BattleUnits[i].Model.Data;
         }
 
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
-    }
-
-    public void SaveReference(UnitController[] _battleUnits)
-    {
-        battleUnits = new UnitController[PhaseBattleController.Instance.Slots1.Length];
-        for (int i = 0; i < _battleUnits.Length;i++)
-        {
-            battleUnits[i] = _battleUnits[i];
-        }
     }
 }
 

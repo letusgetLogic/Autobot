@@ -85,8 +85,8 @@ public class UnitView : MonoBehaviour
     [SerializeField] private SoUnitSettings unitSettings;
 
     [Header("Color")]
-    [SerializeField] private Color substractColor;
-    [SerializeField] private Color addColor;
+    [SerializeField] private Color damageColor;
+    [SerializeField] private Color buffColor;
     public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
 
     private Camera mainCamera;

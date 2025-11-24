@@ -5,49 +5,55 @@ using UnityEngine;
 [Serializable]
 public class UnitModel
 {
+    public UnitView View { get; set; }
+
     public SaveUnitData Data;
     public SoUnit SoUnit { get; private set; }
-    public UnitView View { get; set; }
     public Level CurrentLevel { get; set; }
+
     public SoPack Pack => PackManager.Instance.MyPack;
     public bool IsMaxed => CurrentLevel.Index + 1 == SoUnit.Levels.Length;
-    private float portionSize => 1 / (float)Pack.CurrencyData.HealthPortion;
-    public int FullHp => Data.BasisHp + Data.BuffHp + Data.BuffTempHp;
-    public int FullAtk => Data.BasisAtk + Data.BuffAtk + Data.BuffTempAtk;
+
     public Currency Cost => Pack.CurrencyData.UnitCost;
-    public int SellIndex => SoTradingCurrency.ConvertToIndex1D(
-        Pack.CurrencyData.HealthPortion,
-        Data.Durability, 
-        CurrentLevel.Index);
     public Currency Sell => Pack.CurrencyData.Sell[SellIndex];
     public Currency RepairCost => Pack.CurrencyData.RepairCost[CurrentLevel.Index];
-    public int BattleID {  get; set; }
+
+    public int SellIndex => SoTradingCurrency.ConvertToIndex1D(
+       Pack.CurrencyData.HealthPortion,
+       Data.Durability,
+       CurrentLevel.Index);
+
+    private float portionSize => 1 / (float)Pack.CurrencyData.HealthPortion;
 
     public UnitModel(SoUnit _soUnit, int _index) // For new unit
     {
         SoUnit = _soUnit;
         Data.HasReference = true;
         Data.Index = _index;
-        Data.BasisHp = _soUnit.Health;
-        Data.BasisAtk = _soUnit.Attack;
+        Data.SetBasisHP(_soUnit.Health);
+        Data.SetBasisATK(_soUnit.Attack);
 
         Data.DurabilityRatio = 1.0f;
-        Data.SetHp(_soUnit.Health);
-        Data.SetAtk(_soUnit.Attack);
-        Data.Energy = _soUnit.Energy;
-        Data.XP = 1;
+        Data.SetHP(_soUnit.Health);
+        Data.SetATK(_soUnit.Attack);
+        Data.SetEnergy(_soUnit.Energy);
+        Data.SetXP(1);
+
+        Data.ID = PackManager.Instance.DebugID++.ToString() + "_" + SoUnit.Name;
+        Debug.Log(Data.ID + " created.");
     }
 
     public UnitModel(SoUnit _soUnit, SaveUnitData _data) // For loaded unit
     {
         SoUnit = _soUnit;
         Data = _data;
-        int hp = Data.Hp - Data.BuffTempHp;
-        int atk = Data.Atk - Data.BuffTempAtk;
-        Data.SetHp(hp < 0 ? 0 : hp);
-        Data.SetAtk(atk < 0 ? 0 : atk);
-        Data.BuffTempHp = 0;
-        Data.BuffTempAtk = 0;
+        int hp = Data.Cur.HP - Data.TempBuff.HP;
+        int atk = Data.Cur.ATK - Data.TempBuff.ATK;
+        Data.SetHP(hp < 0 ? 0 : hp);
+        Data.SetATK(atk < 0 ? 0 : atk);
+        Data.SetTempBuffHP (0);
+        Data.SetTempBuffATK(0);
+        Debug.Log(Data.ID + " loaded.");
     }
 
     public void InitView(UnitView _view)
@@ -55,7 +61,7 @@ public class UnitModel
         View = _view;
         View.SetData(SoUnit.Sprite, SoUnit.Name);
         SetDurability(true, 0);
-        View.SetData(FullHp, FullAtk, Data.Hp, Data.Atk, Data.Energy);
+        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
 
@@ -78,6 +84,9 @@ public class UnitModel
 
     public void SetData(UnitState _unitState)
     {
+        if (GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
+            _unitState = UnitState.InPhaseBattle;
+
         if (View != null)
         {
             switch (_unitState)
@@ -134,19 +143,18 @@ public class UnitModel
     {
         // if durability wasn't setted, we get it from health.
         // even if it was setted and it is 1.0f, get durability shouldn't cause issue.
-        if (_shouldGetDurability && Data.DurabilityRatio == 1.0f) 
+        if (_shouldGetDurability)
         {
             GetDurabilityFromHealth();
         }
-        
+
         if (!_shouldGetDurability)
         {
             Data.Durability = _durability;
             SetStatsBasedDurability();
         }
-        
+
         ShowDurability();
-       
     }
 
     private void ShowDurability()
@@ -174,12 +182,12 @@ public class UnitModel
     private void GetDurabilityFromHealth()
     {
         float portion0 = portionSize / 2;
-        float portionHp = Data.Hp / FullHp;
+        float portionHp = Data.Cur.HP / Data.FullHP;
         Data.DurabilityRatio = portionHp;
 
         // update attack based on hp
-        int atk = (int)(FullAtk * portionHp);
-        Data.SetAtk(atk);
+        int atk = (int)(Data.FullATK * portionHp);
+        Data.SetATK(atk);
 
         for (int i = 0; i < PackManager.Instance.MyPack.CurrencyData.HealthPortion; i++)
         {
@@ -219,12 +227,12 @@ public class UnitModel
 
     private void SetStatsBasedDurability()
     {
-        int hp = (int)(FullHp * Data.DurabilityRatio);
-        int atk = (int)(FullAtk * Data.DurabilityRatio);
-        Data.SetHp(hp);
-        Data.SetAtk(atk);
+        int hp = (int)(Data.FullHP * Data.DurabilityRatio);
+        int atk = (int)(Data.FullATK * Data.DurabilityRatio);
+        Data.SetHP(hp);
+        Data.SetATK(atk);
 
-        View.SetData(FullHp, FullAtk, Data.Hp, Data.Atk, Data.Energy);
+        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
     }
 
     #endregion
@@ -311,28 +319,57 @@ public class UnitModel
     #endregion
 
     public void Add(
-        int basisHp, int basisAtk,
-        int buffHp, int buffAtk,
-        int buffTempHp, int buffTempAtk)
+        int _basisHP, int _basisATK,
+        int _buffHP, int _buffATK,
+        int _buffTempHP, int _buffTempATK)
     {
-        Data.BasisHp += basisHp;
-        Data.BasisAtk += basisAtk;
-        Data.BuffHp += buffHp;
-        Data.BuffAtk += buffAtk;
-        Data.BuffTempHp += buffTempHp;
-        Data.BuffTempAtk += buffTempAtk;
+        int maxHP = PackManager.Instance.MyPack.MaxHP.Value;
+        int maxATK = PackManager.Instance.MyPack.MaxATK.Value;
 
-        Data.SetHp(Data.Hp + basisHp + buffHp + buffTempHp);
-        Data.SetAtk(Data.Atk + basisAtk + buffAtk + buffTempAtk);
+        int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
+        int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;
+
+        Data.SetBasisHP (Data.Basis.HP  + GetAddValue(ref remainFill_HP, _basisHP));
+        Data.SetBasisATK(Data.Basis.ATK + GetAddValue(ref remainFill_ATK, _basisATK));
+
+        Data.SetBuffHP (Data.Buff.HP  + GetAddValue(ref remainFill_HP, _buffHP));
+        Data.SetBuffATK(Data.Buff.ATK + GetAddValue(ref remainFill_ATK, _buffATK));
+
+        Data.SetTempBuffHP (Data.TempBuff.HP  + GetAddValue(ref remainFill_HP, _buffTempHP));
+        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTempATK));
+
         SetStatsBasedDurability();
     }
+
+    /// <summary>
+    /// The value shouldn't be lower than 0 and greater than remaining value.
+    /// </summary>
+    /// <param name="_remain"></param>
+    /// <param name="_add"></param>
+    /// <returns></returns>
+    private int GetAddValue(ref int _remain, int _add)
+    {
+        if (_add < 0 || _remain <= 0)
+            return 0;
+
+        if (_add > _remain)
+        {
+            _add = _remain;
+            _remain = 0;
+        }
+        else
+            _remain -= _add;
+
+        return _add;
+    }
+
     public void SubstractHp(int damage)
     {
         if (damage < 0)
             damage = 0;
 
-        Data.SetHp(Data.Hp - damage);
-        View.ShowDamage(damage, Data.Hp);
+        Data.SetHP(Data.Cur.HP - damage);
+        View.ShowDamage(damage, Data.Cur.HP);
     }
 
 

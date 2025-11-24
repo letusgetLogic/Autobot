@@ -1,17 +1,19 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.Rendering;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PhaseShopUnitManager : MonoBehaviour
 {
     public static PhaseShopUnitManager Instance { get; private set; }
 
     [Header("Slots")]
-    [SerializeField]
-    private Slot[] teamSlots;
-    [SerializeField]
-    private Slot[] shopUnitSlots;
+    [SerializeField] private Slot[] teamSlots;
+    [SerializeField] private Slot chargeSlot;
+    [SerializeField] private Slot[] shopUnitSlots;
     public Slot[] TeamSlots => teamSlots;
+    public Slot ChargeSlot => chargeSlot;
     public Slot[] ShopUnitSlots => shopUnitSlots;
 
     [Header("Settings")]
@@ -61,7 +63,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     public void Initialize(Player player)
     {
         Player = player;
-        SpawnUnits();
     }
 
 
@@ -70,7 +71,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Instantiate prefab and initialize it with data.
     /// </summary>
-    private void SpawnUnits()
+    public void SpawnSavedUnits()
     {
         if (Player.Data.TeamUnitDatas != null)
         {
@@ -86,8 +87,18 @@ public class PhaseShopUnitManager : MonoBehaviour
                     unitData,
                     UnitState.InSlotTeam,
                     teamSlots[i].transform);
-
             }
+        }
+
+        var chargeUnitData = Player.Data.ChargeUnitData;
+        if (chargeUnitData.HasReference)
+        {
+            SpawnManager.Instance.Spawn(
+                PackManager.Instance.Units[chargeUnitData.Index],
+                chargeUnitData.Index,
+                chargeUnitData,
+                UnitState.InSlotCharge,
+                chargeSlot.transform);
         }
 
         if (Player.Data.ShopUnitDatas != null)
@@ -109,7 +120,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns units in the shop slots.
+    /// Randomize scriptable objects and instantiate and initialize scripts of the unit.
     /// </summary>
     public void SpawnShopUnits()
     {
@@ -137,12 +148,24 @@ public class PhaseShopUnitManager : MonoBehaviour
                 UnitState.InSlotShop,
                 shopUnitSlots[i].transform);
         }
-
-        GameManager.Instance.SetPhaseShop();
     }
 
     #endregion
 
+
+    public void ChargeUnit()
+    {
+        var unit = ChargeSlot.UnitController();
+        if (unit != null)
+        {
+            int value = unit.Model.Data.Cur.Energy 
+                + PackManager.Instance.MyPack.ChargingEnergy.Value;
+            unit.Model.Data.SetEnergy(value);
+            var data = unit.Model.Data;
+            unit.Model.View.SetData(data.FullHP, data.FullATK, 
+                data.Cur.HP, data.Cur.ATK, data.Cur.Energy);
+        }
+    }
 
     public void ManageAttachedObject(Slot slot)
     {
@@ -156,7 +179,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             {
                 Buy(slot);
             }
-            else if (unitState == UnitState.InSlotTeam)
+            else if (unitState == UnitState.InSlotTeam || unitState == UnitState.InSlotCharge)
             {
                 TransportOrFusion(slot);
             }
@@ -202,7 +225,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
     }
 
-    public void TransportOrFusion(Slot slot)
+    private void TransportOrFusion(Slot slot)
     {
         var unitOnSlot = slot.UnitController();
         var attachedController = AttachedGameObject.GetComponent<UnitController>();
@@ -231,7 +254,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <param name="dropSlot"></param>
     /// <param name="mouseRelease"> unitView.BeingReleased(null); </param>
     /// <param name="disableShadow">  unitView.Shadow.enabled = false;</param>
-    public void Transport(GameObject attached, Transform dropSlot,
+    private void Transport(GameObject attached, Transform dropSlot,
         bool mouseRelease, bool disableShadow)
     {
         if (attached == null)

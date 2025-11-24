@@ -2938,6 +2938,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1385604176 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5655546721470776391, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
+  m_PrefabInstance: {fileID: 1418988434}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639b104ba2020244ca5dc9d366c0493b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slot
 --- !u!1 &1402279688 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4064368057441830690, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
@@ -2997,7 +3008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3849827548910932321, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_Name
-      value: Slot Battle (1)
+      value: Slot  Charge
       objectReference: {fileID: 0}
     - target: {fileID: 3849827548910932321, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_TagString
@@ -5496,7 +5507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 321486442976543075, guid: 55188c307a025f04b86e3cec341e195e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -59.99994
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 321486442976543075, guid: 55188c307a025f04b86e3cec341e195e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7000,6 +7011,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 47650486237883384, guid: f5883d2d6359e87439f16b95f9e7f7c3, type: 3}
+      propertyPath: chargeSlot
+      value: 
+      objectReference: {fileID: 1385604176}
+    - target: {fileID: 47650486237883384, guid: f5883d2d6359e87439f16b95f9e7f7c3, type: 3}
       propertyPath: teamSlots.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -7435,7 +7450,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 249.99997, y: -59.99994}
+  m_AnchoredPosition: {x: 249.99997, y: -60}
   m_SizeDelta: {x: 700, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7801940057653797997

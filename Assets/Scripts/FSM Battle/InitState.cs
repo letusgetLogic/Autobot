@@ -21,6 +21,7 @@ public class InitState : StateBase
         }
         else
         {
+            GameManager.Instance.CurrentGame.State = GameState.BattlePhase;
             ctx.SetState(new CheckOutcomeState(
                 PhaseBattleController.Instance.Process.DurationCheckOutcome, true));
         }
@@ -49,13 +50,12 @@ public class InitState : StateBase
     /// </summary>
     private void SpawnUnits(Player player, Slot[] slots, bool isRight)
     {
-        UnitController[] units = new UnitController[slots.Length];
-       
         for (int i = 0; i < slots.Length; i++)
         {
             var unitData = player.Data.TeamUnitDatas[i];
-            if (unitData.HasReference && unitData.Hp > 0)
+            if (unitData.HasReference && unitData.Cur.HP > 0)
             {
+                Debug.Log(unitData.ID + " spawned - HP: " + unitData.Cur.HP);
                 var controller = SpawnManager.Instance.Spawn(
                     PackManager.Instance.Units[unitData.Index],
                     unitData.Index,
@@ -64,7 +64,6 @@ public class InitState : StateBase
                     slots[i].transform);
 
                 controller.View.Shadow.enabled = false;
-                controller.Model.BattleID = i;
 
                 if (isRight)
                 {
@@ -76,10 +75,8 @@ public class InitState : StateBase
                     controller.Model.Data.IsTeam1 = true;
                 }
 
-                    units[i] = controller;
+                player.BattleUnits[i] = controller;
             }
         }
-
-        player.SaveReference(units);
     }
 }

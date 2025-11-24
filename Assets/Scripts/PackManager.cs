@@ -9,6 +9,8 @@ public class PackManager : MonoBehaviour
 
     public List<SoUnit> Units { get; private set; } = new List<SoUnit>();
 
+    public int DebugID { get; set; }
+
     private void Awake()
     {
         if (Instance != null)
@@ -20,6 +22,8 @@ public class PackManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        DebugID = 0;
     }
 
     public void InitPack(SoPack selectedPack)

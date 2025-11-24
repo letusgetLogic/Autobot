@@ -30,10 +30,8 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
 
-        // if attached game object is null or it is being frezzed, return.
-        if (attached == null ||
-            attached.GetComponent<UnitController>().Model.Data.UnitState == 
-            UnitState.Freezed)
+        // if attached game object is null, return.
+        if (attached == null)
             return;
 
         // if no game object is on the slot or it is self, return.
