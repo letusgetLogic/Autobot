@@ -362,7 +362,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 AttachedGameObject.transform.parent.
                     GetComponent<Slot>().Border.enabled = false;
 
-            PhaseShopUI.Instance.SetButtonActive(UnitState.None);
+            PhaseShopUI.Instance.SetButtonActive(default);
         }
         else
         {

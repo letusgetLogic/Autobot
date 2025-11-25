@@ -39,7 +39,7 @@ public class PhaseShopUI : MonoBehaviour
         }
         Instance = this;
 
-        SetButtonActive(UnitState.None);
+        SetButtonActive(default);
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Freeze()
     {
-        SetButtonActive(UnitState.None);
+        SetButtonActive(default);
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
@@ -129,7 +129,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Unfreeze()
     {
-        SetButtonActive(UnitState.None);
+        SetButtonActive(default);
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
@@ -145,7 +145,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Sell()
     {
-        SetButtonActive(UnitState.None);
+        SetButtonActive(default);
         DeactivateManageButtons();
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
@@ -167,13 +167,13 @@ public class PhaseShopUI : MonoBehaviour
     /// Deactivates all buttons and activates button, which manages units und items.
     /// </summary>
     /// <param name="_manage"></param>
-    public void SetButtonActive(UnitState _manage)
+    public void SetButtonActive(SaveUnitData _unitData)
     {
-        switch (_manage)
+        switch (_unitData.UnitState)
         {
-            case UnitState.None:
+            default:
                 DeactivateManageButtons();
-                break;
+                return;
 
             case UnitState.InSlotShop:
                 DeactivateManageButtons();
@@ -190,17 +190,18 @@ public class PhaseShopUI : MonoBehaviour
                 sellButton.SetActive(true);
                 break;
         }
+
+        float durability = _unitData.DurabilityRatio;
+        if (durability < 1f)
+        {
+            repairButton.SetActive(true);
+        }
     }
 
     private void DeactivateManageButtons()
     {
         foreach (var button in manageButtons)
             button.SetActive(false);
-    }
-
-    public void SetRepairButtonActiv()
-    {
-        repairButton.SetActive(true);
     }
 
     #endregion

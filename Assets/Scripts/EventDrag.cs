@@ -27,13 +27,7 @@ public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());
-        PhaseShopUI.Instance.SetButtonActive(slot.UnitController().Model.Data.UnitState);
-
-        if (slot.UnitController().Model.Data.Durability < PackManager.Instance.MyPack.
-               CurrencyData.HealthPortion)
-        {
-            PhaseShopUI.Instance.SetRepairButtonActiv();
-        }
+        PhaseShopUI.Instance.SetButtonActive(slot.UnitController().Model.Data);
     }
 
     public void OnDrag(PointerEventData eventData)

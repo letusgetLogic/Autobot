@@ -66,19 +66,27 @@ public class UnitView : MonoBehaviour
 
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
+    [SerializeField] 
+    private GameObject 
+        repairPanelHp2, 
+        repairPanelHp3;
     [SerializeField]
     private GameObject
-        repairStepHp1,
-        repairStepHp2,
-        repairStepHp3;
+        repairStepFillHp1,
+        repairStepFillHp2,
+        repairStepFillHp3;
 
     [Header("Repair Display Attack")]
     [SerializeField] private GameObject repairDisplayAtk;
     [SerializeField]
     private GameObject
-        repairStepAtk1,
-        repairStepAtk2,
-        repairStepAtk3;
+        repairPanelAtk2,
+        repairPanelAtk3;
+    [SerializeField]
+    private GameObject
+        repairStepFillAtk1,
+        repairStepFillAtk2,
+        repairStepFillAtk3;
 
     [Header("Settings")]
     [SerializeField] private Canvas canvas;
@@ -276,15 +284,24 @@ public class UnitView : MonoBehaviour
         step4Filled.SetActive(step4);
         step5Filled.SetActive(step5);
     }
-    public void SetRepairStepActive(bool step1, bool step2, bool step3)
+    public void SetRepairStepActive(bool _panel2, bool _panel3)
     {
-        repairStepHp1.SetActive(step1);
-        repairStepHp2.SetActive(step2);
-        repairStepHp3.SetActive(step3);
+        repairPanelHp2.SetActive(_panel2);
+        repairPanelHp3.SetActive(_panel3);
 
-        repairStepAtk1.SetActive(step1);
-        repairStepAtk2.SetActive(step2);
-        repairStepAtk3.SetActive(step3);
+        repairPanelAtk2.SetActive(_panel2);
+        repairPanelAtk3.SetActive(_panel3);
+    }
+
+    public void SetRepairStepFillActive(bool _fill1, bool _fill2, bool _fill3)
+    {
+        repairStepFillHp1.SetActive(_fill1);
+        repairStepFillHp2.SetActive(_fill2);
+        repairStepFillHp3.SetActive(_fill3);
+
+        repairStepFillAtk1.SetActive(_fill1);
+        repairStepFillAtk2.SetActive(_fill2);
+        repairStepFillAtk3.SetActive(_fill3);
     }
 
     /// <summary>

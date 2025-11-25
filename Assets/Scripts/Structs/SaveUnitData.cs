@@ -26,22 +26,25 @@ public struct SaveUnitData
     public readonly int FullHP => Basis.HP + Buff.HP + TempBuff.HP;
     public readonly int FullATK => Basis.ATK + Buff.ATK + TempBuff.ATK;
 
-    public int Durability { get; set; }
-
     public readonly int XP => xp;
     private int xp;
+
+    public int Durability { get; set; }
+    public float DurabilityRatio { get; set; }
+
     public UnitState UnitState { get; set; }
 
     public bool IsTeam1 { get; set; }
-    public float DurabilityRatio { get; set; }
 
-    public void SetHP(int _hp)
+    public void SetHP(int _hp, Action _updateRepair)
     {
         int max = PackManager.Instance.MyPack.MaxHP.Value;
         if (_hp > max)
             current.HP = max;
         else
             current.HP = _hp;
+
+        _updateRepair?.Invoke();
     }
 
     public void SetATK(int _atk)
