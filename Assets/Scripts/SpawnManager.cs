@@ -57,7 +57,7 @@ public class SpawnManager : MonoBehaviour
 
         var unitController = unit.GetComponent<UnitController>();
         unitController.Initialize(_soUnit, _index, _data, _unitState);
-
+        Debug.Log("Hallooooooooooooooooooooooooo");
         unitController.View.Shadow.enabled = false;
 
         if (_flipSprite)

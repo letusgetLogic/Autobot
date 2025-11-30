@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PhaseShopUnitManager : MonoBehaviour
@@ -17,6 +18,9 @@ public class PhaseShopUnitManager : MonoBehaviour
     [SerializeField]
     private float delayPushing = .1f;
     public float DelayPushing => delayPushing;
+
+    [SerializeField]
+    private float delayCharging = .5f;
 
     [Tooltip("Delay pushing other unit to make space, while a fusion between 2 units is possible")]
     [SerializeField]
@@ -61,7 +65,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         Player = player;
     }
 
-
+    // Spawn Objects
     #region Spawn objects
 
     /// <summary>
@@ -149,15 +153,14 @@ public class PhaseShopUnitManager : MonoBehaviour
     #endregion
 
 
-    public void ChargeUnit()
+    public IEnumerator ChargeUnit()
     {
+        yield return new WaitForSeconds(delayCharging);
+
         var unit = ChargeSlot.UnitController();
         if (unit != null)
         {
-            int value = unit.Model.Data.Cur.Energy + PackManager.Instance.MyPack.ChargingEnergy.Value;
-            unit.Model.Data.SetEnergy(value);
-            var data = unit.Model.Data;
-            unit.Model.View.SetData(data.FullHP, data.FullATK, data.Cur.HP, data.Cur.ATK, data.Cur.Energy);
+            unit.AddEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
         }
     }
 

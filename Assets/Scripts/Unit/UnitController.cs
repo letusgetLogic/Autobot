@@ -88,6 +88,16 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public void AddEnergy(int _addEnergy)
+    {
+        var data = model.Data;
+        int value = data.Cur.Energy + _addEnergy;
+        data.SetEnergy(value);
+
+        view.ShowBuff(0, 0 , _addEnergy);
+        view.SetData(data.FullHP, data.FullATK, data.Cur.HP, data.Cur.ATK, data.Cur.Energy);
+    }
+
     #endregion
 
 
@@ -149,7 +159,7 @@ public class UnitController : MonoBehaviour
         else
             model.Add(0, 0, 0, 0, addHealth, addAttack);
 
-        view.ShowBuff(addHealth, addAttack);
+        view.ShowBuff(addHealth, addAttack, 0);
     }
 
 

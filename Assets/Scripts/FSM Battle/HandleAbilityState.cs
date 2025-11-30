@@ -51,7 +51,7 @@ public class HandleAbilityState : StateBase
             Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities left");
             PhaseBattleController.Instance.StartCoroutine(
                 ability.Handle(
-                    PhaseBattleController.Instance.Process.DurationEachAbility));
+                    PhaseBattleController.Instance.Process.DurationHideAbilityDescription));
         }
         else
         {

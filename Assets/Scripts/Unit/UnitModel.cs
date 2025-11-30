@@ -55,7 +55,7 @@ public class UnitModel
         Repair?.Initialize(this, _view);
 
         View = _view;
-        View.SetData(SoUnit.Sprite, SoUnit.Name);
+        View.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
 
         Repair?.SetDurability(true, 0);
 

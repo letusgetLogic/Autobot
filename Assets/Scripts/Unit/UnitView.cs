@@ -67,7 +67,8 @@ public class UnitView : MonoBehaviour
         energy,
         damage,
         buffHealth,
-        buffAttack;
+        buffAttack,
+        addEnergy;
 
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
@@ -127,12 +128,12 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(Sprite _sprite, string _name)
+    public void SetData(Sprite _sprite, string _name, string _id)
     {
         dragSpriteRenderer.sprite = _sprite;
         shadowSpriteRenderer.sprite = _sprite;
         myName.text = _name;
-        gameObject.name = _name;
+        gameObject.name = _id;
     }
 
     /// <summary>
@@ -204,7 +205,8 @@ public class UnitView : MonoBehaviour
         description.SetActive(value);
     }
 
-    #region Drag Event
+    // Drag Event
+    #region Drag Event 
 
     /// <summary>
     /// OnPointerDown calls this method.
@@ -297,7 +299,7 @@ public class UnitView : MonoBehaviour
         repairDisplayHp.SetActive(value);
         repairDisplayAtk.SetActive(value);
 
-        Debug.Log(gameObject.name + " repairHp " + value);
+        Debug.Log(gameObject.name + " repairHp " + repairDisplayHp.activeSelf);
     }
 
     public void SetRepairStepActive(bool _panel2, bool _panel3)
@@ -353,13 +355,16 @@ public class UnitView : MonoBehaviour
         damage.enabled = false;
     }
 
-    public void ShowBuff(int _health, int _attack)
+    public void ShowBuff(int _health, int _attack, int _energy)
     {
         buffHealth.text = _health.ToString();
         buffHealth.enabled = _health > 0;
 
         buffAttack.text = _attack.ToString();
         buffAttack.enabled = _attack > 0;
+
+        addEnergy.text = _energy.ToString();
+        addEnergy.enabled = _energy > 0;
 
         StartCoroutine(HideBuff());
     }
@@ -369,6 +374,7 @@ public class UnitView : MonoBehaviour
         yield return new WaitForSeconds(unitSettings.DurationShowBuff);
         buffHealth.enabled = false;
         buffAttack.enabled = false;
+        addEnergy.enabled = false;
     }
 
     public void HideVisuals()

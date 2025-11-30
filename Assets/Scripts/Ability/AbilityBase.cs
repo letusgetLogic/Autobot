@@ -10,12 +10,12 @@ public abstract class AbilityBase
         Controller = controller;
         CurrentLevel = currentLevel;
     }
-    public IEnumerator Handle(float duration)
+    public IEnumerator Handle(float _delayHideDescription)
     {
         Controller.View.SetDescriptionActive(true);
         Activate();
 
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(_delayHideDescription);
 
         if (Controller != null)
             Controller.View.SetDescriptionActive(false);
