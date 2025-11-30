@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventClick : MonoBehaviour, IPointerClickHandler
+public class EventClickSlot : MonoBehaviour, IPointerClickHandler
 {
     private Slot slot;
 

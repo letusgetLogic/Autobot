@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Cricket
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: ffd091ae0215baa4c9f73e287bc59753, type: 3}
+  Sprite: {fileID: 102956758, guid: 865adb7721a8a8847adc946162e05ace, type: 3}
   ID: 0
-  Name: Gigadoge
+  Name: Model FS1
   Health: 3
   Attack: 1
   Energy: 2
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
-  - Description: "Faint \u2192 Summon one 1/1 Zombie Cricket."
+  - Index: 0
+    Description: "Faint \u2192 Summon one 1/1 Model B11."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 17
@@ -39,7 +40,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Faint \u2192 Summon one 2/2 Zombie Cricket."
+  - Index: 1
+    Description: "Faint \u2192 Summon one 2/2 Model B11."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 17
@@ -58,7 +60,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: "Faint \u2192 Summon one 3/3 Zombie Cricket."
+  - Index: 2
+    Description: "Faint \u2192 Summon one 3/3 Model B11."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 17

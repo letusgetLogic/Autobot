@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 public class Summon : AbilityBase
 {
     private UnitModel model;
@@ -18,9 +17,9 @@ public class Summon : AbilityBase
     {
         Controller.transform.SetParent(null, true);
         Controller.DeactivateInteraction();
-        SpawnManager.Instance.StartCoroutine(SpawnUnit());
+        SpawnUnit();
     }
-    public IEnumerator SpawnUnit()
+    public void SpawnUnit()
     {
         Slot[] slots;
         var isRight = false;
@@ -42,27 +41,13 @@ public class Summon : AbilityBase
             if (slots[slotIndex].Unit() == null)
             {
                 Debug.Log($"-Summon SpawnSummonedUnit at slot {slotIndex}");
-                var unit = SpawnManager.Instance.Spawn(
+                var unitController = SpawnManager.Instance.Spawn(
                     summonedUnits[i],
                     -1,
                     new(),
                     model.Data.UnitState,
-                    slots[slotIndex].transform);
-
-                yield return new WaitUntil(() => unit != null);
-
-                var controller = unit.GetComponent<UnitController>();
-                controller.View.Shadow.enabled = false;
-
-                if (isRight)
-                {
-                    controller.View.SetRightSide();
-                    controller.Model.Data.IsTeam1 = false;
-                }
-                else 
-                {
-                    controller.Model.Data.IsTeam1 = true;
-                }
+                    slots[slotIndex].transform,
+                    isRight);
             }
         }
 

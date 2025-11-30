@@ -58,8 +58,12 @@ public class CheckOutcomeState : StateBase
             }
             else
             {
-                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player1.Data.Name, false);
                 GameManager.Instance.UpdatePlayerStats(-1); // Left Wins
+
+                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player1.Data.Name, false);
+                PhaseBattleView.Instance.UpdateLives(
+                    PhaseBattleController.Instance.Player1.Data,
+                    PhaseBattleController.Instance.Player2.Data);
             }
 
             PhaseBattleView.Instance.SetSpeedButton(false);
@@ -69,13 +73,21 @@ public class CheckOutcomeState : StateBase
         {
             if (IsAnyoneIn(PhaseBattleController.Instance.Slots2))
             {
-                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player2.Data.Name, false);
                 GameManager.Instance.UpdatePlayerStats(1); // Right wins
+
+                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player2.Data.Name, false);
+                PhaseBattleView.Instance.UpdateLives(
+                  PhaseBattleController.Instance.Player1.Data,
+                  PhaseBattleController.Instance.Player2.Data);
             }
             else
             {
-                PhaseBattleView.Instance.ShowWinner("Nobody", false);
                 GameManager.Instance.UpdatePlayerStats(0); // Draw
+
+                PhaseBattleView.Instance.ShowWinner("Nobody", false);
+                PhaseBattleView.Instance.UpdateLives(
+                  PhaseBattleController.Instance.Player1.Data,
+                  PhaseBattleController.Instance.Player2.Data);
             }
 
             PhaseBattleView.Instance.SetSpeedButton(false);

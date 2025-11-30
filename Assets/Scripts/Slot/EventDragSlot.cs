@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.XR;
 
-public class EventDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Slot slot { get; set; }
     

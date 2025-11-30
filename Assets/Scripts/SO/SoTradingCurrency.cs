@@ -27,6 +27,10 @@ public class SoTradingCurrency : ScriptableObject
 
     public static int ConvertToIndex1D(int _healthPortion, int _durability, int _level)
     {
+        if (GameManager.Instance.RepairSystem == false)
+        {
+            _durability = 1;
+        }
         return _durability * _healthPortion + _level;
     }
 }

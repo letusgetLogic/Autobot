@@ -24,25 +24,25 @@ class SoTradingCurrencyEditor : Editor
     {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Capacity per round", GUILayout.Width(120));
-        data.Capacity.Coin = EditorGUILayout.IntField(data.Capacity.Coin, GUILayout.Width(NumberWidth));
-        EditorGUILayout.LabelField("Coins", GUILayout.Width(50));
-        data.Capacity.Tool = EditorGUILayout.IntField(data.Capacity.Tool, GUILayout.Width(NumberWidth));
+        data.Capacity.Nut = EditorGUILayout.IntField(data.Capacity.Nut, GUILayout.Width(NumberWidth));
+        EditorGUILayout.LabelField("Nuts", GUILayout.Width(50));
+        data.Capacity.SoTool = EditorGUILayout.IntField(data.Capacity.SoTool, GUILayout.Width(NumberWidth));
         EditorGUILayout.LabelField("Tools", GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Roll Cost", GUILayout.Width(120));
-        data.RollCost.Coin = EditorGUILayout.IntField(data.RollCost.Coin, GUILayout.Width(NumberWidth));
-        EditorGUILayout.LabelField("Coins", GUILayout.Width(50));
-        data.RollCost.Tool = EditorGUILayout.IntField(data.RollCost.Tool, GUILayout.Width(NumberWidth));
+        data.RollCost.Nut = EditorGUILayout.IntField(data.RollCost.Nut, GUILayout.Width(NumberWidth));
+        EditorGUILayout.LabelField("Nuts", GUILayout.Width(50));
+        data.RollCost.SoTool = EditorGUILayout.IntField(data.RollCost.SoTool, GUILayout.Width(NumberWidth));
         EditorGUILayout.LabelField("Tools", GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Unit Cost", GUILayout.Width(120));
-        data.UnitCost.Coin = EditorGUILayout.IntField(data.UnitCost.Coin, GUILayout.Width(NumberWidth));
-        EditorGUILayout.LabelField("Coins", GUILayout.Width(50));
-        data.UnitCost.Tool = EditorGUILayout.IntField(data.UnitCost.Tool, GUILayout.Width(NumberWidth));
+        data.UnitCost.Nut = EditorGUILayout.IntField(data.UnitCost.Nut, GUILayout.Width(NumberWidth));
+        EditorGUILayout.LabelField("Nuts", GUILayout.Width(50));
+        data.UnitCost.SoTool = EditorGUILayout.IntField(data.UnitCost.SoTool, GUILayout.Width(NumberWidth));
         EditorGUILayout.LabelField("Tools", GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
 
@@ -100,7 +100,7 @@ class SoTradingCurrencyEditor : Editor
         for (int j = 0; j < data.LevelAmount; j++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            EditorGUILayout.LabelField($"Coins", GUILayout.Width(ColumnNumberWidth));
+            EditorGUILayout.LabelField($"Nuts", GUILayout.Width(ColumnNumberWidth));
             EditorGUILayout.LabelField($"Tools", GUILayout.Width(ColumnNumberWidth));
         }
         EditorGUILayout.EndHorizontal();
@@ -117,8 +117,8 @@ class SoTradingCurrencyEditor : Editor
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
             int index = SoTradingCurrency.ConvertToIndex1D(data.HealthPortion, i, j);
-            data.Sell[index].Coin = EditorGUILayout.IntField(data.Sell[index].Coin, GUILayout.Width(ColumnNumberWidth));
-            data.Sell[index].Tool = EditorGUILayout.IntField(data.Sell[index].Tool, GUILayout.Width(ColumnNumberWidth));
+            data.Sell[index].Nut = EditorGUILayout.IntField(data.Sell[index].Nut, GUILayout.Width(ColumnNumberWidth));
+            data.Sell[index].SoTool = EditorGUILayout.IntField(data.Sell[index].SoTool, GUILayout.Width(ColumnNumberWidth));
         }
         EditorGUILayout.EndHorizontal();
     }
@@ -137,8 +137,8 @@ class SoTradingCurrencyEditor : Editor
         for (int i = 0; i < data.RepairCost.Length; i++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            data.RepairCost[i].Coin = EditorGUILayout.IntField(data.RepairCost[i].Coin, GUILayout.Width(ColumnNumberWidth));
-            data.RepairCost[i].Tool = EditorGUILayout.IntField(data.RepairCost[i].Tool, GUILayout.Width(ColumnNumberWidth));
+            data.RepairCost[i].Nut = EditorGUILayout.IntField(data.RepairCost[i].Nut, GUILayout.Width(ColumnNumberWidth));
+            data.RepairCost[i].SoTool = EditorGUILayout.IntField(data.RepairCost[i].SoTool, GUILayout.Width(ColumnNumberWidth));
         }
 
         EditorGUILayout.EndHorizontal();

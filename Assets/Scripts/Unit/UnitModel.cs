@@ -6,6 +6,7 @@ using UnityEngine;
 public class UnitModel
 {
     public UnitView View { get; set; }
+    public RepairSystem Repair { get; set; }
 
     public SaveUnitData Data;
     public SoUnit SoUnit { get; private set; }
@@ -23,27 +24,15 @@ public class UnitModel
        Data.Durability,
        CurrentLevel.Index);
 
-    private float portionSize => 1 / (float)portionAmount;
-    private int portionAmount
+    public UnitModel(SoUnit _soUnit, int _index, RepairSystem _repair) // For new unit
     {
-        get
-        {
-            if (Data.FullHP <= Pack.CurrencyData.HealthPortion)
-                return Data.FullHP;
-
-            return Pack.CurrencyData.HealthPortion;
-        }
-    }
-
-    public UnitModel(SoUnit _soUnit, int _index) // For new unit
-    {
+        Repair = _repair;
         SoUnit = _soUnit;
         Data.HasReference = true;
         Data.Index = _index;
         Data.SetBasisHP(_soUnit.Health);
         Data.SetBasisATK(_soUnit.Attack);
 
-        Data.DurabilityRatio = 1.0f;
         Data.SetHP(_soUnit.Health, null);
         Data.SetATK(_soUnit.Attack);
         Data.SetEnergy(_soUnit.Energy);
@@ -53,8 +42,9 @@ public class UnitModel
         Debug.Log(Data.ID + " created.");
     }
 
-    public UnitModel(SoUnit _soUnit, SaveUnitData _data) // For loaded unit
+    public UnitModel(SoUnit _soUnit, SaveUnitData _data, RepairSystem _repair) // For loaded unit
     {
+        Repair = _repair;
         SoUnit = _soUnit;
         Data = _data;
         Debug.Log(Data.ID + " loaded.");
@@ -62,15 +52,16 @@ public class UnitModel
 
     public void InitView(UnitView _view)
     {
+        Repair?.Initialize(this, _view);
+
         View = _view;
         View.SetData(SoUnit.Sprite, SoUnit.Name);
-        int hp = Data.Cur.HP - Data.TempBuff.HP;
-        int atk = Data.Cur.ATK - Data.TempBuff.ATK;
-        Data.SetTempBuffHP(0);
-        Data.SetTempBuffATK(0);
-        Data.SetHP(hp < 0 ? 0 : hp, SetRepairPanel);
-        Data.SetATK(atk < 0 ? 0 : atk);
-        SetDurability(true, 0);
+
+        Repair?.SetDurability(true, 0);
+
+        if (GameManager.Instance.RepairSystem == false) 
+            View.HideFullAttributes();
+
         View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
@@ -97,29 +88,44 @@ public class UnitModel
         if (GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
             _unitState = UnitState.InPhaseBattle;
 
-        if (View != null)
+        switch (_unitState)
+            {
+                case UnitState.InSlotShop:
+                    View.IceCube.SetActive(false);
+                    break;
+                case UnitState.Freezed:
+                    View.IceCube.SetActive(true);
+                    break;
+                case UnitState.InSlotTeam:
+                    View.IceCube.SetActive(false);
+                    break;
+                case UnitState.InSlotCharge:
+                    View.IceCube.SetActive(false);
+                    break;
+                case UnitState.InPhaseBattle:
+                    View.HideObjectsDuringBattle();
+                    break;
+            }
+        
+
+        if (GameManager.Instance.RepairSystem)
         {
             switch (_unitState)
             {
                 case UnitState.InSlotShop:
-                    View.IceCube.SetActive(false);
                     View.SetRepairDisplayActive(false);
                     break;
                 case UnitState.Freezed:
-                    View.IceCube.SetActive(true);
                     View.SetRepairDisplayActive(false);
                     break;
                 case UnitState.InSlotTeam:
-                    View.IceCube.SetActive(false);
                     View.SetRepairDisplayActive(true);
                     break;
                 case UnitState.InSlotCharge:
-                    View.IceCube.SetActive(false);
                     View.SetRepairDisplayActive(true);
                     break;
                 case UnitState.InPhaseBattle:
                     View.SetRepairDisplayActive(false);
-                    View.HideDescriptionStats();
                     break;
             }
         }
@@ -147,108 +153,6 @@ public class UnitModel
     }
 
 
-    #region Durability
-
-    public void SetRepairPanel()
-    {
-        View.SetRepairStepActive(Data.FullHP >= 2, Data.FullHP >= 3);
-    }
-
-    public void SetDurability(bool _shouldGetDurability, int _durability)
-    {
-        // if durability wasn't setted, we get it from health.
-        // even if it was setted and it is 1.0f, get durability shouldn't cause issue.
-        if (_shouldGetDurability)
-        {
-            Data.Durability = GetDurabilityFromHealth();
-        }
-
-        if (!_shouldGetDurability)
-        {
-            Data.Durability = _durability;
-            SetStatsBasedDurability();
-        }
-
-        ShowDurability();
-    }
-
-    private void ShowDurability()
-    {
-        if (View != null)
-        {
-            switch (Data.Durability)
-            {
-                case 0:
-                    View.SetRepairStepFillActive(false, false, false);
-                    break;
-                case 1:
-                    View.SetRepairStepFillActive(true, false, false);
-                    break;
-                case 2:
-                    View.SetRepairStepFillActive(true, true, false);
-                    break;
-                case 3:
-                    View.SetRepairStepFillActive(true, true, true);
-                    break;
-            }
-        }
-    }
-
-    private int GetDurabilityFromHealth()
-    {
-        float portion0 = portionSize / 2;
-        float portionHp = Data.Cur.HP / Data.FullHP;
-        Data.DurabilityRatio = portionHp;
-
-        // update attack based on hp
-        int atk = (int)(Data.FullATK * portionHp);
-        Data.SetATK(atk);
-
-        if (Data.FullHP <= Pack.CurrencyData.HealthPortion)
-            return Data.Cur.HP;
-
-        if (Data.Cur.HP == Data.FullHP)
-            return Pack.CurrencyData.HealthPortion;
-
-        for (int i = PackManager.Instance.MyPack.CurrencyData.HealthPortion; i > 0; i--)
-        {
-            float portionLimit = (portionSize * i) - portionSize;
-            if (portionHp > portionLimit)
-                return i;
-        }
-
-        return 0;
-    }
-
-    private void SetStatsBasedDurability()
-    {
-        int hp = (int)(Data.FullHP * Data.DurabilityRatio);
-        int atk = (int)(Data.FullATK * Data.DurabilityRatio);
-        Data.SetHP(hp, SetRepairPanel);
-        Data.SetATK(atk);
-        float portionHp = Data.Cur.HP / Data.FullHP;
-        Data.DurabilityRatio = portionHp;
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
-    }
-
-    public void RiseDurability()
-    {
-        Data.DurabilityRatio += portionSize;
-        Data.Durability++;
-
-        if (Data.DurabilityRatio > 1f ||
-             Data.Durability > Pack.CurrencyData.HealthPortion)
-        {
-            Data.DurabilityRatio = 1f;
-            Data.Durability = Pack.CurrencyData.HealthPortion;
-        }
-
-        SetStatsBasedDurability();
-        ShowDurability();
-        View.SetBuyOrSell(Sell, false);
-    }
-
-    #endregion
 
 
     #region Update Level
@@ -263,7 +167,7 @@ public class UnitModel
         {//                       level  box1   box2  step1  step2  box3  step3  step4  step5  
             case 1:
                 View.SetXpStepActive("1", false, true, false, false, false, false, false, false);
-                SetCurrentLevel(0);
+                 SetCurrentLevel(0);
                 break;
             case 2:
                 View.SetXpStepActive("1", false, true, true, false, false, false, false, false);
@@ -342,16 +246,22 @@ public class UnitModel
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
         int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;
 
-        Data.SetBasisHP (Data.Basis.HP  + GetAddValue(ref remainFill_HP, _basisHP));
+        Data.SetBasisHP(Data.Basis.HP + GetAddValue(ref remainFill_HP, _basisHP));
         Data.SetBasisATK(Data.Basis.ATK + GetAddValue(ref remainFill_ATK, _basisATK));
 
-        Data.SetBuffHP (Data.Buff.HP  + GetAddValue(ref remainFill_HP, _buffHP));
+        Data.SetBuffHP(Data.Buff.HP + GetAddValue(ref remainFill_HP, _buffHP));
         Data.SetBuffATK(Data.Buff.ATK + GetAddValue(ref remainFill_ATK, _buffATK));
 
-        Data.SetTempBuffHP (Data.TempBuff.HP  + GetAddValue(ref remainFill_HP, _buffTempHP));
+        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddValue(ref remainFill_HP, _buffTempHP));
         Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTempATK));
 
-        SetStatsBasedDurability();
+        Data.SetHP(Data.Cur.HP + _basisHP + _buffHP + _buffTempHP, Repair == null ? null : Repair.SetRepairPanel);
+        Data.SetATK(Data.Cur.ATK + _basisATK + _buffATK + _buffTempATK);
+
+        if (Repair != null) 
+            Data.Durability = Repair.GetDurabilityFromHealth(false);
+
+        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
     }
 
     /// <summary>
@@ -381,7 +291,7 @@ public class UnitModel
         if (damage < 0)
             damage = 0;
 
-        Data.SetHP(Data.Cur.HP - damage, SetRepairPanel);
+        Data.SetHP(Data.Cur.HP - damage, Repair == null ? null : Repair.SetRepairPanel);
         View.ShowDamage(damage, Data.Cur.HP);
     }
 

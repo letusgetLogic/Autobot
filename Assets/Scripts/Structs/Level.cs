@@ -1,7 +1,7 @@
 ﻿[System.Serializable]
 public struct Level
 {
-    public int Index {  get; set; }
+    public int Index;
 
     public string Description;
 

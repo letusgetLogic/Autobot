@@ -1,5 +1,8 @@
 ﻿using System;
 
+/// <summary>
+/// Data structure to save unit data between phases and sessions.
+/// </summary>
 [Serializable]
 public struct SaveUnitData
 {
@@ -7,19 +10,28 @@ public struct SaveUnitData
     public string ID { get; set; }
     public int Index { get; set; }
 
-    // varies during battle.
+    /// <summary>
+    /// The current attributes, which are displayed.
+    /// </summary>
     public readonly Attribute Cur => current; 
     private Attribute current;
 
-    // varies during merging.
+    /// <summary>
+    /// The basis attributres, which scale up from merging.
+    /// </summary>
     public readonly Attribute Basis => basis; 
     private Attribute basis;
 
-    // varies only during shop phase, it is pernament.
+    /// <summary>
+    /// The buff attributes, which scale up from abilities only during shop phase, are pernament.
+    /// </summary>
     public readonly Attribute Buff => buff;
     private Attribute buff;
 
-    // on the end of battle, this was setted to 0.
+    /// <summary>
+    /// The temporary buff attributes, which scale up from abilities, 
+    /// was setted to 0 at the end of battle phase.
+    /// </summary>
     public readonly Attribute TempBuff => temporaryBuff;
     private Attribute temporaryBuff;
 

@@ -15,8 +15,8 @@ public class Slot : MonoBehaviour
     public EventHover EventHover => eventHover;
 
     [SerializeField]
-    private EventDrag eventDrag;
-    public EventDrag EventDrag => eventDrag;
+    private EventDragSlot eventDrag;
+    public EventDragSlot EventDrag => eventDrag;
 
     public int Index { get; set; }
 
@@ -29,15 +29,15 @@ public class Slot : MonoBehaviour
 
     private void OnEnable()
     {
-        eventHover.OnMouseOverEvent += ShowStats;
-        eventHover.OnMouseExitEvent += HideStats;
+        eventHover.OnMouseOverEvent += ShowDescription;
+        eventHover.OnMouseExitEvent += HideDescription;
 
     }
 
     private void OnDisable()
     {
-        eventHover.OnMouseOverEvent -= ShowStats;
-        eventHover.OnMouseExitEvent -= HideStats;
+        eventHover.OnMouseOverEvent -= ShowDescription;
+        eventHover.OnMouseExitEvent -= HideDescription;
     }
 
     #region Returns Unit
@@ -92,14 +92,8 @@ public class Slot : MonoBehaviour
     /// <summary>
     /// Shows the description.
     /// </summary>
-    private void ShowStats()
+    private void ShowDescription()
     {
-        if (eventHover.Data != null && eventHover.Data.pointerDrag != null)
-            return;
-
-        if (UnitController() == null)
-            return;
-
         if (UnitView() == null)
             return;
 
@@ -112,7 +106,7 @@ public class Slot : MonoBehaviour
     /// <summary>
     /// Hides the description.
     /// </summary>
-    private void HideStats()
+    public void HideDescription()
     {
         if (UnitView() != null)
             UnitView().SetDescriptionActive(false);

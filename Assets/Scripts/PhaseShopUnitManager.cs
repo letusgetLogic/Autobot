@@ -1,8 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.Rendering;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PhaseShopUnitManager : MonoBehaviour
 {
@@ -158,12 +154,10 @@ public class PhaseShopUnitManager : MonoBehaviour
         var unit = ChargeSlot.UnitController();
         if (unit != null)
         {
-            int value = unit.Model.Data.Cur.Energy 
-                + PackManager.Instance.MyPack.ChargingEnergy.Value;
+            int value = unit.Model.Data.Cur.Energy + PackManager.Instance.MyPack.ChargingEnergy.Value;
             unit.Model.Data.SetEnergy(value);
             var data = unit.Model.Data;
-            unit.Model.View.SetData(data.FullHP, data.FullATK, 
-                data.Cur.HP, data.Cur.ATK, data.Cur.Energy);
+            unit.Model.View.SetData(data.FullHP, data.FullATK, data.Cur.HP, data.Cur.ATK, data.Cur.Energy);
         }
     }
 
@@ -196,7 +190,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
             // case: buy but not enough currency.
             if (!PhaseShopUI.Instance.HasEnoughCurrency(
-                attachedController.Model.Cost.Coin, attachedController.Model.Cost.Tool))
+                attachedController.Model.Cost.Nut, attachedController.Model.Cost.Tool))
             {
                 return;
             }
@@ -207,7 +201,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 if (IsFusible(unitOnSlot, attachedController))
                 {
                     PhaseShopUI.Instance.UpdateCurrency(
-                        attachedController.Model.Cost.Coin, attachedController.Model.Cost.Tool);
+                        attachedController.Model.Cost.Nut, attachedController.Model.Cost.Tool);
 
                     unitOnSlot.UpdateLevel(attachedController.Model, true);
                     Destroy(AttachedGameObject);
@@ -217,7 +211,7 @@ public class PhaseShopUnitManager : MonoBehaviour
             else // case: buy and place dragging unit on empty slot.
             {
                 PhaseShopUI.Instance.UpdateCurrency(
-                        attachedController.Model.Cost.Coin, attachedController.Model.Cost.Tool);
+                        attachedController.Model.Cost.Nut, attachedController.Model.Cost.Tool);
 
                 Transport(AttachedGameObject, slot.transform, true, true);
             }
@@ -257,6 +251,8 @@ public class PhaseShopUnitManager : MonoBehaviour
     private void Transport(GameObject attached, Transform dropSlot,
         bool mouseRelease, bool disableShadow)
     {
+        HideDescriptionByTransport();
+
         if (attached == null)
             return;
 
@@ -370,5 +366,16 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
 
         AttachedGameObject = target;
+    }
+
+    /// <summary>
+    /// Hides the description of units on team slots while transporting.
+    /// </summary>
+    private void HideDescriptionByTransport()
+    {
+        foreach (var slot in teamSlots)
+        {
+            slot.HideDescription();
+        }
     }
 }

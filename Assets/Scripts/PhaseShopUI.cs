@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField]
     private TextMeshProUGUI
-        coinText,
+        nutText,
         toolText,
         heartText,
         turnText;
@@ -39,6 +38,11 @@ public class PhaseShopUI : MonoBehaviour
         }
         Instance = this;
 
+        if (GameManager.Instance.RepairSystem == false)
+        {
+            toolText.transform.parent.parent.gameObject.SetActive(false);
+        }
+
         SetButtonActive(default);
     }
 
@@ -49,7 +53,7 @@ public class PhaseShopUI : MonoBehaviour
     {
         Player = player;
         nameText.text = Player.Data.Name;
-        coinText.text = Player.Data.Coins.ToString();
+        nutText.text = Player.Data.Nuts.ToString();
         toolText.text = Player.Data.Tools.ToString();
         heartText.text = Player.Data.Lives.ToString();
         turnText.text = Player.Data.Turns.ToString();
@@ -60,9 +64,9 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void UpdateCurrency(int addCoins, int addTools)
     {
-        Player.Data.Coins += addCoins;
+        Player.Data.Nuts += addCoins;
         Player.Data.Tools += addTools;
-        coinText.text = Player.Data.Coins.ToString();
+        nutText.text = Player.Data.Nuts.ToString();
         toolText.text = Player.Data.Tools.ToString();
     }
 
@@ -73,10 +77,10 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void Roll()
     {
-        if (!HasEnoughCurrency(RollCost.Coin, RollCost.Tool))
+        if (!HasEnoughCurrency(RollCost.Nut, RollCost.Tool))
             return;
 
-        UpdateCurrency(RollCost.Coin, RollCost.Tool);
+        UpdateCurrency(RollCost.Nut, RollCost.Tool);
         PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 
@@ -92,12 +96,13 @@ public class PhaseShopUI : MonoBehaviour
             var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
                 GetComponent<UnitController>();
 
-            if (!HasEnoughCurrency(unit.Model.RepairCost.Coin, unit.Model.RepairCost.Tool))
+            if (!HasEnoughCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool))
                 return;
 
-            UpdateCurrency(unit.Model.RepairCost.Coin, unit.Model.RepairCost.Tool);
+            UpdateCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool);
 
-            unit.Repair();
+            unit.Model.Repair?.RiseDurability();
+
             if (unit.Model.Data.Durability >= PackManager.Instance.MyPack.
                 CurrencyData.HealthPortion)
             {
@@ -153,11 +158,11 @@ public class PhaseShopUI : MonoBehaviour
             var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
                 GetComponent<UnitController>();
 
-            if (!HasEnoughCurrency(unit.Model.Sell.Coin, unit.Model.Sell.Tool))
+            if (!HasEnoughCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool))
                 return;
 
             unit.GetSelled();
-            UpdateCurrency(unit.Model.Sell.Coin, unit.Model.Sell.Tool);
+            UpdateCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool);
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
@@ -173,7 +178,7 @@ public class PhaseShopUI : MonoBehaviour
         {
             default:
                 DeactivateManageButtons();
-                return;
+                break;
 
             case UnitState.InSlotShop:
                 DeactivateManageButtons();
@@ -191,10 +196,13 @@ public class PhaseShopUI : MonoBehaviour
                 break;
         }
 
-        float durability = _unitData.DurabilityRatio;
-        if (durability < 1f)
+        if (GameManager.Instance.RepairSystem && _unitData.HasReference)
         {
-            repairButton.SetActive(true);
+            float durability = _unitData.DurabilityRatio;
+            if (durability < 1f)
+            {
+                repairButton.SetActive(true);
+            }
         }
     }
 
@@ -206,7 +214,7 @@ public class PhaseShopUI : MonoBehaviour
 
     #endregion
 
-    
+
     /// <summary>
     /// Ends turn.
     /// </summary>
@@ -220,7 +228,7 @@ public class PhaseShopUI : MonoBehaviour
     public bool HasEnoughCurrency(int _coin, int _tool)
     {
         bool value = true;
-        if (Player.Data.Coins + _coin < 0)
+        if (Player.Data.Nuts + _coin < 0)
         {
             HintNotEnoughCoins();
             value = false;
@@ -239,7 +247,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(coinText, durationCoinsRedDefault);
+        markColorRed.SetComponent(nutText, durationCoinsRedDefault);
     }
 
     private void HintNotEnoughTools()

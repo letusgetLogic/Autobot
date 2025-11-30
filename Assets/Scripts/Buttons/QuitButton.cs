@@ -6,7 +6,7 @@ public class QuitButton : MonoBehaviour
     /// <summary>
     /// Closes the game application.
     /// </summary>
-    public void CloseGame()
+    public void OnButtonClick()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

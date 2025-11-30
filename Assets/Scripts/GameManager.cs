@@ -1,5 +1,4 @@
-﻿using FMODUnity;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,13 +6,16 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Develop Settings")]
     [SerializeField] private bool deleteSaveGame;
+    [SerializeField] public bool RepairSystem;
 
     [Header("Battle Speed Settings")]
     public float DefaultSpeedMultiplier = 1f;
     public float MaxSpeedMultiplier = 2f;
     public float CurrentSpeedMultiplier { get; set; }
     public bool IsDefaultMult { get; set; } = true;
+
 
     public GameMode Mode { get; set; }
 

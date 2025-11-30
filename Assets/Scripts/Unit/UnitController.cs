@@ -27,17 +27,26 @@ public class UnitController : MonoBehaviour
             return -1;
         }
     }
-    
+
     /// <summary>
     /// Initializes data.
     /// </summary>
     /// <param name="_soUnit"></param>
     public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState)
     {
+        // If the saved data has no reference, 
         if (_data.HasReference == false)
-            model = new UnitModel(_soUnit, _index);
-        else
-            model = new UnitModel(_soUnit, _data);
+        {
+            // ... create a new model with SO reference and the given index,
+
+            model = new UnitModel(_soUnit, _index,
+                GameManager.Instance.RepairSystem ? new RepairSystem() : null);
+        }
+        else // otherwise create a new model with SO reference and the saved data.
+        {
+            model = new UnitModel(_soUnit, _data,
+                GameManager.Instance.RepairSystem ? new RepairSystem() : null);
+        }
 
         model.InitView(view);
         model.SetData(_unitState);
@@ -63,7 +72,7 @@ public class UnitController : MonoBehaviour
     public void UpdateLevel(UnitModel _draggingModel, bool _isPhaseShop)
     {
         model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
-        
+
         model.Add(
             _draggingModel.Data.XP, _draggingModel.Data.XP,
             _draggingModel.Data.Buff.HP, _draggingModel.Data.Buff.ATK,
@@ -71,13 +80,12 @@ public class UnitController : MonoBehaviour
 
         model.UpdateLevelXP(_isPhaseShop);
 
-        bool isDurabilityGreater = model.Data.Durability > _draggingModel.Data.Durability;
-        int durability = isDurabilityGreater ? _draggingModel.Data.Durability : model.Data.Durability;
-        model.SetDurability(false, durability);
-    }
-    public void Repair()
-    {
-        model.RiseDurability();
+        if (GameManager.Instance.RepairSystem)
+        {
+            bool isDurabilityGreater = model.Data.Durability > _draggingModel.Data.Durability;
+            int durability = isDurabilityGreater ? _draggingModel.Data.Durability : model.Data.Durability;
+            model.Repair?.SetDurability(false, durability);
+        }
     }
 
     #endregion
@@ -170,5 +178,5 @@ public class UnitController : MonoBehaviour
         //transform.DoMove();
     }
 
-  
+
 }

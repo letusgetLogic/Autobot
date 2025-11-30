@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NUnit.Framework;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,7 +20,11 @@ public class UnitView : MonoBehaviour
 
     [Header("Description")]
     [SerializeField] private GameObject description;
-    [SerializeField] private GameObject[] hideDuringBattle;
+    [SerializeField] 
+    private GameObject[] 
+        hideObjectsDuringBattle,
+        hideFullAttributes,
+        hideObjectsByNoAbility;
     [SerializeField]
     private TextMeshProUGUI
         myName,
@@ -28,13 +33,13 @@ public class UnitView : MonoBehaviour
         fullAttack,
         fullHealth;
 
-    [Header("Craft / Recycle")]
-    [SerializeField] private GameObject coin;
+    [Header("Craft / Recycle Display")]
+    [SerializeField] private GameObject nut;
     [SerializeField] private GameObject tool;
     [SerializeField]
     private TextMeshProUGUI
         craftText,
-        coinValue,
+        nutValue,
         toolValue;
 
     [Header("Level Display")]
@@ -51,7 +56,7 @@ public class UnitView : MonoBehaviour
         step4Filled,
         step5Filled;
 
-    [Header("Stats")]
+    [Header("Attribute Display")]
     [SerializeField] private GameObject heartIcon;
     [SerializeField] private GameObject attackIcon;
     [SerializeField] private GameObject energyIcon;
@@ -116,6 +121,7 @@ public class UnitView : MonoBehaviour
         mainCamera = Camera.main;
         originalScale = dragSpriteRenderer.gameObject.transform.localScale;
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
+        SetRepairDisplayActive(false);
     }
 
     /// <summary>
@@ -134,8 +140,15 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void SetAbility(string _description, int _energy)
     {
-        ability.text = _description;
-        energyConsumption.text = _energy.ToString();
+        if (_description != null)
+        {
+            ability.text = _description;
+            energyConsumption.text = _energy.ToString();
+            return;
+        }
+
+        foreach (var element in hideObjectsByNoAbility)
+            element.SetActive(false);
     }
 
     /// <summary>
@@ -145,16 +158,16 @@ public class UnitView : MonoBehaviour
     {
         craftText.text = _isForBuying ? "craft" : "recycle";
 
-        if (_cur.Coin != 0)
+        if (_cur.Nut != 0)
         {
-            string operation = _cur.Coin > 0 ? "+" : "";
-            coinValue.text = operation + _cur.Coin.ToString();
-            coin.SetActive(true);
+            string operation = _cur.Nut > 0 ? "+" : "";
+            nutValue.text = operation + _cur.Nut.ToString();
+            nut.SetActive(true);
         }
         else
         {
-            coinValue.text = "";
-            coin.SetActive(false);
+            nutValue.text = "";
+            nut.SetActive(false);
         }
 
         if (_cur.Tool != 0)
@@ -189,12 +202,6 @@ public class UnitView : MonoBehaviour
     public void SetDescriptionActive(bool value)
     {
         description.SetActive(value);
-    }
-
-    public void SetRepairDisplayActive(bool value)
-    {
-        repairDisplayHp.SetActive(value);
-        repairDisplayAtk.SetActive(value);
     }
 
     #region Drag Event
@@ -284,6 +291,15 @@ public class UnitView : MonoBehaviour
         step4Filled.SetActive(step4);
         step5Filled.SetActive(step5);
     }
+
+    public void SetRepairDisplayActive(bool value)
+    {
+        repairDisplayHp.SetActive(value);
+        repairDisplayAtk.SetActive(value);
+
+        Debug.Log(gameObject.name + " repairHp " + value);
+    }
+
     public void SetRepairStepActive(bool _panel2, bool _panel3)
     {
         repairPanelHp2.SetActive(_panel2);
@@ -362,9 +378,15 @@ public class UnitView : MonoBehaviour
     }
 
 
-    public void HideDescriptionStats()
+    public void HideObjectsDuringBattle()
     {
-        foreach (var element in hideDuringBattle)
+        foreach (var element in hideObjectsDuringBattle)
+            element.SetActive(false);
+    }
+
+    public void HideFullAttributes()
+    {
+        foreach (var element in hideFullAttributes)
             element.SetActive(false);
     }
 

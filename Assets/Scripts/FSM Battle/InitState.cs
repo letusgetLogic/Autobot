@@ -48,34 +48,23 @@ public class InitState : StateBase
     /// <summary>
     /// Instantiates and initializes the units.
     /// </summary>
-    private void SpawnUnits(Player player, Slot[] slots, bool isRight)
+    private void SpawnUnits(Player _player, Slot[] _slots, bool _isRight)
     {
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < _slots.Length; i++)
         {
-            var unitData = player.Data.TeamUnitDatas[i];
+            var unitData = _player.Data.TeamUnitDatas[i];
             if (unitData.HasReference && unitData.Cur.HP > 0)
             {
                 Debug.Log(unitData.ID + " spawned - HP: " + unitData.Cur.HP);
-                var controller = SpawnManager.Instance.Spawn(
+                var unitController = SpawnManager.Instance.Spawn(
                     PackManager.Instance.Units[unitData.Index],
                     unitData.Index,
                     unitData,
                     UnitState.InPhaseBattle,
-                    slots[i].transform);
+                    _slots[i].transform,
+                    _isRight);
 
-                controller.View.Shadow.enabled = false;
-
-                if (isRight)
-                {
-                    controller.View.SetRightSide();
-                    controller.Model.Data.IsTeam1 = false;
-                }
-                else
-                {
-                    controller.Model.Data.IsTeam1 = true;
-                }
-
-                player.BattleUnits[i] = controller;
+                _player.BattleUnits[i] = unitController;
             }
         }
     }

@@ -58,6 +58,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     }
     private Queue<GameObject> faintUnits;
 
+    public bool IsStopped { get; set; } = false;
+    public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
+
     private void Awake()
     {
         if (Instance != null)
@@ -65,7 +68,11 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             Destroy(Instance.gameObject);
         }
         Instance = this;
+    }
 
+    private void Start()
+    {
+        PhaseBattleView.Instance.SetRunningButton();
         SetIndex(slots1);
         SetIndex(slots2);
     }
@@ -87,7 +94,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         if (state == null)
             return;
 
-        float speed = Time.deltaTime * GameManager.Instance.CurrentSpeedMultiplier;
+        float speed = IsRunning * Time.deltaTime * GameManager.Instance.CurrentSpeedMultiplier;
 
         state.OnUpdate(this, speed);
     }
@@ -126,4 +133,24 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         SetState(new InitState(Process.DurationInit));
     }
 
+    public void SetRunning()
+    {
+        IsStopped = !IsStopped;
+        IsRunning = IsStopped ? 0f : 1f;
+    }
+
+    /// <summary>
+    /// Hides the description of units on team slots while transporting.
+    /// </summary>
+    public void HideDescriptionByTransport()
+    {
+        foreach (var slot in slots1)
+        {
+            slot.HideDescription();
+        }
+        foreach (var slot in slots2)
+        {
+            slot.HideDescription();
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Collections;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class Player : MonoBehaviour
     public void SetDefault()
     {
         Data.Turns++;
-        Data.Coins = PackManager.Instance.MyPack.CurrencyData.Capacity.Coin;
+        Data.Nuts = PackManager.Instance.MyPack.CurrencyData.Capacity.Nut;
         Data.Tools = PackManager.Instance.MyPack.CurrencyData.Capacity.Tool;
     }
 
@@ -104,6 +105,26 @@ public class Player : MonoBehaviour
             }
 
             Data.TeamUnitDatas[i] = BattleUnits[i].Model.Data;
+            Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
+
+            // Temporary buff ends at the end of battle.
+
+            int hp = Data.TeamUnitDatas[i].Cur.HP - Data.TeamUnitDatas[i].TempBuff.HP;
+            int atk = Data.TeamUnitDatas[i].Cur.ATK - Data.TeamUnitDatas[i].TempBuff.ATK;
+
+            Data.TeamUnitDatas[i].SetTempBuffHP(0);
+            Data.TeamUnitDatas[i].SetTempBuffATK(0);
+
+            if (GameManager.Instance.RepairSystem)
+            {
+                Data.TeamUnitDatas[i].SetHP(hp < 0 ? 0 : hp, null);
+                Data.TeamUnitDatas[i].SetATK(atk < 0 ? 0 : atk);
+            }
+            else
+            {
+                Data.TeamUnitDatas[i].SetHP(Data.TeamUnitDatas[i].FullHP, null);
+                Data.TeamUnitDatas[i].SetATK(Data.TeamUnitDatas[i].FullATK);
+            }
         }
 
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);

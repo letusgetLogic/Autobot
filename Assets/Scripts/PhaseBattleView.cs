@@ -22,6 +22,11 @@ public class PhaseBattleView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI defaultMult;
     [SerializeField] private TextMeshProUGUI maxMult;
 
+    [Header("Running states")]
+    [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject play;
+    [SerializeField] private GameObject stop;
+
 
     private void Awake()
     {
@@ -54,6 +59,12 @@ public class PhaseBattleView : MonoBehaviour
         ShowSpeedMult();
     }
 
+    public void UpdateLives(PlayerData player1, PlayerData player2)
+    {
+        lives1.text = player1.Lives.ToString();
+        lives2.text = player2.Lives.ToString();
+    }
+
     public void ShowWinner(string winner, bool isGameOver)
     {
         label.text = $"{winner} won this {(isGameOver ? "tournament" : "battle")}!";
@@ -66,10 +77,11 @@ public class PhaseBattleView : MonoBehaviour
     /// <summary>
     /// Sets the speed multiplier active true/false.
     /// </summary>
-    /// <param name="activ"></param>
-    public void SetSpeedButton(bool activ)
+    /// <param name="value"></param>
+    public void SetSpeedButton(bool value)
     {
-        speedButton.SetActive(activ);
+        playButton.SetActive(value);
+        speedButton.SetActive(value);
     }
 
     /// <summary>
@@ -94,4 +106,17 @@ public class PhaseBattleView : MonoBehaviour
     }
 
     #endregion
+
+    public void OnRunningButtonClick()
+    {
+        PhaseBattleController.Instance.SetRunning();
+        SetRunningButton();
+    }
+
+    public void SetRunningButton()
+    {
+        play.SetActive(!PhaseBattleController.Instance.IsStopped);
+        stop.SetActive(PhaseBattleController.Instance.IsStopped);
+    }
+
 }

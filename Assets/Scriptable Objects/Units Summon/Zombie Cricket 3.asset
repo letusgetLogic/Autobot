@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Zombie Cricket 3
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: 4176430c1a17e6a45a2290a88575264b, type: 3}
+  Sprite: {fileID: -1547974232, guid: d6eb047f9a0561c45a89eb64f9758ab9, type: 3}
   ID: 0
-  Name: doge
+  Name: Model S11
   Health: 3
   Attack: 3
   Energy: 0
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
-  - Description: 
+  - Index: 0
+    Description: 
     HasAbility: 0
     ConsumedEnergy: {fileID: 0}
     TriggerType: 0
@@ -38,7 +39,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: 
+  - Index: 1
+    Description: 
     HasAbility: 0
     ConsumedEnergy: {fileID: 0}
     TriggerType: 0
@@ -56,7 +58,8 @@ MonoBehaviour:
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
-  - Description: 
+  - Index: 2
+    Description: 
     HasAbility: 0
     ConsumedEnergy: {fileID: 0}
     TriggerType: 0
