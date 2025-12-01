@@ -28,9 +28,8 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
             PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());
 
-            var controller = slot.UnitController();
-            var data = controller.Model.Data;
-            PhaseShopUI.Instance.SetButtonActive(data);
+            var model = slot.UnitController().Model;
+            PhaseShopUI.Instance.SetButtonActive(model);
         }
     }
 }

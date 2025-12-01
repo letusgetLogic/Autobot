@@ -29,11 +29,17 @@ public class PhaseShopUnitManager : MonoBehaviour
     public Player Player { get; private set; }
 
     public GameObject AttachedGameObject { get; set; }
-    // Save the reference of unit being dragged or clicked
+
+    /// <summary>
+    /// To prevent pushing other away while an unit is attached by mouse click.
+    /// </summary>
     public bool IsDragging { get; set; } = false;
+
+    /// <summary>
+    /// To prevent dragging from a slot after an another unit is pushed in there,
+    /// while mouse is still holding down.
+    /// </summary>
     public bool PreventDragging { get; set; } = false;
-    // to prevent dragging from a slot after an another unit is pushed in there,
-    // while mouse is still holding down.
 
     private void Awake()
     {
@@ -343,7 +349,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (onSlot.Model.IsMaxed || onDrag.Model.IsMaxed)
             return false;
 
-        if (onSlot.name == onDrag.name)
+        if (onSlot.Model.SoUnit.Name == onDrag.Model.SoUnit.Name)
             return true;
 
         return false;
@@ -361,7 +367,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 AttachedGameObject.transform.parent.
                     GetComponent<Slot>().Border.enabled = false;
 
-            PhaseShopUI.Instance.SetButtonActive(default);
+            PhaseShopUI.Instance.SetButtonActive(null);
         }
         else
         {

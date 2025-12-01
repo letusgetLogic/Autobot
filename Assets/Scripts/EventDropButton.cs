@@ -8,21 +8,29 @@ public class EventDropButton : MonoBehaviour, IDropHandler
         if (eventData.pointerDrag == null)
             return;
 
-        if (transform.parent.CompareTag("Repair Button"))
+        if (transform.parent.CompareTag("Roll Button"))
         {
-            PhaseShopUI.Instance.Repair();
+            PhaseShopUI.Instance.OnRoll();
         }
-        else if (transform.parent.CompareTag("Freeze Button"))
+        else if (transform.parent.CompareTag("Repair Button"))
         {
-            PhaseShopUI.Instance.Freeze();
+            PhaseShopUI.Instance.OnRepair();
         }
-        else if(transform.parent.CompareTag("Unfreeze Button"))
+        else if (transform.parent.CompareTag("Recycle Button"))
         {
-            PhaseShopUI.Instance.Unfreeze();
+            PhaseShopUI.Instance.OnRecycle();
         }
-        else if(transform.parent.CompareTag("Sell Button"))
+        else if (transform.parent.CompareTag("Lock Button"))
         {
-            PhaseShopUI.Instance.Sell();
+            PhaseShopUI.Instance.OnLock();
+        }
+        else if(transform.parent.CompareTag("Unlock Button"))
+        {
+            PhaseShopUI.Instance.OnUnlock();
+        }
+        else if(transform.parent.CompareTag("End Turn Button"))
+        {
+            PhaseShopUI.Instance.OnEndTurn();
         }
     }
 }

@@ -38,17 +38,17 @@ public class InitState : StateBase
 
         SpawnUnits(
             PhaseBattleController.Instance.Player1,
-            PhaseBattleController.Instance.Slots1, false);
+            PhaseBattleController.Instance.Slots1, true);
 
         SpawnUnits(
             PhaseBattleController.Instance.Player2,
-            PhaseBattleController.Instance.Slots2, true);
+            PhaseBattleController.Instance.Slots2, false);
     }
 
     /// <summary>
     /// Instantiates and initializes the units.
     /// </summary>
-    private void SpawnUnits(Player _player, Slot[] _slots, bool _isRight)
+    private void SpawnUnits(Player _player, Slot[] _slots, bool _isLeft)
     {
         for (int i = 0; i < _slots.Length; i++)
         {
@@ -62,7 +62,7 @@ public class InitState : StateBase
                     unitData,
                     UnitState.InPhaseBattle,
                     _slots[i].transform,
-                    _isRight);
+                    _isLeft);
 
                 _player.BattleUnits[i] = unitController;
             }

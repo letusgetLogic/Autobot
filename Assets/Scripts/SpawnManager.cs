@@ -35,7 +35,7 @@ public class SpawnManager : MonoBehaviour
         var unit = Instantiate(unitPrefab, parent, false);
 
         var controller = unit.GetComponent<UnitController>();
-        controller.Initialize(_soUnit, _index, _data, _unitState);
+        controller.Initialize(_soUnit, _index, _data, _unitState, null, default);
 
         return controller;
     }
@@ -51,27 +51,16 @@ public class SpawnManager : MonoBehaviour
     /// <param name="_flipSprite"></param>
     /// <returns></returns>
     public UnitController Spawn(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState,
-        Transform _parent, bool _flipSprite)
+        Transform _parent, bool _isTeam1)
     {
         var unit = Instantiate(unitPrefab, _parent, false);
 
         var unitController = unit.GetComponent<UnitController>();
-        unitController.Initialize(_soUnit, _index, _data, _unitState);
-        Debug.Log("Hallooooooooooooooooooooooooo");
-        unitController.View.Shadow.enabled = false;
-
-        if (_flipSprite)
-        {
-            unitController.View.SetRightSide();
-            unitController.Model.Data.IsTeam1 = false;
-        }
-        else
-        {
-            unitController.Model.Data.IsTeam1 = true;
-        }
+        unitController.Initialize(_soUnit, _index, _data, _unitState, unitController.FlipSprite, _isTeam1);
 
         return unitController;
     }
-  
+
+
 }
 

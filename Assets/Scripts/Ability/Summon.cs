@@ -22,15 +22,12 @@ public class Summon : AbilityBase
     public void SpawnUnit()
     {
         Slot[] slots;
-        var isRight = false;
 
         if (GameManager.Instance.IsPhaseBattle)
         {
-            slots = model.Data.IsTeam1 ?
+            slots = model.Data.IsTeamLeft ?
                 PhaseBattleController.Instance.Slots1 :
                 PhaseBattleController.Instance.Slots2;
-
-            isRight = !model.Data.IsTeam1;
         }
         else
         {
@@ -47,7 +44,7 @@ public class Summon : AbilityBase
                     new(),
                     model.Data.UnitState,
                     slots[slotIndex].transform,
-                    isRight);
+                    model.Data.IsTeamLeft);
             }
         }
 

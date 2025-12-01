@@ -28,11 +28,14 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    private bool flipSprite = false;
+
     /// <summary>
     /// Initializes data.
     /// </summary>
     /// <param name="_soUnit"></param>
-    public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState)
+    public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState,
+        UnityAction _unityAction, bool _isTeamLeft)
     {
         // If the saved data has no reference, 
         if (_data.HasReference == false)
@@ -47,10 +50,26 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(_soUnit, _data,
                 GameManager.Instance.RepairSystem ? new RepairSystem() : null);
         }
-
+        flipSprite = !_isTeamLeft;
+        _unityAction?.Invoke();
         model.InitView(view);
         model.SetData(_unitState);
     }
+
+
+    public void FlipSprite()
+    {
+        if (flipSprite)
+        {
+            view.SetRightSide();
+            model.Data.IsTeamLeft = false;
+        }
+        else
+        {
+            model.Data.IsTeamLeft = true;
+        }
+    }
+
 
     #region PhaseShop
 
@@ -74,18 +93,13 @@ public class UnitController : MonoBehaviour
         model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
 
         model.Add(
-            _draggingModel.Data.XP, _draggingModel.Data.XP,
-            _draggingModel.Data.Buff.HP, _draggingModel.Data.Buff.ATK,
-            _draggingModel.Data.TempBuff.HP, _draggingModel.Data.TempBuff.ATK);
+            new Attribute(_draggingModel.Data.XP, _draggingModel.Data.XP),
+            _draggingModel.Data.Buff,
+            _draggingModel.Data.TempBuff,
+            _draggingModel.Data.Cur);
 
         model.UpdateLevelXP(_isPhaseShop);
-
-        if (GameManager.Instance.RepairSystem)
-        {
-            bool isDurabilityGreater = model.Data.Durability > _draggingModel.Data.Durability;
-            int durability = isDurabilityGreater ? _draggingModel.Data.Durability : model.Data.Durability;
-            model.Repair?.SetDurability(false, durability);
-        }
+        model.Repair?.SetDurability(true, false, 0, 0);
     }
 
     public void AddEnergy(int _addEnergy)
@@ -155,9 +169,9 @@ public class UnitController : MonoBehaviour
     public void Buff(bool isPernament, int addHealth, int addAttack)
     {
         if (isPernament)
-            model.Add(0, 0, addHealth, addAttack, 0, 0);
+            model.Add(new Attribute(addHealth, addAttack), new Attribute(0, 0));
         else
-            model.Add(0, 0, 0, 0, addHealth, addAttack);
+            model.Add(new Attribute(0, 0), new Attribute(addHealth, addAttack));
 
         view.ShowBuff(addHealth, addAttack, 0);
     }

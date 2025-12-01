@@ -46,7 +46,7 @@ public struct SaveUnitData
 
     public UnitState UnitState { get; set; }
 
-    public bool IsTeam1 { get; set; }
+    public bool IsTeamLeft { get; set; }
 
     public void SetHP(int _hp, Action _updateRepair)
     {
@@ -136,5 +136,9 @@ public struct SaveUnitData
             temporaryBuff.ATK = _atk;
     }
 
+    public void SetIsTeam1(bool value)
+    {
+        IsTeamLeft = value;
+    }
 }
 

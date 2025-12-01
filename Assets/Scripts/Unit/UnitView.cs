@@ -115,6 +115,7 @@ public class UnitView : MonoBehaviour
     {
         description.SetActive(false);
         iceCubeSpriteRenderer.gameObject.SetActive(false);
+        SetRepairDisplayActive(false);
     }
 
     private void Start()
@@ -122,7 +123,6 @@ public class UnitView : MonoBehaviour
         mainCamera = Camera.main;
         originalScale = dragSpriteRenderer.gameObject.transform.localScale;
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
-        SetRepairDisplayActive(false);
     }
 
     /// <summary>
@@ -298,8 +298,6 @@ public class UnitView : MonoBehaviour
     {
         repairDisplayHp.SetActive(value);
         repairDisplayAtk.SetActive(value);
-
-        Debug.Log(gameObject.name + " repairHp " + repairDisplayHp.activeSelf);
     }
 
     public void SetRepairStepActive(bool _panel2, bool _panel3)

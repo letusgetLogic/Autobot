@@ -1,9 +1,8 @@
-﻿using System.Threading;
+﻿using System.Collections;
 using UnityEngine;
 public class HandleAbilityState : StateBase
 {
     private bool isDone = false;
-    private bool isRunning = false;
     public HandleAbilityState(float maxTimeCount) : base(maxTimeCount)
     {
     }
@@ -31,7 +30,7 @@ public class HandleAbilityState : StateBase
             if (PhaseBattleController.Instance.FaintUnits.Count > 0)
                 ctx.SetState(new FaintState(
                      PhaseBattleController.Instance.Process.DurationFaint));
-            else 
+            else
                 ctx.SetState(new CheckOutcomeState(
                     PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
         }
@@ -39,11 +38,6 @@ public class HandleAbilityState : StateBase
 
     private void HandleAbility()
     {
-        if (isRunning)
-            return;
-
-        isRunning = true;
-
         if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
         {
             var ability = PhaseBattleController.Instance.UnitAbilities.Dequeue();
@@ -54,10 +48,6 @@ public class HandleAbilityState : StateBase
                     PhaseBattleController.Instance.Process.DurationHideAbilityDescription));
         }
         else
-        {
             isDone = true;
-        }
-
-        isRunning = false;
     }
 }

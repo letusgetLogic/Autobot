@@ -5,10 +5,11 @@ using UnityEngine;
 [Serializable]
 public class UnitModel
 {
-    public UnitView View { get; set; }
+    private UnitView View { get; set; }
     public RepairSystem Repair { get; set; }
 
     public SaveUnitData Data;
+
     public SoUnit SoUnit { get; private set; }
     public Level CurrentLevel { get; set; }
 
@@ -52,16 +53,21 @@ public class UnitModel
 
     public void InitView(UnitView _view)
     {
-        Repair?.Initialize(this, _view);
-
         View = _view;
-        View.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
 
-        Repair?.SetDurability(true, 0);
-
-        if (GameManager.Instance.RepairSystem == false) 
+        if (Repair != null)
+        {
+            Repair.Initialize(this, _view);
+            Repair.SetDurability(true, true, 0, 0);
+            Repair.SetRepairPanel();
+        }
+        else
+        {
             View.HideFullAttributes();
+        }
 
+        View.Shadow.enabled = false;
+        View.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
         View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
@@ -89,46 +95,28 @@ public class UnitModel
             _unitState = UnitState.InPhaseBattle;
 
         switch (_unitState)
-            {
-                case UnitState.InSlotShop:
-                    View.IceCube.SetActive(false);
-                    break;
-                case UnitState.Freezed:
-                    View.IceCube.SetActive(true);
-                    break;
-                case UnitState.InSlotTeam:
-                    View.IceCube.SetActive(false);
-                    break;
-                case UnitState.InSlotCharge:
-                    View.IceCube.SetActive(false);
-                    break;
-                case UnitState.InPhaseBattle:
-                    View.HideObjectsDuringBattle();
-                    break;
-            }
-        
-
-        if (GameManager.Instance.RepairSystem)
         {
-            switch (_unitState)
-            {
-                case UnitState.InSlotShop:
-                    View.SetRepairDisplayActive(false);
-                    break;
-                case UnitState.Freezed:
-                    View.SetRepairDisplayActive(false);
-                    break;
-                case UnitState.InSlotTeam:
-                    View.SetRepairDisplayActive(true);
-                    break;
-                case UnitState.InSlotCharge:
-                    View.SetRepairDisplayActive(true);
-                    break;
-                case UnitState.InPhaseBattle:
-                    View.SetRepairDisplayActive(false);
-                    break;
-            }
+            case UnitState.InSlotShop:
+                View.IceCube.SetActive(false);
+                View.Shadow.enabled = true;
+                break;
+            case UnitState.Freezed:
+                View.IceCube.SetActive(true);
+                View.Shadow.enabled = true;
+                break;
+            case UnitState.InSlotTeam:
+                View.IceCube.SetActive(false);
+                break;
+            case UnitState.InSlotCharge:
+                View.IceCube.SetActive(false);
+                break;
+            case UnitState.InPhaseBattle:
+                View.HideObjectsDuringBattle();
+                break;
         }
+
+
+        Repair?.SetDisplay(_unitState);
 
         Data.UnitState = _unitState;
         bool isForBuying = _unitState == UnitState.InSlotShop;
@@ -167,7 +155,7 @@ public class UnitModel
         {//                       level  box1   box2  step1  step2  box3  step3  step4  step5  
             case 1:
                 View.SetXpStepActive("1", false, true, false, false, false, false, false, false);
-                 SetCurrentLevel(0);
+                SetCurrentLevel(0);
                 break;
             case 2:
                 View.SetXpStepActive("1", false, true, true, false, false, false, false, false);
@@ -235,10 +223,12 @@ public class UnitModel
 
     #endregion
 
-    public void Add(
-        int _basisHP, int _basisATK,
-        int _buffHP, int _buffATK,
-        int _buffTempHP, int _buffTempATK)
+    /// <summary>
+    /// Adds the given values to the unit by buff.
+    /// </summary>
+    /// <param name="_buff"></param>
+    /// <param name="_buffTemp"></param>
+    public void Add(Attribute _buff, Attribute _buffTemp)
     {
         int maxHP = PackManager.Instance.MyPack.MaxHP.Value;
         int maxATK = PackManager.Instance.MyPack.MaxATK.Value;
@@ -246,22 +236,64 @@ public class UnitModel
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
         int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;
 
-        Data.SetBasisHP(Data.Basis.HP + GetAddValue(ref remainFill_HP, _basisHP));
-        Data.SetBasisATK(Data.Basis.ATK + GetAddValue(ref remainFill_ATK, _basisATK));
+        Data.SetBuffHP(Data.Buff.HP + GetAddValue(ref remainFill_HP, _buff.HP));
+        Data.SetBuffATK(Data.Buff.ATK + GetAddValue(ref remainFill_ATK, _buff.ATK));
 
-        Data.SetBuffHP(Data.Buff.HP + GetAddValue(ref remainFill_HP, _buffHP));
-        Data.SetBuffATK(Data.Buff.ATK + GetAddValue(ref remainFill_ATK, _buffATK));
+        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddValue(ref remainFill_HP, _buffTemp.HP));
+        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTemp.ATK));
 
-        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddValue(ref remainFill_HP, _buffTempHP));
-        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTempATK));
-
-        Data.SetHP(Data.Cur.HP + _basisHP + _buffHP + _buffTempHP, Repair == null ? null : Repair.SetRepairPanel);
-        Data.SetATK(Data.Cur.ATK + _basisATK + _buffATK + _buffTempATK);
-
-        if (Repair != null) 
-            Data.Durability = Repair.GetDurabilityFromHealth(false);
+        Data.SetHP(Data.Cur.HP + _buff.HP + _buffTemp.HP, Repair == null ? null : Repair.SetRepairPanel);
+        Data.SetATK(Data.Cur.ATK + _buff.ATK + _buffTemp.ATK);
 
         View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
+    }
+
+    /// <summary>
+    /// Adds the given values to the unit by buff.
+    /// </summary>
+    /// <param name="_basis"></param>
+    /// <param name="_buff"></param>
+    /// <param name="_buffTemp"></param>
+    /// <param name="_otherCurrent"> The average of model.Data.Cur and _otherCurrent would be calculated.</param>
+    public void Add(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent)
+    {
+        int maxHP = PackManager.Instance.MyPack.MaxHP.Value;
+        int maxATK = PackManager.Instance.MyPack.MaxATK.Value;
+
+        int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
+        int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;
+
+        Data.SetBasisHP(Data.Basis.HP + GetAddValue(ref remainFill_HP, _basis.HP));
+        Data.SetBasisATK(Data.Basis.ATK + GetAddValue(ref remainFill_ATK, _basis.ATK));
+
+        Data.SetBuffHP(Data.Buff.HP + GetAddValue(ref remainFill_HP, _buff.HP));
+        Data.SetBuffATK(Data.Buff.ATK + GetAddValue(ref remainFill_ATK, _buff.ATK));
+
+        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddValue(ref remainFill_HP, _buffTemp.HP));
+        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTemp.ATK));
+
+        int hp = GetAverage(Data.Cur.HP, _otherCurrent.HP);
+        int atk = GetAverage(Data.Cur.ATK, _otherCurrent.ATK);
+        int energy = GetAverage(Data.Cur.Energy, _otherCurrent.Energy);
+
+        int addHP = Repair != null ? 0 : _basis.HP + _buff.HP + _buffTemp.HP;
+        int addATK = Repair != null ? 0 : _basis.ATK + _buff.ATK + _buffTemp.ATK;
+
+        Data.SetHP(hp + addHP, Repair == null ? null : Repair.SetRepairPanel);
+        Data.SetATK(atk + addATK);
+        Data.SetEnergy(energy);
+
+        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
+    }
+
+    private int GetAverage(int _current, int _addCurrent)
+    {
+        if (Repair != null)
+        {
+            int sum = _current + _addCurrent;
+            return Mathf.RoundToInt(sum * 0.5f);
+        }
+        return _current;
     }
 
     /// <summary>

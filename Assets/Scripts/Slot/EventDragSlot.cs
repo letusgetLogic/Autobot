@@ -26,7 +26,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());
-        PhaseShopUI.Instance.SetButtonActive(slot.UnitController().Model.Data);
+        PhaseShopUI.Instance.SetButtonActive(slot.UnitController().Model);
     }
 
     public void OnDrag(PointerEventData eventData)

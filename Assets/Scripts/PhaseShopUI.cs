@@ -8,23 +8,29 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField]
     private float durationCoinsRedDefault = 0.2f;
 
-    [Header("Text Components")]
-    [SerializeField] private TextMeshProUGUI nameText;
+    [Header("Label Components")]
+    [SerializeField] private TextMeshProUGUI nameLabel;
     [SerializeField]
     private TextMeshProUGUI
-        nutText,
-        toolText,
-        heartText,
-        turnText;
+        turnLabel,
+        heartLabel,
+        nutLabel,
+        toolLabel;
 
     [Header("Manage Buttons")]
     [SerializeField] private GameObject[] manageButtons;
     [SerializeField]
     private GameObject
         repairButton,
-        sellButton,
-        freezeButton,
-        unfreezeButton;
+        recycleButton,
+        lockButton,
+        unlockButton;
+    [SerializeField]
+    private TextMeshProUGUI
+        repairTool,
+        repairNut,
+        recycleTool,
+        recycleNut;
 
     public Player Player { get; private set; }
 
@@ -40,10 +46,10 @@ public class PhaseShopUI : MonoBehaviour
 
         if (GameManager.Instance.RepairSystem == false)
         {
-            toolText.transform.parent.parent.gameObject.SetActive(false);
+            toolLabel.transform.parent.parent.gameObject.SetActive(false);
         }
 
-        SetButtonActive(default);
+        SetButtonActive(null);
     }
 
     /// <summary>
@@ -52,11 +58,11 @@ public class PhaseShopUI : MonoBehaviour
     public void UpdateUI(Player player)
     {
         Player = player;
-        nameText.text = Player.Data.Name;
-        nutText.text = Player.Data.Nuts.ToString();
-        toolText.text = Player.Data.Tools.ToString();
-        heartText.text = Player.Data.Lives.ToString();
-        turnText.text = Player.Data.Turns.ToString();
+        nameLabel.text = Player.Data.Name;
+        nutLabel.text = Player.Data.Nuts.ToString();
+        toolLabel.text = Player.Data.Tools.ToString();
+        heartLabel.text = Player.Data.Lives.ToString();
+        turnLabel.text = Player.Data.Turns.ToString();
     }
 
     /// <summary>
@@ -66,8 +72,8 @@ public class PhaseShopUI : MonoBehaviour
     {
         Player.Data.Nuts += addCoins;
         Player.Data.Tools += addTools;
-        nutText.text = Player.Data.Nuts.ToString();
-        toolText.text = Player.Data.Tools.ToString();
+        nutLabel.text = Player.Data.Nuts.ToString();
+        toolLabel.text = Player.Data.Tools.ToString();
     }
 
     #region Button
@@ -75,7 +81,7 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Roll the shop for new units and items.
     /// </summary>
-    public void Roll()
+    public void OnRoll()
     {
         if (!HasEnoughCurrency(RollCost.Nut, RollCost.Tool))
             return;
@@ -89,7 +95,7 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Destroys the attached object and adds sell coins. 
     /// </summary>
-    public void Repair()
+    public void OnRepair()
     {
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
@@ -114,11 +120,11 @@ public class PhaseShopUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Freeze the attached object.
+    /// Lock the attached object in the shop. It can't be reseted in next shop.
     /// </summary>
-    public void Freeze()
+    public void OnLock()
     {
-        SetButtonActive(default);
+        SetButtonActive(null);
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
@@ -130,11 +136,11 @@ public class PhaseShopUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Unfreeze the attached object.
+    /// Unlock the attached object in the shop. It can be replaced in next shop.
     /// </summary>
-    public void Unfreeze()
+    public void OnUnlock()
     {
-        SetButtonActive(default);
+        SetButtonActive(null);
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
@@ -146,11 +152,11 @@ public class PhaseShopUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroys the attached object and adds sell coins. 
+    /// Destroys the attached object and manages recycle cost + price. 
     /// </summary>
-    public void Sell()
+    public void OnRecycle()
     {
-        SetButtonActive(default);
+        SetButtonActive(null);
         DeactivateManageButtons();
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
@@ -169,40 +175,75 @@ public class PhaseShopUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Deactivates all buttons and activates button, which manages units und items.
+    /// Deactivates all buttons or/and activates button, which manages units und items.
     /// </summary>
     /// <param name="_manage"></param>
-    public void SetButtonActive(SaveUnitData _unitData)
+    public void SetButtonActive(UnitModel _unitModel)
     {
-        switch (_unitData.UnitState)
+        if (_unitModel == null)
         {
-            default:
-                DeactivateManageButtons();
-                break;
+            DeactivateManageButtons();
+            return;
+        }
 
+        switch (_unitModel.Data.UnitState)
+        {
             case UnitState.InSlotShop:
                 DeactivateManageButtons();
-                freezeButton.SetActive(true);
+                lockButton.SetActive(true);
                 break;
 
             case UnitState.Freezed:
                 DeactivateManageButtons();
-                unfreezeButton.SetActive(true);
+                unlockButton.SetActive(true);
                 break;
 
             case UnitState.InSlotTeam:
                 DeactivateManageButtons();
-                sellButton.SetActive(true);
+                recycleButton.SetActive(true);
+                SetButtonData(
+                    recycleTool.GetComponentInChildren<TextMeshProUGUI>(),
+                    recycleNut.GetComponentInChildren<TextMeshProUGUI>(),
+                    _unitModel.Sell);
                 break;
         }
 
-        if (GameManager.Instance.RepairSystem && _unitData.HasReference)
+        if (GameManager.Instance.RepairSystem)
         {
-            float durability = _unitData.DurabilityRatio;
+            float durability = _unitModel.Data.DurabilityRatio;
             if (durability < 1f)
             {
                 repairButton.SetActive(true);
+                SetButtonData(
+                    repairTool.GetComponentInChildren<TextMeshProUGUI>(),
+                    repairNut.GetComponentInChildren<TextMeshProUGUI>(),
+                    _unitModel.RepairCost);
             }
+        }
+    }
+
+    public void SetButtonData(TextMeshProUGUI _tool, TextMeshProUGUI _nut, Currency _currency)
+    {
+        if (_currency.Tool == 0)
+        {
+            _tool.text = "";
+            _tool.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            _tool.transform.parent.gameObject.SetActive(true);
+            _tool.text = (_currency.Tool > 0 ? "+" : "") + _currency.Tool.ToString();
+        }
+        
+        if (_currency.Nut == 0)
+        {
+            _nut.text = "";
+            _nut.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            _nut.transform.parent.gameObject.SetActive(true);
+            _nut.text = (_currency.Nut > 0 ? "+" : "") + _currency.Nut.ToString();
         }
     }
 
@@ -218,7 +259,7 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Ends turn.
     /// </summary>
-    public void EndTurn()
+    public void OnEndTurn()
     {
         Player.EndShop();
     }
@@ -247,7 +288,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(nutText, durationCoinsRedDefault);
+        markColorRed.SetComponent(nutLabel, durationCoinsRedDefault);
     }
 
     private void HintNotEnoughTools()
@@ -256,7 +297,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(toolText, durationCoinsRedDefault);
+        markColorRed.SetComponent(toolLabel, durationCoinsRedDefault);
     }
 
 }

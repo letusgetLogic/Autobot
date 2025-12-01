@@ -15,7 +15,7 @@ public class Buff : AbilityBase
 
             if (GameManager.Instance.IsPhaseBattle)
             {
-                slots = Controller.Model.Data.IsTeam1 ?
+                slots = Controller.Model.Data.IsTeamLeft ?
                     PhaseBattleController.Instance.Slots1 :
                     PhaseBattleController.Instance.Slots2;
             }
