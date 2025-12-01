@@ -68,6 +68,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+        Time.timeScale = 1f;
     }
 
     private void Start()

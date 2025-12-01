@@ -6,6 +6,6 @@ public class SoUnitSettings : ScriptableObject
     public float DraggingScale;
     public float DelayUpdateLevel;
     public float DurationShowDamage;
-    public float DurationShowBuff;
+    public float DurationShowTemporaryValue;
     public Vector3 OffsetDragOverOther;
     }

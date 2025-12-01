@@ -17,6 +17,10 @@ public class PhaseShopUI : MonoBehaviour
         nutLabel,
         toolLabel;
 
+    [Header("Roll Button")]
+    [SerializeField] private TextMeshProUGUI rollCostNut;
+    [SerializeField] private TextMeshProUGUI rollCostTool;
+
     [Header("Manage Buttons")]
     [SerializeField] private GameObject[] manageButtons;
     [SerializeField]
@@ -34,7 +38,7 @@ public class PhaseShopUI : MonoBehaviour
 
     public Player Player { get; private set; }
 
-    private Currency RollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
+    private Currency rollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
 
     private void Awake()
     {
@@ -44,7 +48,12 @@ public class PhaseShopUI : MonoBehaviour
         }
         Instance = this;
 
-        if (GameManager.Instance.RepairSystem == false)
+        Settings();
+    }
+
+    private void Settings()
+    {
+        if (GameManager.Instance.IsRepairSystemActive == false)
         {
             toolLabel.transform.parent.parent.gameObject.SetActive(false);
         }
@@ -63,34 +72,36 @@ public class PhaseShopUI : MonoBehaviour
         toolLabel.text = Player.Data.Tools.ToString();
         heartLabel.text = Player.Data.Lives.ToString();
         turnLabel.text = Player.Data.Turns.ToString();
+
+        SetButtonData(rollCostTool, rollCostNut, rollCost);
     }
 
     /// <summary>
     /// Updates the coins display.
     /// </summary>
-    public void UpdateCurrency(int addCoins, int addTools)
+    public void UpdateCurrency(int _addNuts, int _addTools)
     {
-        Player.Data.Nuts += addCoins;
-        Player.Data.Tools += addTools;
+        Player.Data.Nuts += _addNuts;
+        Player.Data.Tools += _addTools;
         nutLabel.text = Player.Data.Nuts.ToString();
         toolLabel.text = Player.Data.Tools.ToString();
     }
 
-    #region Button
+    #region Buttons
 
     /// <summary>
     /// Roll the shop for new units and items.
     /// </summary>
     public void OnRoll()
     {
-        if (!HasEnoughCurrency(RollCost.Nut, RollCost.Tool))
+        if (!HasEnoughCurrency(rollCost.Nut, rollCost.Tool))
             return;
 
-        UpdateCurrency(RollCost.Nut, RollCost.Tool);
+        UpdateCurrency(rollCost.Nut, rollCost.Tool);
         PhaseShopUnitManager.Instance.SpawnShopUnits();
     }
 
-    #region Manage Button
+    #region Manage Buttons
 
     /// <summary>
     /// Destroys the attached object and adds sell coins. 
@@ -113,9 +124,8 @@ public class PhaseShopUI : MonoBehaviour
                 CurrencyData.HealthPortion)
             {
                 repairButton.SetActive(false);
+                PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
             }
-
-            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
     }
 
@@ -208,7 +218,7 @@ public class PhaseShopUI : MonoBehaviour
                 break;
         }
 
-        if (GameManager.Instance.RepairSystem)
+        if (GameManager.Instance.IsRepairSystemActive)
         {
             float durability = _unitModel.Data.DurabilityRatio;
             if (durability < 1f)
@@ -217,7 +227,7 @@ public class PhaseShopUI : MonoBehaviour
                 SetButtonData(
                     repairTool.GetComponentInChildren<TextMeshProUGUI>(),
                     repairNut.GetComponentInChildren<TextMeshProUGUI>(),
-                    _unitModel.RepairCost);
+                    _unitModel.RepairCost); 
             }
         }
     }

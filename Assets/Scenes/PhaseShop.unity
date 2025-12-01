@@ -5302,6 +5302,8 @@ MonoBehaviour:
   heartLabel: {fileID: 57376819}
   nutLabel: {fileID: 247628768}
   toolLabel: {fileID: 1105993652}
+  rollCostNut: {fileID: 6341657538504199756}
+  rollCostTool: {fileID: 6341657538504199755}
   manageButtons:
   - {fileID: 1922058701}
   - {fileID: 208350686}
@@ -5682,7 +5684,7 @@ PrefabInstance:
     - target: {fileID: 5281084336637952971, guid: 41113c4d8100dd24cb25a271e9be9334, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4963191779554101232}
+      objectReference: {fileID: 6477654956065364529}
     - target: {fileID: 6753640674398579574, guid: 41113c4d8100dd24cb25a271e9be9334, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6857,17 +6859,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6838422563216653270}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4963191779554101232 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8658174349459309319, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
-  m_PrefabInstance: {fileID: 3896857583721616600}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6307098228c8b654abac9b4a5135c3b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5017503043171759664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7933,6 +7924,28 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &6341657538504199755 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1247093064444513519, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
+  m_PrefabInstance: {fileID: 6341657538504199752}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &6341657538504199756 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2586409624177191868, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
+  m_PrefabInstance: {fileID: 6341657538504199752}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &6350853777027266781
 GameObject:
   m_ObjectHideFlags: 0

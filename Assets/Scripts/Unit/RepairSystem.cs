@@ -134,7 +134,7 @@ public class RepairSystem
 
         view.SetData(
             model.Data.FullHP, model.Data.FullATK,
-            model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.Energy);
+            model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
     }
 
     public void RiseDurability()
@@ -142,8 +142,8 @@ public class RepairSystem
         model.Data.DurabilityRatio += portionSize;
         model.Data.Durability++;
 
-        if (model.Data.DurabilityRatio > 1f ||
-             model.Data.Durability > model.Pack.CurrencyData.HealthPortion)
+        if (model.Data.DurabilityRatio >= 1f ||
+             model.Data.Durability >= model.Pack.CurrencyData.HealthPortion)
         {
             model.Data.DurabilityRatio = 1f;
             model.Data.Durability = model.Pack.CurrencyData.HealthPortion;
@@ -152,6 +152,7 @@ public class RepairSystem
         SetStatsBasedDurability();
         ShowDurability();
         view.SetBuyOrSell(model.Sell, false);
+        PhaseShopUI.Instance.SetButtonActive(model);
     }
 
 }

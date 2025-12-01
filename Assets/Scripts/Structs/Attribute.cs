@@ -3,20 +3,20 @@ public struct Attribute
 {
     public int HP; // hit point
     public int ATK; // attack point
-    public int Energy;
+    public int ENG; // energy point
 
-    public Attribute(int hp, int atk)
+    public Attribute(int _hp, int _atk)
     {
-        HP = hp;
-        ATK = atk;
-        Energy = 0;
+        HP = _hp;
+        ATK = _atk;
+        ENG = 0;
     }
 
-    public Attribute(int hp, int atk, int energy)
+    public Attribute(int _hp, int _atk, int _eng)
     {
-        HP = hp;
-        ATK = atk;
-        Energy = energy;
+        HP = _hp;
+        ATK = _atk;
+        ENG = _eng;
     }
 }
 

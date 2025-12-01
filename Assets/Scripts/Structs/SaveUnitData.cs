@@ -62,6 +62,12 @@ public struct SaveUnitData
     public void SetATK(int _atk)
     {
         int max = PackManager.Instance.MyPack.MaxATK.Value;
+
+        if (_atk < 0)
+        {
+            current.ATK = 0;
+            return;
+        }
         if (_atk > max)
             current.ATK = max;
         else
@@ -71,10 +77,16 @@ public struct SaveUnitData
     public void SetEnergy(int _energy)
     {
         int max = PackManager.Instance.MyPack.MaxEnergy.Value;
+
+        if (_energy < 0)
+        {
+            current.ENG = 0;
+            return;
+        }
         if (_energy > max)
-            current.Energy = max;
+            current.ENG = max;
         else
-            current.Energy = _energy;
+            current.ENG = _energy;
     }
 
     public void SetXP(int _xp)

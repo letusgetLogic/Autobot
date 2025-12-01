@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
         PhaseShopUnitManager.Instance.SpawnSavedUnits();
         PhaseShopUnitManager.Instance.SpawnShopUnits();
         UpdateUnitData();
-        PhaseShopUnitManager.Instance.ChargeUnit();
+        PhaseShopUnitManager.Instance.StartCoroutine(PhaseShopUnitManager.Instance.ChargeUnit());
 
         GameManager.Instance.SetPhaseShop();
     }
@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
             Data.TeamUnitDatas[i].SetTempBuffHP(0);
             Data.TeamUnitDatas[i].SetTempBuffATK(0);
 
-            if (GameManager.Instance.RepairSystem)
+            if (GameManager.Instance.IsRepairSystemActive)
             {
                 Data.TeamUnitDatas[i].SetHP(hp < 0 ? 0 : hp, null);
                 Data.TeamUnitDatas[i].SetATK(atk < 0 ? 0 : atk);

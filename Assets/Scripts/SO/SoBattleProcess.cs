@@ -4,11 +4,20 @@
 public class SoBattleProcess : ScriptableObject
 {
     [Range(0f, 2f)] public float DurationInit = 0.1f;
+
     [Range(0f, 2f)] public float DurationCheckOutcome = 1.0f;
+
     [Range(0f, 2f)] public float DurationInsert = 0.5f;
+
     [Range(0f, 2f)] public float DurationAttack = 0.5f;
+
+    [Range(0f, 2f)] public float DurationDelaySummon = 0.5f;
+
     [Range(0f, 2f)] public float DurationHideAbilityDescription = 1.5f;
+
     [Range(0f, 2f)] public float DurationEachAbility = 2.0f;
+
     [Range(0f, 2f)] public float DurationFaint = 1.0f;
+
     [Range(0f, 2f)] public float DurationBattleOver = 1.0f;
 }

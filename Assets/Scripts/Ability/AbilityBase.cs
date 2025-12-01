@@ -23,13 +23,12 @@ public abstract class AbilityBase
 
     public void Activate()
     {
-        Run();
+        // Consume energy
         if (Controller != null)
         {
-            int value = Controller.Model.Data.Cur.Energy 
-                + CurrentLevel.ConsumedEnergy.Value;
-            Controller.Model.Data.SetEnergy(value);
+             Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
         }
+        Run();
     }
     public abstract void Run();
 

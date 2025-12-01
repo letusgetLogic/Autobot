@@ -43,12 +43,12 @@ public class UnitController : MonoBehaviour
             // ... create a new model with SO reference and the given index,
 
             model = new UnitModel(_soUnit, _index,
-                GameManager.Instance.RepairSystem ? new RepairSystem() : null);
+                GameManager.Instance.IsRepairSystemActive ? new RepairSystem() : null);
         }
         else // otherwise create a new model with SO reference and the saved data.
         {
             model = new UnitModel(_soUnit, _data,
-                GameManager.Instance.RepairSystem ? new RepairSystem() : null);
+                GameManager.Instance.IsRepairSystemActive ? new RepairSystem() : null);
         }
         flipSprite = !_isTeamLeft;
         _unityAction?.Invoke();
@@ -96,20 +96,11 @@ public class UnitController : MonoBehaviour
             new Attribute(_draggingModel.Data.XP, _draggingModel.Data.XP),
             _draggingModel.Data.Buff,
             _draggingModel.Data.TempBuff,
-            _draggingModel.Data.Cur);
+            _draggingModel.Data.Cur,
+            _draggingModel.Data.Cur.HP == _draggingModel.Data.FullHP);
 
         model.UpdateLevelXP(_isPhaseShop);
         model.Repair?.SetDurability(true, false, 0, 0);
-    }
-
-    public void AddEnergy(int _addEnergy)
-    {
-        var data = model.Data;
-        int value = data.Cur.Energy + _addEnergy;
-        data.SetEnergy(value);
-
-        view.ShowBuff(0, 0 , _addEnergy);
-        view.SetData(data.FullHP, data.FullATK, data.Cur.HP, data.Cur.ATK, data.Cur.Energy);
     }
 
     #endregion
@@ -136,7 +127,7 @@ public class UnitController : MonoBehaviour
         return model.Data.Cur.ATK;
     }
 
-    /// <summary>
+    /// <summary> 
     /// Takes damage.
     /// </summary>
     /// <param name="damage"></param>
@@ -155,9 +146,28 @@ public class UnitController : MonoBehaviour
 
     #endregion
 
+
+    public void SetEnergy(int _energy)
+    {
+        int value = model.Data.Cur.ENG + _energy;
+
+        model.Data.SetEnergy(value);
+
+        if (_energy > 0)
+            view.ShowBuff(0, 0, _energy);
+        else
+        {
+            view.ShowConsume(_energy);
+        }
+            
+        view.SetData(
+            model.Data.FullHP, model.Data.FullATK, 
+            model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
+    }
+
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
-        if (model.Data.Cur.Energy <= 0)
+        if (model.Data.Cur.ENG <= 0)
             return null;
 
         if (triggerType == model.CurrentLevel.TriggerType)
@@ -179,7 +189,7 @@ public class UnitController : MonoBehaviour
 
     public void TriggerFaint()
     {
-        Debug.Log($"{name} faint");
+      Debug.Log($"{name} faint");
         var ability = TriggerAbility(TriggerType.Faint);
         if (ability != null)
         {

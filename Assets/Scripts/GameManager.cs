@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Develop Settings")]
-    [SerializeField] private bool deleteSaveGame;
-    [SerializeField] public bool RepairSystem;
+    [SerializeField] private bool isDeletingSaveGame;
+    [SerializeField] public bool IsRepairSystemActive;
 
     [Header("Battle Speed Settings")]
     public float DefaultSpeedMultiplier = 1f;
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         players[1] = gameObject.AddComponent<Player>();
 
         // Load saved game.
-        var savedGame = SaveSystem.LoadGame(deleteSaveGame, GameMode.Single);
+        var savedGame = SaveSystem.LoadGame(isDeletingSaveGame, GameMode.Single);
         if (savedGame != null)
         {
             players[0].Data = savedGame.PlayerData1;

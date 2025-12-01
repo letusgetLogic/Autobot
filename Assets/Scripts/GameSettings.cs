@@ -44,6 +44,8 @@ public class GameSettings : MonoBehaviour
         }
 
         Instance = this;
+
+        Time.timeScale = 1f;
     }
 
     private void Start()

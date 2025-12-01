@@ -15,12 +15,15 @@ public class Summon : AbilityBase
 
     public override void Run()
     {
-        Controller.transform.SetParent(null, true);
-        Controller.DeactivateInteraction();
-        SpawnUnit();
+        SpawnManager.Instance.StartCoroutine(SpawnUnit());
     }
-    public void SpawnUnit()
+    public IEnumerator SpawnUnit()
     {
+        yield return new WaitForSeconds(PhaseBattleController.Instance.Process.DurationDelaySummon);
+
+        Controller.DeactivateInteraction();
+        Controller.transform.parent = null;
+
         Slot[] slots;
 
         if (GameManager.Instance.IsPhaseBattle)

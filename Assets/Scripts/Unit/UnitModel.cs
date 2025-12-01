@@ -20,11 +20,19 @@ public class UnitModel
     public Currency Sell => Pack.CurrencyData.Sell[SellIndex];
     public Currency RepairCost => Pack.CurrencyData.RepairCost[CurrentLevel.Index];
 
-    public int SellIndex => SoTradingCurrency.ConvertToIndex1D(
-       Pack.CurrencyData.HealthPortion,
-       Data.Durability,
-       CurrentLevel.Index);
+    public int SellIndex
+    {
+        get
+        {
+            var pack = PackManager.Instance.MyPack;
 
+            return SoTradingCurrency.ConvertToIndex1D(
+                Data.Cur.HP == Data.FullHP ? pack.CurrencyData.HealthPortion : Data.Durability,
+                Pack.CurrencyData.LevelAmount,
+                CurrentLevel.Index,
+                GameManager.Instance.IsRepairSystemActive);
+        }
+    }
     public UnitModel(SoUnit _soUnit, int _index, RepairSystem _repair) // For new unit
     {
         Repair = _repair;
@@ -68,7 +76,8 @@ public class UnitModel
 
         View.Shadow.enabled = false;
         View.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
+        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
+        Debug.Log(Data.ID + " Energy: " + Data.Cur.ENG);
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
 
@@ -119,7 +128,7 @@ public class UnitModel
         Repair?.SetDisplay(_unitState);
 
         Data.UnitState = _unitState;
-        bool isForBuying = _unitState == UnitState.InSlotShop;
+        bool isForBuying = _unitState == UnitState.InSlotShop || _unitState == UnitState.Freezed;
         View.SetBuyOrSell(Currency(Data.UnitState), isForBuying);
     }
 
@@ -245,18 +254,19 @@ public class UnitModel
         Data.SetHP(Data.Cur.HP + _buff.HP + _buffTemp.HP, Repair == null ? null : Repair.SetRepairPanel);
         Data.SetATK(Data.Cur.ATK + _buff.ATK + _buffTemp.ATK);
 
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
+        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }
 
     /// <summary>
-    /// Adds the given values to the unit by buff.
+    /// Adds the given values to the unit by fusion.
     /// </summary>
     /// <param name="_basis"></param>
     /// <param name="_buff"></param>
     /// <param name="_buffTemp"></param>
     /// <param name="_otherCurrent"> The average of model.Data.Cur and _otherCurrent would be calculated.</param>
-    public void Add(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent)
+    public void Add(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent, bool _hasOtherFullHP)
     {
+        bool hasFullHP = Data.Cur.HP == Data.FullHP;
         int maxHP = PackManager.Instance.MyPack.MaxHP.Value;
         int maxATK = PackManager.Instance.MyPack.MaxATK.Value;
 
@@ -274,16 +284,24 @@ public class UnitModel
 
         int hp = GetAverage(Data.Cur.HP, _otherCurrent.HP);
         int atk = GetAverage(Data.Cur.ATK, _otherCurrent.ATK);
-        int energy = GetAverage(Data.Cur.Energy, _otherCurrent.Energy);
+        int energy = GetAverage(Data.Cur.ENG, _otherCurrent.ENG);
 
         int addHP = Repair != null ? 0 : _basis.HP + _buff.HP + _buffTemp.HP;
         int addATK = Repair != null ? 0 : _basis.ATK + _buff.ATK + _buffTemp.ATK;
 
         Data.SetHP(hp + addHP, Repair == null ? null : Repair.SetRepairPanel);
         Data.SetATK(atk + addATK);
+
+        // Prevent reduction of Durability when both units have Full HP.
+        if (hasFullHP && _hasOtherFullHP)
+        {
+            Data.SetHP(Data.FullHP, Repair == null ? null : Repair.SetRepairPanel);
+            Data.SetATK(Data.FullATK);
+        }
+
         Data.SetEnergy(energy);
 
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.Energy);
+        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }
 
     private int GetAverage(int _current, int _addCurrent)

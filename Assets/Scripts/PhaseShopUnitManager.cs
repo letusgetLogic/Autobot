@@ -49,6 +49,8 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
         Instance = this;
 
+        Time.timeScale = 1f;
+
         SetIndex(teamSlots);
         SetIndex(shopUnitSlots);
     }
@@ -166,7 +168,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         var unit = ChargeSlot.UnitController();
         if (unit != null)
         {
-            unit.AddEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
+            unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
         }
     }
 

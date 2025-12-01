@@ -454,7 +454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
   ModeSingleHeart: {fileID: 2004077453}
-  IsModeDevelop: 1
+  IsModeDevelop: 0
   lives: 3
   timer: 90
   packs:
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v25.11.9.1
+  m_text: v25.12.1.1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -627,6 +627,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8670278373536024827, guid: d10d20891cc7cb54483c17710d712359, type: 3}
   m_PrefabInstance: {fileID: 1578454761218628532}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1793262727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1793262728}
+  m_Layer: 0
+  m_Name: Main Menu Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1793262728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793262727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1857042867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,8 +1040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d83d886ba1b1b4396fd5b7a62f6699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  deleteSaveGame: 1
-  RepairSystem: 1
+  isDeletingSaveGame: 1
+  IsRepairSystemActive: 1
   DefaultSpeedMultiplier: 1
   MaxSpeedMultiplier: 2
 --- !u!4 &4165484126028135198
@@ -1213,6 +1244,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main
       objectReference: {fileID: 0}
+    - target: {fileID: 6165153120175224586, guid: dd63a9bdb8b2fef4ab03a663f85cfc57, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnButtonClick
+      objectReference: {fileID: 0}
     - target: {fileID: 7582877863032258316, guid: dd63a9bdb8b2fef4ab03a663f85cfc57, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1244,3 +1279,4 @@ SceneRoots:
   - {fileID: 4165484126028135198}
   - {fileID: 1397424692}
   - {fileID: 508185754}
+  - {fileID: 1793262728}

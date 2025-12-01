@@ -116,7 +116,9 @@ class SoTradingCurrencyEditor : Editor
         for (int j = 0; j < data.LevelAmount; j++)
         {
             EditorGUILayout.LabelField("|", GUILayout.Width(ColumnLineWidth));
-            int index = SoTradingCurrency.ConvertToIndex1D(data.HealthPortion, i, j);
+
+            int index = SoTradingCurrency.ConvertToIndex1D(data.LevelAmount, i, j, true);
+
             data.Sell[index].Nut = EditorGUILayout.IntField(data.Sell[index].Nut, GUILayout.Width(ColumnNumberWidth));
             data.Sell[index].SoTool = EditorGUILayout.IntField(data.Sell[index].SoTool, GUILayout.Width(ColumnNumberWidth));
         }

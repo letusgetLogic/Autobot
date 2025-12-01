@@ -13,7 +13,7 @@ public class MenuButton : MonoBehaviour
             Destroy(SpawnManager.Instance.gameObject);
 
         SceneManager.LoadScene("Menu");
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
     }
 }
 

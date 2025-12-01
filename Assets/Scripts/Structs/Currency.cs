@@ -16,7 +16,7 @@ public struct Currency
             // If Repair System is enabled, tools are not consumed.
 
             if (GameManager.Instance != null &&
-                GameManager.Instance.RepairSystem == false)
+                GameManager.Instance.IsRepairSystemActive == false)
             {
                 return 0;
             }

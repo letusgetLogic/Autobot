@@ -68,7 +68,8 @@ public class UnitView : MonoBehaviour
         damage,
         buffHealth,
         buffAttack,
-        addEnergy;
+        addEnergy,
+        consumEnergy;
 
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
@@ -369,10 +370,24 @@ public class UnitView : MonoBehaviour
 
     private IEnumerator HideBuff()
     {
-        yield return new WaitForSeconds(unitSettings.DurationShowBuff);
+        yield return new WaitForSeconds(unitSettings.DurationShowTemporaryValue);
         buffHealth.enabled = false;
         buffAttack.enabled = false;
         addEnergy.enabled = false;
+    }
+
+    public void ShowConsume(int _energy)
+    {
+        consumEnergy.text = _energy.ToString();
+        consumEnergy.enabled = _energy < 0;
+
+        StartCoroutine(HideConsum());
+    }
+
+    private IEnumerator HideConsum()
+    {
+        yield return new WaitForSeconds(unitSettings.DurationShowTemporaryValue);
+        consumEnergy.enabled = false;
     }
 
     public void HideVisuals()
