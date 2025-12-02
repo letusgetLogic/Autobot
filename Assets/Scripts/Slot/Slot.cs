@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
+    [Tooltip("The hint of attached object.")]
     [SerializeField]
     private SpriteRenderer border;
     public SpriteRenderer Border
@@ -40,7 +41,7 @@ public class Slot : MonoBehaviour
         eventHover.OnMouseExitEvent -= HideDescription;
     }
 
-    #region Returns Unit
+    #region Returns Unit Components
 
     /// <summary>
     /// Returns the component UnitView.

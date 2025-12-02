@@ -3,8 +3,13 @@
 public class CheckOutcomeState : StateBase
 {
     private bool startOfBattle;
-    private bool outcome;
+    private bool hasOutcomeOfBattle;
 
+    /// <summary>
+    /// Constructor of CheckOutcomeState
+    /// </summary>
+    /// <param name="maxTimeCount"></param>
+    /// <param name="startOfBattle"></param>
     public CheckOutcomeState(float maxTimeCount, bool startOfBattle) : base(maxTimeCount)
     {
         this.startOfBattle = startOfBattle;
@@ -13,8 +18,8 @@ public class CheckOutcomeState : StateBase
     public override void OnEnter(IFiniteStateMachine ctx)
     {
         Debug.Log("--- CheckOutcomeState");
-        outcome = CheckOutcome();
-        if (outcome)
+        hasOutcomeOfBattle = CheckOutcome();
+        if (hasOutcomeOfBattle)
         {
             MaxTimeCount += MaxTimeCount; // Extend time for showing winner
         }
@@ -28,7 +33,7 @@ public class CheckOutcomeState : StateBase
         }
         else
         {
-            if (outcome)
+            if (hasOutcomeOfBattle)
             {
                 ctx.SetState(new BattleOverState(
                     PhaseBattleController.Instance.Process.DurationBattleOver));

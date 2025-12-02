@@ -48,6 +48,11 @@ public struct SaveUnitData
 
     public bool IsTeamLeft { get; set; }
 
+    /// <summary>
+    /// Sets the current hit points and update the repair panel, if needed.
+    /// </summary>
+    /// <param name="_hp"></param>
+    /// <param name="_updateRepair"></param>
     public void SetHP(int _hp, Action _updateRepair)
     {
         int max = PackManager.Instance.MyPack.MaxHP.Value;
@@ -59,6 +64,10 @@ public struct SaveUnitData
         _updateRepair?.Invoke();
     }
 
+    /// <summary>
+    /// Sets the current attack points.
+    /// </summary>
+    /// <param name="_atk"></param>
     public void SetATK(int _atk)
     {
         int max = PackManager.Instance.MyPack.MaxATK.Value;
@@ -74,6 +83,10 @@ public struct SaveUnitData
             current.ATK = _atk;
     }
 
+    /// <summary>
+    /// Sets the current energy.
+    /// </summary>
+    /// <param name="_energy"></param>
     public void SetEnergy(int _energy)
     {
         int max = PackManager.Instance.MyPack.MaxEnergy.Value;
@@ -89,6 +102,10 @@ public struct SaveUnitData
             current.ENG = _energy;
     }
 
+    /// <summary>
+    /// Sets experience points.
+    /// </summary>
+    /// <param name="_xp"></param>
     public void SetXP(int _xp)
     {
         int max = PackManager.Instance.MyPack.XpToLv3.Value;
@@ -98,6 +115,10 @@ public struct SaveUnitData
             xp = _xp;
     }
 
+    /// <summary>
+    /// Sets the basis hit points.
+    /// </summary>
+    /// <param name="_hp"></param>
     public void SetBasisHP(int _hp)
     {
         int max = PackManager.Instance.MyPack.MaxHP.Value;
@@ -107,6 +128,10 @@ public struct SaveUnitData
             basis.HP = _hp;
     }
 
+    /// <summary>
+    /// Sets the basis attack poimts.
+    /// </summary>
+    /// <param name="_atk"></param>
     public void SetBasisATK(int _atk)
     {
         int max = PackManager.Instance.MyPack.MaxATK.Value;
@@ -116,6 +141,10 @@ public struct SaveUnitData
             basis.ATK = _atk;
     }
 
+    /// <summary>
+    /// Sets the buff hit points.
+    /// </summary>
+    /// <param name="_hp"></param>
     public void SetBuffHP(int _hp)
     {
         if (_hp < 0)
@@ -124,6 +153,10 @@ public struct SaveUnitData
             buff.HP = _hp;
     }
 
+    /// <summary>
+    /// Sets the buff attack points.
+    /// </summary>
+    /// <param name="_atk"></param>
     public void SetBuffATK(int _atk)
     {
         if (_atk < 0)
@@ -132,6 +165,10 @@ public struct SaveUnitData
             buff.ATK = _atk;
     }
 
+    /// <summary>
+    /// Sets the temporary buff hit points.
+    /// </summary>
+    /// <param name="_hp"></param>
     public void SetTempBuffHP(int _hp)
     {
         if (_hp < 0)
@@ -140,17 +177,16 @@ public struct SaveUnitData
             temporaryBuff.HP = _hp;
     }
 
+    /// <summary>
+    /// Sets the temporary buff attack points.
+    /// </summary>
+    /// <param name="_atk"></param>
     public void SetTempBuffATK(int _atk)
     {
         if (_atk < 0)
             temporaryBuff.ATK = 0;
         else
             temporaryBuff.ATK = _atk;
-    }
-
-    public void SetIsTeam1(bool value)
-    {
-        IsTeamLeft = value;
     }
 }
 

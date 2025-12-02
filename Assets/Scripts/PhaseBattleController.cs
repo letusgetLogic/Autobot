@@ -132,7 +132,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
         Player1.StartBattle();
         Player2.StartBattle();
-        SetState(new InitState(Process.DurationInit));
+        SetState(new InitializeState(Process.DurationInit));
     }
 
     public void SetRunning()

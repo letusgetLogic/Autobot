@@ -9,6 +9,9 @@ public class SettingsButton : MonoBehaviour
 
     private bool isSettingsOpen = false;
 
+    /// <summary>
+    /// Button click calls.
+    /// </summary>
     public void OnButtonClick()
     {
         isSettingsOpen = !isSettingsOpen;

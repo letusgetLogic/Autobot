@@ -1,8 +1,12 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 public class HandleAbilityState : StateBase
 {
     private bool isDone = false;
+
+    /// <summary>
+    /// Consturctor of HandleAbilityState.
+    /// </summary>
+    /// <param name="maxTimeCount"></param>
     public HandleAbilityState(float maxTimeCount) : base(maxTimeCount)
     {
     }
@@ -36,6 +40,9 @@ public class HandleAbilityState : StateBase
         }
     }
 
+    /// <summary>
+    /// Handles all registered abilities.
+    /// </summary>
     private void HandleAbility()
     {
         if (PhaseBattleController.Instance.UnitAbilities.Count > 0)

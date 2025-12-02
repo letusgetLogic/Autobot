@@ -27,12 +27,21 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Sets integer value of PlayerPrefs.
+    /// </summary>
+    /// <param name="KeyName"></param>
+    /// <param name="Value"></param>
     public void SetInt(string KeyName, int Value)
     {
         PlayerPrefs.SetInt(KeyName, Value);
     }
 
+    /// <summary>
+    /// Gets integer value of PlayerPrefs.
+    /// </summary>
+    /// <param name="KeyName"></param>
+    /// <returns></returns>
     public int Getint(string KeyName)
     {
         return PlayerPrefs.GetInt(KeyName);

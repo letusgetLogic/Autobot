@@ -3,6 +3,10 @@
     protected float TimeCount {  get; set; }
     protected float MaxTimeCount {  get; set; }
 
+    /// <summary>
+    /// Base constructor of states of the battle phase.
+    /// </summary>
+    /// <param name="maxTimeCount"></param>
     public StateBase(float maxTimeCount)
     {
         TimeCount = 0;

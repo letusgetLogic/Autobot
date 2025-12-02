@@ -2,12 +2,17 @@
 
 public class AttackState : StateBase
 {
+    /// <summary>
+    /// Constructor of AttackState.
+    /// </summary>
+    /// <param name="maxTimeCount"></param>
     public AttackState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
-    {Debug.WriteLine("--- AttackState");
+    {
+        Debug.WriteLine("--- AttackState");
         AttackEachOther();
     }
 
@@ -23,6 +28,9 @@ public class AttackState : StateBase
         }
     }
 
+    /// <summary>
+    /// Lets the 2 units attacking each other.
+    /// </summary>
     private void AttackEachOther()
     {
         UnitController unit1 = PhaseBattleController.Instance.AttackingUnit1;

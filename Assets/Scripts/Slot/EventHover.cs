@@ -8,12 +8,20 @@ public class EventHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public UnityAction OnMouseOverEvent { get; set; }
     public UnityAction OnMouseExitEvent { get; set; }
 
+    /// <summary>
+    /// Mouse entered the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
         Data = eventData;
         OnMouseOverEvent?.Invoke();
     }
 
+    /// <summary>
+    /// Mouse exited the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
         Data = null;

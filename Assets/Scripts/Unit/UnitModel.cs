@@ -33,7 +33,14 @@ public class UnitModel
                 GameManager.Instance.IsRepairSystemActive);
         }
     }
-    public UnitModel(SoUnit _soUnit, int _index, RepairSystem _repair) // For new unit
+
+    /// <summary>
+    /// Constructor of UnitModel for new unit.
+    /// </summary>
+    /// <param name="_soUnit"></param>
+    /// <param name="_index"></param>
+    /// <param name="_repair"></param>
+    public UnitModel(SoUnit _soUnit, int _index, RepairSystem _repair)
     {
         Repair = _repair;
         SoUnit = _soUnit;
@@ -51,7 +58,13 @@ public class UnitModel
         Debug.Log(Data.ID + " created.");
     }
 
-    public UnitModel(SoUnit _soUnit, SaveUnitData _data, RepairSystem _repair) // For loaded unit
+    /// <summary>
+    /// Constructor of UnitModel for loaded unit.
+    /// </summary>
+    /// <param name="_soUnit"></param>
+    /// <param name="_data"></param>
+    /// <param name="_repair"></param>
+    public UnitModel(SoUnit _soUnit, SaveUnitData _data, RepairSystem _repair) 
     {
         Repair = _repair;
         SoUnit = _soUnit;
@@ -59,6 +72,10 @@ public class UnitModel
         Debug.Log(Data.ID + " loaded.");
     }
 
+    /// <summary>
+    /// Initializes the view and the repair system.
+    /// </summary>
+    /// <param name="_view"></param>
     public void InitView(UnitView _view)
     {
         View = _view;
@@ -81,6 +98,11 @@ public class UnitModel
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
 
+    /// <summary>
+    /// Is phase shop based on unit state?
+    /// </summary>
+    /// <param name="unitState"></param>
+    /// <returns></returns>
     private bool IsPhaseShop(UnitState unitState)
     {
         switch (unitState)
@@ -98,6 +120,10 @@ public class UnitModel
         return default;
     }
 
+    /// <summary>
+    /// Sets the unit state and updates view.
+    /// </summary>
+    /// <param name="_unitState"></param>
     public void SetData(UnitState _unitState)
     {
         if (GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
@@ -132,6 +158,11 @@ public class UnitModel
         View.SetBuyOrSell(Currency(Data.UnitState), isForBuying);
     }
 
+    /// <summary>
+    /// Gets the data for showing.
+    /// </summary>
+    /// <param name="unitState"></param>
+    /// <returns></returns>
     private Currency Currency(UnitState unitState)
     {
         switch (unitState)
@@ -148,8 +179,6 @@ public class UnitModel
 
         return default;
     }
-
-
 
 
     #region Update Level
@@ -304,6 +333,12 @@ public class UnitModel
         View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }
 
+    /// <summary>
+    /// Gets the average of 2 values.
+    /// </summary>
+    /// <param name="_current"></param>
+    /// <param name="_addCurrent"></param>
+    /// <returns></returns>
     private int GetAverage(int _current, int _addCurrent)
     {
         if (Repair != null)
@@ -336,7 +371,11 @@ public class UnitModel
         return _add;
     }
 
-    public void SubstractHp(int damage)
+    /// <summary>
+    /// Reduces HP at the damage and updates view.
+    /// </summary>
+    /// <param name="damage"></param>
+    public void ReduceHp(int damage)
     {
         if (damage < 0)
             damage = 0;

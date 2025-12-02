@@ -2,6 +2,10 @@
 
 public class InsertState : StateBase
 {
+    /// <summary>
+    /// Constructor of InsertState. Moves the units to the center.
+    /// </summary>
+    /// <param name="maxTimeCount"></param>
     public InsertState(float maxTimeCount) : base(maxTimeCount)
     {
     }
@@ -25,6 +29,10 @@ public class InsertState : StateBase
         }
     }
 
+    /// <summary>
+    /// Moves the units to the center.
+    /// </summary>
+    /// <param name="slots"></param>
     private void MoveCloserTogether(Slot[] slots)
     {
         bool[] isOccupied = new bool[slots.Length];

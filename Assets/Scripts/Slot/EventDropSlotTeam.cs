@@ -10,6 +10,10 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
         slot = transform.parent.GetComponent<Slot>();
     }
 
+    /// <summary>
+    /// Mouse was released and hitted the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrop(PointerEventData eventData)
     {
         if (PhaseShopUnitManager.Instance.PreventDragging)

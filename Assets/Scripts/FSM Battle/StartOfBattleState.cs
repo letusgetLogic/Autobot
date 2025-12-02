@@ -2,12 +2,17 @@
 
 public class StartOfBattleState : StateBase
 {
+    /// <summary>
+    /// Constructor of StartOfBattleState.
+    /// </summary>
+    /// <param name="maxCount"></param>
     public StartOfBattleState(float maxCount) : base(maxCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine ctx)
-    {Debug.WriteLine("--- StartOfBattleState");
+    {
+        Debug.WriteLine("--- StartOfBattleState");
         TriggerAbility(PhaseBattleController.Instance.Slots1);
         TriggerAbility(PhaseBattleController.Instance.Slots2);
 
@@ -20,6 +25,10 @@ public class StartOfBattleState : StateBase
 
     }
 
+    /// <summary>
+    /// Triggers the ability before attacking.
+    /// </summary>
+    /// <param name="slots"></param>
     private void TriggerAbility(Slot[] slots)
     {
         foreach (var slot in slots)

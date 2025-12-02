@@ -29,7 +29,7 @@ public class SoTradingCurrency : ScriptableObject
     }
 
     /// <summary>
-    /// Return _durability * _levelAmount + _levelIndex.
+    /// Returns _durability * _levelAmount + _levelIndex.
     /// </summary>
     /// <param name="_durability"></param>
     /// <param name="_levelAmount"></param>

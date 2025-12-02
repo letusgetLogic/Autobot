@@ -11,6 +11,10 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         slot = transform.parent.GetComponent<Slot>();
     }
 
+    /// <summary>
+    /// Beginning of dragging object calls.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -29,6 +33,10 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         PhaseShopUI.Instance.SetButtonActive(slot.UnitController().Model);
     }
 
+    /// <summary>
+    /// Dragging objects calls.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
         if (PhaseShopUnitManager.Instance.PreventDragging)
@@ -44,6 +52,10 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         slot.UnitView().BeingMovedOnMouse(eventData);
     }
 
+    /// <summary>
+    /// Ending of dragging object calls.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
         PhaseShopUnitManager.Instance.PreventDragging = false;

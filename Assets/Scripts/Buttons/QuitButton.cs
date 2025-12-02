@@ -6,9 +6,8 @@ using UnityEditor;
 
 public class QuitButton : MonoBehaviour
 {
-
     /// <summary>
-    /// Closes the game application.
+    /// Button click calls. Closes the game application.
     /// </summary>
     public void OnButtonClick()
     {

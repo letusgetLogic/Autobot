@@ -5,6 +5,14 @@ public class Summon : AbilityBase
     private UnitModel model;
     private SoUnit[] summonedUnits;
     private int slotIndex;
+
+    /// <summary>
+    /// Constructor of Summon.
+    /// </summary>
+    /// <param name="controller"></param>
+    /// <param name="model"></param>
+    /// <param name="currentLevel"></param>
+    /// <param name="slotIndex"></param>
     public Summon(UnitController controller, UnitModel model, Level currentLevel, int slotIndex) :
         base(controller, currentLevel)
     {
@@ -17,12 +25,16 @@ public class Summon : AbilityBase
     {
         SpawnManager.Instance.StartCoroutine(SpawnUnit());
     }
+
+    /// <summary>
+    /// Delay the instantiating of the summoned unit and sets the unit, which has triggered, invisible.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator SpawnUnit()
     {
         yield return new WaitForSeconds(PhaseBattleController.Instance.Process.DurationDelaySummon);
 
-        Controller.DeactivateInteraction();
-        Controller.transform.parent = null;
+        Controller.Deactivate();
 
         Slot[] slots;
 

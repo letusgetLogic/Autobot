@@ -2,6 +2,10 @@
 
 public class BattleOverState : StateBase
 {
+    /// <summary>
+    /// Constructor of BattleOverState
+    /// </summary>
+    /// <param name="maxTimeCount"></param>
     public BattleOverState(float maxTimeCount) : base(maxTimeCount)
     {
     }

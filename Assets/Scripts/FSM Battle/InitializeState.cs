@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 
-public class InitState : StateBase
+public class InitializeState : StateBase
 {
-    public InitState(float maxTimeCount) : base(maxTimeCount)
+    /// <summary>
+    /// Constructor of InitializeState.
+    /// </summary>
+    /// <param name="maxTimeCount"></param>
+    public InitializeState(float maxTimeCount) : base(maxTimeCount)
     {
     }
 
@@ -28,7 +32,7 @@ public class InitState : StateBase
     }
 
     /// <summary>
-    /// Initializes the players.
+    /// Initializes the unit team of players.
     /// </summary>
     private void Initialize()
     {
@@ -55,7 +59,6 @@ public class InitState : StateBase
             var unitData = _player.Data.TeamUnitDatas[i];
             if (unitData.HasReference && unitData.Cur.HP > 0)
             {
-                Debug.Log(unitData.ID + " spawned - HP: " + unitData.Cur.HP);
                 var unitController = SpawnManager.Instance.Spawn(
                     PackManager.Instance.Units[unitData.Index],
                     unitData.Index,

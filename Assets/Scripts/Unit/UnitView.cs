@@ -8,10 +8,8 @@ public class UnitView : MonoBehaviour
 {
     #region Variables
 
-    [SerializeField]
-    private GameObject[] hideVisuals;
-
     [Header("Sprites")]
+    [Tooltip(("The shadow is showing, when sprite is being dragged out of the slot shop."))]
     [SerializeField] private SpriteRenderer shadowSpriteRenderer;
     [SerializeField] private SpriteRenderer dragSpriteRenderer;
     [SerializeField] private SpriteRenderer iceCubeSpriteRenderer;
@@ -295,13 +293,22 @@ public class UnitView : MonoBehaviour
         step5Filled.SetActive(step5);
     }
 
+    /// <summary>
+    /// Sets the activity of repair display.
+    /// </summary>
+    /// <param name="value"></param>
     public void SetRepairDisplayActive(bool value)
     {
         repairDisplayHp.SetActive(value);
         repairDisplayAtk.SetActive(value);
     }
 
-    public void SetRepairStepActive(bool _panel2, bool _panel3)
+    /// <summary>
+    /// Sets the activity of the repair panels.
+    /// </summary>
+    /// <param name="_panel2"></param>
+    /// <param name="_panel3"></param>
+    public void SetRepairPanelActive(bool _panel2, bool _panel3)
     {
         repairPanelHp2.SetActive(_panel2);
         repairPanelHp3.SetActive(_panel3);
@@ -310,6 +317,12 @@ public class UnitView : MonoBehaviour
         repairPanelAtk3.SetActive(_panel3);
     }
 
+    /// <summary>
+    /// Sets the activity of the repair steps.
+    /// </summary>
+    /// <param name="_fill1"></param>
+    /// <param name="_fill2"></param>
+    /// <param name="_fill3"></param>
     public void SetRepairStepFillActive(bool _fill1, bool _fill2, bool _fill3)
     {
         repairStepFillHp1.SetActive(_fill1);
@@ -354,6 +367,12 @@ public class UnitView : MonoBehaviour
         damage.enabled = false;
     }
 
+    /// <summary>
+    /// Shows the buff.
+    /// </summary>
+    /// <param name="_health"></param>
+    /// <param name="_attack"></param>
+    /// <param name="_energy"></param>
     public void ShowBuff(int _health, int _attack, int _energy)
     {
         buffHealth.text = _health.ToString();
@@ -368,6 +387,10 @@ public class UnitView : MonoBehaviour
         StartCoroutine(HideBuff());
     }
 
+    /// <summary>
+    /// Hides the buff.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator HideBuff()
     {
         yield return new WaitForSeconds(unitSettings.DurationShowTemporaryValue);
@@ -376,6 +399,10 @@ public class UnitView : MonoBehaviour
         addEnergy.enabled = false;
     }
 
+    /// <summary>
+    /// Shows the consumed energy.
+    /// </summary>
+    /// <param name="_energy"></param>
     public void ShowConsume(int _energy)
     {
         consumEnergy.text = _energy.ToString();
@@ -384,25 +411,28 @@ public class UnitView : MonoBehaviour
         StartCoroutine(HideConsum());
     }
 
+    /// <summary>
+    /// Hides the consumed energy.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator HideConsum()
     {
         yield return new WaitForSeconds(unitSettings.DurationShowTemporaryValue);
         consumEnergy.enabled = false;
     }
 
-    public void HideVisuals()
-    {
-        foreach (var go in hideVisuals)
-            go.SetActive(false);
-    }
-
-
+    /// <summary>
+    /// Hides the objects during battle phase.
+    /// </summary>
     public void HideObjectsDuringBattle()
     {
         foreach (var element in hideObjectsDuringBattle)
             element.SetActive(false);
     }
 
+    /// <summary>
+    /// Hides the full HP and ATK.
+    /// </summary>
     public void HideFullAttributes()
     {
         foreach (var element in hideFullAttributes)

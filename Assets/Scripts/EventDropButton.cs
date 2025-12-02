@@ -3,6 +3,10 @@ using UnityEngine.EventSystems;
 
 public class EventDropButton : MonoBehaviour, IDropHandler
 {
+    /// <summary>
+    /// Mouse was released and hitted the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null)

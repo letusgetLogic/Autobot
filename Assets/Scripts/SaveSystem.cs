@@ -4,13 +4,14 @@ using UnityEngine;
 
 public static class SaveSystem
 {
+    /// <summary>
+    /// Saves the game.
+    /// </summary>
+    /// <param name="game"></param>
     public static void SaveGame(Game game)
     {
-        GameData savedData = LoadGameData();
-        if (savedData != null)
-            Add(savedData, game);
-        else
-            savedData = new GameData(game);
+        GameData savedData = LoadGameData() == null ? LoadGameData() : GameData.Instance;
+        savedData.AddGame(game);
 
         BinaryFormatter formatter = new BinaryFormatter();
 
@@ -21,6 +22,12 @@ public static class SaveSystem
         stream.Close();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="delete"></param>
+    /// <param name="gameMode"></param>
+    /// <returns></returns>
     public static Game LoadGame(bool delete, GameMode gameMode)
     {
         GameData savedData = LoadGameData();
@@ -66,15 +73,5 @@ public static class SaveSystem
             return null;
         }
     }
-
-    private static void Add(GameData gameData, Game game)
-    {
-        var savedGame = gameData.SavedGames.Find(v => v.Mode == game.Mode);
-        if (savedGame != null)
-            savedGame = game;
-        else
-            gameData.SavedGames.Add(game);
-    }
-
 }
 

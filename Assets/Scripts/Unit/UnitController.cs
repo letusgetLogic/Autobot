@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.XR;
 
 public class UnitController : MonoBehaviour
 {
@@ -50,13 +51,16 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(_soUnit, _data,
                 GameManager.Instance.IsRepairSystemActive ? new RepairSystem() : null);
         }
+
         flipSprite = !_isTeamLeft;
         _unityAction?.Invoke();
         model.InitView(view);
         model.SetData(_unitState);
     }
 
-
+    /// <summary>
+    /// Flips the sprite when the unit is on the right team.
+    /// </summary>
     public void FlipSprite()
     {
         if (flipSprite)
@@ -74,7 +78,7 @@ public class UnitController : MonoBehaviour
     #region PhaseShop
 
     /// <summary>
-    /// Destroys the game object.
+    /// Triggers the ability if it is existent and destroys the unit.
     /// </summary>
     public void GetSelled()
     {
@@ -108,6 +112,10 @@ public class UnitController : MonoBehaviour
 
     #region Phase Battle
 
+    /// <summary>
+    /// Triggers the ability while attacking.
+    /// </summary>
+    /// <returns></returns>
     public int TriggerAttack()
     {
         //var ability = TriggerAbility(TriggerType.BeforeAttack);
@@ -133,7 +141,7 @@ public class UnitController : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(int damage)
     {
-        model.SubstractHp(damage);
+        model.ReduceHp(damage);
 
         if (model.Data.Cur.HP <= 0)
         {
@@ -146,7 +154,10 @@ public class UnitController : MonoBehaviour
 
     #endregion
 
-
+    /// <summary>
+    /// Sets and updates the view of the energy.
+    /// </summary>
+    /// <param name="_energy"></param>
     public void SetEnergy(int _energy)
     {
         int value = model.Data.Cur.ENG + _energy;
@@ -165,9 +176,14 @@ public class UnitController : MonoBehaviour
             model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
     }
 
+    /// <summary>
+    /// Returns the ability if the energy isn't smaller as the value of energy to consume.
+    /// </summary>
+    /// <param name="triggerType"></param>
+    /// <returns></returns>
     public AbilityBase TriggerAbility(TriggerType triggerType)
     {
-        if (model.Data.Cur.ENG <= 0)
+        if (model.Data.Cur.ENG < model.CurrentLevel.ConsumedEnergy.Value)
             return null;
 
         if (triggerType == model.CurrentLevel.TriggerType)
@@ -176,6 +192,12 @@ public class UnitController : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Add buff to the model data and updates the view.
+    /// </summary>
+    /// <param name="isPernament"></param>
+    /// <param name="addHealth"></param>
+    /// <param name="addAttack"></param>
     public void Buff(bool isPernament, int addHealth, int addAttack)
     {
         if (isPernament)
@@ -186,7 +208,9 @@ public class UnitController : MonoBehaviour
         view.ShowBuff(addHealth, addAttack, 0);
     }
 
-
+    /// <summary>
+    /// Triggers the ability while unit is fainting.
+    /// </summary>
     public void TriggerFaint()
     {
       Debug.Log($"{name} faint");
@@ -200,17 +224,21 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void DeactivateInteraction()
+    /// <summary>
+    /// Sets parent null and game object active false.
+    /// </summary>
+    public void Deactivate()
     {
-        View.HideVisuals();
-        View.enabled = false;
-        this.enabled = false;
+        transform.parent = null;
+        gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Moves the objects to the target.
+    /// </summary>
+    /// <param name="target"></param>
     public void MoveTo(Vector3 target)
     {
         //transform.DoMove();
     }
-
-
 }

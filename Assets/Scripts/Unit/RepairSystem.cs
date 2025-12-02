@@ -17,12 +17,21 @@ public class RepairSystem
         }
     }
 
+    /// <summary>
+    /// Initializes the references.
+    /// </summary>
+    /// <param name="_model"></param>
+    /// <param name="_view"></param>
     public void Initialize(UnitModel _model, UnitView _view)
     {
         model = _model;
         view = _view;
     }
 
+    /// <summary>
+    /// Sets the display of the repair mechanic.
+    /// </summary>
+    /// <param name="_unitState"></param>
     public void SetDisplay(UnitState _unitState)
     {
         switch (_unitState)
@@ -45,11 +54,21 @@ public class RepairSystem
         }
     }
 
+    /// <summary>
+    /// Shows or hides the repair panel based on full HP. For example, Full HP = 1 should show only 1 bar. 
+    /// </summary>
     public void SetRepairPanel()
     {
-        view.SetRepairStepActive(model.Data.FullHP >= 2, model.Data.FullHP >= 3);
+        view.SetRepairPanelActive(model.Data.FullHP >= 2, model.Data.FullHP >= 3);
     }
 
+    /// <summary>
+    /// Sets the durability based on health or the give durability value.
+    /// </summary>
+    /// <param name="_shouldGetDurability"></param>
+    /// <param name="_updateATK"></param>
+    /// <param name="_durability"></param>
+    /// <param name="_ratio"></param>
     public void SetDurability(bool _shouldGetDurability, bool _updateATK, int _durability, float _ratio)
     {
         // if durability wasn't setted, we get it from health.
@@ -69,6 +88,9 @@ public class RepairSystem
         ShowDurability();
     }
 
+    /// <summary>
+    /// Shows the filled steps of durability.
+    /// </summary>
     private void ShowDurability()
     {
         switch (model.Data.Durability)
@@ -88,6 +110,11 @@ public class RepairSystem
         }
     }
 
+    /// <summary>
+    /// Gets the durability based on health.
+    /// </summary>
+    /// <param name="_updateAtk"></param>
+    /// <returns></returns>
     private int GetDurabilityFromHealth(bool _updateAtk)
     {
         float portionHp = (float)model.Data.Cur.HP / model.Data.FullHP;
@@ -118,6 +145,9 @@ public class RepairSystem
         return 0;
     }
 
+    /// <summary>
+    /// Sets and shows the current HP and ATK based on the durability.
+    /// </summary>
     private void SetStatsBasedDurability()
     {
         float floatHP = model.Data.FullHP * model.Data.DurabilityRatio;
@@ -137,6 +167,9 @@ public class RepairSystem
             model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
     }
 
+    /// <summary>
+    /// Rises the durability value.
+    /// </summary>
     public void RiseDurability()
     {
         model.Data.DurabilityRatio += portionSize;

@@ -182,6 +182,9 @@ public class GameManager : MonoBehaviour
         PhaseBattleController.Instance.Run(players[0], players[1]);
     }
 
+    /// <summary>
+    /// Ends the battle phase.
+    /// </summary>
     public void EndPhaseBattle()
     {
         CurrentGame.State = GameState.EndOfBattle;

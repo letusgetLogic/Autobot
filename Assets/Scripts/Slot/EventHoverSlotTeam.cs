@@ -16,6 +16,10 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         slot = transform.parent.GetComponent<Slot>();
     }
 
+    /// <summary>
+    /// Mouse entered the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (PhaseShopUnitManager.Instance.AttachedGameObject == null &&
@@ -26,6 +30,9 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         slot.Border.enabled = true;
     }
 
+    /// <summary>
+    /// Calls, whether mouse is in the collider.
+    /// </summary>
     private void OnMouseOver()
     {
         if (CanPushOther())
@@ -80,11 +87,19 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         return 0;
     }
 
+    /// <summary>
+    /// Mouse exited the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
         isCounting = false;
     }
 
+    /// <summary>
+    /// Can push other units?
+    /// </summary>
+    /// <returns></returns>
     private bool CanPushOther()
     {
         var attached = PhaseShopUnitManager.Instance.AttachedGameObject;

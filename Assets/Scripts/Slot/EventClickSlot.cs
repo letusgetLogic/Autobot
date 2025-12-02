@@ -10,6 +10,10 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
         slot = transform.parent.GetComponent<Slot>();
     }
 
+    /// <summary>
+    /// Button click calls.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         if (slot.Unit() == null)

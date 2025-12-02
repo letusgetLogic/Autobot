@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 public class Buff : AbilityBase
 {
+    /// <summary>
+    /// Constructor of Buff.
+    /// </summary>
+    /// <param name="controller"></param>
+    /// <param name="currentLevel"></param>
     public Buff(UnitController controller, Level currentLevel) : base(controller, currentLevel)
     {
     }
