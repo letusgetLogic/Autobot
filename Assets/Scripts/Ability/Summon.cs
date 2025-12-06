@@ -7,18 +7,18 @@ public class Summon : AbilityBase
     private int slotIndex;
 
     /// <summary>
-    /// Constructor of Summon.
+    ///  Constructor of Summon.
     /// </summary>
-    /// <param name="controller"></param>
-    /// <param name="model"></param>
-    /// <param name="currentLevel"></param>
-    /// <param name="slotIndex"></param>
-    public Summon(UnitController controller, UnitModel model, Level currentLevel, int slotIndex) :
-        base(controller, currentLevel)
+    /// <param name="_controller"></param>
+    /// <param name="_model"></param>
+    /// <param name="_currentLevel"></param>
+    /// <param name="_teamSlots"></param>
+    public Summon(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots) :
+        base(_controller, _currentLevel, _teamSlots)
     {
-        this.model = model;
+        this.model = _model;
         summonedUnits = CurrentLevel.SummonUnits;
-        this.slotIndex = slotIndex;
+        this.slotIndex = _controller.SlotIndex;
     }
 
     public override void Run()
@@ -36,21 +36,9 @@ public class Summon : AbilityBase
 
         Controller.Deactivate();
 
-        Slot[] slots;
-
-        if (GameManager.Instance.IsPhaseBattle)
-        {
-            slots = model.Data.IsTeamLeft ?
-                PhaseBattleController.Instance.Slots1 :
-                PhaseBattleController.Instance.Slots2;
-        }
-        else
-        {
-            slots = PhaseShopUnitManager.Instance.TeamSlots;
-        }
         for (int i = 0; i < summonedUnits.Length; i++)
         {
-            if (slots[slotIndex].Unit() == null)
+            if (TeamSlots[slotIndex].Unit() == null)
             {
                 Debug.Log($"-Summon SpawnSummonedUnit at slot {slotIndex}");
                 var unitController = SpawnManager.Instance.Spawn(
@@ -58,7 +46,7 @@ public class Summon : AbilityBase
                     -1,
                     new(),
                     model.Data.UnitState,
-                    slots[slotIndex].transform,
+                    TeamSlots[slotIndex].transform,
                     model.Data.IsTeamLeft);
             }
         }

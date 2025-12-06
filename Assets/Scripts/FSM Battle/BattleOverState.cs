@@ -5,12 +5,12 @@ public class BattleOverState : StateBase
     /// <summary>
     /// Constructor of BattleOverState
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    public BattleOverState(float maxTimeCount) : base(maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    public BattleOverState(float _maxTimeCount) : base(_maxTimeCount)
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {
         var player1 = PhaseBattleController.Instance.Player1;
         var player2 = PhaseBattleController.Instance.Player2;
@@ -34,11 +34,11 @@ public class BattleOverState : StateBase
         }
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {
-            TimeCount += speed;
+            TimeCount += _speed;
         }
         else
         {

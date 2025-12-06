@@ -6,9 +6,10 @@ public class Buff : AbilityBase
     /// <summary>
     /// Constructor of Buff.
     /// </summary>
-    /// <param name="controller"></param>
-    /// <param name="currentLevel"></param>
-    public Buff(UnitController controller, Level currentLevel) : base(controller, currentLevel)
+    /// <param name="_controller"></param>
+    /// <param name="_currentLevel"></param>
+    /// <param name="_teanSlots"></param>
+    public Buff(UnitController _controller, Level _currentLevel, Slot[] _teanSlots) : base(_controller, _currentLevel, _teanSlots)
     {
     }
 
@@ -16,24 +17,11 @@ public class Buff : AbilityBase
     {
         if (CurrentLevel.ToWho == ToWho.RandomFriend)
         {
-            Slot[] slots;
-
-            if (GameManager.Instance.IsPhaseBattle)
-            {
-                slots = Controller.Model.Data.IsTeamLeft ?
-                    PhaseBattleController.Instance.Slots1 :
-                    PhaseBattleController.Instance.Slots2;
-            }
-            else
-            {
-                slots = PhaseShopUnitManager.Instance.TeamSlots;
-            }
-
             List<UnitController> unitOnSlot = new List<UnitController>();
 
-            for (int i = 0; i < slots.Length; i++)
+            for (int i = 0; i < TeamSlots.Length; i++)
             {
-                var unit = slots[i].UnitController();
+                var unit = TeamSlots[i].UnitController();
                 if (unit != null && unit != Controller)
                 {
                     unitOnSlot.Add(unit);

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
     {
@@ -27,12 +26,12 @@ public class SpawnManager : MonoBehaviour
     /// <param name="_index"></param>
     /// <param name="_data"></param>
     /// <param name="_unitState"></param>
-    /// <param name="parent"></param>
+    /// <param name="_parent"></param>
     /// <returns></returns>
     public UnitController Spawn(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState,
-        Transform parent)
+        Transform _parent)
     {
-        var unit = Instantiate(unitPrefab, parent, false);
+        var unit = Instantiate(unitPrefab, _parent, false);
 
         var controller = unit.GetComponent<UnitController>();
         controller.Initialize(_soUnit, _index, _data, _unitState, null, default);

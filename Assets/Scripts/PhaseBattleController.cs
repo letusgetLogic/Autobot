@@ -82,10 +82,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     /// <summary>
     /// Set index depend on draw order.
     /// </summary>
-    private void SetIndex(Slot[] slots)
+    private void SetIndex(Slot[] _slots)
     {
-        for (int i = 0; i < slots.Length; i++)
-            slots[i].Index = i;
+        for (int i = 0; i < _slots.Length; i++)
+            _slots[i].Index = i;
     }
 
 
@@ -135,6 +135,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         SetState(new InitializeState(Process.DurationInit));
     }
 
+    /// <summary>
+    /// Set boolean IsRunning.
+    /// </summary>
     public void SetRunning()
     {
         IsStopped = !IsStopped;

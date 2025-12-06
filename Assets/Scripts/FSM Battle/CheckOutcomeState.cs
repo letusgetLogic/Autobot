@@ -8,14 +8,14 @@ public class CheckOutcomeState : StateBase
     /// <summary>
     /// Constructor of CheckOutcomeState
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    /// <param name="startOfBattle"></param>
-    public CheckOutcomeState(float maxTimeCount, bool startOfBattle) : base(maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    /// <param name="_startOfBattle"></param>
+    public CheckOutcomeState(float _maxTimeCount, bool _startOfBattle) : base(_maxTimeCount)
     {
-        this.startOfBattle = startOfBattle;
+        this.startOfBattle = _startOfBattle;
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- CheckOutcomeState");
         hasOutcomeOfBattle = CheckOutcome();
@@ -25,25 +25,25 @@ public class CheckOutcomeState : StateBase
         }
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {
-            TimeCount += speed;
+            TimeCount += _speed;
         }
         else
         {
             if (hasOutcomeOfBattle)
             {
-                ctx.SetState(new BattleOverState(
+                _ctx.SetState(new BattleOverState(
                     PhaseBattleController.Instance.Process.DurationBattleOver));
             }
             else
             {
                 if (startOfBattle)
-                    ctx.SetState(new StartOfBattleState(0));
+                    _ctx.SetState(new StartOfBattleState(0));
                 else
-                    ctx.SetState(new InsertState(
+                    _ctx.SetState(new InsertState(
                         PhaseBattleController.Instance.Process.DurationInsert));
             }
         }
@@ -55,9 +55,9 @@ public class CheckOutcomeState : StateBase
     /// <returns></returns>
     private bool CheckOutcome()
     {
-        if (IsAnyoneIn(PhaseBattleController.Instance.Slots1))
+        if (IsAnyoneIn(PhaseBattleController.Instance.Slots1, null))
         {
-            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2))
+            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2, null))
             {
                 return false; // Continue battle
             }
@@ -76,24 +76,22 @@ public class CheckOutcomeState : StateBase
         }
         else
         {
-            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2))
+            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2, null))
             {
                 GameManager.Instance.UpdatePlayerStats(1); // Right wins
 
                 PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player2.Data.Name, false);
-                PhaseBattleView.Instance.UpdateLives(
-                  PhaseBattleController.Instance.Player1.Data,
-                  PhaseBattleController.Instance.Player2.Data);
             }
             else
             {
                 GameManager.Instance.UpdatePlayerStats(0); // Draw
 
                 PhaseBattleView.Instance.ShowWinner("Nobody", false);
-                PhaseBattleView.Instance.UpdateLives(
-                  PhaseBattleController.Instance.Player1.Data,
-                  PhaseBattleController.Instance.Player2.Data);
             }
+
+            PhaseBattleView.Instance.UpdateLives(
+              PhaseBattleController.Instance.Player1.Data,
+              PhaseBattleController.Instance.Player2.Data);
 
             PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
@@ -104,13 +102,17 @@ public class CheckOutcomeState : StateBase
     /// Checks if any unit is in slots.
     /// </summary>
     /// <param name="slots"></param>
+    /// <param name="_exclusiveSlot"> The reference of Slot, which shouldn't be checked.</param>
     /// <returns></returns>
-    private bool IsAnyoneIn(Slot[] slots)
+    public static bool IsAnyoneIn(Slot[] slots, Slot _exclusiveSlot)
     {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].Unit() != null)
             {
+                if (_exclusiveSlot != null && _exclusiveSlot == slots[i])
+                    continue;
+
                 return true;
             }
         }

@@ -5,16 +5,18 @@ public abstract class AbilityBase
 {
     protected UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
+    protected Slot[] TeamSlots;
 
     /// <summary>
     /// Base constructor with the given parameters. 
     /// </summary>
-    /// <param name="controller"></param>
-    /// <param name="currentLevel"></param>
-    public AbilityBase(UnitController controller, Level currentLevel)
+    /// <param name="_controller"></param>
+    /// <param name="_currentLevel"></param>
+    public AbilityBase(UnitController _controller, Level _currentLevel, Slot[] _teamSlots)
     {
-        Controller = controller;
-        CurrentLevel = currentLevel;
+        Controller = _controller;
+        CurrentLevel = _currentLevel;
+        TeamSlots = _teamSlots;
     }
 
     /// <summary>
@@ -54,18 +56,24 @@ public abstract class AbilityBase
     /// <summary>
     /// Returns the instance of an inheritanced class based on the ability type, or null, when it has no ability.
     /// </summary>
-    /// <param name="controller"></param>
-    /// <param name="level"></param>
+    /// <param name="_controller"></param>
+    /// <param name="_level"></param>
+    /// <param name="_teamSlots"></param>
+    /// <param name="_slot"></param>
     /// <returns></returns>
-    public static AbilityBase GetAbility(UnitController controller, Level level)
+    public static AbilityBase GetAbility(UnitController _controller, Level _level, Slot[] _teamSlots, Slot _slot)
     {
-        var type = level.DoType;
+        var type = _level.DoType;
         switch (type)
         {
             case DoType.Buff:
-                return new Buff(controller, level);
+                if (CheckOutcomeState.IsAnyoneIn(_teamSlots, _slot) == false)
+                    return null;
+
+                return new Buff(_controller, _level, _teamSlots);
+
             case DoType.Summon:
-                return new Summon(controller, controller.Model, level, controller.SlotIndex);
+                return new Summon(_controller, _controller.Model, _level, _teamSlots);
         }
 
         return null;
@@ -74,16 +82,18 @@ public abstract class AbilityBase
     /// <summary>
     /// Returns the boolean, whether the ability is permanent.
     /// </summary>
-    /// <param name="duration"></param>
+    /// <param name="_duration"></param>
     /// <returns></returns>
-    public static bool IsPernament(AbilityDuration duration)
+    public static bool IsPernament(AbilityDuration _duration)
     {
-        if (duration == AbilityDuration.Permanent)
+        if (_duration == AbilityDuration.Permanent)
             return true;
 
-        if (duration == AbilityDuration.Both && !GameManager.Instance.IsPhaseBattle)
+        if (_duration == AbilityDuration.Both && !GameManager.Instance.IsPhaseBattle)
             return true;
 
         return false;
     }
+
+    
 }

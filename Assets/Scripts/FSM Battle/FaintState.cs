@@ -5,30 +5,30 @@ public class FaintState : StateBase
     /// <summary>
     /// Constructor of FaintState.
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    public FaintState(float maxTimeCount) : base(maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    public FaintState(float _maxTimeCount) : base(_maxTimeCount)
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- FaintState");
 
         HideUnit();
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {
-            TimeCount += speed;
+            TimeCount += _speed;
         }
         else
         {
             if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
-                ctx.SetState(new HandleAbilityState(0));
+                _ctx.SetState(new HandleAbilityState(0));
             else
-                ctx.SetState(new CheckOutcomeState(
+                _ctx.SetState(new CheckOutcomeState(
                     PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
         }
     }

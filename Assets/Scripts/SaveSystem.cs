@@ -7,11 +7,11 @@ public static class SaveSystem
     /// <summary>
     /// Saves the game.
     /// </summary>
-    /// <param name="game"></param>
-    public static void SaveGame(Game game)
+    /// <param name="_game"></param>
+    public static void SaveGame(Game _game)
     {
         GameData savedData = LoadGameData() == null ? LoadGameData() : GameData.Instance;
-        savedData.AddGame(game);
+        savedData.AddGame(_game);
 
         BinaryFormatter formatter = new BinaryFormatter();
 
@@ -23,37 +23,9 @@ public static class SaveSystem
     }
 
     /// <summary>
-    /// 
+    /// Load the game data.
     /// </summary>
-    /// <param name="delete"></param>
-    /// <param name="gameMode"></param>
     /// <returns></returns>
-    public static Game LoadGame(bool delete, GameMode gameMode)
-    {
-        GameData savedData = LoadGameData();
-
-        if (savedData != null)
-        {
-            var savedGame = savedData.SavedGames.Find(game => game.Mode == gameMode);
-
-            if (savedGame == null)
-                return null;
-
-            if (delete)
-            {
-                savedData.SavedGames.Remove(savedGame);
-                return null;
-            }
-
-            return savedGame;
-        }
-        else
-        {
-            Debug.Log("Save data is null");
-            return null;
-        }
-    }
-
     private static GameData LoadGameData()
     {
         string path = Application.persistentDataPath + "/game.fun";
@@ -73,5 +45,46 @@ public static class SaveSystem
             return null;
         }
     }
+
+    /// <summary>
+    /// Load the saved game with given settings.
+    /// </summary>
+    /// <param name="_isNotSaving"></param>
+    /// <param name="_gameMode"></param>
+    /// <returns></returns>
+    public static Game LoadGame(bool _isNotSaving, GameMode _gameMode)
+    {
+        GameData savedData = LoadGameData();
+
+        if (savedData != null)
+        {
+            if (savedData.SavedGames != null)
+            {
+                var savedGame = savedData.SavedGames.Find(game => game.Mode == _gameMode);
+
+                if (savedGame == null)
+                    return null;
+
+                if (_isNotSaving)
+                {
+                    savedData.SavedGames.Remove(savedGame);
+                    return null;
+                }
+
+                return savedGame;
+            }
+            else
+            {
+                Debug.Log("Saved games is null");
+                return null;
+            }
+        }
+        else
+        {
+            Debug.Log("Saved data is null");
+            return null;
+        }
+    }
+
 }
 

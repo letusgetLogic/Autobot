@@ -51,6 +51,9 @@ public class PhaseShopUI : MonoBehaviour
         Settings();
     }
 
+    /// <summary>
+    /// Setup the UI screen.
+    /// </summary>
     private void Settings()
     {
         if (GameManager.Instance.IsRepairSystemActive == false)
@@ -64,9 +67,9 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Updates template.
     /// </summary>
-    public void UpdateUI(Player player)
+    public void UpdateUI(Player _player)
     {
-        Player = player;
+        Player = _player;
         nameLabel.text = Player.Data.Name;
         nutLabel.text = Player.Data.Nuts.ToString();
         toolLabel.text = Player.Data.Tools.ToString();
@@ -120,12 +123,7 @@ public class PhaseShopUI : MonoBehaviour
 
             unit.Model.Repair?.RiseDurability();
 
-            if (unit.Model.Data.Durability >= PackManager.Instance.MyPack.
-                CurrencyData.HealthPortion)
-            {
-                repairButton.SetActive(false);
-                PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
-            }
+            SetButtonActive(unit.Model);
         }
     }
 
@@ -134,14 +132,14 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnLock()
     {
-        SetButtonActive(null);
-
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
-            PhaseShopUnitManager.Instance.AttachedGameObject.
-               GetComponent<UnitController>().Model.SetData(UnitState.Freezed);
+            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+               GetComponent<UnitController>();
 
-            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+            unit.Model.SetData(UnitState.Freezed);
+
+            SetButtonActive(unit.Model);
         }
     }
 
@@ -150,14 +148,14 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnUnlock()
     {
-        SetButtonActive(null);
-
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
-            PhaseShopUnitManager.Instance.AttachedGameObject.
-                GetComponent<UnitController>().Model.SetData(UnitState.InSlotShop);
+            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+             GetComponent<UnitController>();
 
-            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+            unit.Model.SetData(UnitState.InSlotShop);
+
+            SetButtonActive(unit.Model);
         }
     }
 
@@ -232,6 +230,12 @@ public class PhaseShopUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the currency for the referenced text components if the button.
+    /// </summary>
+    /// <param name="_tool"></param>
+    /// <param name="_nut"></param>
+    /// <param name="_currency"></param>
     public void SetButtonData(TextMeshProUGUI _tool, TextMeshProUGUI _nut, Currency _currency)
     {
         if (_currency.Tool == 0)
@@ -257,6 +261,9 @@ public class PhaseShopUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Deactivates all manage buttons.
+    /// </summary>
     private void DeactivateManageButtons()
     {
         foreach (var button in manageButtons)
@@ -276,6 +283,12 @@ public class PhaseShopUI : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Compares the currencies.
+    /// </summary>
+    /// <param name="_coin"></param>
+    /// <param name="_tool"></param>
+    /// <returns></returns>
     public bool HasEnoughCurrency(int _coin, int _tool)
     {
         bool value = true;
@@ -292,6 +305,10 @@ public class PhaseShopUI : MonoBehaviour
         }
         return value;
     }
+
+    /// <summary>
+    /// Hints not enough coins.
+    /// </summary>
     private void HintNotEnoughCoins()
     {
         var markColorRed = GetComponent<MarkColorRed>();
@@ -301,6 +318,9 @@ public class PhaseShopUI : MonoBehaviour
         markColorRed.SetComponent(nutLabel, durationCoinsRedDefault);
     }
 
+    /// <summary>
+    /// Hints not enough tools.
+    /// </summary>
     private void HintNotEnoughTools()
     {
         var markColorRed = GetComponent<MarkColorRed>();

@@ -20,6 +20,9 @@ public class UnitModel
     public Currency Sell => Pack.CurrencyData.Sell[SellIndex];
     public Currency RepairCost => Pack.CurrencyData.RepairCost[CurrentLevel.Index];
 
+    /// <summary>
+    /// The index is calculated from 2D to 1D array.
+    /// </summary>
     public int SellIndex
     {
         get
@@ -55,7 +58,7 @@ public class UnitModel
         Data.SetXP(1);
 
         Data.ID = PackManager.Instance.DebugID++.ToString() + "_" + SoUnit.Name;
-        Debug.Log(Data.ID + " created.");
+        Debug.Log(Data.ID + " new created.");
     }
 
     /// <summary>
@@ -94,18 +97,18 @@ public class UnitModel
         View.Shadow.enabled = false;
         View.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
         View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
-        Debug.Log(Data.ID + " Energy: " + Data.Cur.ENG);
+
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
 
     /// <summary>
     /// Is phase shop based on unit state?
     /// </summary>
-    /// <param name="unitState"></param>
+    /// <param name="_unitState"></param>
     /// <returns></returns>
-    private bool IsPhaseShop(UnitState unitState)
+    private bool IsPhaseShop(UnitState _unitState)
     {
-        switch (unitState)
+        switch (_unitState)
         {
             case UnitState.InSlotShop:
                 return true;
@@ -161,11 +164,11 @@ public class UnitModel
     /// <summary>
     /// Gets the data for showing.
     /// </summary>
-    /// <param name="unitState"></param>
+    /// <param name="_unitState"></param>
     /// <returns></returns>
-    private Currency Currency(UnitState unitState)
+    private Currency Currency(UnitState _unitState)
     {
-        switch (unitState)
+        switch (_unitState)
         {
             case UnitState.InSlotShop:
                 return Cost;
@@ -187,10 +190,10 @@ public class UnitModel
     /// Updates the level and xp.
     /// </summary>
     /// <param name="xp"></param>
-    public void UpdateLevelXP(bool isPhaseShop)
+    public void UpdateLevelXP(bool _isPhaseShop)
     {
         switch (Data.XP)
-        {//                       level  box1   box2  step1  step2  box3  step3  step4  step5  
+        {//                        level  box1   box2  step1  step2  box3  step3  step4  step5  
             case 1:
                 View.SetXpStepActive("1", false, true, false, false, false, false, false, false);
                 SetCurrentLevel(0);
@@ -202,7 +205,7 @@ public class UnitModel
             case 3:
                 View.SetXpStepActive("1", false, true, true, true, false, false, false, false);
                 SetCurrentLevel(0);
-                View.StartCoroutine(DelayLevel2(isPhaseShop));
+                View.StartCoroutine(DelayLevel2(_isPhaseShop));
                 break;
             case 4:
                 View.SetXpStepActive("2", false, false, false, false, true, true, false, false);
@@ -215,7 +218,7 @@ public class UnitModel
             case 6:
                 View.SetXpStepActive("2", false, false, false, false, true, true, true, true);
                 SetCurrentLevel(1);
-                View.StartCoroutine(DelayLevel3(isPhaseShop));
+                View.StartCoroutine(DelayLevel3(_isPhaseShop));
                 break;
         }
     }
@@ -224,12 +227,12 @@ public class UnitModel
     /// Delays level 2.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayLevel2(bool isPhaseShop)
+    private IEnumerator DelayLevel2(bool _isPhaseShop)
     {
-        yield return new WaitForSeconds(isPhaseShop ?
+        yield return new WaitForSeconds(_isPhaseShop ?
             View.DelayUpdateLevel :
             0f);
-
+        //                  level  box1   box2  step1  step2  box3  step3  step4  step5  
         View.SetXpStepActive("2", false, false, false, false, true, false, false, false);
         SetCurrentLevel(1);
     }
@@ -238,12 +241,12 @@ public class UnitModel
     /// Delays level 3.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayLevel3(bool isPhaseShop)
+    private IEnumerator DelayLevel3(bool _isPhaseShop)
     {
-        yield return new WaitForSeconds(isPhaseShop ?
+        yield return new WaitForSeconds(_isPhaseShop ?
             View.DelayUpdateLevel :
             0f);
-
+        //                 level  box1   box2  step1  step2  box3  step3  step4  step5  
         View.SetXpStepActive("3", true, false, false, false, false, false, false, false);
         SetCurrentLevel(2);
     }
@@ -251,11 +254,11 @@ public class UnitModel
     /// <summary>
     /// Sets the current level and index for saving data.
     /// </summary>
-    /// <param name="index"></param>
-    private void SetCurrentLevel(int index)
+    /// <param name="_index"></param>
+    private void SetCurrentLevel(int _index)
     {
-        CurrentLevel = SoUnit.Levels[index];
-        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy.Value);
+        CurrentLevel = SoUnit.Levels[_index];
+        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy != null ? CurrentLevel.ConsumedEnergy.Value : 0);
         View.SetBuyOrSell(Sell, false);
     }
 
@@ -292,7 +295,8 @@ public class UnitModel
     /// <param name="_basis"></param>
     /// <param name="_buff"></param>
     /// <param name="_buffTemp"></param>
-    /// <param name="_otherCurrent"> The average of model.Data.Cur and _otherCurrent would be calculated.</param>
+    /// <param name="_otherCurrent"></param>
+    /// <param name="_hasOtherFullHP"></param>
     public void Add(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent, bool _hasOtherFullHP)
     {
         bool hasFullHP = Data.Cur.HP == Data.FullHP;
@@ -374,14 +378,14 @@ public class UnitModel
     /// <summary>
     /// Reduces HP at the damage and updates view.
     /// </summary>
-    /// <param name="damage"></param>
-    public void ReduceHp(int damage)
+    /// <param name="_damage"></param>
+    public void ReduceHp(int _damage)
     {
-        if (damage < 0)
-            damage = 0;
+        if (_damage < 0)
+            _damage = 0;
 
-        Data.SetHP(Data.Cur.HP - damage, Repair == null ? null : Repair.SetRepairPanel);
-        View.ShowDamage(damage, Data.Cur.HP);
+        Data.SetHP(Data.Cur.HP - _damage, Repair == null ? null : Repair.SetRepairPanel);
+        View.ShowDamage(_damage, Data.Cur.HP);
     }
 
 

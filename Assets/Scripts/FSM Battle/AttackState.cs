@@ -5,26 +5,26 @@ public class AttackState : StateBase
     /// <summary>
     /// Constructor of AttackState.
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    public AttackState(float maxTimeCount) : base(maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    public AttackState(float _maxTimeCount) : base(_maxTimeCount)
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.WriteLine("--- AttackState");
         AttackEachOther();
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {
-            TimeCount += speed;
+            TimeCount += _speed;
         }
         else
         {
-            ctx.SetState(new HandleAbilityState(0));
+            _ctx.SetState(new HandleAbilityState(0));
         }
     }
 

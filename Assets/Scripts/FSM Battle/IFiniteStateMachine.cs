@@ -8,7 +8,7 @@ public interface IFiniteStateMachine
     /// <summary>
     /// SetState is used to change the current state of the state machine.
     /// </summary>
-    /// <param name="state"></param>
-    public abstract void SetState(StateBase state);
+    /// <param name="_state"></param>
+    public abstract void SetState(StateBase _state);
 }
 

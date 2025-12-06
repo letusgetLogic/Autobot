@@ -6,22 +6,22 @@ public class HandleAbilityState : StateBase
     /// <summary>
     /// Consturctor of HandleAbilityState.
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    public HandleAbilityState(float maxTimeCount) : base(maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    public HandleAbilityState(float _maxTimeCount) : base(_maxTimeCount)
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- HandleAbilityState");
         HandleAbility();
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (TimeCount < PhaseBattleController.Instance.Process.DurationEachAbility)
         {
-            TimeCount += speed;
+            TimeCount += _speed;
         }
         else
         {
@@ -32,10 +32,10 @@ public class HandleAbilityState : StateBase
         if (isDone)
         {
             if (PhaseBattleController.Instance.FaintUnits.Count > 0)
-                ctx.SetState(new FaintState(
+                _ctx.SetState(new FaintState(
                      PhaseBattleController.Instance.Process.DurationFaint));
             else
-                ctx.SetState(new CheckOutcomeState(
+                _ctx.SetState(new CheckOutcomeState(
                     PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
         }
     }
@@ -48,8 +48,11 @@ public class HandleAbilityState : StateBase
         if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
         {
             var ability = PhaseBattleController.Instance.UnitAbilities.Dequeue();
+
             Debug.Log($"{ability.ToString()} dequeue/activate");
             Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities left");
+
+
             PhaseBattleController.Instance.StartCoroutine(
                 ability.Handle(
                     PhaseBattleController.Instance.Process.DurationHideAbilityDescription));

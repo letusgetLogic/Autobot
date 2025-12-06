@@ -5,28 +5,28 @@ public class InitializeState : StateBase
     /// <summary>
     /// Constructor of InitializeState.
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    public InitializeState(float maxTimeCount) : base(maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    public InitializeState(float _maxTimeCount) : base(_maxTimeCount)
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log(PhaseBattleController.Instance.Player1.Data.Turns);
         Debug.Log("--- InitState");
         Initialize();
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {
-            TimeCount += speed;
+            TimeCount += _speed;
         }
         else
         {
             GameManager.Instance.CurrentGame.State = GameState.BattlePhase;
-            ctx.SetState(new CheckOutcomeState(
+            _ctx.SetState(new CheckOutcomeState(
                 PhaseBattleController.Instance.Process.DurationCheckOutcome, true));
         }
     }

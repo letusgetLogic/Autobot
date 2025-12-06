@@ -6,27 +6,27 @@
     /// <summary>
     /// Base constructor of states of the battle phase.
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    public StateBase(float maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    public StateBase(float _maxTimeCount)
     {
         TimeCount = 0;
-        MaxTimeCount = maxTimeCount;
+        MaxTimeCount = _maxTimeCount;
     }
 
     /// <summary>
     /// OnEnter is called when the state is entered.
     /// </summary>
-    public abstract void OnEnter(IFiniteStateMachine ctx);
+    public abstract void OnEnter(IFiniteStateMachine _ctx);
 
     /// <summary>
     /// OnUpdate is called every frame while the state is active.
     /// </summary>
-    public abstract void OnUpdate(IFiniteStateMachine ctx, float speed);
+    public abstract void OnUpdate(IFiniteStateMachine _ctx, float _speed);
 
     /// <summary>
     /// OnExit is called when the state is exited.
     /// </summary>
-    public virtual void OnExit(IFiniteStateMachine ctx)
+    public virtual void OnExit(IFiniteStateMachine _ctx)
     { }
 }
 

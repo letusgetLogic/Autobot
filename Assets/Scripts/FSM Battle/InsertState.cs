@@ -5,26 +5,26 @@ public class InsertState : StateBase
     /// <summary>
     /// Constructor of InsertState. Moves the units to the center.
     /// </summary>
-    /// <param name="maxTimeCount"></param>
-    public InsertState(float maxTimeCount) : base(maxTimeCount)
+    /// <param name="_maxTimeCount"></param>
+    public InsertState(float _maxTimeCount) : base(_maxTimeCount)
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {Debug.Log("--- InsertState");
         MoveCloserTogether(PhaseBattleController.Instance.Slots1);
         MoveCloserTogether(PhaseBattleController.Instance.Slots2);
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {
-            TimeCount += speed;
+            TimeCount += _speed;
         }
         else
         {
-            ctx.SetState(new AttackState(
+            _ctx.SetState(new AttackState(
                 PhaseBattleController.Instance.Process.DurationAttack));
         }
     }
@@ -32,17 +32,17 @@ public class InsertState : StateBase
     /// <summary>
     /// Moves the units to the center.
     /// </summary>
-    /// <param name="slots"></param>
-    private void MoveCloserTogether(Slot[] slots)
+    /// <param name="_slots"></param>
+    private void MoveCloserTogether(Slot[] _slots)
     {
-        bool[] isOccupied = new bool[slots.Length];
+        bool[] isOccupied = new bool[_slots.Length];
         int mostFrontEmpty = 0;
 
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < _slots.Length; i++)
         {
             isOccupied[i] = false;
 
-            var movedUnit = slots[i].Unit();
+            var movedUnit = _slots[i].Unit();
 
             if (movedUnit != null)
             {
@@ -51,7 +51,7 @@ public class InsertState : StateBase
                 if (i > 0) // skip the first slot
                 {
                     PhaseBattleController.Instance.HideDescriptionByTransport();
-                    movedUnit.transform.SetParent(slots[mostFrontEmpty].transform, false);
+                    movedUnit.transform.SetParent(_slots[mostFrontEmpty].transform, false);
                     mostFrontEmpty++;
                     continue;
                 }

@@ -20,14 +20,20 @@ public class Pack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Uncheck the pack.
+    /// </summary>
     public void UnCheck()
     {
         Check.SetActive(false);
     }
 
+    /// <summary>
+    /// Select the pack.
+    /// </summary>
     public void SelectPack()
     {
-        GameSettings.Instance.UnCheckAll();
+        GameSettings.Instance.UnCheckAllPacks();
 
         Check.SetActive(true);
         PackManager.Instance.InitPack(soPack);

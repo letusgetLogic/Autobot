@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance { get; private set; }
 
-    public TMP_InputField ModeSingleHeart;
 
     [Header("Mode Development")]
     public bool IsModeDevelop;
@@ -20,6 +17,7 @@ public class GameSettings : MonoBehaviour
     private string name2 = "Player 2";
 
     [Header("References")]
+    [SerializeField] private TMP_InputField modeLocalDuelHeart;
     [SerializeField] private Pack[] packs;
     [SerializeField] private TMP_InputField inputName1;
     [SerializeField] private TMP_InputField inputName2;
@@ -33,9 +31,7 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private float durationColorDefault = 0.2f;
     [SerializeField] private float durationHintDefault = 0.5f;
 
-    /// <summary>
-    /// Awake method.
-    /// </summary>
+    
     private void Awake()
     {
         if (Instance != null)
@@ -56,28 +52,31 @@ public class GameSettings : MonoBehaviour
         if (IsModeDevelop)
         {
             PackManager.Instance.InitPack(packs[0].SoPack);
-            GameManager.Instance.Mode = GameMode.Single;
+            GameManager.Instance.Mode = GameMode.Local1v1;
             GameManager.Instance.PlayerLives = lives;
         
             GameManager.Instance.LoadGame();
         }
     }
 
-    public void OnModeSingle()
+    /// <summary>
+    /// Button click calls. set game mode to local 1v1.
+    /// </summary>
+    public void OnModeLocal1v1()
     {
-        GameManager.Instance.Mode = GameMode.Single;
+        GameManager.Instance.Mode = GameMode.Local1v1;
     }
 
-
-    public void UnCheckAll()
+    /// <summary>
+    /// Unchecks all packs.
+    /// </summary>
+    public void UnCheckAllPacks()
     {
         for (int i = 0; i < packs.Length; i++)
         {
             packs[i].UnCheck();
         }
     }
-
-
 
     /// <summary>
     /// Start game with selected settings.  
@@ -86,7 +85,7 @@ public class GameSettings : MonoBehaviour
     {
         switch (GameManager.Instance.Mode)
         {
-            case GameMode.Single:
+            case GameMode.Local1v1:
 
                 if (PackManager.Instance.MyPack == null)
                 {
@@ -103,8 +102,8 @@ public class GameSettings : MonoBehaviour
                     GameManager.Instance.Name2 = inputName2.text;
 
                 int b;
-                if (int.TryParse(ModeSingleHeart.text, out b))
-                    b = int.Parse(ModeSingleHeart.text);
+                if (int.TryParse(modeLocalDuelHeart.text, out b))
+                    b = int.Parse(modeLocalDuelHeart.text);
                 else
                 {
                     hint.text = "Enter a number of lives!";
@@ -114,7 +113,7 @@ public class GameSettings : MonoBehaviour
                 }
                 if (b < minLives || b > maxLives)
                 {
-                    HintInvalid(ModeSingleHeart);
+                    HintInvalid(modeLocalDuelHeart);
                     return;
                 }
 
@@ -125,20 +124,29 @@ public class GameSettings : MonoBehaviour
         }
     }
 
-
-    public void HintInvalid(TMP_InputField target)
+    /// <summary>
+    /// Hint invalid input.
+    /// </summary>
+    /// <param name="_target"></param>
+    public void HintInvalid(TMP_InputField _target)
     {
         var markColorRed = GetComponent<MarkColorRed>();
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(target, durationColorDefault);
+        markColorRed.SetComponent(_target, durationColorDefault);
     }
 
-    public IEnumerator Hide(TextMeshProUGUI target, float delay)
+    /// <summary>
+    /// Hides the targeted component TextMeshProUGUI with a delay.
+    /// </summary>
+    /// <param name="_target"></param>
+    /// <param name="_delay"></param>
+    /// <returns></returns>
+    public IEnumerator Hide(TextMeshProUGUI _target, float _delay)
     {
-        yield return new WaitForSeconds(delay);
-        target.enabled = false;
+        yield return new WaitForSeconds(_delay);
+        _target.enabled = false;
     }
 
 

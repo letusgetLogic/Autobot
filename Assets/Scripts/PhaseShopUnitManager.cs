@@ -58,19 +58,19 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Set index depend on draw order.
     /// </summary>
-    private void SetIndex(Slot[] slots)
+    private void SetIndex(Slot[] _slots)
     {
-        for (int i = 0; i < slots.Length; i++)
-            slots[i].Index = i;
+        for (int i = 0; i < _slots.Length; i++)
+            _slots[i].Index = i;
     }
 
     /// <summary>
     /// Initializes the slots.
     /// </summary>
-    /// <param name="player"></param>
-    public void Initialize(Player player)
+    /// <param name="_player"></param>
+    public void Initialize(Player _player)
     {
-        Player = player;
+        Player = _player;
     }
 
     // Spawn Objects
@@ -160,7 +160,10 @@ public class PhaseShopUnitManager : MonoBehaviour
 
     #endregion
 
-
+    /// <summary>
+    /// Add the energy to the unit.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator ChargeUnit()
     {
         yield return new WaitForSeconds(delayCharging);
@@ -172,7 +175,11 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
     }
 
-    public void ManageAttachedObject(Slot slot)
+    /// <summary>
+    /// Manages the attached object.
+    /// </summary>
+    /// <param name="_slot"></param>
+    public void ManageAttachedObject(Slot _slot)
     {
         if (AttachedGameObject == null)
             return;
@@ -182,21 +189,24 @@ public class PhaseShopUnitManager : MonoBehaviour
             var unitState = AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState;
             if (unitState == UnitState.InSlotShop || unitState == UnitState.Freezed)
             {
-                Buy(slot);
+                Buy(_slot);
             }
             else if (unitState == UnitState.InSlotTeam || unitState == UnitState.InSlotCharge)
             {
-                TransportOrFusion(slot);
+                TransportOrFusion(_slot);
             }
         }
     }
 
-
-    private void Buy(Slot slot)
+    /// <summary>
+    /// Checks if it's purchasable, then buy the attached object.
+    /// </summary>
+    /// <param name="_slot"></param>
+    private void Buy(Slot _slot)
     {
         if (AttachedGameObject.CompareTag("Unit"))
         {
-            var unitOnSlot = slot.UnitController();
+            var unitOnSlot = _slot.UnitController();
             var attachedController = AttachedGameObject.GetComponent<UnitController>();
 
             // case: buy but not enough currency.
@@ -224,15 +234,19 @@ public class PhaseShopUnitManager : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                         attachedController.Model.Cost.Nut, attachedController.Model.Cost.Tool);
 
-                Transport(AttachedGameObject, slot.transform, true, true);
+                Transport(AttachedGameObject, _slot.transform, true, true);
             }
 
         }
     }
 
-    private void TransportOrFusion(Slot slot)
+    /// <summary>
+    /// Transports or merges the attached unit.
+    /// </summary>
+    /// <param name="_slot"></param>
+    private void TransportOrFusion(Slot _slot)
     {
-        var unitOnSlot = slot.UnitController();
+        var unitOnSlot = _slot.UnitController();
         var attachedController = AttachedGameObject.GetComponent<UnitController>();
 
         if (unitOnSlot != null)
@@ -248,38 +262,38 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
         else // case: move dragging unit to empty slot.
         {
-            Transport(AttachedGameObject, slot.transform, true, true);
+            Transport(AttachedGameObject, _slot.transform, true, true);
         }
     }
 
     /// <summary>
     /// Transports the attached game object to the drop slot.
     /// </summary>
-    /// <param name="attached"></param>
-    /// <param name="dropSlot"></param>
-    /// <param name="mouseRelease"> unitView.BeingReleased(null); </param>
-    /// <param name="disableShadow">  unitView.Shadow.enabled = false;</param>
-    private void Transport(GameObject attached, Transform dropSlot,
-        bool mouseRelease, bool disableShadow)
+    /// <param name="_attached"></param>
+    /// <param name="_dropSlot"></param>
+    /// <param name="_mouseRelease"> unitView.BeingReleased(null); </param>
+    /// <param name="_disableShadow">  unitView.Shadow.enabled = false;</param>
+    private void Transport(GameObject _attached, Transform _dropSlot,
+        bool _mouseRelease, bool _disableShadow)
     {
         HideDescriptionByTransport();
 
-        if (attached == null)
+        if (_attached == null)
             return;
 
-        attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
-        attached.transform.SetParent(null);
+        _attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
+        _attached.transform.SetParent(null);
 
-        attached.transform.SetParent(dropSlot, false);
-        attached.transform.localPosition = Vector3.zero;
+        _attached.transform.SetParent(_dropSlot, false);
+        _attached.transform.localPosition = Vector3.zero;
 
-        var unitView = attached.GetComponent<UnitView>();
-        var controller = attached.GetComponent<UnitController>();
+        var unitView = _attached.GetComponent<UnitView>();
+        var controller = _attached.GetComponent<UnitController>();
 
-        if (mouseRelease)
+        if (_mouseRelease)
             unitView.BeingReleased(null);
 
-        if (disableShadow)
+        if (_disableShadow)
             unitView.Shadow.enabled = false;
 
         controller.Model.SetData(UnitState.InSlotTeam);
@@ -293,25 +307,25 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     /// <param name="target"></param>
     /// <param name="direction"></param>
-    public void PushOtherAway(int target, int direction)
+    public void PushOtherAway(int _target, int _direction)
     {
-        if (direction == 0)
+        if (_direction == 0)
             return;
 
-        int search = target + direction;
+        int search = _target + _direction;
 
         while (search >= 0 && search < teamSlots.Length)
         {
             if (teamSlots[search].Unit() != null &&
                 teamSlots[search].Unit() != AttachedGameObject) // slot is occupied
             {
-                search += direction; // continue search for an emnpty space
+                search += _direction; // continue search for an emnpty space
             }
             else // search is on empty slot
             {
-                for (int empty = search; empty != target; empty -= direction)
+                for (int empty = search; empty != _target; empty -= _direction)
                 {
-                    int previous = empty - direction; // swap the previous slot index to the empty slot index
+                    int previous = empty - _direction; // swap the previous slot index to the empty slot index
 
                     var movedUnit = teamSlots[previous].Unit();
                     if (movedUnit == null ||
@@ -323,7 +337,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
                     == UnitState.InSlotTeam)
                 {
-                    Transport(AttachedGameObject, teamSlots[target].transform, false, false);
+                    Transport(AttachedGameObject, teamSlots[_target].transform, false, false);
                     AttachedGameObject.GetComponent<UnitView>().BeingReleased(null);
                     SetAttachedGameObject(null);
 
@@ -332,7 +346,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 else if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
                     == UnitState.InSlotShop)
                 {
-                    teamSlots[target].Border.enabled = true;
+                    teamSlots[_target].Border.enabled = true;
                 }
 
                 return;
@@ -343,15 +357,15 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Checks fusible between 2 units.
     /// </summary>
-    /// <param name="onSlot"></param>
-    /// <param name="onDrag"></param>
+    /// <param name="_onSlot"></param>
+    /// <param name="_onDrag"></param>
     /// <returns></returns>
-    public bool IsFusible(UnitController onSlot, UnitController onDrag)
+    public bool IsFusible(UnitController _onSlot, UnitController _onDrag)
     {
-        if (onSlot.Model.IsMaxed || onDrag.Model.IsMaxed)
+        if (_onSlot.Model.IsMaxed || _onDrag.Model.IsMaxed)
             return false;
 
-        if (onSlot.Model.SoUnit.Name == onDrag.Model.SoUnit.Name)
+        if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name)
             return true;
 
         return false;
@@ -360,10 +374,10 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Sets attached game object being clicked or dragged.
     /// </summary>
-    /// <param name="target"></param>
-    public void SetAttachedGameObject(GameObject target)
+    /// <param name="_target"></param>
+    public void SetAttachedGameObject(GameObject _target)
     {
-        if (target == null)
+        if (_target == null)
         {
             if (AttachedGameObject != null)
                 AttachedGameObject.transform.parent.
@@ -373,10 +387,10 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
         else
         {
-            target.transform.parent.GetComponent<Slot>().Border.enabled = true;
+            _target.transform.parent.GetComponent<Slot>().Border.enabled = true;
         }
 
-        AttachedGameObject = target;
+        AttachedGameObject = _target;
     }
 
     /// <summary>

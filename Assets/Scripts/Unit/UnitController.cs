@@ -1,21 +1,34 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.XR;
 
 public class UnitController : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private UnitView view;
+
     public UnityAction Attack { get; private set; }
     public UnityAction Faint { get; private set; }
 
     public UnitView View => view;
-    [SerializeField]
-    private UnitView view;
 
     public UnitModel Model => model;
     private UnitModel model;
 
-    public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel);
-    public int SlotIndex
+    public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel, TeamSlots, Slot);
+    public Slot[] TeamSlots
+    {
+        get
+        {
+            if (GameManager.Instance.IsPhaseBattle)
+            {
+                return model.Data.IsTeamLeft ?
+                    PhaseBattleController.Instance.Slots1 :
+                    PhaseBattleController.Instance.Slots2;
+            }
+            else return PhaseShopUnitManager.Instance.TeamSlots;
+        }
+    }
+    public Slot Slot
     {
         get
         {
@@ -23,12 +36,21 @@ public class UnitController : MonoBehaviour
             if (parent != null &&
                 (parent.CompareTag("Slot Battle") || parent.CompareTag("Slot Team")))
             {
-                return parent.GetComponent<Slot>().Index;
+                return parent.GetComponent<Slot>();
             }
+            return null;
+        }
+    }
+    public int SlotIndex
+    {
+        get
+        {
+            if (Slot != null)
+                return Slot.Index;
+
             return -1;
         }
     }
-
     private bool flipSprite = false;
 
     /// <summary>
@@ -138,10 +160,10 @@ public class UnitController : MonoBehaviour
     /// <summary> 
     /// Takes damage.
     /// </summary>
-    /// <param name="damage"></param>
-    public void TakeDamage(int damage)
+    /// <param name="_damage"></param>
+    public void TakeDamage(int _damage)
     {
-        model.ReduceHp(damage);
+        model.ReduceHp(_damage);
 
         if (model.Data.Cur.HP <= 0)
         {
@@ -170,23 +192,26 @@ public class UnitController : MonoBehaviour
         {
             view.ShowConsume(_energy);
         }
-            
+
         view.SetData(
-            model.Data.FullHP, model.Data.FullATK, 
+            model.Data.FullHP, model.Data.FullATK,
             model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
     }
 
     /// <summary>
     /// Returns the ability if the energy isn't smaller as the value of energy to consume.
     /// </summary>
-    /// <param name="triggerType"></param>
+    /// <param name="_triggerType"></param>
     /// <returns></returns>
-    public AbilityBase TriggerAbility(TriggerType triggerType)
+    public AbilityBase TriggerAbility(TriggerType _triggerType)
     {
+        if (model.CurrentLevel.ConsumedEnergy == null)
+            return null;
+
         if (model.Data.Cur.ENG < model.CurrentLevel.ConsumedEnergy.Value)
             return null;
 
-        if (triggerType == model.CurrentLevel.TriggerType)
+        if (_triggerType == model.CurrentLevel.TriggerType)
             return Ability;
 
         return null;
@@ -195,17 +220,17 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Add buff to the model data and updates the view.
     /// </summary>
-    /// <param name="isPernament"></param>
-    /// <param name="addHealth"></param>
-    /// <param name="addAttack"></param>
-    public void Buff(bool isPernament, int addHealth, int addAttack)
+    /// <param name="_isPernament"></param>
+    /// <param name="_addHealth"></param>
+    /// <param name="_addAttack"></param>
+    public void Buff(bool _isPernament, int _addHealth, int _addAttack)
     {
-        if (isPernament)
-            model.Add(new Attribute(addHealth, addAttack), new Attribute(0, 0));
+        if (_isPernament)
+            model.Add(new Attribute(_addHealth, _addAttack), new Attribute(0, 0));
         else
-            model.Add(new Attribute(0, 0), new Attribute(addHealth, addAttack));
+            model.Add(new Attribute(0, 0), new Attribute(_addHealth, _addAttack));
 
-        view.ShowBuff(addHealth, addAttack, 0);
+        view.ShowBuff(_addHealth, _addAttack, 0);
     }
 
     /// <summary>
@@ -213,7 +238,7 @@ public class UnitController : MonoBehaviour
     /// </summary>
     public void TriggerFaint()
     {
-      Debug.Log($"{name} faint");
+        Debug.Log($"{name} faint");
         var ability = TriggerAbility(TriggerType.Faint);
         if (ability != null)
         {
@@ -236,9 +261,11 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Moves the objects to the target.
     /// </summary>
-    /// <param name="target"></param>
-    public void MoveTo(Vector3 target)
+    /// <param name="_target"></param>
+    public void MoveTo(Vector3 _target)
     {
         //transform.DoMove();
     }
+
+
 }

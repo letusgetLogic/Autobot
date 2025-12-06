@@ -26,12 +26,16 @@ public class PackManager : MonoBehaviour
         DebugID = 0;
     }
 
-    public void InitPack(SoPack selectedPack)
+    /// <summary>
+    /// Initializes the pack.
+    /// </summary>
+    /// <param name="_selectedPack"></param>
+    public void InitPack(SoPack _selectedPack)
     {
         if ( MyPack != null)
             MyPack = null;
 
-        MyPack = selectedPack;
+        MyPack = _selectedPack;
 
         Add(MyPack.UnitsTier1);
         Add(MyPack.UnitsTier2);
@@ -41,13 +45,17 @@ public class PackManager : MonoBehaviour
         Add(MyPack.UnitsTier6);
     }
 
-    private void Add(SoUnit[] units)
+    /// <summary>
+    /// Adds the units to the list.
+    /// </summary>
+    /// <param name="_units"></param>
+    private void Add(SoUnit[] _units)
     {
-        if (units != null)
+        if (_units != null)
         {
-            for (int i = 0; i < units.Length; i++)
+            for (int i = 0; i < _units.Length; i++)
             {
-                Units.Add(units[i]);
+                Units.Add(_units[i]);
             }
         }
     }
@@ -58,8 +66,8 @@ public class PackManager : MonoBehaviour
     /// <remarks>This method checks the availability of units for each tier based on predefined turn
     /// thresholds. If the specified turn matches the availability turn for a particular tier, the corresponding units
     /// are added. If no match is found, no units are added.</remarks>
-    /// <param name="turns">The current turn number. Determines which tier of units will be added.</param>
-    public void AddUnitsByTier(int turns)
+    /// <param name="_turns">The current turn number. Determines which tier of units will be added.</param>
+    public void AddUnitsByTier(int _turns)
     {
         int a = MyPack.Tier1AvaiableAtTurn.Value;
         int b = MyPack.Tier2AvaiableAtTurn.Value;
@@ -68,27 +76,27 @@ public class PackManager : MonoBehaviour
         int e = MyPack.Tier5AvaiableAtTurn.Value;
         int f = MyPack.Tier6AvaiableAtTurn.Value;
 
-        if (turns == a)
+        if (_turns == a)
         {
             AddUnits(MyPack.UnitsTier1);
         }
-        else if (turns == b)
+        else if (_turns == b)
         {
             AddUnits(MyPack.UnitsTier2);
         }
-        else if (turns == c)
+        else if (_turns == c)
         {
             AddUnits(MyPack.UnitsTier3);
         }
-        else if (turns == d)
+        else if (_turns == d)
         {
             AddUnits(MyPack.UnitsTier4);
         }
-        else if (turns == e)
+        else if (_turns == e)
         {
             AddUnits(MyPack.UnitsTier5);
         }
-        else if (turns == f)
+        else if (_turns == f)
         {
             AddUnits(MyPack.UnitsTier6);
         }
@@ -111,10 +119,10 @@ public class PackManager : MonoBehaviour
     /// <summary>
     /// Assigns the list when being loaded from saved data.
     /// </summary>
-    /// <param name="turns"></param>
-    public void AssignList(int turns)
+    /// <param name="_turns"></param>
+    public void AssignList(int _turns)
     {
-        for (int i = 1; i <= turns; i++)
+        for (int i = 1; i <= _turns; i++)
         {
             AddUnitsByTier(i);
         }

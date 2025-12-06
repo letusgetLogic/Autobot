@@ -22,12 +22,12 @@ public struct Attribute
     /// </summary>
     /// <param name="_hp"></param>
     /// <param name="_atk"></param>
-    /// <param name="_eng"></param>
-    public Attribute(int _hp, int _atk, int _eng)
+    /// <param name="_energy"></param>
+    public Attribute(int _hp, int _atk, int _energy)
     {
         HP = _hp;
         ATK = _atk;
-        ENG = _eng;
+        ENG = _energy;
     }
 }
 

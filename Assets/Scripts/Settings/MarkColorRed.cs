@@ -7,52 +7,52 @@ public class MarkColorRed : MonoBehaviour
     /// <summary>
     /// Sets the color of the text red and back to default color with a delay.
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="duration"></param>
-    public void SetComponent(TextMeshProUGUI target, float duration)
+    /// <param name="_target"></param>
+    /// <param name="_duration"></param>
+    public void SetComponent(TextMeshProUGUI _target, float _duration)
     {
-        var defaultColor = target.color;
-        target.color = Color.red;
-        StartCoroutine(SetDefault(target, duration, defaultColor));
+        var defaultColor = _target.color;
+        _target.color = Color.red;
+        StartCoroutine(SetDefault(_target, _duration, defaultColor));
     }
 
     /// <summary>
     /// Delays the setting color default.
     /// </summary>
-    /// <param name="text"></param>
-    /// <param name="duration"></param>
-    /// <param name="defaultColor"></param>
+    /// <param name="_text"></param>
+    /// <param name="_duration"></param>
+    /// <param name="_defaultColor"></param>
     /// <returns></returns>
-    private IEnumerator SetDefault(TextMeshProUGUI text, float duration, Color defaultColor)
+    private IEnumerator SetDefault(TextMeshProUGUI _text, float _duration, Color _defaultColor)
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(_duration);
 
-        text.color = defaultColor;
+        _text.color = _defaultColor;
     }
 
     /// <summary>
     /// Sets the color of the input field red and back to default color with a delay.
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="duration"></param>
-    public void SetComponent(TMP_InputField target, float duration)
+    /// <param name="_target"></param>
+    /// <param name="_duration"></param>
+    public void SetComponent(TMP_InputField _target, float _duration)
     {
-        var defaultColor = target.textComponent.color;
-        target.textComponent.color = Color.red;
-        StartCoroutine(SetDefault(target, duration, defaultColor));
+        var defaultColor = _target.textComponent.color;
+        _target.textComponent.color = Color.red;
+        StartCoroutine(SetDefault(_target, _duration, defaultColor));
     }
 
     /// <summary>
     /// Delays the setting color default.
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="duration"></param>
-    /// <param name="defaultColor"></param>
+    /// <param name="_target"></param>
+    /// <param name="_duration"></param>
+    /// <param name="_defaultColor"></param>
     /// <returns></returns>
-    private IEnumerator SetDefault(TMP_InputField target, float duration, Color defaultColor)
+    private IEnumerator SetDefault(TMP_InputField _target, float _duration, Color _defaultColor)
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(_duration);
 
-        target.textComponent.color = defaultColor;
+        _target.textComponent.color = _defaultColor;
     }
 }

@@ -2,21 +2,19 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
+    [Header("References")]
     [Tooltip("The hint of attached object.")]
-    [SerializeField]
-    private SpriteRenderer border;
+    [SerializeField] private SpriteRenderer border;
+    [SerializeField] private EventHover eventHover;
+    [SerializeField] private EventDragSlot eventDrag;
+
     public SpriteRenderer Border
     {
         get { return border; }
         set { border = value; }
     }
-
-    [SerializeField]
-    private EventHover eventHover;
     public EventHover EventHover => eventHover;
 
-    [SerializeField]
-    private EventDragSlot eventDrag;
     public EventDragSlot EventDrag => eventDrag;
 
     public int Index { get; set; }

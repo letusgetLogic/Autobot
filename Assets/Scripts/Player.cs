@@ -33,11 +33,17 @@ public class Player : MonoBehaviour
         GameManager.Instance.EndPhaseShop();
     }
 
+    /// <summary>
+    /// Start of the battle executes.
+    /// </summary>
     public void StartBattle()
     {
         BattleUnits = new UnitController[PhaseBattleController.Instance.Slots1.Length];
     }
 
+    /// <summary>
+    /// End of the battle executes.
+    /// </summary>
     public void EndBattle()
     {
         UpdateTeamUnitData();

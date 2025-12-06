@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Develop Settings")]
-    [SerializeField] private bool isDeletingSaveGame;
+    [SerializeField] private bool isNotSavingGame;
     [SerializeField] public bool IsRepairSystemActive;
 
     [Header("Battle Speed Settings")]
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
             case GameMode.None:
                 break;
 
-            case GameMode.Single:
+            case GameMode.Local1v1:
                 InitSingle();
                 RunModeSingle();
                 break;
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         players[1] = gameObject.AddComponent<Player>();
 
         // Load saved game.
-        var savedGame = SaveSystem.LoadGame(isDeletingSaveGame, GameMode.Single);
+        var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
         if (savedGame != null)
         {
             players[0].Data = savedGame.PlayerData1;
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Starts the phase shop.
     /// </summary>
-    private IEnumerator StartTurn(Player player)
+    private IEnumerator StartTurn(Player _player)
     {
         yield return new WaitUntil(() =>
             PhaseShopUnitManager.Instance != null &&
@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
 
         CurrentGame.State = GameState.StartOfTurn;
 
-        player.StartShop();
+        _player.StartShop();
     }
 
     /// <summary>
@@ -195,10 +195,10 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 0 = draw, 1 = right wins, -1 = left wins.
     /// </summary>
-    /// <param name="outcome"></param>
-    public void UpdatePlayerStats(int outcome)
+    /// <param name="_outcome"></param>
+    public void UpdatePlayerStats(int _outcome)
     {
-        switch (outcome)
+        switch (_outcome)
         {
             case 0:
                 break;

@@ -5,22 +5,22 @@ public class StartOfBattleState : StateBase
     /// <summary>
     /// Constructor of StartOfBattleState.
     /// </summary>
-    /// <param name="maxCount"></param>
-    public StartOfBattleState(float maxCount) : base(maxCount)
+    /// <param name="_maxCount"></param>
+    public StartOfBattleState(float _maxCount) : base(_maxCount)
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine ctx)
+    public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.WriteLine("--- StartOfBattleState");
         TriggerAbility(PhaseBattleController.Instance.Slots1);
         TriggerAbility(PhaseBattleController.Instance.Slots2);
 
-        ctx.SetState(new InsertState(
+        _ctx.SetState(new InsertState(
             PhaseBattleController.Instance.Process.DurationInsert));
     }
 
-    public override void OnUpdate(IFiniteStateMachine ctx, float speed)
+    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
 
     }
@@ -28,10 +28,10 @@ public class StartOfBattleState : StateBase
     /// <summary>
     /// Triggers the ability before attacking.
     /// </summary>
-    /// <param name="slots"></param>
-    private void TriggerAbility(Slot[] slots)
+    /// <param name="_slots"></param>
+    private void TriggerAbility(Slot[] _slots)
     {
-        foreach (var slot in slots)
+        foreach (var slot in _slots)
         {
             var unit = slot.UnitController();
             if (unit != null)

@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -100,9 +99,9 @@ public class UnitView : MonoBehaviour
     [Header("Color")]
     [SerializeField] private Color damageColor;
     [SerializeField] private Color buffColor;
-    public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
 
-    private Camera mainCamera;
+
+    public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
 
     private Vector3 originalScale;
 
@@ -119,7 +118,6 @@ public class UnitView : MonoBehaviour
 
     private void Start()
     {
-        mainCamera = Camera.main;
         originalScale = dragSpriteRenderer.gameObject.transform.localScale;
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
     }
@@ -198,10 +196,10 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets game object description active true/false.
     /// </summary>
-    /// <param name="value"></param>
-    public void SetDescriptionActive(bool value)
+    /// <param name="_value"></param>
+    public void SetDescriptionActive(bool _value)
     {
-        description.SetActive(value);
+        description.SetActive(_value);
     }
 
     // Drag Event
@@ -235,7 +233,7 @@ public class UnitView : MonoBehaviour
     /// <param name="eventData"></param>
     public void BeingMovedOnMouse(PointerEventData eventData)
     {
-        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
         dragSpriteRenderer.gameObject.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
@@ -268,39 +266,39 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the xp step components active.
     /// </summary>
-    /// <param name="box1"></param>
-    /// <param name="box2"></param>
-    /// <param name="step1"></param>
-    /// <param name="step2"></param>
-    /// <param name="box3"></param>
-    /// <param name="step3"></param>
-    /// <param name="step4"></param>
-    /// <param name="step5"></param>
+    /// <param name="_box1"></param>
+    /// <param name="_box2"></param>
+    /// <param name="_step1"></param>
+    /// <param name="_step2"></param>
+    /// <param name="_box3"></param>
+    /// <param name="_step3"></param>
+    /// <param name="_step4"></param>
+    /// <param name="_step5"></param>
     public void SetXpStepActive(
-        string level,
-        bool box1,
-        bool box2, bool step1, bool step2,
-        bool box3, bool step3, bool step4, bool step5)
+        string _level,
+        bool _box1,
+        bool _box2, bool _step1, bool _step2,
+        bool _box3, bool _step3, bool _step4, bool _step5)
     {
-        levelAmount.text = level;
-        box1StepFilled.SetActive(box1);
-        box2Step.SetActive(box2);
-        step1Filled.SetActive(step1);
-        step2Filled.SetActive(step2);
-        box3Step.SetActive(box3);
-        step3Filled.SetActive(step3);
-        step4Filled.SetActive(step4);
-        step5Filled.SetActive(step5);
+        levelAmount.text = _level;
+        box1StepFilled.SetActive(_box1);
+        box2Step.SetActive(_box2);
+        step1Filled.SetActive(_step1);
+        step2Filled.SetActive(_step2);
+        box3Step.SetActive(_box3);
+        step3Filled.SetActive(_step3);
+        step4Filled.SetActive(_step4);
+        step5Filled.SetActive(_step5);
     }
 
     /// <summary>
     /// Sets the activity of repair display.
     /// </summary>
-    /// <param name="value"></param>
-    public void SetRepairDisplayActive(bool value)
+    /// <param name="_value"></param>
+    public void SetRepairDisplayActive(bool _value)
     {
-        repairDisplayHp.SetActive(value);
-        repairDisplayAtk.SetActive(value);
+        repairDisplayHp.SetActive(_value);
+        repairDisplayAtk.SetActive(_value);
     }
 
     /// <summary>

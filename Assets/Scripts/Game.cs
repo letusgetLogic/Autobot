@@ -14,25 +14,25 @@ public class Game
     /// <summary>
     /// Constructor of Game. Hold the data of game for saving and loading.
     /// </summary>
-    /// <param name="mode"></param>
-    /// <param name="playerAmount"></param>
-    /// <param name="timer"></param>
-    /// <param name="lives"></param>
-    /// <param name="winCondition"></param>
-    /// <param name="state"></param>
-    /// <param name="playerData1"></param>
-    /// <param name="playerData2"></param>
-    public Game(GameMode mode, int playerAmount, float timer, int lives, int winCondition, 
-        GameState state, PlayerData playerData1, PlayerData playerData2)
+    /// <param name="_mode"></param>
+    /// <param name="_playerAmount"></param>
+    /// <param name="_timer"></param>
+    /// <param name="_lives"></param>
+    /// <param name="_winCondition"></param>
+    /// <param name="_state"></param>
+    /// <param name="_playerData1"></param>
+    /// <param name="_playerData2"></param>
+    public Game(GameMode _mode, int _playerAmount, float _timer, int _lives, int _winCondition, 
+        GameState _state, PlayerData _playerData1, PlayerData _playerData2)
     {
-        Mode = mode;
-        PlayerAmount = playerAmount;
-        Timer = timer;
-        Lives = lives;
-        WinCondition = winCondition;
-        State = state;
-        PlayerData1 = playerData1;
-        PlayerData2 = playerData2;
+        Mode = _mode;
+        PlayerAmount = _playerAmount;
+        Timer = _timer;
+        Lives = _lives;
+        WinCondition = _winCondition;
+        State = _state;
+        PlayerData1 = _playerData1;
+        PlayerData2 = _playerData2;
         CurrentPlayerIndex = 0;
     }
 }

@@ -19,7 +19,6 @@ class SoTradingCurrencyEditor : Editor
     /// <summary> 
     /// Draw the inspector. 
     /// </summary> 
-    /// <exception cref="NotImplementedException"></exception> 
     private void Draw()
     {
         EditorGUILayout.BeginHorizontal();
@@ -73,6 +72,9 @@ class SoTradingCurrencyEditor : Editor
         }
     }
 
+    /// <summary>
+    /// Draw the 2D maxtrix for the sell prices.
+    /// </summary>
     private void DrawSellSheet()
     {
         EditorGUILayout.BeginHorizontal();
@@ -108,6 +110,10 @@ class SoTradingCurrencyEditor : Editor
         EditorGUI.indentLevel--;
     }
 
+    /// <summary>
+    /// Draw a row.
+    /// </summary>
+    /// <param name="i"></param>
     private void DrawRow(int i)
     {
         EditorGUILayout.BeginHorizontal();
@@ -125,6 +131,9 @@ class SoTradingCurrencyEditor : Editor
         EditorGUILayout.EndHorizontal();
     }
 
+    /// <summary>
+    /// Draw the repair cost.
+    /// </summary>
     private void DrawRepairCost()
     {
         EditorGUILayout.BeginHorizontal();

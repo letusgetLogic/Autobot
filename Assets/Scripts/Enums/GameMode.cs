@@ -1,7 +1,7 @@
 ﻿public enum GameMode
 {
     None,
-    Single,
+    Local1v1,
     AI,
     Friends,
 }
