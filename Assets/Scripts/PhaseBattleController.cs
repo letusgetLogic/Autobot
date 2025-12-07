@@ -28,7 +28,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     public UnitController AttackingUnit1 => slots1[0].UnitController();
     public UnitController AttackingUnit2 => slots2[0].UnitController();
-
     public Queue<AbilityBase> UnitAbilities
     {
         get
@@ -43,7 +42,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         }
     }
     private Queue<AbilityBase> unitAbilities;
-    public Queue<GameObject> FaintUnits 
+    public Queue<GameObject> FaintUnits
     {
         get
         {
@@ -57,7 +56,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         }
     }
     private Queue<GameObject> faintUnits;
-
     public bool IsStopped { get; set; } = false;
     public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
 

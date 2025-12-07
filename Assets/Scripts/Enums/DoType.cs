@@ -27,4 +27,6 @@
     Discount,
 
     Swallow,
+
+    FriendAheadRepeatsHisAbility,
 }

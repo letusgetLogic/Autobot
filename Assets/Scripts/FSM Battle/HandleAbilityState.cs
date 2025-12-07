@@ -19,7 +19,7 @@ public class HandleAbilityState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        if (TimeCount < PhaseBattleController.Instance.Process.DurationEachAbility)
+        if (TimeCount < PhaseBattleController.Instance.Process.DurationHandleEachAbility)
         {
             TimeCount += _speed;
         }

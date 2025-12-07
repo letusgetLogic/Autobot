@@ -2,36 +2,33 @@
 {
     None,
 
+    Faint,
     LevelUp,
-
     Summoned,
-    FriendSummoned,
-
     Sell,
     Buy,
+    BeforeAttack,
+    AfterAttack,
+    Hurt,
+    EatsFood,
+
+
+    FriendSummoned,
     Tier1FriendBought,
+    FourFriendsHurt,
+    FriendFaints,
+    FriendAteFood,
+
+    BeforeFriendAheadAttacks,
+    FriendAheadAttacks,
+    FriendAheadFaints,
+    FriendAheadTriggerAbility,
+
+    KnockOut,
 
     StartOfTurn,
     EndTurn,
     StartOfBattle,
     EndOfBattle,
-
-    BeforeAttack,
-    AfterAttack,
-    FriendAheadAttacks,
-    KnockOut,
-
-    Hurt,
-    FourFriendsHurt,
-
-    Faint,
-    FriendAheadFaints,
-    FriendFaints,
-
-    EatsFood,
-    FriendAteFood,
-    FoodBuffs,
-
-    FriendAheadRepeats,
 }
 

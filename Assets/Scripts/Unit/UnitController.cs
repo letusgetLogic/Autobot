@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class UnitController : MonoBehaviour
@@ -6,8 +7,8 @@ public class UnitController : MonoBehaviour
     [Header("References")]
     [SerializeField] private UnitView view;
 
-    public UnityAction Attack { get; private set; }
-    public UnityAction Faint { get; private set; }
+    public event Action<Slot> OnAttack;
+    public event Action<Slot> OnFaint;
 
     public UnitView View => view;
 
@@ -39,16 +40,6 @@ public class UnitController : MonoBehaviour
                 return parent.GetComponent<Slot>();
             }
             return null;
-        }
-    }
-    public int SlotIndex
-    {
-        get
-        {
-            if (Slot != null)
-                return Slot.Index;
-
-            return -1;
         }
     }
     private bool flipSprite = false;
@@ -148,7 +139,7 @@ public class UnitController : MonoBehaviour
         //           PhaseBattleController.Instance.Process.DurationEachAbility));
         //}
 
-        Attack?.Invoke();
+        OnAttack?.Invoke(Slot);
 
         var ability = TriggerAbility(TriggerType.AfterAttack);
         if (ability != null)
@@ -169,6 +160,7 @@ public class UnitController : MonoBehaviour
         {
             TriggerFaint();
             PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
+
             Debug.Log($"{gameObject.name} enqueue");
             Debug.Log($"{PhaseBattleController.Instance.FaintUnits.Count} FaintUnits");
         }
@@ -176,6 +168,23 @@ public class UnitController : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Triggers the ability while unit is fainting.
+    /// </summary>
+    public void TriggerFaint()
+    {
+        Debug.Log($"{name} faint");
+
+        var ability = TriggerAbility(TriggerType.Faint);
+        if (ability != null)
+        {
+            PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
+            OnAttack?.Invoke(Slot);
+
+            Debug.Log($"{ability.ToString()} enqueue");
+            Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
+        }
+    }
     /// <summary>
     /// Sets and updates the view of the energy.
     /// </summary>
@@ -208,7 +217,7 @@ public class UnitController : MonoBehaviour
         if (model.CurrentLevel.ConsumedEnergy == null)
             return null;
 
-        if (model.Data.Cur.ENG < model.CurrentLevel.ConsumedEnergy.Value)
+        if (model.Data.Cur.ENG < Mathf.Abs(model.CurrentLevel.ConsumedEnergy.Value))
             return null;
 
         if (_triggerType == model.CurrentLevel.TriggerType)
@@ -233,21 +242,6 @@ public class UnitController : MonoBehaviour
         view.ShowBuff(_addHealth, _addAttack, 0);
     }
 
-    /// <summary>
-    /// Triggers the ability while unit is fainting.
-    /// </summary>
-    public void TriggerFaint()
-    {
-        Debug.Log($"{name} faint");
-        var ability = TriggerAbility(TriggerType.Faint);
-        if (ability != null)
-        {
-            PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
-            Faint?.Invoke();
-            Debug.Log($"{ability.ToString()} enqueue");
-            Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
-        }
-    }
 
     /// <summary>
     /// Sets parent null and game object active false.

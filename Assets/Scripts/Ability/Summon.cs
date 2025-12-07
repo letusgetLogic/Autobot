@@ -18,7 +18,7 @@ public class Summon : AbilityBase
     {
         this.model = _model;
         summonedUnits = CurrentLevel.SummonUnits;
-        this.slotIndex = _controller.SlotIndex;
+        this.slotIndex = _controller.Slot.Index;
     }
 
     public override void Run()
