@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.39520293, g: 0.67075646, b: 0.7830189, a: 1}
+  m_Color: {r: 0.48406905, g: 0.7955049, b: 0.9245283, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -222,9 +222,11 @@ GameObject:
   - component: {fileID: 1277334543815271236}
   - component: {fileID: 2894369446194639582}
   - component: {fileID: 6976273717991774049}
+  - component: {fileID: 346414467383106589}
   - component: {fileID: 7994565953370112610}
   - component: {fileID: 5594820714228919558}
   - component: {fileID: 8658174349459309319}
+  - component: {fileID: 9187487761148959067}
   m_Layer: 5
   m_Name: Settings Button
   m_TagString: Untagged
@@ -273,7 +275,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb12bc86082f7546be721d132edeaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
+  rotatedSprite: {fileID: 0}
+  rotatedSprite2: {fileID: 0}
   scaleFactor: 1.1
+  rotateSpeed: 0
+--- !u!114 &346414467383106589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8999737051941285315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5755c572f2ac05f46b57a342c49c6c68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 5594820714228919558}
+  DeactivatedParent: {fileID: 0}
+  background: {fileID: 2412445283150973881}
+  rotatedSprite: {fileID: 0}
+  rotatedSprite2: {fileID: 0}
+  hexColorHover: '#65ABC8'
 --- !u!114 &7994565953370112610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,3 +396,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 0}
+--- !u!114 &9187487761148959067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8999737051941285315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -244711772
+      Data2: 1140229009
+      Data3: 1907026355
+      Data4: -310500793
+    Path: event:/Button
+  Event: 
+  EventPlayTrigger: 20
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

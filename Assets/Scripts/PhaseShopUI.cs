@@ -100,8 +100,18 @@ public class PhaseShopUI : MonoBehaviour
         if (!HasEnoughCurrency(rollCost.Nut, rollCost.Tool))
             return;
 
+        SoundManager.Instance.PlayCoinSound();
         UpdateCurrency(rollCost.Nut, rollCost.Tool);
         PhaseShopUnitManager.Instance.SpawnShopUnits();
+    }
+
+    /// <summary>
+    /// Ends turn.
+    /// </summary>
+    public void OnEndTurn()
+    {
+        SoundManager.Instance.PlayButtonSound();
+        Player.EndShop();
     }
 
     #region Manage Buttons
@@ -119,6 +129,8 @@ public class PhaseShopUI : MonoBehaviour
             if (!HasEnoughCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool))
                 return;
 
+            SoundManager.Instance.PlayCoinSound();
+
             UpdateCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool);
 
             unit.Model.Repair?.RiseDurability();
@@ -134,6 +146,8 @@ public class PhaseShopUI : MonoBehaviour
     {
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
+            SoundManager.Instance.PlayLockSound();
+
             var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
                GetComponent<UnitController>();
 
@@ -150,6 +164,8 @@ public class PhaseShopUI : MonoBehaviour
     {
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
+            SoundManager.Instance.PlayUnlockSound();
+
             var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
              GetComponent<UnitController>();
 
@@ -175,6 +191,7 @@ public class PhaseShopUI : MonoBehaviour
             if (!HasEnoughCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool))
                 return;
 
+            SoundManager.Instance.PlayCoinSound();
             unit.GetSelled();
             UpdateCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool);
 
@@ -272,14 +289,6 @@ public class PhaseShopUI : MonoBehaviour
 
     #endregion
 
-
-    /// <summary>
-    /// Ends turn.
-    /// </summary>
-    public void OnEndTurn()
-    {
-        Player.EndShop();
-    }
 
     #endregion
 

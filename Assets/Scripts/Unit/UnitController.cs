@@ -118,6 +118,8 @@ public class UnitController : MonoBehaviour
 
         model.UpdateLevelXP(_isPhaseShop);
         model.Repair?.SetDurability(true, false, 0, 0);
+
+        SoundManager.Instance.PlayFusionSound();
     }
 
     #endregion
@@ -179,12 +181,13 @@ public class UnitController : MonoBehaviour
         if (ability != null)
         {
             PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
-            OnAttack?.Invoke(Slot);
+            OnFaint?.Invoke(Slot);
 
             Debug.Log($"{ability.ToString()} enqueue");
             Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
         }
     }
+
     /// <summary>
     /// Sets and updates the view of the energy.
     /// </summary>

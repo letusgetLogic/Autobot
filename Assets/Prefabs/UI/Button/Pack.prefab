@@ -377,6 +377,7 @@ GameObject:
   - component: {fileID: 7892450443693468395}
   - component: {fileID: 1091179483316570540}
   - component: {fileID: 2377710549440388003}
+  - component: {fileID: 7610876190221394195}
   m_Layer: 5
   m_Name: Pack
   m_TagString: Untagged
@@ -440,7 +441,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb12bc86082f7546be721d132edeaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
+  rotatedSprite: {fileID: 0}
+  rotatedSprite2: {fileID: 0}
   scaleFactor: 1.1
+  rotateSpeed: 0
 --- !u!114 &1091179483316570540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,6 +531,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7610876190221394195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9144253869376757503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -244711772
+      Data2: 1140229009
+      Data3: 1907026355
+      Data4: -310500793
+    Path: event:/Button
+  Event: 
+  EventPlayTrigger: 20
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &1844325679170180860
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -30,9 +30,6 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         slot.Border.enabled = true;
     }
 
-    /// <summary>
-    /// Calls, whether mouse is in the collider.
-    /// </summary>
     private void OnMouseOver()
     {
         if (CanPushOther())

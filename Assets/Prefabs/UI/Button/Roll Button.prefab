@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 1492387077491068979}
   - component: {fileID: 5843171593423923788}
   - component: {fileID: 8954729000578773128}
+  - component: {fileID: 7072158046322363771}
   - component: {fileID: 3966599265233208158}
   - component: {fileID: 7535079747622809947}
   m_Layer: 5
@@ -520,7 +521,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb12bc86082f7546be721d132edeaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
+  rotatedSprite: {fileID: 0}
+  rotatedSprite2: {fileID: 0}
   scaleFactor: 1.1
+  rotateSpeed: 0
+--- !u!114 &7072158046322363771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064368057441830690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5755c572f2ac05f46b57a342c49c6c68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 7535079747622809947}
+  background: {fileID: 4740231531464815859}
+  rotatedSprite: {fileID: 0}
+  rotatedSprite2: {fileID: 0}
+  hexColorHover: '#60899A'
 --- !u!114 &3966599265233208158
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -281,6 +281,8 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (_attached == null)
             return;
 
+        SoundManager.Instance.PlayFusionSound();
+
         _attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
         _attached.transform.SetParent(null);
 

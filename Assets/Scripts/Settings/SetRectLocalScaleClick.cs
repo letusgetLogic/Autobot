@@ -2,12 +2,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SetRectLocalScaleClick : MonoBehaviour,
-    IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
+    IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] private float scaleFactor;
+    [Header("References")]
+    [SerializeField] private RectTransform rotatedSprite;
+    [SerializeField] private RectTransform rotatedSprite2;
 
-    //private bool isHeld = false;
+    [Header("Settings")]
+    [SerializeField] private float scaleFactor;
+    [SerializeField] private float rotateSpeed;
+
+    private bool isHeld = false;
     private Vector3 originalScale;
+    private Quaternion originalRotation;
 
     /// <summary>
     /// Start method.
@@ -15,6 +22,9 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     private void Start()
     {
         originalScale = GetComponent<RectTransform>().localScale;
+
+        if (rotatedSprite != null)
+            originalRotation = rotatedSprite.localRotation;
     }
 
     /// <summary>
@@ -23,7 +33,7 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
-        //isHeld = true;
+        isHeld = true;
         GetComponent<RectTransform>().localScale = originalScale * scaleFactor;
     }
 
@@ -33,34 +43,34 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        //isHeld = false;
+        isHeld = false;
         GetComponent<RectTransform>().localScale = originalScale;
+
+        if (rotatedSprite != null)
+            rotatedSprite.localRotation = originalRotation;
+
+        if (rotatedSprite2 != null)
+            rotatedSprite2.localRotation = originalRotation;
     }
 
-    /// <summary>
-    /// OnPointerEnter method to handle pointer enter events.
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerEnter(PointerEventData eventData)
+    private void Update()
     {
-        GetComponent<RectTransform>().localScale = originalScale * scaleFactor;
+        if (isHeld)
+        {
+            if (rotatedSprite != null)
+            {
+                Quaternion rotate = new Quaternion(
+              rotatedSprite.localRotation.x,
+              rotatedSprite.localRotation.y,
+              rotatedSprite.localRotation.z + rotateSpeed * Time.deltaTime,
+              rotatedSprite.localRotation.w
+              );
+                rotatedSprite.localRotation = rotate;
+
+                if (rotatedSprite2 != null)
+                    rotatedSprite2.localRotation = rotate;
+            }
+
+        }
     }
-
-    /// <summary>
-    /// OnPointerExit method to handle pointer exit events.
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        //isHeld = false;
-        GetComponent<RectTransform>().localScale = originalScale;
-    }
-
-    //private void Update()
-    //{
-    //    if (isHeld)
-    //    {
-
-    //    }
-    //}
 }

@@ -7845,6 +7845,10 @@ PrefabInstance:
       value: Roll Button
       objectReference: {fileID: 0}
     - target: {fileID: 4064368057441830690, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4064368057441830690, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
       propertyPath: m_TagString
       value: Roll Button
       objectReference: {fileID: 0}
@@ -7883,47 +7887,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4064368057441830690, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6341657538504199754}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
---- !u!1 &6341657538504199753 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4064368057441830690, guid: fa779b95853671642b1f8a68c356ea97, type: 3}
-  m_PrefabInstance: {fileID: 6341657538504199752}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6341657538504199754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6341657538504199753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 301196562
-      Data2: 1244542490
-      Data3: 1018674321
-      Data4: 18663385
-    Path: event:/Coin
-  Event: 
-  EventPlayTrigger: 19
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!114 &6341657538504199755 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1247093064444513519, guid: fa779b95853671642b1f8a68c356ea97, type: 3}

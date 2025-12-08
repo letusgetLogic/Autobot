@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using static UnityEngine.GraphicsBuffer;
-
-public class TriggerAbilityManager
+﻿public class TriggerAbilityManager
 {
     #region Instance 
     public static TriggerAbilityManager Instance
