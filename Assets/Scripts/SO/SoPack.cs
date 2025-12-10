@@ -11,6 +11,7 @@ public class SoPack : ScriptableObject
     public SoIntVariable MaxEnergy;
 
     public SoIntVariable ChargingEnergy;
+    public SoIntVariable ChargingEnergyTeam;
 
     public SoTradingCurrency CurrencyData;
 

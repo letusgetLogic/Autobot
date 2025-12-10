@@ -12,7 +12,7 @@ public class InitializeState : StateBase
 
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
-        Debug.Log(PhaseBattleController.Instance.Player1.Data.Turns);
+        Debug.Log(PhaseBattleController.Instance.Player1.Data.Turn);
         Debug.Log("--- InitState");
         Initialize();
     }

@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sprite: {fileID: 102956758, guid: 865adb7721a8a8847adc946162e05ace, type: 3}
   ID: 0
-  Name: Model FS1
+  Name: Copper
   Health: 3
   Attack: 1
-  Energy: 2
+  Energy: {fileID: 11400000, guid: ffcd61ceea73108439a41717ce601978, type: 2}
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Faint \u2192 Summon one 1/1 Model B11."
+    Description: "Shutdown \u2192 Summon one 1/1 Mini Copper."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 1
@@ -41,7 +41,7 @@ MonoBehaviour:
     DealDamage: 0
     GainCoin: 0
   - Index: 1
-    Description: "Faint \u2192 Summon one 2/2 Model B11."
+    Description: "Shutdown \u2192 Summon one 2/2 Mini Copper."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 1
@@ -61,7 +61,7 @@ MonoBehaviour:
     DealDamage: 0
     GainCoin: 0
   - Index: 2
-    Description: "Faint \u2192 Summon one 3/3 Model B11."
+    Description: "Shutdown \u2192 Summon one 3/3 Mini Copper."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 1

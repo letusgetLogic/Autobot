@@ -16,6 +16,7 @@ public class PhaseShopUI : MonoBehaviour
         heartLabel,
         nutLabel,
         toolLabel;
+    [SerializeField] private GameObject energyBonusLabel;
 
     [Header("Roll Button")]
     [SerializeField] private TextMeshProUGUI rollCostNut;
@@ -35,6 +36,10 @@ public class PhaseShopUI : MonoBehaviour
         repairNut,
         recycleTool,
         recycleNut;
+
+    [Header("Charging Station")]
+    [SerializeField] private GameObject chargingStation;
+    [SerializeField] private TextMeshProUGUI energyText;
 
     public Player Player { get; private set; }
 
@@ -74,7 +79,7 @@ public class PhaseShopUI : MonoBehaviour
         nutLabel.text = Player.Data.Nuts.ToString();
         toolLabel.text = Player.Data.Tools.ToString();
         heartLabel.text = Player.Data.Lives.ToString();
-        turnLabel.text = Player.Data.Turns.ToString();
+        turnLabel.text = Player.Data.Turn.ToString();
 
         SetButtonData(rollCostTool, rollCostNut, rollCost);
     }
@@ -88,6 +93,24 @@ public class PhaseShopUI : MonoBehaviour
         Player.Data.Tools += _addTools;
         nutLabel.text = Player.Data.Nuts.ToString();
         toolLabel.text = Player.Data.Tools.ToString();
+    }
+
+    public void SetChargingEnergyAt(int _turn)
+    {
+        switch (_turn)
+        {
+            case 0:
+                break;
+            case 1:
+                chargingStation.SetActive(false);
+                energyBonusLabel.SetActive(true);
+                break;
+            case 2:
+                chargingStation.SetActive(true);
+                energyBonusLabel.SetActive(false);
+                break;
+        }
+        energyText.text = PackManager.Instance.MyPack.ChargingEnergy.Value.ToString();
     }
 
     #region Buttons

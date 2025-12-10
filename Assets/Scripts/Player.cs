@@ -1,4 +1,4 @@
-﻿using Unity.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -14,12 +14,13 @@ public class Player : MonoBehaviour
     {
         SetDefault();
         PhaseShopUnitManager.Instance.Initialize(this);
-        PackManager.Instance.AddUnitsByTier(Data.Turns);
+        PackManager.Instance.AddUnitsByTier(Data.Turn);
         PhaseShopUI.Instance.UpdateUI(this);
         PhaseShopUnitManager.Instance.SpawnSavedUnits();
         PhaseShopUnitManager.Instance.SpawnShopUnits();
         UpdateUnitData();
-        PhaseShopUnitManager.Instance.StartCoroutine(PhaseShopUnitManager.Instance.ChargeUnit());
+        PhaseShopUnitManager.Instance.StartCoroutine(PhaseShopUnitManager.Instance.DelayChargeUnits());
+        PhaseShopUI.Instance.SetChargingEnergyAt(Data.Turn);
 
         GameManager.Instance.SetPhaseShop();
     }
@@ -29,6 +30,23 @@ public class Player : MonoBehaviour
     /// </summary>
     public void EndShop()
     {
+        float delay = 0f;
+
+        if (Data.Turn == 1)
+            delay = PhaseShopUnitManager.Instance.ChargeUnits();
+
+        PhaseShopUnitManager.Instance.StartCoroutine(DelayEndShop(delay));
+    }
+
+    /// <summary>
+    /// Delays ending the shop phase for charging units at turn 1.
+    /// </summary>
+    /// <param name="_delay"></param>
+    /// <returns></returns>
+    private IEnumerator DelayEndShop(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+
         UpdateUnitData();
         GameManager.Instance.EndPhaseShop();
     }
@@ -54,7 +72,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void SetDefault()
     {
-        Data.Turns++;
+        Data.Turn++;
         Data.Nuts = PackManager.Instance.MyPack.CurrencyData.Capacity.Nut;
         Data.Tools = PackManager.Instance.MyPack.CurrencyData.Capacity.Tool;
     }

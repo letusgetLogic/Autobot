@@ -134,6 +134,17 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
+    /// Sets the components view in slot shop.
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetShopView(bool _value)
+    {
+        levelDisplay.SetActive(!_value);
+        ShowFullAttributes(!_value);
+        energyIcon.SetActive(!_value);
+    }
+
+    /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
     public void SetAbility(string _description, int _energy)
@@ -215,12 +226,12 @@ public class UnitView : MonoBehaviour
 
         if (shadowSpriteRenderer.enabled == false)
         {
-            heartIcon.gameObject.SetActive(false);
-            attackIcon.gameObject.SetActive(false);
-            energyIcon.gameObject.SetActive(false);
-            health.enabled = false;
-            attack.enabled = false;
-            energy.enabled = false;
+            //heartIcon.gameObject.SetActive(false);
+            //attackIcon.gameObject.SetActive(false);
+            //energyIcon.gameObject.SetActive(false);
+            //health.enabled = false;
+            //attack.enabled = false;
+            //energy.enabled = false;
         }
 
         dragSpriteRenderer.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
@@ -252,12 +263,12 @@ public class UnitView : MonoBehaviour
         canvas.sortingOrder = originalSortingOrder;
         canvas.transform.localPosition = Vector3.zero;
 
-        heartIcon.gameObject.SetActive(true);
-        attackIcon.gameObject.SetActive(true);
-        energyIcon.gameObject.SetActive(true);
-        health.enabled = true;
-        attack.enabled = true;
-        energy.enabled = true;
+        //heartIcon.gameObject.SetActive(true);
+        //attackIcon.gameObject.SetActive(true);
+        //energyIcon.gameObject.SetActive(true);
+        //health.enabled = true;
+        //attack.enabled = true;
+        //energy.enabled = true;
     }
 
     #endregion
@@ -429,12 +440,12 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
-    /// Hides the full HP and ATK.
+    /// Shows/Hides the full HP and ATK.
     /// </summary>
-    public void HideFullAttributes()
+    public void ShowFullAttributes(bool _value)
     {
         foreach (var element in hideFullAttributes)
-            element.SetActive(false);
+            element.SetActive(_value);
     }
 
 }

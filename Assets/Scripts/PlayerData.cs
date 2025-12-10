@@ -3,7 +3,7 @@ public class PlayerData
 {
     public string Name { get; private set; }
     public int Lives { get; set; }
-    public int Turns { get; set; }
+    public int Turn { get; set; }
     public int Nuts { get; set; }
     public int Tools { get; set; }
 

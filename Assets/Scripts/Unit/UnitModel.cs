@@ -54,7 +54,7 @@ public class UnitModel
 
         Data.SetHP(_soUnit.Health, null);
         Data.SetATK(_soUnit.Attack);
-        Data.SetEnergy(_soUnit.Energy);
+        Data.SetEnergy(_soUnit.Energy == null ? 0 : _soUnit.Energy.Value);
         Data.SetXP(1);
 
         Data.ID = PackManager.Instance.DebugID++.ToString() + "_" + SoUnit.Name;
@@ -91,7 +91,7 @@ public class UnitModel
         }
         else
         {
-            View.HideFullAttributes();
+            View.ShowFullAttributes(false);
         }
 
         View.Shadow.enabled = false;
@@ -137,28 +137,39 @@ public class UnitModel
             case UnitState.InSlotShop:
                 View.IceCube.SetActive(false);
                 View.Shadow.enabled = true;
+                View.SetBuyOrSell(Currency(_unitState), true);
+                View.SetShopView(true);
                 break;
+
             case UnitState.Freezed:
                 View.IceCube.SetActive(true);
                 View.Shadow.enabled = true;
+                View.SetBuyOrSell(Currency(_unitState), true);
+                View.SetShopView(true);
                 break;
+
             case UnitState.InSlotTeam:
                 View.IceCube.SetActive(false);
+                View.SetBuyOrSell(Currency(_unitState), false);
+                View.SetShopView(false);
                 break;
+
             case UnitState.InSlotCharge:
                 View.IceCube.SetActive(false);
+                 View.SetBuyOrSell(Currency(_unitState), false);
+                View.SetShopView(false);
                 break;
+
             case UnitState.InPhaseBattle:
                 View.HideObjectsDuringBattle();
+                View.SetBuyOrSell(Currency(_unitState), false);
+                View.SetShopView(false);
                 break;
         }
-
 
         Repair?.SetDisplay(_unitState);
 
         Data.UnitState = _unitState;
-        bool isForBuying = _unitState == UnitState.InSlotShop || _unitState == UnitState.Freezed;
-        View.SetBuyOrSell(Currency(Data.UnitState), isForBuying);
     }
 
     /// <summary>
@@ -317,7 +328,6 @@ public class UnitModel
 
         int hp = GetAverage(Data.Cur.HP, _otherCurrent.HP);
         int atk = GetAverage(Data.Cur.ATK, _otherCurrent.ATK);
-        int energy = GetAverage(Data.Cur.ENG, _otherCurrent.ENG);
 
         int addHP = Repair != null ? 0 : _basis.HP + _buff.HP + _buffTemp.HP;
         int addATK = Repair != null ? 0 : _basis.ATK + _buff.ATK + _buffTemp.ATK;
@@ -332,7 +342,7 @@ public class UnitModel
             Data.SetATK(Data.FullATK);
         }
 
-        Data.SetEnergy(energy);
+        Data.SetEnergy(Data.Cur.ENG + _otherCurrent.ENG);
 
         View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }

@@ -14,7 +14,7 @@ public class SoUnit : ScriptableObject
 
     public int Health;
     public int Attack;
-    public int Energy;
+    public SoIntVariable Energy;
 
     public SoIntVariable LevelLimit;
     public Level[] Levels ;

@@ -44,12 +44,12 @@ public class PhaseBattleView : MonoBehaviour
     public void Initialize(PlayerData _player1, PlayerData _player2)
     {
         name1.text = _player1.Name;
-        turn1.text = _player1.Turns.ToString();
+        turn1.text = _player1.Turn.ToString();
         wins1.text = _player1.Wins.ToString();
         lives1.text = _player1.Lives.ToString();
 
         name2.text = _player2.Name;
-        turn2.text = _player2.Turns.ToString();
+        turn2.text = _player2.Turn.ToString();
         wins2.text = _player2.Wins.ToString();
         lives2.text = _player2.Lives.ToString();
 

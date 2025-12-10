@@ -44,12 +44,12 @@ public class SoundManager
 
     public void PlayLockSound()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Fusion_1");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Lock");
     }
 
     public void PlayUnlockSound()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Fusion_2");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Unlock");
     }
 
     public void PlayOnDropSound()

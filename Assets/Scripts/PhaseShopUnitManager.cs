@@ -19,6 +19,11 @@ public class PhaseShopUnitManager : MonoBehaviour
     private float delayPushing = .1f;
     public float DelayPushing => delayPushing;
 
+    [Tooltip("Delay starting the battle, for showing charging of the units on team slots")]
+    [SerializeField]
+    private float delayStartBattle = 2f;
+
+    [Tooltip("Delay charging the units on team and charging slots")]
     [SerializeField]
     private float delayCharging = .5f;
 
@@ -88,7 +93,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 var unitData = Player.Data.TeamUnitDatas[i];
                 if (unitData.HasReference != true)
                     continue;
-
+                Debug.Log("unitData.Index" + unitData.Index);
                 SpawnManager.Instance.Spawn(
                     PackManager.Instance.Units[unitData.Index],
                     unitData.Index,
@@ -134,6 +139,11 @@ public class PhaseShopUnitManager : MonoBehaviour
     {
         for (int i = 0; i < shopUnitSlots.Length; i++)
         {
+            if (shopUnitSlots[i].gameObject.activeSelf == false)
+            {
+                continue;
+            }
+
             var unitController = shopUnitSlots[i].UnitController();
             if (unitController != null)
             {
@@ -161,17 +171,37 @@ public class PhaseShopUnitManager : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// Add the energy to the unit.
+    /// Charges the units and returns the delay.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator ChargeUnit()
+    public float ChargeUnits()
+    {
+        StartCoroutine(DelayChargeUnits());
+        return delayCharging + delayStartBattle;
+    }
+
+    /// <summary>
+    /// Add the energy to the units after a delay.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator DelayChargeUnits()
     {
         yield return new WaitForSeconds(delayCharging);
 
         var unit = ChargeSlot.UnitController();
         if (unit != null)
-        {
             unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
+
+        foreach (var slot in teamSlots)
+        {
+            if (slot.gameObject.activeSelf)
+            {
+                var unitController = slot.UnitController();
+                if (unitController != null)
+                {
+                    unitController.SetEnergy(PackManager.Instance.MyPack.ChargingEnergyTeam.Value);
+                }
+            }
         }
     }
 

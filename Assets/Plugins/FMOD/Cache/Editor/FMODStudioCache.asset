@@ -108,6 +108,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-2166189293124197313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Lock
+  m_EditorClassIdentifier: 
+  Path: event:/Lock
+  Guid:
+    Data1: 938871432
+    Data2: 1278792644
+    Data3: 649854850
+    Data4: -1944032687
+  Banks:
+  - {fileID: 5097814110452783591}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-452012110385663334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,12 +184,14 @@ MonoBehaviour:
   - {fileID: -3951348323770927127}
   - {fileID: -5156476548347418121}
   - {fileID: -4017644017669975811}
+  - {fileID: 4989900383785344130}
+  - {fileID: -2166189293124197313}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5097814110452783591}
   StringsBanks:
   - {fileID: 2343683163441996289}
-  cacheTime: 639008283350861456
+  cacheTime: 639009955083541653
   cacheVersion: 131633
 --- !u!114 &2252363071186635769
 MonoBehaviour:
@@ -206,11 +235,38 @@ MonoBehaviour:
   Path: Assets/Audio/Sound effect/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639008283350861456
+  lastModified: 639009955083541653
   FileSizes:
   - Name: Desktop
-    Value: 980
+    Value: 1052
   Exists: 1
+--- !u!114 &4989900383785344130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Unlock
+  m_EditorClassIdentifier: 
+  Path: event:/Unlock
+  Guid:
+    Data1: 863768121
+    Data2: 1327619134
+    Data3: 686762635
+    Data4: -1084559360
+  Banks:
+  - {fileID: 5097814110452783591}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5097814110452783591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +282,8 @@ MonoBehaviour:
   Path: Assets/Audio/Sound effect/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639008283350832983
+  lastModified: 639009955083516571
   FileSizes:
   - Name: Desktop
-    Value: 803776
+    Value: 807648
   Exists: 1
