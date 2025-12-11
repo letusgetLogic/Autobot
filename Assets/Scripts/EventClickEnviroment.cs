@@ -15,7 +15,7 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                 PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
                 break;
             case "PhaseBattle":
-                PhaseBattleView.Instance.OnRunningButtonClick();
+                //PhaseBattleView.Instance.OnRunningButtonClick();
                 break;
 
         }

@@ -95,6 +95,10 @@ public class PhaseShopUI : MonoBehaviour
         toolLabel.text = Player.Data.Tools.ToString();
     }
 
+    /// <summary>
+    /// Sets the charging energy on charging station.
+    /// </summary>
+    /// <param name="_turn"></param>
     public void SetChargingEnergyAt(int _turn)
     {
         switch (_turn)
@@ -105,12 +109,12 @@ public class PhaseShopUI : MonoBehaviour
                 chargingStation.SetActive(false);
                 energyBonusLabel.SetActive(true);
                 break;
-            case 2:
+            case >= 2:
                 chargingStation.SetActive(true);
                 energyBonusLabel.SetActive(false);
                 break;
         }
-        energyText.text = PackManager.Instance.MyPack.ChargingEnergy.Value.ToString();
+        energyText.text = "+" + PackManager.Instance.MyPack.ChargingEnergy.Value.ToString();
     }
 
     #region Buttons

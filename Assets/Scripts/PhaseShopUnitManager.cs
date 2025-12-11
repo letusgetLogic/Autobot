@@ -344,9 +344,21 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (_direction == 0)
             return;
 
+        // Search index is on next slot in the defined direction.
         int search = _target + _direction;
 
-        while (search >= 0 && search < teamSlots.Length)
+
+        // Defines new length without inactive slots.
+        int length = 0;
+        for (int i = 1; i < teamSlots.Length; i++)
+        {
+            if (teamSlots[i].gameObject.activeSelf)
+                length++;
+        }
+
+
+        // Search empty slot and push the other to it.
+        while (search >= 0 && search < length)
         {
             if (teamSlots[search].Unit() != null &&
                 teamSlots[search].Unit() != AttachedGameObject) // slot is occupied

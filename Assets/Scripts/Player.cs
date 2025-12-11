@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StartShop()
     {
+        Data.Turn++;
         SetDefault();
         PhaseShopUnitManager.Instance.Initialize(this);
         PackManager.Instance.AddUnitsByTier(Data.Turn);
@@ -72,7 +73,6 @@ public class Player : MonoBehaviour
     /// </summary>
     public void SetDefault()
     {
-        Data.Turn++;
         Data.Nuts = PackManager.Instance.MyPack.CurrencyData.Capacity.Nut;
         Data.Tools = PackManager.Instance.MyPack.CurrencyData.Capacity.Tool;
     }

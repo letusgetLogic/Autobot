@@ -15,13 +15,14 @@ public class UnitView : MonoBehaviour
     public SpriteRenderer Shadow => shadowSpriteRenderer;
     public GameObject IceCube => iceCubeSpriteRenderer.gameObject;
 
-    [Header("Description")]
-    [SerializeField] private GameObject description;
     [SerializeField] 
     private GameObject[] 
         hideObjectsDuringBattle,
         hideFullAttributes,
         hideObjectsByNoAbility;
+
+    [Header("Description")]
+    [SerializeField] private GameObject description;
     [SerializeField]
     private TextMeshProUGUI
         myName,
@@ -137,9 +138,9 @@ public class UnitView : MonoBehaviour
     /// Sets the components view in slot shop.
     /// </summary>
     /// <param name="_value"></param>
-    public void SetShopView(bool _value)
+    public void SetShopView(bool _value, bool _showLevel)
     {
-        levelDisplay.SetActive(!_value);
+        levelDisplay.SetActive(_showLevel);
         ShowFullAttributes(!_value);
         energyIcon.SetActive(!_value);
     }

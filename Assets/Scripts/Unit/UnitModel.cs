@@ -138,32 +138,32 @@ public class UnitModel
                 View.IceCube.SetActive(false);
                 View.Shadow.enabled = true;
                 View.SetBuyOrSell(Currency(_unitState), true);
-                View.SetShopView(true);
+                View.SetShopView(true, false);
                 break;
 
             case UnitState.Freezed:
                 View.IceCube.SetActive(true);
                 View.Shadow.enabled = true;
                 View.SetBuyOrSell(Currency(_unitState), true);
-                View.SetShopView(true);
+                View.SetShopView(true, false);
                 break;
 
             case UnitState.InSlotTeam:
                 View.IceCube.SetActive(false);
                 View.SetBuyOrSell(Currency(_unitState), false);
-                View.SetShopView(false);
+                View.SetShopView(false, true);
                 break;
 
             case UnitState.InSlotCharge:
                 View.IceCube.SetActive(false);
                  View.SetBuyOrSell(Currency(_unitState), false);
-                View.SetShopView(false);
+                View.SetShopView(false, true);
                 break;
 
             case UnitState.InPhaseBattle:
                 View.HideObjectsDuringBattle();
                 View.SetBuyOrSell(Currency(_unitState), false);
-                View.SetShopView(false);
+                View.SetShopView(false, false);
                 break;
         }
 
