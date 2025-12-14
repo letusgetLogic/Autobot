@@ -15,36 +15,50 @@ public class Buff : AbilityBase
 
     public override void Run()
     {
-        if (CurrentLevel.ToWho == ToWho.RandomFriend)
+        switch(CurrentLevel.ToWho)
         {
-            List<UnitController> unitOnSlot = new List<UnitController>();
-
-            for (int i = 0; i < TeamSlots.Length; i++)
-            {
-                var unit = TeamSlots[i].UnitController();
-                if (unit != null && unit != Controller)
-                {
-                    unitOnSlot.Add(unit);
-                }
-            }
-
-            if (unitOnSlot.Count <= 0)
+            case ToWho.None:
                 return;
 
-            for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
+            case ToWho.RandomFriend:
+                BuffRandom();
+                break;
+
+
+
+        }
+
+    }
+
+    private void BuffRandom()
+    {
+        List<UnitController> unitOnSlot = new List<UnitController>();
+
+        for (int i = 0; i < TeamSlots.Length; i++)
+        {
+            var unit = TeamSlots[i].UnitController();
+            if (unit != null && unit != Controller)
             {
-                Random rnd = new Random();
-                int index = rnd.Next(0, unitOnSlot.Count);
-
-                var unit = unitOnSlot[index];
-
-                unit.Buff(
-                    AbilityBase.IsPernament(CurrentLevel.AbilityDuration), 
-                    CurrentLevel.HealthBuff, 
-                    CurrentLevel.AttackBuff);
-
-                unitOnSlot.Remove(unit);
+                unitOnSlot.Add(unit);
             }
+        }
+
+        if (unitOnSlot.Count <= 0)
+            return;
+
+        for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
+        {
+            Random rnd = new Random();
+            int index = rnd.Next(0, unitOnSlot.Count);
+
+            var unit = unitOnSlot[index];
+
+            unit.Buff(
+                AbilityBase.IsPernament(CurrentLevel.AbilityDuration),
+                CurrentLevel.HealthBuff,
+                CurrentLevel.AttackBuff);
+
+            unitOnSlot.Remove(unit);
         }
     }
 }

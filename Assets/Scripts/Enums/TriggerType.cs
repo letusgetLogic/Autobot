@@ -2,11 +2,13 @@
 {
     None,
 
-    Faint,
+    Shutdown,
+    Recycle,
+    Craft,
+
+    Crafted,
+
     LevelUp,
-    Summoned,
-    Sell,
-    Buy,
     BeforeAttack,
     AfterAttack,
     Hurt,

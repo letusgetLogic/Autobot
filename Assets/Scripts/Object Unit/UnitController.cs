@@ -95,7 +95,7 @@ public class UnitController : MonoBehaviour
     /// </summary>
     public void GetSelled()
     {
-        var ability = TriggerAbility(TriggerType.Sell);
+        var ability = TriggerAbility(TriggerType.Recycle);
         if (ability != null)
             ability.Activate();
 
@@ -177,7 +177,7 @@ public class UnitController : MonoBehaviour
     {
         Debug.Log($"{name} faint");
 
-        var ability = TriggerAbility(TriggerType.Faint);
+        var ability = TriggerAbility(TriggerType.Shutdown);
         if (ability != null)
         {
             PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
