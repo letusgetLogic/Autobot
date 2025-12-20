@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Zombie Cricket 1
   m_EditorClassIdentifier: 
+  UnitType: 0
   Sprite: {fileID: -1547974232, guid: d6eb047f9a0561c45a89eb64f9758ab9, type: 3}
   ID: 0
   Name: Mini Copper
   Health: 1
   Attack: 1
   Energy: {fileID: 0}
+  HasUniqueCost: 0
+  UniqueCost: {fileID: 0}
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0

@@ -8,10 +8,12 @@ public class PhaseShopUnitManager : MonoBehaviour
     [Header("Slots")]
     [SerializeField] private Slot[] teamSlots;
     [SerializeField] private Slot chargeSlot;
-    [SerializeField] private Slot[] shopUnitSlots;
+    [SerializeField] private Slot[] shopBotSlots;
+    [SerializeField] private Slot[] shopItemSlots;
     public Slot[] TeamSlots => teamSlots;
     public Slot ChargeSlot => chargeSlot;
-    public Slot[] ShopUnitSlots => shopUnitSlots;
+    public Slot[] ShopBotSlots => shopBotSlots;
+    public Slot[] ShopItemSlots => shopItemSlots;
 
     [Header("Settings")]
     [Tooltip("Delay pushing other unit to make space")]
@@ -57,7 +59,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         Time.timeScale = 1f;
 
         SetIndex(teamSlots);
-        SetIndex(shopUnitSlots);
+        SetIndex(shopBotSlots);
     }
 
     /// <summary>
@@ -95,7 +97,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                     continue;
                 Debug.Log("unitData.Index" + unitData.Index);
                 SpawnManager.Instance.Spawn(
-                    PackManager.Instance.Units[unitData.Index],
+                    PackManager.Instance.Bots[unitData.Index],
                     unitData.Index,
                     unitData,
                     UnitState.InSlotTeam,
@@ -107,7 +109,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (chargeUnitData.HasReference)
         {
             SpawnManager.Instance.Spawn(
-                PackManager.Instance.Units[chargeUnitData.Index],
+                PackManager.Instance.Bots[chargeUnitData.Index],
                 chargeUnitData.Index,
                 chargeUnitData,
                 UnitState.InSlotCharge,
@@ -123,11 +125,18 @@ public class PhaseShopUnitManager : MonoBehaviour
                     continue;
 
                 SpawnManager.Instance.Spawn(
-                    PackManager.Instance.Units[unitData.Index],
+                    PackManager.Instance.Bots[unitData.Index],
                     unitData.Index,
                     unitData,
                     unitData.UnitState,
-                    shopUnitSlots[i].transform);
+                    shopBotSlots[i].transform);
+
+                SpawnManager.Instance.Spawn(
+                    PackManager.Instance.Items[unitData.Index],
+                    unitData.Index,
+                    unitData,
+                    unitData.UnitState,
+                    shopItemSlots[i].transform);
             }
         }
     }
@@ -137,14 +146,15 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     public void SpawnShopUnits()
     {
-        for (int i = 0; i < shopUnitSlots.Length; i++)
+        // Spawn shop bots
+        for (int i = 0; i < shopBotSlots.Length; i++)
         {
-            if (shopUnitSlots[i].gameObject.activeSelf == false)
+            if (shopBotSlots[i].gameObject.activeSelf == false)
             {
                 continue;
             }
 
-            var unitController = shopUnitSlots[i].UnitController();
+            var unitController = shopBotSlots[i].UnitController();
             if (unitController != null)
             {
                 if (unitController.Model.Data.UnitState == UnitState.Freezed)
@@ -153,38 +163,69 @@ public class PhaseShopUnitManager : MonoBehaviour
                 Destroy(unitController.gameObject);
             }
 
-            if (PackManager.Instance.Units.Count == 0)
+            if (PackManager.Instance.Bots.Count == 0)
                 return;
 
-            int rand = Random.Range(0, PackManager.Instance.Units.Count);
-            var data = PackManager.Instance.Units[rand];
+            int rand = Random.Range(0, PackManager.Instance.Bots.Count);
+            var data = PackManager.Instance.Bots[rand];
 
             SpawnManager.Instance.Spawn(
                 data,
                 rand,
                 new(),
                 UnitState.InSlotShop,
-                shopUnitSlots[i].transform);
+                shopBotSlots[i].transform);
+        }
+        
+        // Spwan shop items
+        for (int i = 0; i < shopItemSlots.Length; i++)
+        {
+            if (shopItemSlots[i].gameObject.activeSelf == false)
+            {
+                continue;
+            }
+
+            var unitController = shopItemSlots[i].UnitController();
+            if (unitController != null)
+            {
+                if (unitController.Model.Data.UnitState == UnitState.Freezed)
+                    continue;
+
+                Destroy(unitController.gameObject);
+            }
+
+            if (PackManager.Instance.Items.Count == 0)
+                return;
+
+            int rand = Random.Range(0, PackManager.Instance.Items.Count);
+            var data = PackManager.Instance.Items[rand];
+
+            SpawnManager.Instance.Spawn(
+                data,
+                rand,
+                new(),
+                UnitState.InSlotShop,
+                shopItemSlots[i].transform);
         }
     }
 
     #endregion
 
     /// <summary>
-    /// Charges the units and returns the delay.
+    /// Charges the bots and returns the delay.
     /// </summary>
     /// <returns></returns>
-    public float ChargeUnits()
+    public float ChargeBots()
     {
-        StartCoroutine(DelayChargeUnits());
+        StartCoroutine(DelayChargeBots());
         return delayCharging + delayStartBattle;
     }
 
     /// <summary>
-    /// Add the energy to the units after a delay.
+    /// Add the energy to the bots after a delay.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator DelayChargeUnits()
+    public IEnumerator DelayChargeBots()
     {
         yield return new WaitForSeconds(delayCharging);
 

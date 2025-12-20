@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "IntVariable", menuName = "ScriptableObject/IntVariable")]
+[CreateAssetMenu(fileName = "Int", menuName = "ScriptableObject/Int")]
 [System.Serializable]
 public class SoIntVariable : ScriptableObject
 {

@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using log4net.Core;
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(SoUnit))]
@@ -7,6 +8,7 @@ class SoUnitEditor : Editor
     private SoUnit data;
 
     private static readonly int NumberWidth = 30;
+
 
     private bool[]
         showLevelSections,
@@ -24,8 +26,16 @@ class SoUnitEditor : Editor
     /// </summary> 
     private void Draw()
     {
+        // UnitType 
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Unit Type", GUILayout.Width(100));
+        data.UnitType = (UnitType)EditorGUILayout.EnumPopup(data.UnitType);
+        EditorGUILayout.EndHorizontal();
+
+        // Sprite
         data.Sprite = (Sprite)EditorGUILayout.ObjectField("Sprite", data.Sprite, typeof(Sprite), false);
 
+        // ID + Name
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("ID", GUILayout.Width(50));
         data.ID = EditorGUILayout.IntField(data.ID, GUILayout.Width(NumberWidth));
@@ -33,6 +43,7 @@ class SoUnitEditor : Editor
         data.Name = EditorGUILayout.TextField(data.Name);
         EditorGUILayout.EndHorizontal();
 
+        // Attack + Health
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Attack", GUILayout.Width(50));
         data.Attack = EditorGUILayout.IntField(data.Attack, GUILayout.Width(NumberWidth));
@@ -40,16 +51,35 @@ class SoUnitEditor : Editor
         data.Health = EditorGUILayout.IntField(data.Health, GUILayout.Width(NumberWidth));
         EditorGUILayout.EndHorizontal();
 
+        // Energy
         EditorGUILayout.BeginHorizontal();
         data.Energy = (SoIntVariable)EditorGUILayout.ObjectField("Energy", data.Energy, typeof(SoIntVariable), false);
         EditorGUILayout.EndHorizontal();
 
+        // If it has a unique cost, assign the cost
+        EditorGUILayout.BeginHorizontal();
+        data.HasUniqueCost = EditorGUILayout.Toggle($"Has a unique cost", data.HasUniqueCost);
+        if (data.HasUniqueCost)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Unique Cost", GUILayout.Width(120));
+            // Nuts
+            data.UniqueCostNuts = (SoIntVariable)EditorGUILayout.ObjectField(data.UniqueCostNuts, typeof(SoIntVariable), false);
+            EditorGUILayout.LabelField("Nuts", GUILayout.Width(50));
+            // Tools
+            data.UniqueCostTools = (SoIntVariable)EditorGUILayout.ObjectField(data.UniqueCostTools, typeof(SoIntVariable), false);
+            EditorGUILayout.LabelField("Tools", GUILayout.Width(50));
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndHorizontal();
 
+        // Level Limit
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Level Limit", GUILayout.Width(100));
         data.LevelLimit = (SoIntVariable)EditorGUILayout.ObjectField(data.LevelLimit, typeof(SoIntVariable), false);
         EditorGUILayout.EndHorizontal();
 
+        // Draw the property of each level
         if (data.LevelLimit == null)
             return;
 

@@ -7,6 +7,8 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "Unit", menuName = "ScriptableObject/Unit")]
 public class SoUnit : ScriptableObject
 {
+    public UnitType UnitType;
+
     public Sprite Sprite;
 
     public int ID;
@@ -15,6 +17,10 @@ public class SoUnit : ScriptableObject
     public int Health;
     public int Attack;
     public SoIntVariable Energy;
+
+    public bool HasUniqueCost;
+    public SoIntVariable UniqueCostNuts;
+    public SoIntVariable UniqueCostTools;
 
     public SoIntVariable LevelLimit;
     public Level[] Levels ;

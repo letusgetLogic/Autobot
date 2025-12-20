@@ -7,7 +7,8 @@ public class PackManager : MonoBehaviour
 
     public SoPack MyPack { get; private set; }
 
-    public List<SoUnit> Units { get; private set; } = new List<SoUnit>();
+    public List<SoUnit> Bots { get; private set; } = new List<SoUnit>();
+    public List<SoUnit> Items { get; private set; } = new List<SoUnit>();
 
     public int DebugID { get; set; }
 
@@ -37,25 +38,51 @@ public class PackManager : MonoBehaviour
 
         MyPack = _selectedPack;
 
-        Add(MyPack.UnitsTier1);
-        Add(MyPack.UnitsTier2);
-        Add(MyPack.UnitsTier3);
-        Add(MyPack.UnitsTier4);
-        Add(MyPack.UnitsTier5);
-        Add(MyPack.UnitsTier6);
+        AddBots(MyPack.BotsTier1);
+        AddItems(MyPack.ItemsTier1);
+
+        AddBots(MyPack.BotsTier2);
+        AddItems(MyPack.ItemsTier2);
+
+        AddBots(MyPack.BotsTier3);
+        AddItems(MyPack.ItemsTier3);
+
+        AddBots(MyPack.BotsTier4);
+        AddItems(MyPack.ItemsTier4);
+
+        AddBots(MyPack.BotsTier5);
+        AddItems(MyPack.ItemsTier5);
+
+        AddBots(MyPack.BotsTier6);
+        AddItems(MyPack.ItemsTier6);
     }
 
     /// <summary>
-    /// Adds the units to the list.
+    /// Adds the robots to the list.
     /// </summary>
     /// <param name="_units"></param>
-    private void Add(SoUnit[] _units)
+    private void AddBots(SoUnit[] _units)
     {
         if (_units != null)
         {
             for (int i = 0; i < _units.Length; i++)
             {
-                Units.Add(_units[i]);
+                Bots.Add(_units[i]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Adds the items to the list.
+    /// </summary>
+    /// <param name="_units"></param>
+    private void AddItems(SoUnit[] _units)
+    {
+        if (_units != null)
+        {
+            for (int i = 0; i < _units.Length; i++)
+            {
+                Items.Add(_units[i]);
             }
         }
     }
@@ -78,27 +105,27 @@ public class PackManager : MonoBehaviour
 
         if (_turns == a)
         {
-            AddUnits(MyPack.UnitsTier1);
+            AddUnits(MyPack.BotsTier1, MyPack.ItemsTier1);
         }
         else if (_turns == b)
         {
-            AddUnits(MyPack.UnitsTier2);
+            AddUnits(MyPack.BotsTier2, MyPack.ItemsTier2);
         }
         else if (_turns == c)
         {
-            AddUnits(MyPack.UnitsTier3);
+            AddUnits(MyPack.BotsTier3, MyPack.ItemsTier3);
         }
         else if (_turns == d)
         {
-            AddUnits(MyPack.UnitsTier4);
+            AddUnits(MyPack.BotsTier4, MyPack.ItemsTier4);
         }
         else if (_turns == e)
         {
-            AddUnits(MyPack.UnitsTier5);
+            AddUnits(MyPack.BotsTier5, MyPack.ItemsTier5);
         }
         else if (_turns == f)
         {
-            AddUnits(MyPack.UnitsTier6);
+            AddUnits(MyPack.BotsTier6, MyPack.ItemsTier6);
         }
     }
 
@@ -107,12 +134,17 @@ public class PackManager : MonoBehaviour
     /// </summary>
     /// <remarks>This method adds all units from the provided array to the global unit collection managed by
     /// the game. Ensure that the array is not null and contains valid units before calling this method.</remarks>
-    /// <param name="_tier">An array of units to be added. Each unit in the array will be added to the game's unit collection.</param>
-    private void AddUnits(SoUnit[] _tier)
+    /// <param name="_botTier">An array of bots to be added. Each bot in the array will be added to the game's bot collection.</param>
+    /// <param name="_itemTier">An array of items to be added. Each item in the array will be added to the game's item collection.</param>
+    private void AddUnits(SoUnit[] _botTier, SoUnit[] _itemTier)
     {
-        foreach (var unit in _tier)
+        foreach (var unit in _botTier)
         {
-            Units.Add(unit);
+            Bots.Add(unit);
+        }
+        foreach (var unit in _itemTier)
+        {
+            Items.Add(unit);
         }
     }
 

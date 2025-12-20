@@ -6,6 +6,8 @@
 
     Summon,
 
+    ShutDown,
+
     CopyHealth,
     BuffSelfIfAFriendLv3,
 

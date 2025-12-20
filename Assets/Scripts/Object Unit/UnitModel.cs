@@ -16,7 +16,20 @@ public class UnitModel
     public SoPack Pack => PackManager.Instance.MyPack;
     public bool IsMaxed => CurrentLevel.Index + 1 == SoUnit.Levels.Length;
 
-    public Currency Cost => Pack.CurrencyData.UnitCost;
+    public Currency Cost
+    {
+        get
+        {
+            if (SoUnit.HasUniqueCost)
+            {
+                Currency cost = new Currency(SoUnit.UniqueCostNuts.Value, SoUnit.UniqueCostTools.Value);
+                return cost;
+            }
+            
+            return Pack.CurrencyData.UnitCost;
+        }
+    }
+    
     public Currency Sell => Pack.CurrencyData.Sell[SellIndex];
     public Currency RepairCost => Pack.CurrencyData.RepairCost[CurrentLevel.Index];
 

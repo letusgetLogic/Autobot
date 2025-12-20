@@ -2,8 +2,8 @@
 using UnityEngine;
 public class Summon : AbilityBase
 {
-    private UnitModel model;
-    private SoUnit[] summonedUnits;
+    private readonly UnitModel model;
+    private readonly SoUnit[] summonedUnits;
     private int slotIndex;
 
     /// <summary>
@@ -41,7 +41,7 @@ public class Summon : AbilityBase
             if (TeamSlots[slotIndex].Unit() == null)
             {
                 Debug.Log($"-Summon SpawnSummonedUnit at slot {slotIndex}");
-                var unitController = SpawnManager.Instance.Spawn(
+                SpawnManager.Instance.Spawn(
                     summonedUnits[i],
                     -1,
                     new(),

@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
         PhaseShopUnitManager.Instance.SpawnSavedUnits();
         PhaseShopUnitManager.Instance.SpawnShopUnits();
         UpdateUnitData();
-        PhaseShopUnitManager.Instance.StartCoroutine(PhaseShopUnitManager.Instance.DelayChargeUnits());
+        PhaseShopUnitManager.Instance.StartCoroutine(PhaseShopUnitManager.Instance.DelayChargeBots());
         PhaseShopUI.Instance.SetChargingEnergyAt(Data.Turn);
 
         GameManager.Instance.SetPhaseShop();
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
         float delay = 0f;
 
         if (Data.Turn == 1)
-            delay = PhaseShopUnitManager.Instance.ChargeUnits();
+            delay = PhaseShopUnitManager.Instance.ChargeBots();
 
         PhaseShopUnitManager.Instance.StartCoroutine(DelayEndShop(delay));
     }
@@ -82,10 +82,10 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateUnitData()
     {
-        Data.ShopUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopUnitSlots.Length];
-        for (int i = 0; i < PhaseShopUnitManager.Instance.ShopUnitSlots.Length; i++)
+        Data.ShopUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopBotSlots.Length];
+        for (int i = 0; i < PhaseShopUnitManager.Instance.ShopBotSlots.Length; i++)
         {
-            var unit = PhaseShopUnitManager.Instance.ShopUnitSlots[i].UnitController();
+            var unit = PhaseShopUnitManager.Instance.ShopBotSlots[i].UnitController();
             if (unit == null)
             {
                 continue;

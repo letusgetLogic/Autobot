@@ -15,5 +15,7 @@
     SummonedUnit,
 
     RandomEnemy,
+
+    TargetUnit
 }
 

@@ -3,14 +3,14 @@
 [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObject/Item")]
 public class SoItem :ScriptableObject
 {
-    public Sprite Sprite { get; set; }
+    public Sprite Sprite;
 
-    public string ID { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public string ID;
+    public string Name;
+    public string Description;
 
-    public SoIntVariable Cost { get; set; }
+    public SoIntVariable Cost;
 
-    public TriggerType TriggerType { get; set; }
-    public DoType DoType { get; set; }
+    public TriggerType TriggerType;
+    public DoType DoType;
 }

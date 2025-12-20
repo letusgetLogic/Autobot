@@ -7,7 +7,8 @@ public struct Currency
     public int Nut;
 
     /// <summary>
-    /// This property Tool is used to sepearate Repair System feature.
+    /// This property Tool is used to sepearate Repair System feature,
+    /// because of losing reference of property in scriptable object.
     /// </summary>
     public int Tool
     {
@@ -23,10 +24,6 @@ public struct Currency
 
             return SoTool;
         }
-        set 
-        { 
-            SoTool = value; 
-        }
     }
 
     /// <summary>
@@ -34,4 +31,10 @@ public struct Currency
     /// because of losing reference of property in scriptable object.
     /// </summary>
     public int SoTool;
+
+    public Currency(int _nut, int _tool)
+    {
+        Nut = _nut;
+        SoTool = _tool;
+    }
 }

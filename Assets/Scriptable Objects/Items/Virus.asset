@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
-  m_Name: Copper man 1-4
+  m_Name: Virus
   m_EditorClassIdentifier: 
-  UnitType: 0
-  Sprite: {fileID: 0}
+  UnitType: 2
+  Sprite: {fileID: 21300000, guid: c1db9f50778e4d641b051a89bb51a7fa, type: 3}
   ID: 0
-  Name: Copper man
-  Health: 4
-  Attack: 1
+  Name: Virus
+  Health: 0
+  Attack: 0
   Energy: {fileID: 0}
-  HasUniqueCost: 0
-  UniqueCost: {fileID: 0}
+  HasUniqueCost: 1
+  UniqueCost: {fileID: 11400000, guid: 49b40d0db1b4bcb41a337356dd6012a4, type: 2}
   LevelLimit: {fileID: 11400000, guid: 200bed77f7a26a741b938dea8d606183, type: 2}
   Levels:
   - Index: 0
-    Description: 
-    HasAbility: 0
+    Description: Make a robot Shutdown
+    HasAbility: 1
     ConsumedEnergy: {fileID: 0}
     TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 0
+    DoType: 3
     FromWho: 0
-    ToWho: 0
+    ToWho: 10
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 2
     HealthBuff: 0
     AttackBuff: 0
     UnitLimit: 0
