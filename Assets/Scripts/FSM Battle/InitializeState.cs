@@ -60,8 +60,8 @@ public class InitializeState : StateBase
             if (unitData.HasReference && unitData.Cur.HP > 0)
             {
                 var unitController = SpawnManager.Instance.Spawn(
-                    PackManager.Instance.Bots[unitData.Index],
-                    unitData.Index,
+                    PackManager.Instance.GetSoUnit(unitData).soUnit,
+                    PackManager.Instance.GetSoUnit(unitData).index,
                     unitData,
                     UnitState.InPhaseBattle,
                     _slots[i].transform,

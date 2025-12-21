@@ -2,5 +2,6 @@
 {
     None,
     Robot,
+    SummonedRobot,
     Item
 }

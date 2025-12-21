@@ -18,16 +18,17 @@ MonoBehaviour:
   Name: Steel boy
   Health: 2
   Attack: 2
-  Energy: {fileID: 11400000, guid: ffcd61ceea73108439a41717ce601978, type: 2}
+  Energy: {fileID: 11400000, guid: fd5604805c8278943a7e97fa14b81018, type: 2}
   HasUniqueCost: 0
-  UniqueCost: {fileID: 0}
+  UniqueCostNuts: {fileID: 0}
+  UniqueCostTools: {fileID: 0}
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
     Description: "Shutdown \u2192 Give one random teammate +1 attack and +1 health."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
-    TriggerType: 1
+    TriggerType: 3
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
@@ -46,7 +47,7 @@ MonoBehaviour:
     Description: "Shutdown \u2192 Give one random teammate +2 attack and +2 health."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
-    TriggerType: 1
+    TriggerType: 3
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
@@ -65,7 +66,7 @@ MonoBehaviour:
     Description: "Shutdown \u2192 Give one random teammate +3 attack and +3 health."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
-    TriggerType: 1
+    TriggerType: 3
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1

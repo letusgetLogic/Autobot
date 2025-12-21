@@ -22,6 +22,9 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (PhaseShopUnitManager.Instance.AttachedGameObject == null &&
             (eventData.pointerDrag == null ||
             eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null))
@@ -32,18 +35,22 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void OnMouseOver()
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (CanPushOther())
         {
             if (!isCounting)
             {
                 var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+
                 bool isFusible = PhaseShopUnitManager.Instance.IsFusible(
-                slot.UnitController(),
-                attached.GetComponent<UnitController>());
+                    slot.UnitController(),
+                    attached.GetComponent<UnitController>());
 
                 countDown = isFusible ?
-                PhaseShopUnitManager.Instance.DelayPushingFusion :
-                PhaseShopUnitManager.Instance.DelayPushing;
+                PhaseShopUnitManager.Instance.Process.DelayPushingFusion :
+                PhaseShopUnitManager.Instance.Process.DelayPushing;
 
                 direction = DirectionMoveOther();
                 isCounting = true;
@@ -113,6 +120,11 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (attached.CompareTag("Unit"))
         {
             var unitModel = attached.GetComponent<UnitController>().Model;
+
+            // if attached game object is item, return false.
+            if (unitModel.Data.UnitType == UnitType.Item)
+                return false;
+
 
             // if the unit is in the shop, freezed, or in the charge slot, return true.
             if (unitModel.Data.UnitState == UnitState.InSlotShop ||

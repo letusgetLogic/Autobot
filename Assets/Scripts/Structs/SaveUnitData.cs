@@ -9,6 +9,7 @@ public struct SaveUnitData
     public bool HasReference { get; set; }
     public string ID { get; set; }
     public int Index { get; set; }
+    public UnitType UnitType { get; set; }
 
     /// <summary>
     /// The current attributes, which are displayed.
@@ -187,6 +188,18 @@ public struct SaveUnitData
             temporaryBuff.ATK = 0;
         else
             temporaryBuff.ATK = _atk;
+    }
+
+    /// <summary>
+    /// Return boolean, if it is a robot.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsRobot()
+    {
+        if (UnitType == UnitType.Robot || UnitType == UnitType.SummonedRobot)
+            return true;
+
+        return false;
     }
 }
 

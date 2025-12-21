@@ -24,34 +24,29 @@ public abstract class AbilityBase
     /// </summary>
     /// <param name="_delayHideDescription"></param>
     /// <returns></returns>
-    public IEnumerator Handle(float _delayHideDescription)
+    public IEnumerator Handle(float _delayHideDescription, bool _isDestroying)
     {
         Controller.View.SetDescriptionActive(true);
+
+        // Consume energy
+        if (CurrentLevel.ConsumedEnergy != null)
+            Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
+
         Activate();
 
         yield return new WaitForSeconds(_delayHideDescription);
 
         if (Controller != null)
             Controller.View.SetDescriptionActive(false);
-    }
 
-    /// <summary>
-    /// The energy is consumed by activating ability.
-    /// </summary>
-    public void Activate()
-    {
-        // Consume energy
-        if (Controller != null)
-        {
-             Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
-        }
-        Run();
+        if (_isDestroying)
+            Controller.DestroyObject();
     }
 
     /// <summary>
     /// The behaviour of the ability is executed.
     /// </summary>
-    public abstract void Run();
+    public abstract void Activate();
 
     /// <summary>
     /// Returns the instance of an inheritanced class based on the ability type, or null, when it has no ability.
@@ -74,11 +69,14 @@ public abstract class AbilityBase
 
             case DoType.Summon:
                 return new Summon(_controller, _controller.Model, _level, _teamSlots);
+
+            case DoType.ShutDown:
+                return new Shutdown(_controller, _level, _teamSlots);
         }
 
         return null;
     }
-    
+
     /// <summary>
     /// Returns the boolean, whether the ability is permanent.
     /// </summary>
@@ -89,11 +87,11 @@ public abstract class AbilityBase
         if (_duration == AbilityDuration.Permanent)
             return true;
 
-        if (_duration == AbilityDuration.Both && !GameManager.Instance.IsPhaseBattle)
+        if (_duration == AbilityDuration.Both && PhaseShopUnitManager.Instance != null)
             return true;
 
         return false;
     }
 
-    
+
 }

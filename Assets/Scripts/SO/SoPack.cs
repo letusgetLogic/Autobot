@@ -24,23 +24,26 @@ public class SoPack : ScriptableObject
     public SoIntVariable Tier5AvaiableAtTurn;
     public SoIntVariable Tier6AvaiableAtTurn;
 
-    [Header("Battle Units Tier 1")]
+    [Header("Units Tier 1")]
     public SoUnit[] BotsTier1;
     public SoUnit[] ItemsTier1;
-    [Header("Battle Units Tier 2")]
+    [Header("Units Tier 2")]
     public SoUnit[] BotsTier2;
     public SoUnit[] ItemsTier2;
-    [Header("Battle Units Tier 3")]
+    [Header("Units Tier 3")]
     public SoUnit[] BotsTier3;
     public SoUnit[] ItemsTier3;
-    [Header("Battle Units Tier 4")]
+    [Header("Units Tier 4")]
     public SoUnit[] BotsTier4;
     public SoUnit[] ItemsTier4;
-    [Header("Battle Units Tier 5")]
+    [Header("Units Tier 5")]
     public SoUnit[] BotsTier5;
     public SoUnit[] ItemsTier5;
-    [Header("Battle Units Tier 6")]
+    [Header("Units Tier 6")]
     public SoUnit[] BotsTier6;
     public SoUnit[] ItemsTier6;
+
+    [Header("Summoned Robots")]
+    public SoUnit[] SummonedBots;
 }
 

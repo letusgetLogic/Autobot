@@ -22,7 +22,9 @@ public class UnitModel
         {
             if (SoUnit.HasUniqueCost)
             {
-                Currency cost = new Currency(SoUnit.UniqueCostNuts.Value, SoUnit.UniqueCostTools.Value);
+                Currency cost = new Currency(
+                    SoUnit.UniqueCostNuts == null ? 0 : SoUnit.UniqueCostNuts.Value, 
+                    SoUnit.UniqueCostTools == null ? 0 : SoUnit.UniqueCostTools.Value);
                 return cost;
             }
             
@@ -62,6 +64,7 @@ public class UnitModel
         SoUnit = _soUnit;
         Data.HasReference = true;
         Data.Index = _index;
+        Data.UnitType = _soUnit.UnitType;
         Data.SetBasisHP(_soUnit.Health);
         Data.SetBasisATK(_soUnit.Attack);
 
@@ -96,20 +99,29 @@ public class UnitModel
     {
         View = _view;
 
-        if (Repair != null)
+        if (Data.IsRobot())
         {
-            Repair.Initialize(this, _view);
-            Repair.SetDurability(true, true, 0, 0);
-            Repair.SetRepairPanel();
+            if (Repair != null)
+            {
+                Repair.Initialize(this, _view);
+                Repair.SetDurability(true, true, 0, 0);
+                Repair.SetRepairPanel();
+            }
+            else
+            {
+                View.ShowFullAttributes(false);
+            }
+
+            View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
         }
-        else
+
+        if (Data.UnitType == UnitType.Item)
         {
-            View.ShowFullAttributes(false);
+            View.HideAttributes();
         }
 
         View.Shadow.enabled = false;
         View.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
 
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }

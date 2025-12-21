@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-public class FaintState : StateBase
+public class ShutdownState : StateBase
 {
     /// <summary>
-    /// Constructor of FaintState.
+    /// Constructor of ShutdownState.
     /// </summary>
     /// <param name="_maxTimeCount"></param>
-    public FaintState(float _maxTimeCount) : base(_maxTimeCount)
+    public ShutdownState(float _maxTimeCount) : base(_maxTimeCount)
     {
     }
 
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
-        Debug.Log("--- FaintState");
+        Debug.Log("--- ShutdownState");
 
         HideUnit();
     }
@@ -34,15 +34,15 @@ public class FaintState : StateBase
     }
 
     /// <summary>
-    /// Hides the fainted units.
+    /// Hides the shutdowned units.
     /// </summary>
     private void HideUnit()
     {
-        while (PhaseBattleController.Instance.FaintUnits.Count > 0)
+        while (PhaseBattleController.Instance.ShutdownUnits.Count > 0)
         {
-            var unit = PhaseBattleController.Instance.FaintUnits.Dequeue();
+            var unit = PhaseBattleController.Instance.ShutdownUnits.Dequeue();
             unit.GetComponent<UnitController>().Deactivate();
-            Debug.Log($"Fainted unit {unit.name} is hided");
+            Debug.Log($"Shutdowned unit {unit.name} is hided");
         }
     }
 }

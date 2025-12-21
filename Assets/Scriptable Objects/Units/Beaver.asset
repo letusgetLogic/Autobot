@@ -18,16 +18,17 @@ MonoBehaviour:
   Name: Red Snowman
   Health: 1
   Attack: 3
-  Energy: {fileID: 11400000, guid: ffcd61ceea73108439a41717ce601978, type: 2}
+  Energy: {fileID: 11400000, guid: fd5604805c8278943a7e97fa14b81018, type: 2}
   HasUniqueCost: 0
-  UniqueCost: {fileID: 0}
+  UniqueCostNuts: {fileID: 0}
+  UniqueCostTools: {fileID: 0}
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
     Description: "Recycle \u2192 Give two random teammates +1 attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: beff0963aa5ae13458296827cf026725, type: 2}
-    TriggerType: 4
+    TriggerType: 2
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
@@ -46,7 +47,7 @@ MonoBehaviour:
     Description: "Recycle \u2192 Give two random teammates +2 attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: beff0963aa5ae13458296827cf026725, type: 2}
-    TriggerType: 4
+    TriggerType: 2
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
@@ -65,7 +66,7 @@ MonoBehaviour:
     Description: "Recycle \u2192 Give two random teammates +3 attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: beff0963aa5ae13458296827cf026725, type: 2}
-    TriggerType: 4
+    TriggerType: 2
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1

@@ -8,7 +8,7 @@ public class UnitController : MonoBehaviour
     [SerializeField] private UnitView view;
 
     public event Action<Slot> OnAttack;
-    public event Action<Slot> OnFaint;
+    public event Action<Slot> OnShutdown;
 
     public UnitView View => view;
 
@@ -20,7 +20,7 @@ public class UnitController : MonoBehaviour
     {
         get
         {
-            if (GameManager.Instance.IsPhaseBattle)
+            if (PhaseBattleController.Instance != null)
             {
                 return model.Data.IsTeamLeft ?
                     PhaseBattleController.Instance.Slots1 :
@@ -57,12 +57,14 @@ public class UnitController : MonoBehaviour
             // ... create a new model with SO reference and the given index,
 
             model = new UnitModel(_soUnit, _index,
-                GameManager.Instance.IsRepairSystemActive ? new RepairSystem() : null);
+                GameManager.Instance.IsRepairSystemActive && IsRobot(_soUnit.UnitType) 
+                ? new RepairSystem() : null);
         }
         else // otherwise create a new model with SO reference and the saved data.
         {
             model = new UnitModel(_soUnit, _data,
-                GameManager.Instance.IsRepairSystemActive ? new RepairSystem() : null);
+                GameManager.Instance.IsRepairSystemActive && _data.IsRobot()
+                ? new RepairSystem() : null);
         }
 
         flipSprite = !_isTeamLeft;
@@ -93,13 +95,32 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Triggers the ability if it is existent and destroys the unit.
     /// </summary>
+    public void GetBought()
+    {
+        var ability = TriggerAbility(TriggerType.Craft);
+        if (ability != null)
+        {
+            PhaseShopUnitManager.Instance.StartCoroutine(
+                PhaseShopUnitManager.Instance.HandleAbility(ability, false));
+        }
+    }
+
+    /// <summary>
+    /// Triggers the ability if it is existent and destroys the unit.
+    /// </summary>
     public void GetSelled()
     {
         var ability = TriggerAbility(TriggerType.Recycle);
         if (ability != null)
-            ability.Activate();
-
-        Destroy(gameObject);
+        {
+            PhaseShopUnitManager.Instance.StartCoroutine(
+                PhaseShopUnitManager.Instance.HandleAbility(ability, true));
+        }
+        else
+        {
+            PhaseShopUnitManager.Instance.IsBlockingInput = false;
+            Destroy(gameObject);
+        }
     }
 
     /// <summary>
@@ -160,31 +181,47 @@ public class UnitController : MonoBehaviour
 
         if (model.Data.Cur.HP <= 0)
         {
-            TriggerFaint();
-            PhaseBattleController.Instance.FaintUnits.Enqueue(gameObject);
+            TriggerShutdown();
+            PhaseBattleController.Instance.ShutdownUnits.Enqueue(gameObject);
 
             Debug.Log($"{gameObject.name} enqueue");
-            Debug.Log($"{PhaseBattleController.Instance.FaintUnits.Count} FaintUnits");
+            Debug.Log($"{PhaseBattleController.Instance.ShutdownUnits.Count} FaintUnits");
         }
     }
 
     #endregion
 
     /// <summary>
-    /// Triggers the ability while unit is fainting.
+    /// Triggers the ability while bot is shuting down.
     /// </summary>
-    public void TriggerFaint()
+    public void TriggerShutdown()
     {
-        Debug.Log($"{name} faint");
+        Debug.Log($"{name} shut down");
 
         var ability = TriggerAbility(TriggerType.Shutdown);
         if (ability != null)
         {
-            PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
-            OnFaint?.Invoke(Slot);
+            if (PhaseBattleController.Instance != null)
+            {
+                PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
+                OnShutdown?.Invoke(Slot);
 
-            Debug.Log($"{ability.ToString()} enqueue");
-            Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
+                Debug.Log($"{ability.ToString()} enqueue");
+                Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
+            }
+            if (PhaseShopUnitManager.Instance != null)
+            {
+                PhaseShopUnitManager.Instance.StartCoroutine(ability.Handle(
+                    PhaseShopUnitManager.Instance.Process.DelayHideDescription,
+                    true));
+            }
+        }
+        else
+        {
+            if (PhaseShopUnitManager.Instance != null)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -217,10 +254,13 @@ public class UnitController : MonoBehaviour
     /// <returns></returns>
     public AbilityBase TriggerAbility(TriggerType _triggerType)
     {
-        if (model.CurrentLevel.ConsumedEnergy == null)
-            return null;
+        int consumedEnergy = 0;
+        if (model.CurrentLevel.ConsumedEnergy != null)
+        {
+            consumedEnergy = Mathf.Abs(model.CurrentLevel.ConsumedEnergy.Value);
+        }
 
-        if (model.Data.Cur.ENG < Mathf.Abs(model.CurrentLevel.ConsumedEnergy.Value))
+        if (model.Data.Cur.ENG < consumedEnergy)
             return null;
 
         if (_triggerType == model.CurrentLevel.TriggerType)
@@ -265,4 +305,23 @@ public class UnitController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Return boolean, if it is a robot.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsRobot(UnitType _unitType)
+    {
+        if (_unitType == UnitType.Robot || _unitType == UnitType.SummonedRobot)
+            return true;
+
+        return false;
+    }
+
+    /// <summary>
+    /// Detroys game object.
+    /// </summary>
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
+    }
 }

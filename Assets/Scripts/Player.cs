@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
         PhaseShopUnitManager.Instance.SpawnSavedUnits();
         PhaseShopUnitManager.Instance.SpawnShopUnits();
         UpdateUnitData();
-        PhaseShopUnitManager.Instance.StartCoroutine(PhaseShopUnitManager.Instance.DelayChargeBots());
+        PhaseShopUnitManager.Instance.ChargeBotAtStartShop();
         PhaseShopUI.Instance.SetChargingEnergyAt(Data.Turn);
 
         GameManager.Instance.SetPhaseShop();
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
         float delay = 0f;
 
         if (Data.Turn == 1)
-            delay = PhaseShopUnitManager.Instance.ChargeBots();
+            delay = PhaseShopUnitManager.Instance.ChargeBotsAtEndShop();
 
         PhaseShopUnitManager.Instance.StartCoroutine(DelayEndShop(delay));
     }
@@ -82,8 +82,8 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateUnitData()
     {
-        Data.ShopUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopBotSlots.Length];
-        for (int i = 0; i < PhaseShopUnitManager.Instance.ShopBotSlots.Length; i++)
+        Data.ShopBotDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopBotSlots.Length];
+        for (int i = 0; i < Data.ShopBotDatas.Length; i++)
         {
             var unit = PhaseShopUnitManager.Instance.ShopBotSlots[i].UnitController();
             if (unit == null)
@@ -91,11 +91,23 @@ public class Player : MonoBehaviour
                 continue;
             }
 
-            Data.ShopUnitDatas[i] = unit.Model.Data;
+            Data.ShopBotDatas[i] = unit.Model.Data;
+        }
+
+        Data.ShopItemDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopItemSlots.Length];
+        for (int i = 0; i < Data.ShopItemDatas.Length; i++)
+        {
+            var unit = PhaseShopUnitManager.Instance.ShopItemSlots[i].UnitController();
+            if (unit == null)
+            {
+                continue;
+            }
+
+            Data.ShopItemDatas[i] = unit.Model.Data;
         }
 
         Data.TeamUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.TeamSlots.Length];
-        for (int i = 0; i < PhaseShopUnitManager.Instance.TeamSlots.Length; i++)
+        for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
             var unit = PhaseShopUnitManager.Instance.TeamSlots[i].UnitController();
             if (unit == null)

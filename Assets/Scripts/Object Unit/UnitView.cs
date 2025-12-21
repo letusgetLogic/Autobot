@@ -55,8 +55,7 @@ public class UnitView : MonoBehaviour
         step5Filled;
 
     [Header("Attribute Display")]
-    [SerializeField] private GameObject heartIcon;
-    [SerializeField] private GameObject attackIcon;
+    [SerializeField] private GameObject attributeGroup;
     [SerializeField] private GameObject energyIcon;
     [SerializeField]
     private TextMeshProUGUI
@@ -447,6 +446,14 @@ public class UnitView : MonoBehaviour
     {
         foreach (var element in hideFullAttributes)
             element.SetActive(_value);
+    }
+
+    /// <summary>
+    /// Hides attack, heart and energy icons.
+    /// </summary>
+    public void HideAttributes()
+    {
+        attributeGroup.SetActive(false);
     }
 
 }

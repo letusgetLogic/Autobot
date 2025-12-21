@@ -27,10 +27,15 @@ public class PlayerData
     // - give energy to the unit at the start of the shop phase
     public SaveUnitData ChargeUnitData {  get; set; }
 
-    // ShopUnitDatas is used to
-    // - save the data of shop units from the shop phase
+    // ShopBotDatas is used to
+    // - save the data of shop bots from the shop phase
     // - load them in the next shop phase
-    public SaveUnitData[] ShopUnitDatas {  get; set; }
+    public SaveUnitData[] ShopBotDatas {  get; set; }
+
+    // ShopItemDatas is used to
+    // - save the data of shop items from the shop phase
+    // - load them in the next shop phase
+    public SaveUnitData[] ShopItemDatas {  get; set; }
 
     /// <summary>
     /// Assigns the template values.

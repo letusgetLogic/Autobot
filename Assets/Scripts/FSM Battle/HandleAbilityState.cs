@@ -31,9 +31,9 @@ public class HandleAbilityState : StateBase
 
         if (isDone)
         {
-            if (PhaseBattleController.Instance.FaintUnits.Count > 0)
-                _ctx.SetState(new FaintState(
-                     PhaseBattleController.Instance.Process.DurationFaint));
+            if (PhaseBattleController.Instance.ShutdownUnits.Count > 0)
+                _ctx.SetState(new ShutdownState(
+                     PhaseBattleController.Instance.Process.DurationShutdown));
             else
                 _ctx.SetState(new CheckOutcomeState(
                     PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
@@ -55,7 +55,8 @@ public class HandleAbilityState : StateBase
 
             PhaseBattleController.Instance.StartCoroutine(
                 ability.Handle(
-                    PhaseBattleController.Instance.Process.DurationHideAbilityDescription));
+                    PhaseBattleController.Instance.Process.DurationHideAbilityDescription,
+                    false));
         }
         else
             isDone = true;

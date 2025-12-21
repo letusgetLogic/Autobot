@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 public class Summon : AbilityBase
 {
     private readonly UnitModel model;
@@ -21,7 +22,7 @@ public class Summon : AbilityBase
         this.slotIndex = _controller.Slot.Index;
     }
 
-    public override void Run()
+    public override void Activate()
     {
         SpawnManager.Instance.StartCoroutine(SpawnUnit());
     }
@@ -32,7 +33,14 @@ public class Summon : AbilityBase
     /// <returns></returns>
     public IEnumerator SpawnUnit()
     {
-        yield return new WaitForSeconds(PhaseBattleController.Instance.Process.DurationDelaySummon);
+        float duration = 0f;
+
+        if (PhaseShopUnitManager.Instance != null)
+            duration = PhaseShopUnitManager.Instance.Process.DurationDelaySummon;
+        if (PhaseBattleController.Instance != null)
+            duration = PhaseBattleController.Instance.Process.DurationDelaySummon;
+
+        yield return new WaitForSeconds(duration);
 
         Controller.Deactivate();
 
@@ -43,11 +51,11 @@ public class Summon : AbilityBase
                 Debug.Log($"-Summon SpawnSummonedUnit at slot {slotIndex}");
                 SpawnManager.Instance.Spawn(
                     summonedUnits[i],
-                    -1,
+                    summonedUnits[i].ID,
                     new(),
                     model.Data.UnitState,
                     TeamSlots[slotIndex].transform,
-                    model.Data.IsTeamLeft);
+                    PhaseShopUnitManager.Instance != null ? true : model.Data.IsTeamLeft);
             }
         }
 

@@ -10,7 +10,7 @@ public static class SaveSystem
     /// <param name="_game"></param>
     public static void SaveGame(Game _game)
     {
-        GameData savedData = LoadGameData() == null ? LoadGameData() : GameData.Instance;
+        GameData savedData = LoadGameData() != null ? LoadGameData() : GameData.Instance;
         savedData.AddGame(_game);
 
         BinaryFormatter formatter = new BinaryFormatter();

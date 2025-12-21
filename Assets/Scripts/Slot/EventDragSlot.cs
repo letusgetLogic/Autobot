@@ -17,6 +17,9 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
@@ -39,6 +42,9 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (PhaseShopUnitManager.Instance.PreventDragging)
             return;
 

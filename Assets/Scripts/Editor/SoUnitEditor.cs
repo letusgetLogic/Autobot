@@ -1,5 +1,4 @@
-﻿using log4net.Core;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(SoUnit))]

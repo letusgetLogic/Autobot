@@ -16,6 +16,9 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
     /// <param name="eventData"></param>
     public void OnDrop(PointerEventData eventData)
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (PhaseShopUnitManager.Instance.PreventDragging)
             return;
 

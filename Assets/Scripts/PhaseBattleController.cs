@@ -42,20 +42,20 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         }
     }
     private Queue<AbilityBase> unitAbilities;
-    public Queue<GameObject> FaintUnits
+    public Queue<GameObject> ShutdownUnits
     {
         get
         {
-            if (faintUnits == null)
-                faintUnits = new Queue<GameObject>();
-            return faintUnits;
+            if (shutdownUnits == null)
+                shutdownUnits = new Queue<GameObject>();
+            return shutdownUnits;
         }
         set
         {
-            faintUnits = value;
+            shutdownUnits = value;
         }
     }
-    private Queue<GameObject> faintUnits;
+    private Queue<GameObject> shutdownUnits;
     public bool IsStopped { get; set; } = false;
     public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
 

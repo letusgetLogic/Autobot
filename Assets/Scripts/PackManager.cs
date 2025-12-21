@@ -159,5 +159,24 @@ public class PackManager : MonoBehaviour
             AddUnitsByTier(i);
         }
     }
+
+    /// <summary>
+    /// Return scriptable object with index or ID.
+    /// </summary>
+    /// <param name="_data"></param>
+    /// <returns></returns>
+    public (SoUnit soUnit, int index) GetSoUnit(SaveUnitData _data)
+    {
+        if (_data.UnitType == UnitType.SummonedRobot)
+        {
+            foreach (var bot in MyPack.SummonedBots)
+            {
+                if (bot.ID == _data.Index)
+                    return (bot, _data.Index);
+            }
+        }
+
+        return (Bots[_data.Index], _data.Index);
+    }
 }
 

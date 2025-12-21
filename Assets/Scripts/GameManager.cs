@@ -28,16 +28,6 @@ public class GameManager : MonoBehaviour
     public Game CurrentGame { get; set; }
     private Player[] players { get; set; }
     public string SceneName => SceneManager.GetActiveScene().name;
-    public bool IsPhaseBattle
-    {
-        get
-        {
-            if (SceneName == "PhaseBattle")
-                return true;
-
-            return false;
-        }
-    }
 
 
     private void Awake()

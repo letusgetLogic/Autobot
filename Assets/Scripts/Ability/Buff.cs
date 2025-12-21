@@ -13,14 +13,14 @@ public class Buff : AbilityBase
     {
     }
 
-    public override void Run()
+    public override void Activate()
     {
         switch(CurrentLevel.ToWho)
         {
             case ToWho.None:
                 return;
 
-            case ToWho.RandomFriend:
+            case ToWho.RandomTeammate:
                 BuffRandom();
                 break;
 
@@ -32,33 +32,33 @@ public class Buff : AbilityBase
 
     private void BuffRandom()
     {
-        List<UnitController> unitOnSlot = new List<UnitController>();
+        List<UnitController> teamUnitControllers = new List<UnitController>();
 
         for (int i = 0; i < TeamSlots.Length; i++)
         {
-            var unit = TeamSlots[i].UnitController();
-            if (unit != null && unit != Controller)
+            var teamUnitController = TeamSlots[i].UnitController();
+            if (teamUnitController != null && teamUnitController != Controller)
             {
-                unitOnSlot.Add(unit);
+                teamUnitControllers.Add(teamUnitController);
             }
         }
 
-        if (unitOnSlot.Count <= 0)
+        if (teamUnitControllers.Count <= 0)
             return;
 
         for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
         {
             Random rnd = new Random();
-            int index = rnd.Next(0, unitOnSlot.Count);
+            int index = rnd.Next(0, teamUnitControllers.Count);
 
-            var unit = unitOnSlot[index];
+            var unit = teamUnitControllers[index];
 
             unit.Buff(
                 AbilityBase.IsPernament(CurrentLevel.AbilityDuration),
                 CurrentLevel.HealthBuff,
                 CurrentLevel.AttackBuff);
 
-            unitOnSlot.Remove(unit);
+            teamUnitControllers.Remove(unit);
         }
     }
 }

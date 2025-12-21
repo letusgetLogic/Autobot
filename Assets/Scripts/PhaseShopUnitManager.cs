@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Playables;
 using UnityEngine;
 
 public class PhaseShopUnitManager : MonoBehaviour
@@ -16,26 +17,18 @@ public class PhaseShopUnitManager : MonoBehaviour
     public Slot[] ShopItemSlots => shopItemSlots;
 
     [Header("Settings")]
-    [Tooltip("Delay pushing other unit to make space")]
-    [SerializeField]
-    private float delayPushing = .1f;
-    public float DelayPushing => delayPushing;
+    [SerializeField] private SoShopProcess process;
+    public SoShopProcess Process => process;
 
-    [Tooltip("Delay starting the battle, for showing charging of the units on team slots")]
-    [SerializeField]
-    private float delayStartBattle = 2f;
-
-    [Tooltip("Delay charging the units on team and charging slots")]
-    [SerializeField]
-    private float delayCharging = .5f;
-
-    [Tooltip("Delay pushing other unit to make space, while a fusion between 2 units is possible")]
-    [SerializeField]
-    private float delayPushingFusion = 1f;
-    public float DelayPushingFusion => delayPushingFusion;
     public Player Player { get; private set; }
 
     public GameObject AttachedGameObject { get; set; }
+    public UnitController TargetedController { get; set; }
+
+    /// <summary>
+    /// To block player's input while animation is running.
+    /// </summary>
+    public bool IsBlockingInput { get; set; } = false;
 
     /// <summary>
     /// To prevent pushing other away while an unit is attached by mouse click.
@@ -78,6 +71,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     public void Initialize(Player _player)
     {
         Player = _player;
+        IsBlockingInput = true;
     }
 
     // Spawn Objects
@@ -88,6 +82,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     public void SpawnSavedUnits()
     {
+        // team bots
         if (Player.Data.TeamUnitDatas != null)
         {
             for (int i = 0; i < Player.Data.TeamUnitDatas.Length; i++)
@@ -97,14 +92,15 @@ public class PhaseShopUnitManager : MonoBehaviour
                     continue;
                 Debug.Log("unitData.Index" + unitData.Index);
                 SpawnManager.Instance.Spawn(
-                    PackManager.Instance.Bots[unitData.Index],
-                    unitData.Index,
+                    PackManager.Instance.GetSoUnit(unitData).soUnit,
+                    PackManager.Instance.GetSoUnit(unitData).index,
                     unitData,
                     UnitState.InSlotTeam,
                     teamSlots[i].transform);
             }
         }
 
+        // charging station bot
         var chargeUnitData = Player.Data.ChargeUnitData;
         if (chargeUnitData.HasReference)
         {
@@ -116,11 +112,12 @@ public class PhaseShopUnitManager : MonoBehaviour
                 chargeSlot.transform);
         }
 
-        if (Player.Data.ShopUnitDatas != null)
+        // shop bots
+        if (Player.Data.ShopBotDatas != null)
         {
-            for (int i = 0; i < Player.Data.ShopUnitDatas.Length; i++)
+            for (int i = 0; i < Player.Data.ShopBotDatas.Length; i++)
             {
-                var unitData = Player.Data.ShopUnitDatas[i];
+                var unitData = Player.Data.ShopBotDatas[i];
                 if (unitData.HasReference != true)
                     continue;
 
@@ -130,6 +127,17 @@ public class PhaseShopUnitManager : MonoBehaviour
                     unitData,
                     unitData.UnitState,
                     shopBotSlots[i].transform);
+            }
+        }
+
+        // shop items
+        if (Player.Data.ShopItemDatas != null)
+        {
+            for (int i = 0; i < Player.Data.ShopItemDatas.Length; i++)
+            {
+                var unitData = Player.Data.ShopItemDatas[i];
+                if (unitData.HasReference != true)
+                    continue;
 
                 SpawnManager.Instance.Spawn(
                     PackManager.Instance.Items[unitData.Index],
@@ -176,7 +184,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 UnitState.InSlotShop,
                 shopBotSlots[i].transform);
         }
-        
+
         // Spwan shop items
         for (int i = 0; i < shopItemSlots.Length; i++)
         {
@@ -212,27 +220,38 @@ public class PhaseShopUnitManager : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// Charges the bots and returns the delay.
+    /// Delays charging of the bot on charging slot and enables player's input after delay.
     /// </summary>
-    /// <returns></returns>
-    public float ChargeBots()
+    public void ChargeBotAtStartShop()
     {
-        StartCoroutine(DelayChargeBots());
-        return delayCharging + delayStartBattle;
+        var unit = ChargeSlot.UnitController();
+        if (unit == null)
+            IsBlockingInput = false;
+        else
+            StartCoroutine(DelayChargeBotAtStartShop());
     }
 
     /// <summary>
-    /// Add the energy to the bots after a delay.
+    /// Delays charging bot at start of phase shop.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator DelayChargeBots()
+    public IEnumerator DelayChargeBotAtStartShop()
     {
-        yield return new WaitForSeconds(delayCharging);
+        yield return new WaitForSeconds(process.DelayChargingAtStart);
 
         var unit = ChargeSlot.UnitController();
         if (unit != null)
             unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
 
+        IsBlockingInput = false;
+    }
+
+    /// <summary>
+    /// Delays charging the bots at end of phase shop and returns the delay.
+    /// </summary>
+    /// <returns></returns>
+    public float ChargeBotsAtEndShop()
+    {
         foreach (var slot in teamSlots)
         {
             if (slot.gameObject.activeSelf)
@@ -244,6 +263,8 @@ public class PhaseShopUnitManager : MonoBehaviour
                 }
             }
         }
+
+        return process.DurationCharging + process.DelayStartBattleAfterCharging;
     }
 
     /// <summary>
@@ -257,14 +278,33 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         if (AttachedGameObject.CompareTag("Unit"))
         {
-            var unitState = AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState;
+            var attachedModel = AttachedGameObject.GetComponent<UnitController>().Model;
+            var unitState = attachedModel.Data.UnitState;
+
             if (unitState == UnitState.InSlotShop || unitState == UnitState.Freezed)
             {
+                // "not able to buy" - cases:
+
+                // case: target is item.
+                var targetedController = _slot.UnitController();
+                if (targetedController != null &&
+                    targetedController.Model.Data.UnitType == UnitType.Item)
+                    return;
+
+                // case: not enough currency.
+                if (!PhaseShopUI.Instance.HasEnoughCurrency(
+                    attachedModel.Cost.Nut, attachedModel.Cost.Tool))
+                {
+                    return;
+                }
+                //
+
                 Buy(_slot);
             }
             else if (unitState == UnitState.InSlotTeam || unitState == UnitState.InSlotCharge)
             {
-                TransportOrFusion(_slot);
+                if (attachedModel.Data.IsRobot())
+                    TransportOrFusion(_slot);
             }
         }
     }
@@ -272,40 +312,62 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <summary>
     /// Checks if it's purchasable, then buy the attached object.
     /// </summary>
-    /// <param name="_slot"></param>
-    private void Buy(Slot _slot)
+    /// <param name="_targetedSlot"></param>
+    private void Buy(Slot _targetedSlot)
     {
         if (AttachedGameObject.CompareTag("Unit"))
         {
-            var unitOnSlot = _slot.UnitController();
+            // unit on target slot, where the mouse was released.
+            var targetedController = _targetedSlot.UnitController();
+
             var attachedController = AttachedGameObject.GetComponent<UnitController>();
+            var attachedModel = attachedController.Model;
 
-            // case: buy but not enough currency.
-            if (!PhaseShopUI.Instance.HasEnoughCurrency(
-                attachedController.Model.Cost.Nut, attachedController.Model.Cost.Tool))
+            if (targetedController != null)
             {
-                return;
-            }
-
-            if (unitOnSlot != null)
-            {
-                // case: buy, units are fusible.
-                if (IsFusible(unitOnSlot, attachedController))
+                // case: buy & destroy item
+                if (attachedModel.Data.UnitType == UnitType.Item)
                 {
                     PhaseShopUI.Instance.UpdateCurrency(
-                        attachedController.Model.Cost.Nut, attachedController.Model.Cost.Tool);
+                       attachedModel.Cost.Nut, attachedModel.Cost.Tool);
 
-                    unitOnSlot.UpdateLevel(attachedController.Model, true);
+                    TargetedController = targetedController;
+
+                    attachedController.GetBought();
+
                     Destroy(AttachedGameObject);
-                }
-                return;
-            }
-            else // case: buy and place dragging unit on empty slot.
-            {
-                PhaseShopUI.Instance.UpdateCurrency(
-                        attachedController.Model.Cost.Nut, attachedController.Model.Cost.Tool);
 
-                Transport(AttachedGameObject, _slot.transform, true, true);
+                    TargetedController = null;
+                    return;
+                }
+
+                // case: buy and bots are fusible.
+                if (IsFusible(targetedController, attachedController))
+                {
+                    PhaseShopUI.Instance.UpdateCurrency(
+                        attachedModel.Cost.Nut, attachedModel.Cost.Tool);
+
+                    targetedController.UpdateLevel(attachedModel, true);
+
+                    targetedController.GetBought();
+
+                    Destroy(AttachedGameObject);
+                    return;
+                }
+
+            }
+            else // case: buy and place dragging bot on empty slot.
+            {
+                if (attachedModel.Data.IsRobot())
+                {
+                    PhaseShopUI.Instance.UpdateCurrency(
+                       attachedModel.Cost.Nut, attachedModel.Cost.Tool);
+
+                    Transport(AttachedGameObject, _targetedSlot.transform, true, true);
+
+                    attachedController.GetBought();
+                    return;
+                }
             }
 
         }
@@ -439,6 +501,15 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
     }
 
+    public IEnumerator HandleAbility(AbilityBase _ability, bool _isDestroyingUnit)
+    {
+        StartCoroutine(_ability.Handle(Process.DelayHideDescription, _isDestroyingUnit));
+
+        yield return new WaitForSeconds(Process.DelayHideDescription);
+
+        IsBlockingInput = false;
+    }
+
     /// <summary>
     /// Checks fusible between 2 units.
     /// </summary>
@@ -447,6 +518,10 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <returns></returns>
     public bool IsFusible(UnitController _onSlot, UnitController _onDrag)
     {
+        if (_onSlot.Model.Data.IsRobot() == false ||
+            _onDrag.Model.Data.IsRobot() == false)
+            return false;
+
         if (_onSlot.Model.IsMaxed || _onDrag.Model.IsMaxed)
             return false;
 

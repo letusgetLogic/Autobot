@@ -2,11 +2,9 @@
 {
     None,
 
-    Shutdown,
-    Recycle,
     Craft,
-
-    Crafted,
+    Recycle,
+    Shutdown,
 
     LevelUp,
     BeforeAttack,

@@ -8521,14 +8521,14 @@ MonoBehaviour:
   - {fileID: 3657087612563890052}
   - {fileID: 8972304661376012545}
   chargeSlot: {fileID: 5655546720053891029}
-  shopUnitSlots:
-  - {fileID: 3797299633111459226}
-  - {fileID: 4635258857977619735}
+  shopBotSlots:
   - {fileID: 4635258857180574884}
-  delayPushing: 0.5
-  delayStartBattle: 1
-  delayCharging: 0.5
-  delayPushingFusion: 1
+  - {fileID: 4635258857977619735}
+  - {fileID: 3797299633111459226}
+  shopItemSlots:
+  - {fileID: 290016532}
+  - {fileID: 505533980}
+  process: {fileID: 11400000, guid: 3abe25bd8e107f04cbd66492b58602f6, type: 2}
 --- !u!1 &6402649289363509221
 GameObject:
   m_ObjectHideFlags: 0

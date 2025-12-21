@@ -3,19 +3,19 @@
     None,
     Self,
 
-    NearestFriendAhead,
-    RandomFriend,
-    NearestFriendBehind,
+    NearestTeammateAhead,
+    RandomTeammate,
+    NearestTeammateBehind,
 
     AllFriends,
     All,
 
-    ShopUnits,
+    ShopBots,
 
-    SummonedUnit,
+    CraftedBots,
 
     RandomEnemy,
 
-    TargetUnit
+    TargetBot
 }
 

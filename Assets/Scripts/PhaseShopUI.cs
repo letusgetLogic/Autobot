@@ -124,6 +124,9 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnRoll()
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (!HasEnoughCurrency(rollCost.Nut, rollCost.Tool))
             return;
 
@@ -137,6 +140,10 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnEndTurn()
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
+        PhaseShopUnitManager.Instance.IsBlockingInput = true;
         SoundManager.Instance.PlayButtonSound();
         Player.EndShop();
     }
@@ -148,6 +155,9 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnRepair()
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
@@ -171,6 +181,9 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnLock()
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             SoundManager.Instance.PlayLockSound();
@@ -189,6 +202,9 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnUnlock()
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             SoundManager.Instance.PlayUnlockSound();
@@ -207,6 +223,11 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnRecycle()
     {
+        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+            return;
+
+        PhaseShopUnitManager.Instance.IsBlockingInput = true;
+
         SetButtonActive(null);
         DeactivateManageButtons();
 
@@ -224,6 +245,7 @@ public class PhaseShopUI : MonoBehaviour
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
+        else PhaseShopUnitManager.Instance.IsBlockingInput = false;
     }
 
     /// <summary>
@@ -260,7 +282,8 @@ public class PhaseShopUI : MonoBehaviour
                 break;
         }
 
-        if (GameManager.Instance.IsRepairSystemActive)
+        if (GameManager.Instance.IsRepairSystemActive && 
+            _unitModel.Data.IsRobot())
         {
             float durability = _unitModel.Data.DurabilityRatio;
             if (durability < 1f)
