@@ -5370,9 +5370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
-  shadowSpriteRenderer: {fileID: 7646287376905958447}
-  dragSpriteRenderer: {fileID: 1651141544470514720}
-  iceCubeSpriteRenderer: {fileID: 6215985791303685730}
+  energyConsumptionComponent: {fileID: 5534727416858062483}
   hideObjectsDuringBattle:
   - {fileID: 8401456290826259785}
   - {fileID: 1573919740678101263}
@@ -5386,6 +5384,9 @@ MonoBehaviour:
   - {fileID: 8163526868366268770}
   - {fileID: 5534727416858062483}
   - {fileID: 1042283479964472772}
+  shadowSpriteRenderer: {fileID: 7646287376905958447}
+  dragSpriteRenderer: {fileID: 1651141544470514720}
+  iceCubeSpriteRenderer: {fileID: 6215985791303685730}
   description: {fileID: 2245560921931257665}
   myName: {fileID: 7890613846352825661}
   energyConsumption: {fileID: 3169297535202223458}

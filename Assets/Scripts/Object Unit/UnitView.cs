@@ -7,6 +7,14 @@ public class UnitView : MonoBehaviour
 {
     #region Variables
 
+    [Header("Hide Objects")]
+    [SerializeField] GameObject energyConsumptionComponent;
+    [SerializeField]
+    private GameObject[]
+        hideObjectsDuringBattle,
+        hideFullAttributes,
+        hideObjectsByNoAbility;
+
     [Header("Sprites")]
     [Tooltip(("The shadow is showing, when sprite is being dragged out of the slot shop."))]
     [SerializeField] private SpriteRenderer shadowSpriteRenderer;
@@ -14,12 +22,6 @@ public class UnitView : MonoBehaviour
     [SerializeField] private SpriteRenderer iceCubeSpriteRenderer;
     public SpriteRenderer Shadow => shadowSpriteRenderer;
     public GameObject IceCube => iceCubeSpriteRenderer.gameObject;
-
-    [SerializeField] 
-    private GameObject[] 
-        hideObjectsDuringBattle,
-        hideFullAttributes,
-        hideObjectsByNoAbility;
 
     [Header("Description")]
     [SerializeField] private GameObject description;
@@ -152,10 +154,16 @@ public class UnitView : MonoBehaviour
         if (_description != null)
         {
             ability.text = _description;
-            energyConsumption.text = _energy.ToString();
+
+            if (_energy == 0)
+                energyConsumptionComponent.SetActive(false);
+            else
+                energyConsumption.text = _energy.ToString();
+
             return;
         }
 
+        // if it has an ability, hides the defined visuals
         foreach (var element in hideObjectsByNoAbility)
             element.SetActive(false);
     }
@@ -224,16 +232,6 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.gameObject.transform.localScale *= unitSettings.DraggingScale;
 
-        if (shadowSpriteRenderer.enabled == false)
-        {
-            //heartIcon.gameObject.SetActive(false);
-            //attackIcon.gameObject.SetActive(false);
-            //energyIcon.gameObject.SetActive(false);
-            //health.enabled = false;
-            //attack.enabled = false;
-            //energy.enabled = false;
-        }
-
         dragSpriteRenderer.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
         canvas.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
     }
@@ -262,13 +260,6 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.sortingOrder = originalSortingOrder;
         canvas.sortingOrder = originalSortingOrder;
         canvas.transform.localPosition = Vector3.zero;
-
-        //heartIcon.gameObject.SetActive(true);
-        //attackIcon.gameObject.SetActive(true);
-        //energyIcon.gameObject.SetActive(true);
-        //health.enabled = true;
-        //attack.enabled = true;
-        //energy.enabled = true;
     }
 
     #endregion

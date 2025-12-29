@@ -138,7 +138,7 @@ public class UnitController : MonoBehaviour
             _draggingModel.Data.Cur.HP == _draggingModel.Data.FullHP);
 
         model.UpdateLevelXP(_isPhaseShop);
-        model.Repair?.SetDurability(true, false, 0, 0);
+        model.Repair?.SetDurability(false);
 
         SoundManager.Instance.PlayFusionSound();
     }

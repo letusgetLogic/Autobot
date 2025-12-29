@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class PackManager : MonoBehaviour
 {
     public static PackManager Instance { get; private set; }
@@ -17,12 +18,11 @@ public class PackManager : MonoBehaviour
         if (Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         DebugID = 0;
     }
@@ -33,7 +33,7 @@ public class PackManager : MonoBehaviour
     /// <param name="_selectedPack"></param>
     public void InitPack(SoPack _selectedPack)
     {
-        if ( MyPack != null)
+        if (MyPack != null)
             MyPack = null;
 
         MyPack = _selectedPack;

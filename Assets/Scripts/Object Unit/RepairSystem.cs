@@ -69,22 +69,9 @@ public class RepairSystem
     /// <param name="_updateATK"></param>
     /// <param name="_durability"></param>
     /// <param name="_ratio"></param>
-    public void SetDurability(bool _shouldGetDurability, bool _updateATK, int _durability, float _ratio)
+    public void SetDurability(bool _updateATK)
     {
-        // if durability wasn't setted, we get it from health.
-        // even if it was setted and it is 1.0f, get durability shouldn't cause issue.
-        if (_shouldGetDurability)
-        {
-            model.Data.Durability = GetDurabilityFromHealth(_updateATK);
-        }
-
-        if (!_shouldGetDurability)
-        {
-            model.Data.Durability = _durability;
-            model.Data.DurabilityRatio = _ratio;
-            SetStatsBasedDurability();
-        }
-
+        model.Data.Durability = GetDurabilityFromHealth(_updateATK);
         ShowDurability();
     }
 

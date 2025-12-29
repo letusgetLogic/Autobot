@@ -104,7 +104,7 @@ public class UnitModel
             if (Repair != null)
             {
                 Repair.Initialize(this, _view);
-                Repair.SetDurability(true, true, 0, 0);
+                Repair.SetDurability(true);
                 Repair.SetRepairPanel();
             }
             else
