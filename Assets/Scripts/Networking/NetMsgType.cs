@@ -1,8 +1,29 @@
 ﻿public enum NetMsgType : byte
 {
-    Hello = 1,        // handshake
-    Ready = 2,        // both players ready
-    TurnInput = 3,    // shop / actions
-    StartBattle = 4,  // contains seed
-    Ack = 5           // optional reliability
+    Hello,        // handshake
+    Ready,        // both players ready
+
+    TurnInput,    // shop / actions
+    TurnHash,
+    TurnAck,
+    Endturn,
+
+    StartBattle,  // contains seed
+    BattleResultHash,
+    BattleResultAck,
+
+    ReconnectRequest,
+    SnapshotData,
+    SnapshotAck,
+
+
+    //       Hello = 1,
+    //StartGame = 2,
+    //PlayerCommand = 3,
+    //EndTurn = 4,
+    //CombatSeed = 5,
+    //TurnHash = 6,
+    //ResyncRequest = 7,
+    //Disconnect = 8
+
 }

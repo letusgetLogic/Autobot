@@ -414,13 +414,10 @@ public class UnitModel
     /// Reduces HP at the damage and updates view.
     /// </summary>
     /// <param name="_damage"></param>
-    public void ReduceHp(int _damage)
+    public void ReduceHp(uint _damage)
     {
-        if (_damage < 0)
-            _damage = 0;
-
-        Data.SetHP(Data.Cur.HP - _damage, Repair == null ? null : Repair.SetRepairPanel);
-        View.ShowDamage(_damage, Data.Cur.HP);
+        Data.SetHP(Data.Cur.HP - (int)_damage, Repair == null ? null : Repair.SetRepairPanel);
+        View.ShowDamage((int)_damage, Data.Cur.HP);
     }
 
 

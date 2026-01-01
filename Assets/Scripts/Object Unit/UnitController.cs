@@ -152,7 +152,7 @@ public class UnitController : MonoBehaviour
     /// Triggers the ability while attacking.
     /// </summary>
     /// <returns></returns>
-    public int TriggerAttack()
+    public uint TriggerAttack()
     {
         //var ability = TriggerAbility(TriggerType.BeforeAttack);
         //if (ability != null)
@@ -168,14 +168,14 @@ public class UnitController : MonoBehaviour
         if (ability != null)
             PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
 
-        return model.Data.Cur.ATK;
+        return (uint)model.Data.Cur.ATK;
     }
 
     /// <summary> 
     /// Takes damage.
     /// </summary>
     /// <param name="_damage"></param>
-    public void TakeDamage(int _damage)
+    public void TakeDamage(uint _damage)
     {
         model.ReduceHp(_damage);
 

@@ -1,7 +1,9 @@
 ﻿using Unity.Collections;
 using Unity.Networking.Transport;
 using Unity.Services.Multiplayer;
+using UnityEditor;
 using UnityEditor.MemoryProfiler;
+using UnityEngine;
 
 public static class NetworkProtocol
 {
@@ -19,7 +21,10 @@ public static class NetworkProtocol
             return;
 
         _driver.BeginSend(NetworkPipeline.Null, _connection, out var writer);
+
+        writer.WriteByte(NetConstants.PROTOCOL_VERSION);
         writer.WriteByte((byte)NetMsgType.Hello);
+
         _driver.EndSend(writer);
     }
 
@@ -42,6 +47,7 @@ public static class NetworkProtocol
 
         _driver.BeginSend(NetworkPipeline.Null, _connection, out var writer);
 
+        writer.WriteByte(NetConstants.PROTOCOL_VERSION);
         writer.WriteByte((byte)NetMsgType.TurnInput);
         writer.WriteByte(_turnIndex);
         writer.WriteByte((byte)_actions.Length);
@@ -93,11 +99,11 @@ public static class NetworkProtocol
             switch (evt)
             {
                 case NetworkEvent.Type.Data:
-                    HandleData(reader);
+                    HandleData(_driver, _connection, reader);
                     break;
 
                 case NetworkEvent.Type.Disconnect:
-                    UnityEngine.Debug.Log("Client disconnected");
+                    Debug.Log("Client disconnected");
                     _connection = default;
                     break;
             }
@@ -109,33 +115,59 @@ public static class NetworkProtocol
     /// Handle incoming data packets.
     /// </summary>
     /// <param name="_reader"></param>
-    private static void HandleData(DataStreamReader _reader)
+    private static void HandleData(
+        NetworkDriver _driver,
+        NetworkConnection _connection,
+        DataStreamReader _reader)
     {
+        byte version = _reader.ReadByte();
+
+        if (version != NetConstants.PROTOCOL_VERSION)
+        {
+            Debug.LogError(
+                $"Protocol mismatch. Local={NetConstants.PROTOCOL_VERSION}, Remote={version}"
+            );
+
+            _connection.Disconnect(_driver);
+            return;
+        }
+
         var msgType = (NetMsgType)_reader.ReadByte();
 
         switch (msgType)
         {
             case NetMsgType.Hello:
-                //HandleHello();
+                //HandleHello(_connection);
                 break;
 
             case NetMsgType.TurnInput:
                 {
-                    byte turn = _reader.ReadByte();
-                    byte count = _reader.ReadByte();
-
-                    for (int i = 0; i < count; i++)
-                    {
-                        int action = _reader.ReadInt();
-                        // process action
-                    }
+                    HandleTurnInput(_reader);
                     break;
                 }
         }
 
         if (_reader.HasFailedReads)
         {
-            UnityEngine.Debug.LogError("Malformed packet received");
+            Debug.LogError("Malformed packet received");
         }
     }
+
+    private static void HandleTurnInput(
+        DataStreamReader _reader
+    )
+    {
+        byte turn = _reader.ReadByte();
+        byte count = _reader.ReadByte();
+
+        for (int i = 0; i < count; i++)
+        {
+            int action = _reader.ReadInt();
+            // process action
+        }
+        // Process turn input here
+    }
+
 }
+
+
