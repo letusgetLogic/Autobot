@@ -37,6 +37,13 @@ public class LobbyManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        _ = InitializeAsync();
+        _ = CreateLobbyAsync();
+        
+    }
+
     /// <summary>
     /// Initialize Unity Services and authenticate the player anonymously.
     /// </summary>
