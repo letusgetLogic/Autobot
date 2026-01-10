@@ -162,7 +162,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -65311361
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.38823533, g: 0.46274513, b: 0.5137255, a: 1}
   m_FlipX: 0
@@ -253,7 +253,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.98475766, g: 1, b: 0.514151, a: 0.101960786}
+  m_Color: {r: 0.81667227, g: 0.8301887, b: 0.41117835, a: 0.101960786}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -275,6 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9203739954c9a9940ac56c48604995fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAutomatic: 1
   animSpeedAct: 3
   colorMax: 1
   colorMin: 0.1
@@ -314,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f522e53f92604f14e83d75847a8c83d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAutomatic: 1
   animSpeedAct: 3
   scaleMax: {x: 0.9, y: 0.45, z: 0}
   scaleMin: {x: 0.7, y: 0.35, z: 0}
@@ -706,7 +708,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -65311361
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.101960786}
   m_FlipX: 0

@@ -44,14 +44,14 @@ public class PhaseBattleView : MonoBehaviour
     public void Initialize(PlayerData _player1, PlayerData _player2)
     {
         name1.text = _player1.Name;
-        turn1.text = _player1.Turn.ToString();
-        wins1.text = _player1.Wins.ToString();
-        lives1.text = _player1.Lives.ToString();
+        if (turn1) turn1.text = _player1.Turn.ToString();
+        if (wins1) wins1.text = _player1.Wins.ToString();
+        if (lives1) lives1.text = _player1.Lives.ToString();
 
         name2.text = _player2.Name;
-        turn2.text = _player2.Turn.ToString();
-        wins2.text = _player2.Wins.ToString();
-        lives2.text = _player2.Lives.ToString();
+        if (turn2) turn2.text = _player2.Turn.ToString();
+        if (wins2) wins2.text = _player2.Wins.ToString();
+        if (lives2) lives2.text = _player2.Lives.ToString();
 
         defaultMult.text = GameManager.Instance.DefaultSpeedMultiplier.ToString();
         maxMult.text = GameManager.Instance.MaxSpeedMultiplier.ToString();
@@ -65,8 +65,8 @@ public class PhaseBattleView : MonoBehaviour
     /// <param name="_player2"></param>
     public void UpdateLives(PlayerData pla_yer1, PlayerData _player2)
     {
-        lives1.text = pla_yer1.Lives.ToString();
-        lives2.text = _player2.Lives.ToString();
+        if (lives1) lives1.text = pla_yer1.Lives.ToString();
+        if (lives2) lives2.text = _player2.Lives.ToString();
     }
 
     /// <summary>
