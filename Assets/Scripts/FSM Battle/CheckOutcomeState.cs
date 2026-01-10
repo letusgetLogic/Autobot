@@ -55,9 +55,11 @@ public class CheckOutcomeState : StateBase
     /// <returns></returns>
     private bool CheckOutcome()
     {
-        if (IsAnyoneIn(PhaseBattleController.Instance.Slots1, null))
+        var slots1 = PhaseBattleController.Instance.Slots1();
+        var slots2 = PhaseBattleController.Instance.Slots2();
+        if (IsAnyoneIn(slots1, null))
         {
-            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2, null))
+            if (IsAnyoneIn(slots2, null))
             {
                 return false; // Continue battle
             }
@@ -76,7 +78,7 @@ public class CheckOutcomeState : StateBase
         }
         else
         {
-            if (IsAnyoneIn(PhaseBattleController.Instance.Slots2, null))
+            if (IsAnyoneIn(slots2, null))
             {
                 GameManager.Instance.UpdatePlayerStats(1); // Right wins
 

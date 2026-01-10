@@ -18,8 +18,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     private Slot[] slots1;
     [SerializeField]
     private Slot[] slots2;
-    public Slot[] Slots1 => slots1;
-    public Slot[] Slots2 => slots2;
 
     private StateBase state { get;set; }
 
@@ -155,5 +153,35 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         {
             slot.HideDescription();
         }
+    }
+
+    /// <summary>
+    /// Returns only active slots.
+    /// </summary>
+    /// <returns></returns>
+    public Slot[] Slots1()
+    {
+        List<Slot> activeSlots = new List<Slot>();
+        foreach (var slot in slots1)
+        {
+            if (slot.gameObject.activeSelf)
+                activeSlots.Add(slot);
+        }
+        return activeSlots.ToArray();
+    }
+
+    /// <summary>
+    /// Returns only active slots.
+    /// </summary>
+    /// <returns></returns>
+    public Slot[] Slots2()
+    {
+        List<Slot> activeSlots = new List<Slot>();
+        foreach (var slot in slots2)
+        {
+            if (slot.gameObject.activeSelf)
+                activeSlots.Add(slot);
+        }
+        return activeSlots.ToArray();
     }
 }

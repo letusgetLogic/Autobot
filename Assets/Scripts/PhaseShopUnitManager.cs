@@ -1,20 +1,21 @@
 using System.Collections;
-using UnityEditor.Playables;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PhaseShopUnitManager : MonoBehaviour
 {
     public static PhaseShopUnitManager Instance { get; private set; }
+
+    public UnityAction OnSettingAttachedObject { get; set; }
+    public UnityAction OnSettingNullObject { get; set; }
 
     [Header("Slots")]
     [SerializeField] private Slot[] teamSlots;
     [SerializeField] private Slot chargeSlot;
     [SerializeField] private Slot[] shopBotSlots;
     [SerializeField] private Slot[] shopItemSlots;
-    public Slot[] TeamSlots => teamSlots;
     public Slot ChargeSlot => chargeSlot;
-    public Slot[] ShopBotSlots => shopBotSlots;
-    public Slot[] ShopItemSlots => shopItemSlots;
 
     [Header("Settings")]
     [SerializeField] private SoShopProcess process;
@@ -53,6 +54,18 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
+    }
+
+    private void OnEnable()
+    {
+        OnSettingAttachedObject += () => SetDropHint(true);
+        OnSettingNullObject += () => SetDropHint(false);
+    }
+
+    private void OnDisable()
+    {
+        OnSettingAttachedObject -= () => SetDropHint(true);
+        OnSettingNullObject -= () => SetDropHint(false);
     }
 
     /// <summary>
@@ -501,6 +514,12 @@ public class PhaseShopUnitManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the ability coroutine.
+    /// </summary>
+    /// <param name="_ability"></param>
+    /// <param name="_isDestroyingUnit"></param>
+    /// <returns></returns>
     public IEnumerator HandleAbility(AbilityBase _ability, bool _isDestroyingUnit)
     {
         StartCoroutine(_ability.Handle(Process.DelayHideDescription, _isDestroyingUnit));
@@ -531,26 +550,36 @@ public class PhaseShopUnitManager : MonoBehaviour
         return false;
     }
 
+    public void HandleMouseDown(GameObject _unit, UnitModel _model)
+    {
+        SetAttachedGameObject(null);
+        SetAttachedGameObject(_unit);
+        PhaseShopUI.Instance.SetButtonActive(_model);
+    }
+
     /// <summary>
     /// Sets attached game object being clicked or dragged.
     /// </summary>
     /// <param name="_target"></param>
     public void SetAttachedGameObject(GameObject _target)
-    {
+    {Debug.Log("SetAttachedGameObject: " + _target);
         if (_target == null)
         {
+            // previous attached object border disable
             if (AttachedGameObject != null)
                 AttachedGameObject.transform.parent.
                     GetComponent<Slot>().Border.enabled = false;
 
             PhaseShopUI.Instance.SetButtonActive(null);
+            AttachedGameObject = _target;
+            OnSettingNullObject?.Invoke();
         }
         else
         {
             _target.transform.parent.GetComponent<Slot>().Border.enabled = true;
+            AttachedGameObject = _target;
+            OnSettingAttachedObject?.Invoke();
         }
-
-        AttachedGameObject = _target;
     }
 
     /// <summary>
@@ -562,5 +591,88 @@ public class PhaseShopUnitManager : MonoBehaviour
         {
             slot.HideDescription();
         }
+    }
+
+    /// <summary>
+    /// Sets the drop hint on team slots and empty charge slot.
+    /// </summary>
+    /// <param name="_value"></param>
+    private void SetDropHint(bool _value)
+    {
+        bool isDroppable = false;
+       
+        foreach (var slot in teamSlots)
+        {
+            if (_value == true)
+                isDroppable = IsDroppable(slot);
+
+            slot.Lighten.enabled = isDroppable;
+            slot.LightenScale.enabled = isDroppable;
+        }
+
+        chargeSlot.Lighten.enabled = _value && chargeSlot.Unit() == null;
+        chargeSlot.LightenScale.enabled = _value && chargeSlot.Unit() == null;
+    }
+
+    /// <summary>
+    /// Is the slot droppable for the attached object?
+    /// </summary>
+    /// <param name="_slot"></param>
+    /// <returns></returns>
+    private bool IsDroppable(Slot _slot)
+    {
+        bool isAttachedItem =
+           AttachedGameObject &&
+           AttachedGameObject.CompareTag("Unit") &&
+           AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitType == UnitType.Item;
+
+        bool slotOccupied = _slot.Unit() != null;
+
+        return isAttachedItem ? slotOccupied : true;
+    }
+
+    /// <summary>
+    /// Returns only active shop bot slots.
+    /// </summary>
+    /// <returns></returns>
+    public Slot[] ShopBotSlots()
+    {
+        List<Slot> activeSlots = new List<Slot>();
+        foreach(var slot in shopBotSlots)
+        {
+            if (slot.gameObject.activeSelf)
+                activeSlots.Add(slot);
+        }
+        return activeSlots.ToArray();
+    }
+
+    /// <summary>
+    /// Returns only active shop item slots.
+    /// </summary>
+    /// <returns></returns>
+    public Slot[] ShopItemSlots()
+    {
+        List<Slot> activeSlots = new List<Slot>();
+        foreach (var slot in shopItemSlots)
+        {
+            if (slot.gameObject.activeSelf)
+                activeSlots.Add(slot);
+        }
+        return activeSlots.ToArray();
+    }
+
+    /// <summary>
+    /// Returns only active team slots.
+    /// </summary>
+    /// <returns></returns>
+    public Slot[] TeamSlots()
+    {
+        List<Slot> activeSlots = new List<Slot>();
+        foreach (var slot in teamSlots)
+        {
+            if (slot.gameObject.activeSelf)
+                activeSlots.Add(slot);
+        }
+        return activeSlots.ToArray();
     }
 }

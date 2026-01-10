@@ -8,15 +8,20 @@ public class Slot : MonoBehaviour
     [SerializeField] private EventHover eventHover;
     [SerializeField] private EventDragSlot eventDrag;
 
+    [Tooltip("The hint of dropable slot.")]
+    [SerializeField] private LightenUpDown lighten;
+    [SerializeField] private ScaleUpDown lightenScale;
+
     public SpriteRenderer Border
     {
         get { return border; }
         set { border = value; }
     }
+
     public EventHover EventHover => eventHover;
-
     public EventDragSlot EventDrag => eventDrag;
-
+    public LightenUpDown Lighten => lighten;
+    public ScaleUpDown LightenScale => lightenScale;
     public int Index { get; set; }
 
 
@@ -24,6 +29,11 @@ public class Slot : MonoBehaviour
     {
         if (border != null)
             border.enabled = false;
+
+        if (lighten != null)
+            lighten.enabled = false;
+        if (lightenScale != null)
+            lightenScale.enabled = false;
     }
 
     private void OnEnable()

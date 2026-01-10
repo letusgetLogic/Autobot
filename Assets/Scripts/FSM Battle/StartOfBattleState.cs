@@ -13,8 +13,8 @@ public class StartOfBattleState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.WriteLine("--- StartOfBattleState");
-        TriggerAbility(PhaseBattleController.Instance.Slots1);
-        TriggerAbility(PhaseBattleController.Instance.Slots2);
+        TriggerAbility(PhaseBattleController.Instance.Slots1());
+        TriggerAbility(PhaseBattleController.Instance.Slots2());
 
         _ctx.SetState(new InsertState(
             PhaseBattleController.Instance.Process.DurationInsert));

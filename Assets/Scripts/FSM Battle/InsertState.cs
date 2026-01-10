@@ -13,8 +13,8 @@ public class InsertState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- InsertState");
-        MoveCloserTogether(PhaseBattleController.Instance.Slots1);
-        MoveCloserTogether(PhaseBattleController.Instance.Slots2);
+        MoveCloserTogether(PhaseBattleController.Instance.Slots1());
+        MoveCloserTogether(PhaseBattleController.Instance.Slots2());
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)

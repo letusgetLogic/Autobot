@@ -23,10 +23,10 @@ public class UnitController : MonoBehaviour
             if (PhaseBattleController.Instance != null)
             {
                 return model.Data.IsTeamLeft ?
-                    PhaseBattleController.Instance.Slots1 :
-                    PhaseBattleController.Instance.Slots2;
+                    PhaseBattleController.Instance.Slots1() :
+                    PhaseBattleController.Instance.Slots2();
             }
-            else return PhaseShopUnitManager.Instance.TeamSlots;
+            else return PhaseShopUnitManager.Instance.TeamSlots();
         }
     }
     public Slot Slot

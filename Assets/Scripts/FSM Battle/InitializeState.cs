@@ -42,11 +42,11 @@ public class InitializeState : StateBase
 
         SpawnUnits(
             PhaseBattleController.Instance.Player1,
-            PhaseBattleController.Instance.Slots1, true);
+            PhaseBattleController.Instance.Slots1(), true);
 
         SpawnUnits(
             PhaseBattleController.Instance.Player2,
-            PhaseBattleController.Instance.Slots2, false);
+            PhaseBattleController.Instance.Slots2(), false);
     }
 
     /// <summary>

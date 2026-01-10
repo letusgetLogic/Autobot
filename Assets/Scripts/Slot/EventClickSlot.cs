@@ -32,11 +32,7 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
         }
         else // An unit is on the slot.
         {
-            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
-            PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());
-
-            var model = slot.UnitController().Model;
-            PhaseShopUI.Instance.SetButtonActive(model);
+            PhaseShopUnitManager.Instance.HandleMouseDown(slot.Unit(), slot.UnitController().Model);
         }
     }
 }

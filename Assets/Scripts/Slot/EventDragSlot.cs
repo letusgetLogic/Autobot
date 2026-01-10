@@ -31,9 +31,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         slot.UnitView().BeingAttached(eventData);
 
-        PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
-        PhaseShopUnitManager.Instance.SetAttachedGameObject(slot.Unit());
-        PhaseShopUI.Instance.SetButtonActive(slot.UnitController().Model);
+        PhaseShopUnitManager.Instance.HandleMouseDown(slot.Unit(), slot.UnitController().Model);
     }
 
     /// <summary>

@@ -33,7 +33,8 @@ public class Player : MonoBehaviour
     {
         float delay = 0f;
 
-        if (Data.Turn == 1)
+        // variant after turn 1 not giving energy for each.s
+        //if (Data.Turn == 1)
             delay = PhaseShopUnitManager.Instance.ChargeBotsAtEndShop();
 
         PhaseShopUnitManager.Instance.StartCoroutine(DelayEndShop(delay));
@@ -57,7 +58,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StartBattle()
     {
-        BattleUnits = new UnitController[PhaseBattleController.Instance.Slots1.Length];
+        BattleUnits = new UnitController[PhaseBattleController.Instance.Slots1().Length];
     }
 
     /// <summary>
@@ -82,10 +83,11 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateUnitData()
     {
-        Data.ShopBotDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopBotSlots.Length];
+        var shopBotSlots = PhaseShopUnitManager.Instance.ShopBotSlots();
+        Data.ShopBotDatas = new SaveUnitData[shopBotSlots.Length];
         for (int i = 0; i < Data.ShopBotDatas.Length; i++)
         {
-            var unit = PhaseShopUnitManager.Instance.ShopBotSlots[i].UnitController();
+            var unit = shopBotSlots[i].UnitController();
             if (unit == null)
             {
                 continue;
@@ -94,10 +96,11 @@ public class Player : MonoBehaviour
             Data.ShopBotDatas[i] = unit.Model.Data;
         }
 
-        Data.ShopItemDatas = new SaveUnitData[PhaseShopUnitManager.Instance.ShopItemSlots.Length];
+        var shopItemSlots = PhaseShopUnitManager.Instance.ShopItemSlots();
+        Data.ShopItemDatas = new SaveUnitData[shopItemSlots.Length];
         for (int i = 0; i < Data.ShopItemDatas.Length; i++)
         {
-            var unit = PhaseShopUnitManager.Instance.ShopItemSlots[i].UnitController();
+            var unit = shopItemSlots[i].UnitController();
             if (unit == null)
             {
                 continue;
@@ -106,10 +109,11 @@ public class Player : MonoBehaviour
             Data.ShopItemDatas[i] = unit.Model.Data;
         }
 
-        Data.TeamUnitDatas = new SaveUnitData[PhaseShopUnitManager.Instance.TeamSlots.Length];
+        var teamSlots = PhaseShopUnitManager.Instance.TeamSlots();
+        Data.TeamUnitDatas = new SaveUnitData[teamSlots.Length];
         for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
-            var unit = PhaseShopUnitManager.Instance.TeamSlots[i].UnitController();
+            var unit = teamSlots[i].UnitController();
             if (unit == null)
             {
                 continue;
@@ -133,7 +137,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateTeamUnitData()
     {
-        for (int i = 0; i < PhaseShopUnitManager.Instance.TeamSlots.Length; i++)
+        for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
             if (BattleUnits[i] == null)
             {
