@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
         PhaseShopUnitManager.Instance.ChargeBotAtStartShop();
         PhaseShopUI.Instance.SetChargingEnergyAt(Data.Turn);
 
-        GameManager.Instance.SetPhaseShop();
+        GameManager.Instance.Switch(GameState.ShopPhase, null);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(_delay);
 
         UpdateUnitData();
-        GameManager.Instance.EndPhaseShop();
+        GameManager.Instance.Switch(GameState.EndOfTurn, null);
     }
 
     /// <summary>

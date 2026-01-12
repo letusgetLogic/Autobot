@@ -14,13 +14,13 @@ public class TutorialManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(gameObject);
+            Destroy(Instance.gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+       
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        
         if (!PlayerPrefs.HasKey("TutorialCompleted"))
         {
             TutorialCompleted = false;

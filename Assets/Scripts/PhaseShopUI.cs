@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class PhaseShopUI : MonoBehaviour
         if (Instance != null)
         {
             Destroy(Instance.gameObject);
+            return;
         }
         Instance = this;
 
@@ -140,9 +142,10 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnEndTurn()
     {
+        Debug.Log("End Turn Button Clicked");
         if (PhaseShopUnitManager.Instance.IsBlockingInput)
             return;
-
+        
         PhaseShopUnitManager.Instance.IsBlockingInput = true;
         SoundManager.Instance.PlayButtonSound();
         Player.EndShop();

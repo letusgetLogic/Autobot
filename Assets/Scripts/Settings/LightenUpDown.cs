@@ -3,7 +3,7 @@
 public class LightenUpDown : MonoBehaviour
 {
     [SerializeField] private bool isAutomatic = true;
-    [SerializeField] private float animSpeedAct = 1f;
+    [SerializeField] private float animTime = 1f;
     [SerializeField] private float colorMax = 1f;
     [SerializeField] private float colorMin = 0.1f;
     [SerializeField] private AnimationCurve animCurve;
@@ -88,7 +88,10 @@ public class LightenUpDown : MonoBehaviour
     private void Interpolate(float target)
     {
         currentValue = Mathf.MoveTowards(
-            currentValue, target, animSpeedAct * 0.0001f / Time.deltaTime);
+           currentValue, target, Time.fixedDeltaTime / animTime);
+
+        //currentValue = Mathf.MoveTowards(
+        //    currentValue, target, animSpeedAct * 0.0001f / Time.deltaTime);
 
         float dimValue =
             Mathf.Lerp(colorMin, colorMax, animCurve.Evaluate(currentValue));

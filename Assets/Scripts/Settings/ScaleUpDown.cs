@@ -3,10 +3,12 @@
 public class ScaleUpDown : MonoBehaviour
 {
     [SerializeField] private bool isAutomatic = true;
-    [SerializeField] private float animSpeedAct = 1f;
+    [SerializeField] private float animTime = 1f;
     [SerializeField] private Vector3 scaleMax = new(1f, 1f);
     [SerializeField] private Vector3 scaleMin = new(0.8f, 0.8f);
     [SerializeField] private AnimationCurve animCurve;
+
+    public float AnimTime { get => animTime; set => animTime = value; }
 
     private enum Scale
     {
@@ -37,16 +39,17 @@ public class ScaleUpDown : MonoBehaviour
     }
 
     /// <summary>
-    /// Switches the lighten on or off.
+    /// Scales up (true) or down (false).
     /// </summary>
-    /// <param name="_isOn"></param>
-    public void SwitchOn(bool _isOn)
+    /// <param name="_isUp"></param>
+    public void ScaleUp(bool _isUp)
     {
-        scaleState = _isOn ? Scale.Up : Scale.Down;
+        currentValue = _isUp ? 0f : 1f;
+        scaleState = _isUp ? Scale.Up : Scale.Down;
     }
 
     /// <summary>
-    /// Scale up.
+    /// Scales up.
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
     private void ScaleUp()
@@ -64,7 +67,7 @@ public class ScaleUpDown : MonoBehaviour
     }
 
     /// <summary>
-    /// Lightens the border down.
+    /// Scales down.
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
     private void ScaleDown()
@@ -88,7 +91,10 @@ public class ScaleUpDown : MonoBehaviour
     private void Interpolate(float target)
     {
         currentValue = Mathf.MoveTowards(
-            currentValue, target, animSpeedAct * 0.0001f / Time.fixedDeltaTime);
+            currentValue, target, Time.fixedDeltaTime / animTime);
+
+        //currentValue = Mathf.MoveTowards(
+        //    currentValue, target, animSpeedAct * 0.0001f / Time.fixedDeltaTime);
 
         Vector3 scaleValue = Vector3.Lerp(scaleMin, scaleMax, animCurve.Evaluate(currentValue));
         SetScale(scaleValue);
@@ -100,7 +106,13 @@ public class ScaleUpDown : MonoBehaviour
     /// <param name="rValue"></param>
     private void SetScale(Vector3 _scaleValue)
     {
-        gameObject.transform.localScale = _scaleValue;
+        var rect = GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            rect.localScale = _scaleValue;
+            return;
+        }
+        transform.localScale = _scaleValue;
     }
 }
 

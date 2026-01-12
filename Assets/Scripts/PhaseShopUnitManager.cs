@@ -47,6 +47,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (Instance != null)
         {
             Destroy(Instance.gameObject);
+            return;
         }
         Instance = this;
 

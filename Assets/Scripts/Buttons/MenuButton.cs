@@ -8,15 +8,7 @@ public class MenuButton : MonoBehaviour
     /// </summary>
     public void OnButtonClick()
     {
-        GameManager.Instance.EndGame();
-
-        if (PackManager.Instance != null)
-            Destroy(PackManager.Instance.gameObject);
-        if (SpawnManager.Instance != null)
-            Destroy(SpawnManager.Instance.gameObject);
-
-        SceneManager.LoadScene("Menu");
-        Time.timeScale = 1f;
+        GameManager.Instance.Switch(GameState.EndOfGame, null);
     }
 }
 

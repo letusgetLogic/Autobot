@@ -32,6 +32,7 @@ public class PhaseBattleView : MonoBehaviour
         if (Instance != null)
         {
             Destroy(Instance.gameObject);
+            return;
         }
         Instance = this;
     }

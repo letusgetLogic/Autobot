@@ -1,7 +1,7 @@
 ﻿public enum GameState
 {
     None,
-    LoadGame,
+    LoadScene,
 
     StartOfTurn,
     ShopPhase,

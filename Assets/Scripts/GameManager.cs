@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,13 +36,13 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(Instance.gameObject);
         }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     /// <summary>
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
 
             case GameMode.Local1v1:
                 InitSingle();
-                RunModeSingle();
+                Switch(GameState.LoadScene, null);
                 break;
 
             case GameMode.AI:
@@ -97,7 +98,7 @@ public class GameManager : MonoBehaviour
                 Timer,
                 PlayerLives,
                 0,
-                GameState.LoadGame,
+                GameState.LoadScene,
                 players[0].Data,
                 players[1].Data
                 );
@@ -106,21 +107,80 @@ public class GameManager : MonoBehaviour
         CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
 
+    public void Switch(GameState _state, Player _player)
+    {
+        if (CurrentGame != null)
+            CurrentGame.State = _state;
+
+        switch (_state)
+        {
+            case GameState.None:
+                break;
+
+            case GameState.LoadScene:
+                RunModeSingle();
+                break;
+
+            case GameState.StartOfTurn:
+                _player.StartShop();
+                break;
+
+            case GameState.ShopPhase:
+                break;
+
+            case GameState.EndOfTurn:
+                SaveSystem.SaveGame(CurrentGame);
+                Destroy(PhaseShopUI.Instance.gameObject);
+                Destroy(PhaseShopUnitManager.Instance.gameObject);
+                StartCoroutine(DelayLoadScene());
+                break;
+
+            case GameState.StartOfBattle:
+                PhaseBattleController.Instance.Run(players[0], players[1]);
+                break;
+
+            case GameState.BattlePhase:
+                break;
+
+            case GameState.EndOfBattle:
+                SaveSystem.SaveGame(CurrentGame);
+                Switch(GameState.LoadScene, null);
+                break;
+
+            case GameState.EndOfGame:
+                if (PackManager.Instance != null)
+                    Destroy(PackManager.Instance.gameObject);
+                if (SpawnManager.Instance != null)
+                    Destroy(SpawnManager.Instance.gameObject);
+
+                SceneManager.LoadScene("Menu");
+                Time.timeScale = 1f;
+                break;
+        }
+    }
+
+    private IEnumerator DelayLoadScene()
+    {
+        yield return new WaitForEndOfFrame();
+
+        Switch(GameState.LoadScene, null);
+    }
+
     /// <summary>
     /// Starts game mode singleplayer.
     /// </summary>
-    public void RunModeSingle()
+    private void RunModeSingle()
     {
         if (CurrentGame.CurrentPlayerIndex < players.Length)
         {
-            SceneManager.LoadScene("PhaseShop");
+            CutScene.Instance.SwitchScene("PhaseShop");
             StartCoroutine(StartTurn(players[CurrentGame.CurrentPlayerIndex]));
             CurrentGame.CurrentPlayerIndex++;
         }
         else
         {
             CurrentGame.CurrentPlayerIndex = 0;
-            SceneManager.LoadScene("PhaseBattle");
+            CutScene.Instance.SwitchScene("PhaseBattle");
             StartCoroutine(RunPhaseBattle());
         }
     }
@@ -135,27 +195,7 @@ public class GameManager : MonoBehaviour
             PhaseShopUnitManager.Instance != null &&
             PhaseShopUI.Instance != null);
 
-        CurrentGame.State = GameState.StartOfTurn;
-
-        _player.StartShop();
-    }
-
-    /// <summary>
-    /// Sets the phase of shop.
-    /// </summary>
-    public void SetPhaseShop()
-    {
-        CurrentGame.State = GameState.ShopPhase;
-    }
-
-    /// <summary>
-    /// Ends the phase of shop.
-    /// </summary>
-    public void EndPhaseShop()
-    {
-        CurrentGame.State = GameState.EndOfTurn;
-        SaveSystem.SaveGame(CurrentGame);
-        RunModeSingle();
+        Switch(GameState.StartOfTurn, _player);
     }
 
     /// <summary>
@@ -169,18 +209,7 @@ public class GameManager : MonoBehaviour
         PhaseBattleView.Instance != null
         );
 
-        CurrentGame.State = GameState.StartOfBattle;
-        PhaseBattleController.Instance.Run(players[0], players[1]);
-    }
-
-    /// <summary>
-    /// Ends the battle phase.
-    /// </summary>
-    public void EndPhaseBattle()
-    {
-        CurrentGame.State = GameState.EndOfBattle;
-        SaveSystem.SaveGame(CurrentGame);
-        RunModeSingle();
+        Switch(GameState.StartOfBattle, null);
     }
 
     /// <summary>
@@ -201,14 +230,4 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-    /// <summary>
-    /// Ends game.
-    /// </summary>
-    public void EndGame()
-    {
-        if (CurrentGame != null)
-            CurrentGame.State = GameState.EndOfGame;
-    }
-
 }

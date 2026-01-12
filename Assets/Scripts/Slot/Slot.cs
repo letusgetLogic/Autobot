@@ -33,7 +33,7 @@ public class Slot : MonoBehaviour
         if (lighten != null)
             lighten.enabled = false;
         if (lightenScale != null)
-            lightenScale.enabled = false;
+            lightenScale.enabled = /*false*/true;
     }
 
     private void OnEnable()

@@ -62,6 +62,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         if (Instance != null)
         {
             Destroy(Instance.gameObject);
+            return;
         }
         Instance = this;
 
