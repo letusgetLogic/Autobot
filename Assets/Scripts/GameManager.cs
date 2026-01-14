@@ -31,6 +31,11 @@ public class GameManager : MonoBehaviour
     private Player[] players { get; set; }
     public string SceneName => SceneManager.GetActiveScene().name;
 
+    /// <summary>
+    /// To block player's input while animation is running.
+    /// </summary>
+    public bool IsBlockingInput { get; set; } = false;
+
 
     private void Awake()
     {
@@ -118,6 +123,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.LoadScene:
+                IsBlockingInput = true;
                 RunModeSingle();
                 break;
 
@@ -126,6 +132,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.ShopPhase:
+                GameManager.Instance.IsBlockingInput = false;
                 break;
 
             case GameState.EndOfTurn:

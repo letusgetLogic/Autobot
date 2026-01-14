@@ -98,10 +98,10 @@ public class PhaseShopUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the charging energy on charging station.
+    /// Sets the charging station.
     /// </summary>
     /// <param name="_turn"></param>
-    public void SetChargingEnergyAt(int _turn)
+    public void SetChargingStationAt(int _turn)
     {
         switch (_turn)
         {
@@ -126,7 +126,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnRoll()
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
         if (!HasEnoughCurrency(rollCost.Nut, rollCost.Tool))
@@ -143,10 +143,10 @@ public class PhaseShopUI : MonoBehaviour
     public void OnEndTurn()
     {
         Debug.Log("End Turn Button Clicked");
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
         
-        PhaseShopUnitManager.Instance.IsBlockingInput = true;
+        GameManager.Instance.IsBlockingInput = true;
         SoundManager.Instance.PlayButtonSound();
         Player.EndShop();
     }
@@ -158,7 +158,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnRepair()
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
@@ -184,7 +184,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnLock()
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
@@ -205,7 +205,7 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnUnlock()
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
@@ -226,10 +226,10 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnRecycle()
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
-        PhaseShopUnitManager.Instance.IsBlockingInput = true;
+        GameManager.Instance.IsBlockingInput = true;
 
         SetButtonActive(null);
         DeactivateManageButtons();
@@ -248,7 +248,7 @@ public class PhaseShopUI : MonoBehaviour
 
             PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
         }
-        else PhaseShopUnitManager.Instance.IsBlockingInput = false;
+        else GameManager.Instance.IsBlockingInput = false;
     }
 
     /// <summary>

@@ -118,7 +118,7 @@ public class UnitController : MonoBehaviour
         }
         else
         {
-            PhaseShopUnitManager.Instance.IsBlockingInput = false;
+            GameManager.Instance.IsBlockingInput = false;
             Destroy(gameObject);
         }
     }

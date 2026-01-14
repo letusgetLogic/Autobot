@@ -27,11 +27,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     public UnitController TargetedController { get; set; }
 
     /// <summary>
-    /// To block player's input while animation is running.
-    /// </summary>
-    public bool IsBlockingInput { get; set; } = false;
-
-    /// <summary>
     /// To prevent pushing other away while an unit is attached by mouse click.
     /// </summary>
     public bool IsDragging { get; set; } = false;
@@ -41,6 +36,9 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// while mouse is still holding down.
     /// </summary>
     public bool PreventDragging { get; set; } = false;
+
+    private enum StartTurnState { None, Init, ShowingTurn, ChargeBot, Done }
+    private StartTurnState startTurn;
 
     private void Awake()
     {
@@ -55,6 +53,8 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
+
+        startTurn = StartTurnState.None;
     }
 
     private void OnEnable()
@@ -85,7 +85,44 @@ public class PhaseShopUnitManager : MonoBehaviour
     public void Initialize(Player _player)
     {
         Player = _player;
-        IsBlockingInput = true;
+        StartTurn(StartTurnState.Init);
+    }
+
+    private void StartTurn(StartTurnState _state)
+    {
+        startTurn = _state;
+        switch (startTurn)
+        {
+            case StartTurnState.None:
+                break;
+
+            case StartTurnState.Init:
+                PackManager.Instance.AddUnitsByTier(Player.Data.Turn);
+                PhaseShopUI.Instance.UpdateUI(Player);
+                SpawnSavedUnits();
+                SpawnShopUnits();
+                Player.UpdateUnitData();
+                PhaseShopUI.Instance.SetChargingStationAt(Player.Data.Turn);
+                StartTurn(StartTurnState.ChargeBot);
+                break;
+
+            case StartTurnState.ShowingTurn:
+                break;
+
+            case StartTurnState.ChargeBot:
+                var unit = ChargeSlot.UnitController();
+                if (unit == null)
+                    StartTurn(StartTurnState.Done);
+                else
+                    StartCoroutine(DelayChargeBotAtStartShop());
+                break;
+
+            case StartTurnState.Done:
+                GameManager.Instance.Switch(GameState.ShopPhase, null);
+                StartTurn(StartTurnState.None);
+                break;
+
+        }
     }
 
     // Spawn Objects
@@ -234,18 +271,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// Delays charging of the bot on charging slot and enables player's input after delay.
-    /// </summary>
-    public void ChargeBotAtStartShop()
-    {
-        var unit = ChargeSlot.UnitController();
-        if (unit == null)
-            IsBlockingInput = false;
-        else
-            StartCoroutine(DelayChargeBotAtStartShop());
-    }
-
-    /// <summary>
     /// Delays charging bot at start of phase shop.
     /// </summary>
     /// <returns></returns>
@@ -257,7 +282,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (unit != null)
             unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
 
-        IsBlockingInput = false;
+        StartTurn(StartTurnState.Done);
     }
 
     /// <summary>
@@ -527,7 +552,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         yield return new WaitForSeconds(Process.DelayHideDescription);
 
-        IsBlockingInput = false;
+        GameManager.Instance.IsBlockingInput = false;
     }
 
     /// <summary>
@@ -563,7 +588,8 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     /// <param name="_target"></param>
     public void SetAttachedGameObject(GameObject _target)
-    {Debug.Log("SetAttachedGameObject: " + _target);
+    {
+        Debug.Log("SetAttachedGameObject: " + _target);
         if (_target == null)
         {
             // previous attached object border disable
@@ -601,7 +627,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     private void SetDropHint(bool _value)
     {
         bool isDroppable = false;
-       
+
         foreach (var slot in teamSlots)
         {
             if (_value == true)
@@ -639,7 +665,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     public Slot[] ShopBotSlots()
     {
         List<Slot> activeSlots = new List<Slot>();
-        foreach(var slot in shopBotSlots)
+        foreach (var slot in shopBotSlots)
         {
             if (slot.gameObject.activeSelf)
                 activeSlots.Add(slot);

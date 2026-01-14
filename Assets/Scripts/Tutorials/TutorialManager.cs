@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
+
+    [SerializeField] private List<StepRunner> test;   
     
+
     public bool TutorialCompleted
     {
         get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
@@ -46,5 +50,12 @@ public class TutorialManager : MonoBehaviour
     {
         return PlayerPrefs.GetInt(KeyName);
     }
+}
+
+public class StepRunner : MonoBehaviour
+{
+    [SerializeField] private GameObject[] Label;
+    [SerializeField] private GameObject[] Hint;
+    [SerializeField] private float delay = 0f;
 }
 

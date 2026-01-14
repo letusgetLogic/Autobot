@@ -16,7 +16,7 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
         if (slot.Unit() == null)

@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
 
     public UnitController[] BattleUnits;
 
-    /// <summary>
+
+     /// <summary>
     /// Starts the phase shop.
     /// </summary>
     public void StartShop()
@@ -15,15 +16,6 @@ public class Player : MonoBehaviour
         Data.Turn++;
         SetDefault();
         PhaseShopUnitManager.Instance.Initialize(this);
-        PackManager.Instance.AddUnitsByTier(Data.Turn);
-        PhaseShopUI.Instance.UpdateUI(this);
-        PhaseShopUnitManager.Instance.SpawnSavedUnits();
-        PhaseShopUnitManager.Instance.SpawnShopUnits();
-        UpdateUnitData();
-        PhaseShopUnitManager.Instance.ChargeBotAtStartShop();
-        PhaseShopUI.Instance.SetChargingEnergyAt(Data.Turn);
-
-        GameManager.Instance.Switch(GameState.ShopPhase, null);
     }
 
     /// <summary>
@@ -170,4 +162,6 @@ public class Player : MonoBehaviour
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 }
+
+
 

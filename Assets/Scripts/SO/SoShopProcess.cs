@@ -3,6 +3,12 @@
 [CreateAssetMenu(fileName = "ShopProcess", menuName = "ScriptableObject/ShopProcess")]
 public class SoShopProcess : ScriptableObject
 {
+    [Tooltip("Delay showing turn")]
+    [Range(0f, 2f)] public float DelayShowingTurn = 0.5f;
+
+    [Tooltip("Duration showing turn")]
+    [Range(0f, 2f)] public float DurationShowingTurn = 0.5f;
+
     [Tooltip("Delay showing charging of the bot on charging slot at start")]
     [Range(0f, 2f)] public float DelayChargingAtStart = 0.5f;
 

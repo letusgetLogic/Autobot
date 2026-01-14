@@ -22,7 +22,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
         if (PhaseShopUnitManager.Instance.AttachedGameObject == null &&
@@ -35,7 +35,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void OnMouseOver()
     {
-        if (PhaseShopUnitManager.Instance.IsBlockingInput)
+        if (GameManager.Instance.IsBlockingInput)
             return;
 
         if (CanPushOther())
