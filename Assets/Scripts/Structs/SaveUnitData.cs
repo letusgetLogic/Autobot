@@ -10,17 +10,18 @@ public struct SaveUnitData
     public string ID { get; set; }
     public int Index { get; set; }
     public UnitType UnitType { get; set; }
+    public SoPack Pack { get; set; }
 
     /// <summary>
     /// The current attributes, which are displayed.
     /// </summary>
-    public readonly Attribute Cur => current; 
+    public readonly Attribute Cur => current;
     private Attribute current;
 
     /// <summary>
     /// The basis attributres, which scale up from merging.
     /// </summary>
-    public readonly Attribute Basis => basis; 
+    public readonly Attribute Basis => basis;
     private Attribute basis;
 
     /// <summary>
@@ -56,9 +57,8 @@ public struct SaveUnitData
     /// <param name="_updateRepair"></param>
     public void SetHP(int _hp, Action _updateRepair)
     {
-        int max = PackManager.Instance.MyPack.MaxHP.Value;
-        if (_hp > max)
-            current.HP = max;
+        if (_hp > Pack.MaxHP.Value)
+            current.HP = Pack.MaxHP.Value;
         else
             current.HP = _hp;
 
@@ -71,15 +71,13 @@ public struct SaveUnitData
     /// <param name="_atk"></param>
     public void SetATK(int _atk)
     {
-        int max = PackManager.Instance.MyPack.MaxATK.Value;
-
         if (_atk < 0)
         {
             current.ATK = 0;
             return;
         }
-        if (_atk > max)
-            current.ATK = max;
+        if (_atk > Pack.MaxATK.Value)
+            current.ATK = Pack.MaxATK.Value;
         else
             current.ATK = _atk;
     }
@@ -90,15 +88,13 @@ public struct SaveUnitData
     /// <param name="_energy"></param>
     public void SetEnergy(int _energy)
     {
-        int max = PackManager.Instance.MyPack.MaxEnergy.Value;
-
-        if (_energy < 0)
+         if (_energy < 0)
         {
             current.ENG = 0;
             return;
         }
-        if (_energy > max)
-            current.ENG = max;
+        if (_energy > Pack.MaxEnergy.Value)
+            current.ENG = Pack.MaxEnergy.Value;
         else
             current.ENG = _energy;
     }
@@ -109,9 +105,8 @@ public struct SaveUnitData
     /// <param name="_xp"></param>
     public void SetXP(int _xp)
     {
-        int max = PackManager.Instance.MyPack.XpToLv3.Value;
-        if (_xp > max)
-            xp = max;
+        if (_xp > Pack.MaxXP.Value)
+            xp = Pack.MaxXP.Value;
         else
             xp = _xp;
     }
@@ -122,9 +117,8 @@ public struct SaveUnitData
     /// <param name="_hp"></param>
     public void SetBasisHP(int _hp)
     {
-        int max = PackManager.Instance.MyPack.MaxHP.Value;
-        if (_hp > max)
-            basis.HP = max;
+        if (_hp > Pack.MaxHP.Value)
+            basis.HP = Pack.MaxHP.Value;
         else
             basis.HP = _hp;
     }
@@ -135,9 +129,8 @@ public struct SaveUnitData
     /// <param name="_atk"></param>
     public void SetBasisATK(int _atk)
     {
-        int max = PackManager.Instance.MyPack.MaxATK.Value;
-        if (_atk > max)
-            basis.ATK = max;
+        if (_atk > Pack.MaxATK.Value)
+            basis.ATK = Pack.MaxATK.Value;
         else
             basis.ATK = _atk;
     }

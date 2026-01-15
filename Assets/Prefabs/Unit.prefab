@@ -2818,6 +2818,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitController
   view: {fileID: 4368942393228875258}
+  definedUnit: {fileID: 0}
+  isRepairOnValidateActive: 1
+  definedPack: {fileID: 0}
 --- !u!1 &8580300401846943112
 GameObject:
   m_ObjectHideFlags: 0
@@ -3870,6 +3873,10 @@ PrefabInstance:
     - target: {fileID: 7421751924088050231, guid: 714f753ef42fe4f47879f0eb1b840b3e, type: 3}
       propertyPath: m_Name
       value: Description
+      objectReference: {fileID: 0}
+    - target: {fileID: 7421751924088050231, guid: 714f753ef42fe4f47879f0eb1b840b3e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7502589292750605536, guid: 714f753ef42fe4f47879f0eb1b840b3e, type: 3}
       propertyPath: m_AnchorMax.y

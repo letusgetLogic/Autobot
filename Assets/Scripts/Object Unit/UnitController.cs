@@ -7,6 +7,12 @@ public class UnitController : MonoBehaviour
     [Header("References")]
     [SerializeField] private UnitView view;
 
+    [Header("Editor Mode")]
+    [SerializeField] private SoUnit definedUnit;
+    [SerializeField] private bool isRepairOnValidateActive = true;
+    [SerializeField] private SoPack definedPack;
+    public SoPack DefinedPack => definedPack;
+
     public event Action<Slot> OnAttack;
     public event Action<Slot> OnShutdown;
 
@@ -16,6 +22,18 @@ public class UnitController : MonoBehaviour
     private UnitModel model;
 
     public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel, TeamSlots, Slot);
+
+    public SoPack Pack
+    {
+        get
+        {
+#if UNITY_EDITOR
+            return DefinedPack;
+#endif
+            return PackManager.Instance.MyPack;
+        }
+    }
+
     public Slot[] TeamSlots
     {
         get
@@ -44,6 +62,18 @@ public class UnitController : MonoBehaviour
     }
     private bool flipSprite = false;
 
+
+
+    private void OnValidate()
+    {
+        if (definedUnit != null)
+        {
+            gameObject.name = definedUnit.Name;
+
+            Initialize(definedUnit, 0, default, UnitState.InSlotShop, null, true);
+        }
+    }
+
     /// <summary>
     /// Initializes data.
     /// </summary>
@@ -56,13 +86,15 @@ public class UnitController : MonoBehaviour
         {
             // ... create a new model with SO reference and the given index,
 
-            model = new UnitModel(_soUnit, _index,
-                GameManager.Instance.IsRepairSystemActive && IsRobot(_soUnit.UnitType) 
-                ? new RepairSystem() : null);
+            bool isRepairActive = GameManager.Instance == null
+                ? isRepairOnValidateActive
+                : GameManager.Instance.IsRepairSystemActive && IsRobot(_soUnit.UnitType);
+
+            model = new UnitModel(this, _soUnit, _index, isRepairActive ? new RepairSystem() : null);
         }
         else // otherwise create a new model with SO reference and the saved data.
         {
-            model = new UnitModel(_soUnit, _data,
+            model = new UnitModel(this, _soUnit, _data,
                 GameManager.Instance.IsRepairSystemActive && _data.IsRobot()
                 ? new RepairSystem() : null);
         }

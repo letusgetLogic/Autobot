@@ -111,6 +111,12 @@ public class UnitView : MonoBehaviour
 
     #endregion
 
+
+    private void OnValidate()
+    {
+        description.SetActive(false);
+    }
+
     private void Awake()
     {
         description.SetActive(false);

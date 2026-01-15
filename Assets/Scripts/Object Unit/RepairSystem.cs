@@ -10,10 +10,10 @@ public class RepairSystem
     {
         get
         {
-            if (model.Data.FullHP <= model.Pack.CurrencyData.HealthPortion)
+            if (model.Data.FullHP <= model.Controller.Pack.CurrencyData.HealthPortion)
                 return model.Data.FullHP;
 
-            return model.Pack.CurrencyData.HealthPortion;
+            return model.Controller.Pack.CurrencyData.HealthPortion;
         }
     }
 
@@ -115,13 +115,13 @@ public class RepairSystem
             model.Data.SetATK(atk);
         }
 
-        if (model.Data.FullHP <= model.Pack.CurrencyData.HealthPortion)
+        if (model.Data.FullHP <= model.Controller.Pack.CurrencyData.HealthPortion)
             return model.Data.Cur.HP;
 
         if (model.Data.Cur.HP == model.Data.FullHP)
-            return model.Pack.CurrencyData.HealthPortion;
+            return model.Controller.Pack.CurrencyData.HealthPortion;
 
-        for (int i = PackManager.Instance.MyPack.CurrencyData.HealthPortion; i > 0; i--)
+        for (int i = model.Controller.Pack.CurrencyData.HealthPortion; i > 0; i--)
         {
             float portionShiftingRelativeToDurability = portionSize / 2;
             float portionLowerLimit = (portionSize * i) - portionShiftingRelativeToDurability;
@@ -163,14 +163,18 @@ public class RepairSystem
         model.Data.Durability++;
 
         if (model.Data.DurabilityRatio >= 1f ||
-             model.Data.Durability >= model.Pack.CurrencyData.HealthPortion)
+             model.Data.Durability >= model.Controller.Pack.CurrencyData.HealthPortion)
         {
             model.Data.DurabilityRatio = 1f;
-            model.Data.Durability = model.Pack.CurrencyData.HealthPortion;
+            model.Data.Durability = model.Controller.Pack.CurrencyData.HealthPortion;
         }
 
         SetStatsBasedDurability();
         ShowDurability();
+
+#if UNITY_EDITOR
+        return;
+#endif
         view.SetBuyOrSell(model.Sell, false);
         PhaseShopUI.Instance.SetButtonActive(model);
     }

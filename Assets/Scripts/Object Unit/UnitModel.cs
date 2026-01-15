@@ -5,7 +5,8 @@ using UnityEngine;
 [Serializable]
 public class UnitModel
 {
-    private UnitView View { get; set; }
+    public UnitController Controller { get; set; }
+    private UnitView view { get; set; }
     public RepairSystem Repair { get; set; }
 
     public SaveUnitData Data;
@@ -13,7 +14,6 @@ public class UnitModel
     public SoUnit SoUnit { get; private set; }
     public Level CurrentLevel { get; set; }
 
-    public SoPack Pack => PackManager.Instance.MyPack;
     public bool IsMaxed => CurrentLevel.Index + 1 == SoUnit.Levels.Length;
 
     public Currency Cost
@@ -23,17 +23,17 @@ public class UnitModel
             if (SoUnit.HasUniqueCost)
             {
                 Currency cost = new Currency(
-                    SoUnit.UniqueCostNuts == null ? 0 : SoUnit.UniqueCostNuts.Value, 
+                    SoUnit.UniqueCostNuts == null ? 0 : SoUnit.UniqueCostNuts.Value,
                     SoUnit.UniqueCostTools == null ? 0 : SoUnit.UniqueCostTools.Value);
                 return cost;
             }
-            
-            return Pack.CurrencyData.UnitCost;
+
+            return Controller.Pack.CurrencyData.UnitCost;
         }
     }
-    
-    public Currency Sell => Pack.CurrencyData.Sell[SellIndex];
-    public Currency RepairCost => Pack.CurrencyData.RepairCost[CurrentLevel.Index];
+
+    public Currency Sell => Controller.Pack.CurrencyData.Sell[SellIndex];
+    public Currency RepairCost => Controller.Pack.CurrencyData.RepairCost[CurrentLevel.Index];
 
     /// <summary>
     /// The index is calculated from 2D to 1D array.
@@ -42,11 +42,9 @@ public class UnitModel
     {
         get
         {
-            var pack = PackManager.Instance.MyPack;
-
             return SoTradingCurrency.ConvertToIndex1D(
-                Data.Cur.HP == Data.FullHP ? pack.CurrencyData.HealthPortion : Data.Durability,
-                Pack.CurrencyData.LevelAmount,
+                Data.Cur.HP == Data.FullHP ? Controller.Pack.CurrencyData.HealthPortion : Data.Durability,
+                Controller.Pack.CurrencyData.LevelAmount,
                 CurrentLevel.Index,
                 GameManager.Instance.IsRepairSystemActive);
         }
@@ -58,13 +56,15 @@ public class UnitModel
     /// <param name="_soUnit"></param>
     /// <param name="_index"></param>
     /// <param name="_repair"></param>
-    public UnitModel(SoUnit _soUnit, int _index, RepairSystem _repair)
+    public UnitModel(UnitController _controller, SoUnit _soUnit, int _index, RepairSystem _repair)
     {
+        Controller = _controller;
         Repair = _repair;
         SoUnit = _soUnit;
         Data.HasReference = true;
         Data.Index = _index;
         Data.UnitType = _soUnit.UnitType;
+        Data.Pack = Controller.Pack;
         Data.SetBasisHP(_soUnit.Health);
         Data.SetBasisATK(_soUnit.Attack);
 
@@ -73,6 +73,9 @@ public class UnitModel
         Data.SetEnergy(_soUnit.Energy == null ? 0 : _soUnit.Energy.Value);
         Data.SetXP(1);
 
+#if UNITY_EDITOR
+        return;
+#endif
         Data.ID = PackManager.Instance.DebugID++.ToString() + "_" + SoUnit.Name;
         Debug.Log(Data.ID + " new created.");
     }
@@ -83,8 +86,9 @@ public class UnitModel
     /// <param name="_soUnit"></param>
     /// <param name="_data"></param>
     /// <param name="_repair"></param>
-    public UnitModel(SoUnit _soUnit, SaveUnitData _data, RepairSystem _repair) 
+    public UnitModel(UnitController _controller, SoUnit _soUnit, SaveUnitData _data, RepairSystem _repair)
     {
+        Controller = _controller;
         Repair = _repair;
         SoUnit = _soUnit;
         Data = _data;
@@ -97,7 +101,7 @@ public class UnitModel
     /// <param name="_view"></param>
     public void InitView(UnitView _view)
     {
-        View = _view;
+        view = _view;
 
         if (Data.IsRobot())
         {
@@ -109,20 +113,23 @@ public class UnitModel
             }
             else
             {
-                View.ShowFullAttributes(false);
+                view.ShowFullAttributes(false);
             }
 
-            View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
+            view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
         }
 
         if (Data.UnitType == UnitType.Item)
         {
-            View.HideAttributes();
+            view.HideAttributes();
         }
 
-        View.Shadow.enabled = false;
-        View.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
+        view.Shadow.enabled = false;
+        view.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
 
+#if UNITY_EDITOR
+        return;
+#endif
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
 
@@ -154,41 +161,41 @@ public class UnitModel
     /// <param name="_unitState"></param>
     public void SetData(UnitState _unitState)
     {
-        if (GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
+        if (GameManager.Instance && GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
             _unitState = UnitState.InPhaseBattle;
 
         switch (_unitState)
         {
             case UnitState.InSlotShop:
-                View.IceCube.SetActive(false);
-                View.Shadow.enabled = true;
-                View.SetBuyOrSell(Currency(_unitState), true);
-                View.SetShopView(true, false);
+                view.IceCube.SetActive(false);
+                view.Shadow.enabled = true;
+                view.SetBuyOrSell(Currency(_unitState), true);
+                view.SetShopView(true, false);
                 break;
 
             case UnitState.Freezed:
-                View.IceCube.SetActive(true);
-                View.Shadow.enabled = true;
-                View.SetBuyOrSell(Currency(_unitState), true);
-                View.SetShopView(true, false);
+                view.IceCube.SetActive(true);
+                view.Shadow.enabled = true;
+                view.SetBuyOrSell(Currency(_unitState), true);
+                view.SetShopView(true, false);
                 break;
 
             case UnitState.InSlotTeam:
-                View.IceCube.SetActive(false);
-                View.SetBuyOrSell(Currency(_unitState), false);
-                View.SetShopView(false, true);
+                view.IceCube.SetActive(false);
+                view.SetBuyOrSell(Currency(_unitState), false);
+                view.SetShopView(false, true);
                 break;
 
             case UnitState.InSlotCharge:
-                View.IceCube.SetActive(false);
-                 View.SetBuyOrSell(Currency(_unitState), false);
-                View.SetShopView(false, true);
+                view.IceCube.SetActive(false);
+                view.SetBuyOrSell(Currency(_unitState), false);
+                view.SetShopView(false, true);
                 break;
 
             case UnitState.InPhaseBattle:
-                View.HideObjectsDuringBattle();
-                View.SetBuyOrSell(Currency(_unitState), false);
-                View.SetShopView(false, false);
+                view.HideObjectsDuringBattle();
+                view.SetBuyOrSell(Currency(_unitState), false);
+                view.SetShopView(false, false);
                 break;
         }
 
@@ -231,30 +238,30 @@ public class UnitModel
         switch (Data.XP)
         {//                        level  box1   box2  step1  step2  box3  step3  step4  step5  
             case 1:
-                View.SetXpStepActive("1", false, true, false, false, false, false, false, false);
+                view.SetXpStepActive("1", false, true, false, false, false, false, false, false);
                 SetCurrentLevel(0);
                 break;
             case 2:
-                View.SetXpStepActive("1", false, true, true, false, false, false, false, false);
+                view.SetXpStepActive("1", false, true, true, false, false, false, false, false);
                 SetCurrentLevel(0);
                 break;
             case 3:
-                View.SetXpStepActive("1", false, true, true, true, false, false, false, false);
+                view.SetXpStepActive("1", false, true, true, true, false, false, false, false);
                 SetCurrentLevel(0);
-                View.StartCoroutine(DelayLevel2(_isPhaseShop));
+                view.StartCoroutine(DelayLevel2(_isPhaseShop));
                 break;
             case 4:
-                View.SetXpStepActive("2", false, false, false, false, true, true, false, false);
+                view.SetXpStepActive("2", false, false, false, false, true, true, false, false);
                 SetCurrentLevel(1);
                 break;
             case 5:
-                View.SetXpStepActive("2", false, false, false, false, true, true, true, false);
+                view.SetXpStepActive("2", false, false, false, false, true, true, true, false);
                 SetCurrentLevel(1);
                 break;
             case 6:
-                View.SetXpStepActive("2", false, false, false, false, true, true, true, true);
+                view.SetXpStepActive("2", false, false, false, false, true, true, true, true);
                 SetCurrentLevel(1);
-                View.StartCoroutine(DelayLevel3(_isPhaseShop));
+                view.StartCoroutine(DelayLevel3(_isPhaseShop));
                 break;
         }
     }
@@ -266,10 +273,10 @@ public class UnitModel
     private IEnumerator DelayLevel2(bool _isPhaseShop)
     {
         yield return new WaitForSeconds(_isPhaseShop ?
-            View.DelayUpdateLevel :
+            view.DelayUpdateLevel :
             0f);
         //                  level  box1   box2  step1  step2  box3  step3  step4  step5  
-        View.SetXpStepActive("2", false, false, false, false, true, false, false, false);
+        view.SetXpStepActive("2", false, false, false, false, true, false, false, false);
         SetCurrentLevel(1);
     }
 
@@ -280,10 +287,10 @@ public class UnitModel
     private IEnumerator DelayLevel3(bool _isPhaseShop)
     {
         yield return new WaitForSeconds(_isPhaseShop ?
-            View.DelayUpdateLevel :
+            view.DelayUpdateLevel :
             0f);
         //                 level  box1   box2  step1  step2  box3  step3  step4  step5  
-        View.SetXpStepActive("3", true, false, false, false, false, false, false, false);
+        view.SetXpStepActive("3", true, false, false, false, false, false, false, false);
         SetCurrentLevel(2);
     }
 
@@ -294,8 +301,8 @@ public class UnitModel
     private void SetCurrentLevel(int _index)
     {
         CurrentLevel = SoUnit.Levels[_index];
-        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy != null ? CurrentLevel.ConsumedEnergy.Value : 0);
-        View.SetBuyOrSell(Sell, false);
+        view.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy != null ? CurrentLevel.ConsumedEnergy.Value : 0);
+        view.SetBuyOrSell(Sell, false);
     }
 
     #endregion
@@ -322,7 +329,7 @@ public class UnitModel
         Data.SetHP(Data.Cur.HP + _buff.HP + _buffTemp.HP, Repair == null ? null : Repair.SetRepairPanel);
         Data.SetATK(Data.Cur.ATK + _buff.ATK + _buffTemp.ATK);
 
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
+        view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }
 
     /// <summary>
@@ -369,7 +376,7 @@ public class UnitModel
 
         Data.SetEnergy(Data.Cur.ENG + _otherCurrent.ENG);
 
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
+        view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }
 
     /// <summary>
@@ -417,7 +424,7 @@ public class UnitModel
     public void ReduceHp(uint _damage)
     {
         Data.SetHP(Data.Cur.HP - (int)_damage, Repair == null ? null : Repair.SetRepairPanel);
-        View.ShowDamage((int)_damage, Data.Cur.HP);
+        view.ShowDamage((int)_damage, Data.Cur.HP);
     }
 
 

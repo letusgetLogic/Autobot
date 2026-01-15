@@ -1,8 +1,19 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework.Interfaces;
+using UnityEngine;
 
 public class ScaleUpDown : MonoBehaviour
 {
-    [SerializeField] private bool isAutomatic = true;
+    private enum RunState
+    {
+        None,
+        Automatic,
+        Up,
+        Down,
+        Validate,
+        ValidateFromScaleMin
+    }
+    [SerializeField] private RunState runState = RunState.None;
+
     [SerializeField] private float animTime = 1f;
     [SerializeField] private Vector3 scaleMax = new(1f, 1f);
     [SerializeField] private Vector3 scaleMin = new(0.8f, 0.8f);
@@ -19,11 +30,39 @@ public class ScaleUpDown : MonoBehaviour
     private Scale scaleState = Scale.None;
 
     private float currentValue = 0f;
+    private Vector3 defaultValue;
 
     private void OnEnable()
     {
+        GetDefault();
         currentValue = 0f;
-        scaleState = isAutomatic ? Scale.Up : Scale.None;
+        switch(runState)
+        {
+            case RunState.None:
+                scaleState = Scale.None;
+                break;
+
+            case RunState.Automatic:
+                scaleState = Scale.Up;
+                break;
+
+            case RunState.Up:
+                scaleState = Scale.Up;
+                break;
+
+            case RunState.Down:
+                currentValue = 1f;
+                scaleState = Scale.Down;
+                break;
+
+            case RunState.Validate:
+                scaleState = Scale.None;
+                break;
+
+            case RunState.ValidateFromScaleMin:
+                scaleState = Scale.None;
+                break;
+        }
     }
 
     private void FixedUpdate()
@@ -35,7 +74,7 @@ public class ScaleUpDown : MonoBehaviour
     private void OnDisable()
     {
         scaleState = Scale.None;
-        SetScale(scaleMin);
+        SetDefault();
     }
 
     /// <summary>
@@ -58,7 +97,7 @@ public class ScaleUpDown : MonoBehaviour
         {
             if (currentValue == 1)
             {
-                scaleState = isAutomatic ? Scale.Down : Scale.None;
+                scaleState = runState == RunState.Automatic ? Scale.Down : Scale.None;
                 return;
             }
 
@@ -76,7 +115,7 @@ public class ScaleUpDown : MonoBehaviour
         {
             if (currentValue == 0)
             {
-                scaleState = isAutomatic ? Scale.Up : Scale.None;
+                scaleState = runState == RunState.Automatic ? Scale.Up : Scale.None;
                 return;
             }
 
@@ -85,7 +124,7 @@ public class ScaleUpDown : MonoBehaviour
     }
 
     /// <summary>
-    /// Interolates the value and sets the scale.
+    /// Interpolates the value and sets the scale.
     /// </summary>
     /// <param name="target"></param>
     private void Interpolate(float target)
@@ -113,6 +152,39 @@ public class ScaleUpDown : MonoBehaviour
             return;
         }
         transform.localScale = _scaleValue;
+    }
+
+    private void GetDefault()
+    {
+        var rect = GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            defaultValue = rect.localScale;
+            if (runState == RunState.ValidateFromScaleMin)
+            {
+                defaultValue = scaleMin;
+                rect.localScale = defaultValue;
+            }
+            return;
+        }
+
+        defaultValue = transform.localScale;
+        if (runState == RunState.ValidateFromScaleMin)
+        {
+            defaultValue = scaleMin;
+            transform.localScale = defaultValue;
+        }
+    }
+
+    private void SetDefault()
+    {
+        var rect = GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            rect.localScale = defaultValue;
+            return;
+        }
+        transform.localScale = defaultValue;
     }
 }
 

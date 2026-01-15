@@ -82,7 +82,7 @@ public class LightenUpDown : MonoBehaviour
     }
 
     /// <summary>
-    /// Interolates the value and sets the alpha value.
+    /// Interpolates the value and sets the alpha value.
     /// </summary>
     /// <param name="target"></param>
     private void Interpolate(float target)
