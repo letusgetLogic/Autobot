@@ -52,8 +52,7 @@ public class UnitController : MonoBehaviour
         get
         {
             var parent = transform.parent;
-            if (parent != null &&
-                (parent.CompareTag("Slot Battle") || parent.CompareTag("Slot Team")))
+            if (parent != null)
             {
                 return parent.GetComponent<Slot>();
             }
@@ -160,15 +159,14 @@ public class UnitController : MonoBehaviour
     /// </summary>
     public void UpdateLevel(UnitModel _draggingModel, bool _isPhaseShop)
     {
-        model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
-
-        model.Add(
+        model.AddFusion(
             new Attribute(_draggingModel.Data.XP, _draggingModel.Data.XP),
             _draggingModel.Data.Buff,
             _draggingModel.Data.TempBuff,
             _draggingModel.Data.Cur,
             _draggingModel.Data.Cur.HP == _draggingModel.Data.FullHP);
 
+        model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
         model.UpdateLevelXP(_isPhaseShop);
         model.Repair?.SetDurability(false);
 
@@ -310,11 +308,12 @@ public class UnitController : MonoBehaviour
     public void Buff(bool _isPernament, Attribute _attribute)
     {
         if (_isPernament)
-            model.Add(_attribute, new Attribute(0, 0, 0));
+            model.AddBuff(_attribute, new Attribute(0, 0, 0));
         else
-            model.Add(new Attribute(0, 0, 0), _attribute);
+            model.AddBuff(new Attribute(0, 0, 0), _attribute);
 
         view.ShowBuff(_attribute);
+        model.Repair?.SetDurability(false);
     }
 
 

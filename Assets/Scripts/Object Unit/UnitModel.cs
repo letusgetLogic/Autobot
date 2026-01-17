@@ -315,7 +315,7 @@ public class UnitModel
     /// </summary>
     /// <param name="_buff"></param>
     /// <param name="_buffTemp"></param>
-    public void Add(Attribute _buff, Attribute _buffTemp)
+    public void AddBuff(Attribute _buff, Attribute _buffTemp)
     {
         int maxHP =  Controller.Pack.MaxHP.Value;
         int maxATK = Controller.Pack.MaxATK.Value;
@@ -344,7 +344,7 @@ public class UnitModel
     /// <param name="_buffTemp"></param>
     /// <param name="_otherCurrent"></param>
     /// <param name="_hasOtherFullHP"></param>
-    public void Add(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent, bool _hasOtherFullHP)
+    public void AddFusion(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent, bool _hasOtherFullHP)
     {
         bool hasFullHP = Data.Cur.HP == Data.FullHP;
         int maxHP =  Controller.Pack.MaxHP.Value;

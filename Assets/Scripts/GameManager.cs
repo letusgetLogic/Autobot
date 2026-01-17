@@ -160,8 +160,6 @@ public class GameManager : MonoBehaviour
                 if (SpawnManager.Instance != null)
                     Destroy(SpawnManager.Instance.gameObject);
 
-                SceneManager.LoadScene("Menu");
-                Time.timeScale = 1f;
                 break;
         }
     }

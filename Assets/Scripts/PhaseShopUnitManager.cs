@@ -23,7 +23,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
     public Player Player { get; private set; }
 
-    public GameObject AttachedGameObject { get; set; }
+    public GameObject AttachedGameObject { get; private set; }
     public UnitController TargetedController { get; set; }
 
     /// <summary>
@@ -445,7 +445,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <param name="_dropSlot"></param>
     /// <param name="_mouseRelease"> unitView.BeingReleased(null); </param>
     /// <param name="_disableShadow">  unitView.Shadow.enabled = false;</param>
-    private void Transport(GameObject _attached, Transform _dropSlot,
+    public void Transport(GameObject _attached, Transform _dropSlot,
         bool _mouseRelease, bool _disableShadow)
     {
         HideDescriptionByTransport();
@@ -523,8 +523,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
                     == UnitState.InSlotTeam)
                 {
-                    Transport(AttachedGameObject, teamSlots[_target].transform, false, false);
-                    AttachedGameObject.GetComponent<UnitView>().BeingReleased(null);
+                    Transport(AttachedGameObject, teamSlots[_target].transform, true, false);
                     SetAttachedGameObject(null);
 
                     PreventDragging = true;

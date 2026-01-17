@@ -1,3 +1,5 @@
+using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,6 +12,12 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     private float countDown { get; set; }
     private bool isCounting { get; set; }
     private int direction { get; set; }
+
+    private GameObject unitOnSlot { get; set; }
+    private GameObject unitDragged { get; set; }
+    private Slot draggedSlot { get; set; }
+    private bool isFusible { get; set; }
+
 
     private void Start()
     {
@@ -42,32 +50,48 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             if (!isCounting)
             {
-                var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+               unitOnSlot = slot.Unit();
+               unitDragged = PhaseShopUnitManager.Instance.AttachedGameObject;
+               draggedSlot = unitDragged.GetComponent<UnitController>().Slot;
 
-                bool isFusible = PhaseShopUnitManager.Instance.IsFusible(
+               isFusible = PhaseShopUnitManager.Instance.IsFusible(
                     slot.UnitController(),
-                    attached.GetComponent<UnitController>());
+                    unitDragged.GetComponent<UnitController>());
 
                 countDown = isFusible ?
                 PhaseShopUnitManager.Instance.Process.DelayPushingFusion :
                 PhaseShopUnitManager.Instance.Process.DelayPushing;
 
-                direction = DirectionMoveOther();
+                //direction = DirectionMoveOther();
                 isCounting = true;
             }
 
-            if (isCounting && DirectionMoveOther() == direction)
+            if (isCounting/* && DirectionMoveOther() == direction*/)
                 countDown -= Time.deltaTime;
             else
                 isCounting = false;
 
             if (countDown <= 0)
             {
-                PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
+                //PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
+                PhaseShopUnitManager.Instance.PreventDragging = true;
+                PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+                PhaseShopUnitManager.Instance.Transport(unitOnSlot, draggedSlot.transform, true, false);
+                PhaseShopUnitManager.Instance.Transport(unitDragged, slot.transform, true, false);
+
+                SetDefault();
+
                 isCounting = false;
             }
         }
+    }
 
+    private void SetDefault()
+    {
+        unitOnSlot = default;
+        unitDragged = default;
+        draggedSlot = default;
+        isFusible = default;
     }
 
     /// <summary>
@@ -119,23 +143,23 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         if (attached.CompareTag("Unit"))
         {
-            var unitModel = attached.GetComponent<UnitController>().Model;
+            var attachedModel = attached.GetComponent<UnitController>().Model;
 
             // if attached game object is item, return false.
-            if (unitModel.Data.UnitType == UnitType.Item)
+            if (attachedModel.Data.UnitType == UnitType.Item)
                 return false;
 
 
-            // if the unit is in the shop, freezed, or in the charge slot, return true.
-            if (unitModel.Data.UnitState == UnitState.InSlotShop ||
-                unitModel.Data.UnitState == UnitState.Freezed ||
-                unitModel.Data.UnitState == UnitState.InSlotCharge)
+            // if the attached unit is in the shop or freezed slot, return false.
+            if (attachedModel.Data.UnitState == UnitState.InSlotShop ||
+                attachedModel.Data.UnitState == UnitState.Freezed)
             {
-                return true;
+                return false;
             }
 
-            // if the unit is in the team slot and only is dragging, return true.
-            if (unitModel.Data.UnitState == UnitState.InSlotTeam &&
+            // if the unit is in the team or charging slot and only is dragging, return true.
+            if (attachedModel.Data.UnitState == UnitState.InSlotTeam ||
+                attachedModel.Data.UnitState == UnitState.InSlotCharge &&
                 PhaseShopUnitManager.Instance.IsDragging)
             {
                 return true;
