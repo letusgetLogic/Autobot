@@ -18,8 +18,7 @@ public struct Level
     public AbilityDuration AbilityDuration;
 
     // Buff
-    public int HealthBuff;
-    public int AttackBuff;
+    public Attribute Buff;
 
     // Summon
     public int UnitLimit;

@@ -24,7 +24,9 @@ public class Buff : AbilityBase
                 BuffRandom();
                 break;
 
-
+            case ToWho.TargetBot:
+                BuffTarget();
+                break;
 
         }
 
@@ -55,10 +57,19 @@ public class Buff : AbilityBase
 
             unit.Buff(
                 AbilityBase.IsPernament(CurrentLevel.AbilityDuration),
-                CurrentLevel.HealthBuff,
-                CurrentLevel.AttackBuff);
+                CurrentLevel.Buff);
 
             teamUnitControllers.Remove(unit);
         }
+    }
+
+    private void BuffTarget()
+    {
+        if (PhaseShopUnitManager.Instance != null &&
+                   PhaseShopUnitManager.Instance.TargetedController != null)
+        {
+            PhaseShopUnitManager.Instance.TargetedController.Buff(true, CurrentLevel.Buff);
+        }
+       
     }
 }

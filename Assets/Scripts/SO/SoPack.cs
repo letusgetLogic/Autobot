@@ -8,8 +8,8 @@ public class SoPack : ScriptableObject
     public SoIntVariable XpToLv3;
     public SoIntVariable MaxXP; // maxed experience point
     public SoIntVariable MaxHP; // maxed hit point
-    public SoIntVariable MaxATK; // maxed attack point;
-    public SoIntVariable MaxEnergy;
+    public SoIntVariable MaxATK; // maxed attack point
+    public SoIntVariable MaxENG; // maxed energy point
 
     public SoIntVariable ChargingEnergy;
     public SoIntVariable ChargingEnergyTeam;

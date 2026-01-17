@@ -15,7 +15,7 @@ MonoBehaviour:
   UnitType: 2
   Sprite: {fileID: -1547974232, guid: d6eb047f9a0561c45a89eb64f9758ab9, type: 3}
   ID: 2
-  Name: Mini Copper
+  Name: Mini Copper MC2
   Health: 2
   Attack: 2
   Energy: {fileID: 0}
@@ -36,8 +36,10 @@ MonoBehaviour:
     ToWho: 0
     ToWhoCount: 0
     AbilityDuration: 0
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
@@ -55,8 +57,10 @@ MonoBehaviour:
     ToWho: 0
     ToWhoCount: 0
     AbilityDuration: 0
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
@@ -74,8 +78,10 @@ MonoBehaviour:
     ToWho: 0
     ToWhoCount: 0
     AbilityDuration: 0
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0

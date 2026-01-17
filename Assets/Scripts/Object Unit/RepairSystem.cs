@@ -172,9 +172,9 @@ public class RepairSystem
         SetStatsBasedDurability();
         ShowDurability();
 
-#if UNITY_EDITOR
-        return;
-#endif
+        if (Application.isPlaying == false)
+            return;
+
         view.SetBuyOrSell(model.Sell, false);
         PhaseShopUI.Instance.SetButtonActive(model);
     }

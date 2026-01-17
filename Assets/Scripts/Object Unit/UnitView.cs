@@ -379,16 +379,16 @@ public class UnitView : MonoBehaviour
     /// <param name="_health"></param>
     /// <param name="_attack"></param>
     /// <param name="_energy"></param>
-    public void ShowBuff(int _health, int _attack, int _energy)
+    public void ShowBuff(Attribute _attribute)
     {
-        buffHealth.text = _health.ToString();
-        buffHealth.enabled = _health > 0;
+        buffHealth.text = _attribute.HP.ToString();
+        buffHealth.enabled = _attribute.HP > 0;
 
-        buffAttack.text = _attack.ToString();
-        buffAttack.enabled = _attack > 0;
+        buffAttack.text = _attribute.ATK.ToString();
+        buffAttack.enabled = _attribute.ATK > 0;
 
-        addEnergy.text = _energy.ToString();
-        addEnergy.enabled = _energy > 0;
+        addEnergy.text = _attribute.ENG.ToString();
+        addEnergy.enabled = _attribute.ENG > 0;
 
         StartCoroutine(HideBuff());
     }

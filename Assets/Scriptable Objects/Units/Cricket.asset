@@ -15,7 +15,7 @@ MonoBehaviour:
   UnitType: 1
   Sprite: {fileID: 102956758, guid: 865adb7721a8a8847adc946162e05ace, type: 3}
   ID: 0
-  Name: Copperchad
+  Name: Copperchad SC1MC
   Health: 3
   Attack: 1
   Energy: {fileID: 11400000, guid: ffcd61ceea73108439a41717ce601978, type: 2}
@@ -36,8 +36,10 @@ MonoBehaviour:
     ToWho: 0
     ToWhoCount: 0
     AbilityDuration: 3
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 1
     SummonUnits:
     - {fileID: 11400000, guid: c4297eaaf3a7c0648a31305d15da2670, type: 2}
@@ -56,8 +58,10 @@ MonoBehaviour:
     ToWho: 0
     ToWhoCount: 0
     AbilityDuration: 3
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 1
     SummonUnits:
     - {fileID: 11400000, guid: d03fc87eda19ce144813632a381b6047, type: 2}
@@ -76,8 +80,10 @@ MonoBehaviour:
     ToWho: 0
     ToWhoCount: 0
     AbilityDuration: 3
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 1
     SummonUnits:
     - {fileID: 11400000, guid: 0a0ab765b3a94b24abab83dc478a252b, type: 2}

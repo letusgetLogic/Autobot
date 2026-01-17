@@ -25,7 +25,7 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 200bed77f7a26a741b938dea8d606183, type: 2}
   Levels:
   - Index: 0
-    Description: Make a robot Shutdown
+    Description: Make a robot Shutdown.
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
     TriggerType: 1
@@ -36,8 +36,10 @@ MonoBehaviour:
     ToWho: 10
     ToWhoCount: 0
     AbilityDuration: 2
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0

@@ -64,7 +64,10 @@ public class UnitModel
         Data.HasReference = true;
         Data.Index = _index;
         Data.UnitType = _soUnit.UnitType;
-        Data.Pack = Controller.Pack;
+        Data.Max.HP = Controller.Pack.MaxHP.Value;
+        Data.Max.ATK = Controller.Pack.MaxATK.Value;
+        Data.Max.ENG = Controller.Pack.MaxENG.Value;
+        Data.MaxXP = Controller.Pack.MaxXP.Value;
         Data.SetBasisHP(_soUnit.Health);
         Data.SetBasisATK(_soUnit.Attack);
 
@@ -73,9 +76,9 @@ public class UnitModel
         Data.SetEnergy(_soUnit.Energy == null ? 0 : _soUnit.Energy.Value);
         Data.SetXP(1);
 
-#if UNITY_EDITOR
-        return;
-#endif
+        if (Application.isPlaying == false)
+            return;
+
         Data.ID = PackManager.Instance.DebugID++.ToString() + "_" + SoUnit.Name;
         Debug.Log(Data.ID + " new created.");
     }
@@ -127,9 +130,9 @@ public class UnitModel
         view.Shadow.enabled = false;
         view.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
 
-#if UNITY_EDITOR
-        return;
-#endif
+        if (Application.isPlaying == false)
+            return;
+
         UpdateLevelXP(IsPhaseShop(Data.UnitState));
     }
 
@@ -314,8 +317,8 @@ public class UnitModel
     /// <param name="_buffTemp"></param>
     public void Add(Attribute _buff, Attribute _buffTemp)
     {
-        int maxHP = PackManager.Instance.MyPack.MaxHP.Value;
-        int maxATK = PackManager.Instance.MyPack.MaxATK.Value;
+        int maxHP =  Controller.Pack.MaxHP.Value;
+        int maxATK = Controller.Pack.MaxATK.Value;
 
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
         int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;
@@ -328,6 +331,7 @@ public class UnitModel
 
         Data.SetHP(Data.Cur.HP + _buff.HP + _buffTemp.HP, Repair == null ? null : Repair.SetRepairPanel);
         Data.SetATK(Data.Cur.ATK + _buff.ATK + _buffTemp.ATK);
+        Data.SetEnergy(Data.Cur.ENG + _buff.ENG);
 
         view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }
@@ -343,8 +347,8 @@ public class UnitModel
     public void Add(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent, bool _hasOtherFullHP)
     {
         bool hasFullHP = Data.Cur.HP == Data.FullHP;
-        int maxHP = PackManager.Instance.MyPack.MaxHP.Value;
-        int maxATK = PackManager.Instance.MyPack.MaxATK.Value;
+        int maxHP =  Controller.Pack.MaxHP.Value;
+        int maxATK = Controller.Pack.MaxATK.Value;
 
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
         int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;

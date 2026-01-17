@@ -36,8 +36,10 @@ MonoBehaviour:
     ToWho: 0
     ToWhoCount: 0
     AbilityDuration: 0
-    HealthBuff: 0
-    AttackBuff: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 1
     SummonUnits:
     - {fileID: 11400000, guid: 77ff66337a27ecd4aa99e6dc217073e9, type: 2}

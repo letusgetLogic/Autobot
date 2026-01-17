@@ -325,9 +325,9 @@ public class PhaseShopUnitManager : MonoBehaviour
                 // "not able to buy" - cases:
 
                 // case: target is item.
-                var targetedController = _slot.UnitController();
-                if (targetedController != null &&
-                    targetedController.Model.Data.UnitType == UnitType.Item)
+                var targetedSlotController = _slot.UnitController();
+                if (targetedSlotController != null &&
+                    targetedSlotController.Model.Data.UnitType == UnitType.Item)
                     return;
 
                 // case: not enough currency.

@@ -10,7 +10,8 @@ public struct SaveUnitData
     public string ID { get; set; }
     public int Index { get; set; }
     public UnitType UnitType { get; set; }
-    public SoPack Pack { get; set; }
+    public Attribute Max;
+    public int MaxXP { get; set; }
 
     /// <summary>
     /// The current attributes, which are displayed.
@@ -57,8 +58,8 @@ public struct SaveUnitData
     /// <param name="_updateRepair"></param>
     public void SetHP(int _hp, Action _updateRepair)
     {
-        if (_hp > Pack.MaxHP.Value)
-            current.HP = Pack.MaxHP.Value;
+        if (_hp > Max.HP)
+            current.HP = Max.HP;
         else
             current.HP = _hp;
 
@@ -76,8 +77,8 @@ public struct SaveUnitData
             current.ATK = 0;
             return;
         }
-        if (_atk > Pack.MaxATK.Value)
-            current.ATK = Pack.MaxATK.Value;
+        if (_atk > Max.ATK)
+            current.ATK = Max.ATK;
         else
             current.ATK = _atk;
     }
@@ -93,8 +94,8 @@ public struct SaveUnitData
             current.ENG = 0;
             return;
         }
-        if (_energy > Pack.MaxEnergy.Value)
-            current.ENG = Pack.MaxEnergy.Value;
+        if (_energy > Max.ENG)
+            current.ENG = Max.ENG;
         else
             current.ENG = _energy;
     }
@@ -105,8 +106,8 @@ public struct SaveUnitData
     /// <param name="_xp"></param>
     public void SetXP(int _xp)
     {
-        if (_xp > Pack.MaxXP.Value)
-            xp = Pack.MaxXP.Value;
+        if (_xp > MaxXP)
+            xp = MaxXP;
         else
             xp = _xp;
     }
@@ -117,8 +118,8 @@ public struct SaveUnitData
     /// <param name="_hp"></param>
     public void SetBasisHP(int _hp)
     {
-        if (_hp > Pack.MaxHP.Value)
-            basis.HP = Pack.MaxHP.Value;
+        if (_hp > Max.HP)
+            basis.HP = Max.HP;
         else
             basis.HP = _hp;
     }
@@ -129,8 +130,8 @@ public struct SaveUnitData
     /// <param name="_atk"></param>
     public void SetBasisATK(int _atk)
     {
-        if (_atk > Pack.MaxATK.Value)
-            basis.ATK = Pack.MaxATK.Value;
+        if (_atk > Max.ATK)
+            basis.ATK = Max.ATK;
         else
             basis.ATK = _atk;
     }

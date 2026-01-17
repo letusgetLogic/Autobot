@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685be2cc387049c40a788dcd9825e4b0, type: 3}
   m_Name: BattleProcess
   m_EditorClassIdentifier: 
-  DurationInit: 0.1
+  DurationInit: 1.5
   DurationCheckOutcome: 1
   DurationInsert: 0.5
   DurationAttack: 0.5
   DurationDelaySummon: 0.1
   DurationHideAbilityDescription: 1.5
   DurationHandleEachAbility: 2
-  DurationFaint: 0.5
+  DurationShutdown: 0.5
   DurationBattleOver: 1

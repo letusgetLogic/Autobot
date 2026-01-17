@@ -167,8 +167,9 @@ class SoUnitEditor : Editor
             _level.ToWhoCount = 0;
             _level.AbilityDuration = AbilityDuration.None;
             // Buff attributes
-            _level.HealthBuff = 0;
-            _level.AttackBuff = 0;
+            _level.Buff.HP = 0;
+            _level.Buff.ATK = 0;
+            _level.Buff.ENG = 0;
             // Summon attributes
             _level.UnitLimit = 0;
             _level.SummonUnits = null;
@@ -262,9 +263,11 @@ class SoUnitEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("+ AP", GUILayout.Width(80));
-        _level.AttackBuff = EditorGUILayout.IntField(_level.AttackBuff, GUILayout.Width(80));
+        _level.Buff.ATK = EditorGUILayout.IntField(_level.Buff.ATK, GUILayout.Width(80));
         EditorGUILayout.LabelField("+ HP", GUILayout.Width(80));
-        _level.HealthBuff = EditorGUILayout.IntField(_level.HealthBuff, GUILayout.Width(80));
+        _level.Buff.HP = EditorGUILayout.IntField(_level.Buff. HP, GUILayout.Width(80));
+        EditorGUILayout.LabelField("+ ENG", GUILayout.Width(90));
+        _level.Buff.ENG = EditorGUILayout.IntField(_level.Buff. ENG, GUILayout.Width(80));
         EditorGUILayout.EndHorizontal();
 
         EditorGUI.indentLevel--;

@@ -27,9 +27,9 @@ public class UnitController : MonoBehaviour
     {
         get
         {
-#if UNITY_EDITOR
-            return DefinedPack;
-#endif
+            if (Application.isPlaying == false)
+                return DefinedPack;
+
             return PackManager.Instance.MyPack;
         }
     }
@@ -268,7 +268,7 @@ public class UnitController : MonoBehaviour
         model.Data.SetEnergy(value);
 
         if (_energy > 0)
-            view.ShowBuff(0, 0, _energy);
+            view.ShowBuff(new Attribute(0, 0, _energy));
         else
         {
             view.ShowConsume(_energy);
@@ -307,14 +307,14 @@ public class UnitController : MonoBehaviour
     /// <param name="_isPernament"></param>
     /// <param name="_addHealth"></param>
     /// <param name="_addAttack"></param>
-    public void Buff(bool _isPernament, int _addHealth, int _addAttack)
+    public void Buff(bool _isPernament, Attribute _attribute)
     {
         if (_isPernament)
-            model.Add(new Attribute(_addHealth, _addAttack), new Attribute(0, 0));
+            model.Add(_attribute, new Attribute(0, 0, 0));
         else
-            model.Add(new Attribute(0, 0), new Attribute(_addHealth, _addAttack));
+            model.Add(new Attribute(0, 0, 0), _attribute);
 
-        view.ShowBuff(_addHealth, _addAttack, 0);
+        view.ShowBuff(_attribute);
     }
 
 
