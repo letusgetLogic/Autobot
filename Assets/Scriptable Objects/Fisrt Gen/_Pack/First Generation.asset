@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91d60da73ef4874182f6cddbcaed4f8, type: 3}
+  m_Name: First Generation
+  m_EditorClassIdentifier: 
+  XpToLv2: {fileID: 11400000, guid: 7d14109921e68c84896996db1bec3723, type: 2}
+  XpToLv3: {fileID: 11400000, guid: e632c8392edad4a4c8bba3fbc9f02af1, type: 2}
+  MaxXP: {fileID: 11400000, guid: e632c8392edad4a4c8bba3fbc9f02af1, type: 2}
+  MaxHP: {fileID: 11400000, guid: 89d1bb2fc80533c4da8fb1fbffa75564, type: 2}
+  MaxATK: {fileID: 11400000, guid: 8e85f40d5600a8741b1e3f80253e128d, type: 2}
+  MaxENG: {fileID: 11400000, guid: 66b341ab70433154c85e2288e1ad88eb, type: 2}
+  ChargingEnergy: {fileID: 11400000, guid: 36a64dd1ee0496f48b7cb500b46e647c, type: 2}
+  ChargingEnergyTeam: {fileID: 11400000, guid: 190f8d7cd280fb447b3711b6911b9036, type: 2}
+  CurrencyData: {fileID: 11400000, guid: 6bae35d64284aeb43885cd5f09f784bf, type: 2}
+  Tier1AvaiableAtTurn: {fileID: 11400000, guid: e029abf439d4a8f40b5237a812d7853a, type: 2}
+  Tier2AvaiableAtTurn: {fileID: 11400000, guid: 85278dc5e5b0857458dd1681f29e1368, type: 2}
+  Tier3AvaiableAtTurn: {fileID: 11400000, guid: 2324e3e19802fe44f9bd30c2ad4a7480, type: 2}
+  Tier4AvaiableAtTurn: {fileID: 11400000, guid: daeee7042bb1a624a8c37c836acff716, type: 2}
+  Tier5AvaiableAtTurn: {fileID: 11400000, guid: 7a8f148556e7ecb4dbdc09ef0f51fb17, type: 2}
+  Tier6AvaiableAtTurn: {fileID: 11400000, guid: b7d2e47d67e804346a456fe9681817ac, type: 2}
+  BotsTier1:
+  - {fileID: 11400000, guid: 1263611853e57e64d8dd2612f71d8604, type: 2}
+  - {fileID: 11400000, guid: 7ac86034f154ac9498f1cdcbbe4138b8, type: 2}
+  - {fileID: 11400000, guid: 2037b822d16632941be28296cd59cb1e, type: 2}
+  - {fileID: 11400000, guid: 28b99b0887172ee41ba83b54eb77a03b, type: 2}
+  - {fileID: 11400000, guid: 3ad9898505cb7b8429611c9be8943fcc, type: 2}
+  - {fileID: 11400000, guid: 70309177306d80242bfbabacabaf17d4, type: 2}
+  ItemsTier1:
+  - {fileID: 11400000, guid: 9241d11377894ba4eb4653d43901fe1b, type: 2}
+  - {fileID: 11400000, guid: e5ec827352cdbf440980ceee15947e20, type: 2}
+  - {fileID: 11400000, guid: bc4626e7bacc59246889cc3e10c38140, type: 2}
+  - {fileID: 11400000, guid: 321c105fb1928b9408b935838357480c, type: 2}
+  - {fileID: 11400000, guid: 4c4e612c282eef24da2be0ee3ef86621, type: 2}
+  - {fileID: 11400000, guid: fed5527c0d4a7a544b364d9d61efe5e2, type: 2}
+  - {fileID: 11400000, guid: f1cf551c7d406cc4988c9cc78f030b58, type: 2}
+  - {fileID: 11400000, guid: 2becb8a4b0657f743b618546e619d4ff, type: 2}
+  BotsTier2:
+  - {fileID: 11400000, guid: 28b99b0887172ee41ba83b54eb77a03b, type: 2}
+  ItemsTier2: []
+  BotsTier3: []
+  ItemsTier3: []
+  BotsTier4: []
+  ItemsTier4: []
+  BotsTier5: []
+  ItemsTier5: []
+  BotsTier6: []
+  ItemsTier6: []
+  SummonedBots:
+  - {fileID: 11400000, guid: c4297eaaf3a7c0648a31305d15da2670, type: 2}
+  - {fileID: 11400000, guid: d03fc87eda19ce144813632a381b6047, type: 2}
+  - {fileID: 11400000, guid: 0a0ab765b3a94b24abab83dc478a252b, type: 2}

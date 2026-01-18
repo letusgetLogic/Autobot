@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
+  m_Name: Mini Copper 3
+  m_EditorClassIdentifier: 
+  UnitType: 2
+  Sprite: {fileID: -1547974232, guid: d6eb047f9a0561c45a89eb64f9758ab9, type: 3}
+  ID: 3
+  Name: Mini Copper MC3
+  Health: 3
+  Attack: 3
+  Energy: {fileID: 0}
+  HasUniqueCost: 0
+  UniqueCostNuts: {fileID: 0}
+  UniqueCostTools: {fileID: 0}
+  LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
+  Levels:
+  - Index: 0
+    Description: 
+    HasAbility: 0
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Index: 1
+    Description: 
+    HasAbility: 0
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0
+  - Index: 2
+    Description: 
+    HasAbility: 0
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 0
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 0
+    FromWho: 0
+    ToWho: 0
+    ToWhoCount: 0
+    AbilityDuration: 0
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0

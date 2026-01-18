@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67ab7190ec994a4fa312c5dc55aa2c6, type: 3}
   m_Name: ShopProcess
   m_EditorClassIdentifier: 
+  DelayShowingTurn: 0.5
+  DurationShowingTurn: 0.5
   DelayChargingAtStart: 0.5
   DurationCharging: 0.5
   DelayStartBattleAfterCharging: 0.5
   DelayPushing: 0.5
   DelayPushingFusion: 1
-  DelayHideDescription: 1.5
+  DelayHideDescription: 1
+  DurationDelaySummon: 0.1

@@ -3,9 +3,9 @@
     None,
     Self,
 
-    NearestTeammateAhead,
-    RandomTeammate,
-    NearestTeammateBehind,
+    NearestMateAhead,
+    RandomMate,
+    NearestMateBehind,
 
     AllFriends,
     All,

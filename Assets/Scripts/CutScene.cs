@@ -20,8 +20,16 @@ public class CutScene : MonoBehaviour
         }
         Instance = this;
 
-        if (coverPanelOpen != null && coverPanelOpen.gameObject.activeSelf)
+        if (coverPanelOpen != null)
+        {
+            coverPanelOpen.gameObject.SetActive(true);
             StartCoroutine(OpenScene());
+        }
+
+        if (coverPanelClose != null)
+        {
+            coverPanelClose.gameObject.SetActive(true);
+        }
     }
 
     private IEnumerator OpenScene()

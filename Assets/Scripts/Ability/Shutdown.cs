@@ -1,4 +1,7 @@
-﻿public class Shutdown : AbilityBase
+﻿/// <summary>
+/// Only items trigger Shutdown.
+/// </summary>
+public class Shutdown : AbilityBase
 {
     /// <summary>
     /// Constructor of Buff.

@@ -16,7 +16,7 @@
     FriendSummoned,
     Tier1FriendBought,
     FourFriendsHurt,
-    FriendFaints,
+    FriendShutdown,
     FriendAteFood,
 
     BeforeFriendAheadAttacks,

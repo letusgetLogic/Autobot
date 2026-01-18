@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
+  m_Name: Buff Module T1.1
+  m_EditorClassIdentifier: 
+  UnitType: 3
+  Sprite: {fileID: 21300000, guid: 29e2b0c521cd64345b2cec10406b4973, type: 3}
+  ID: 0
+  Name: Buff Module T1.1
+  Health: 0
+  Attack: 0
+  Energy: {fileID: 0}
+  HasUniqueCost: 1
+  UniqueCostNuts: {fileID: 11400000, guid: e4c851abf8001a4419734726815cdbb7, type: 2}
+  UniqueCostTools: {fileID: 0}
+  LevelLimit: {fileID: 11400000, guid: 200bed77f7a26a741b938dea8d606183, type: 2}
+  Levels:
+  - Index: 0
+    Description: "Give one robot +1 attack and \n+1 health."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 1
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 0
+    ToWho: 10
+    ToWhoCount: 0
+    AbilityDuration: 2
+    Buff:
+      HP: 1
+      ATK: 1
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    DealDamage: 0
+    GainCoin: 0

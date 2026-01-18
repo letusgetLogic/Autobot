@@ -10,7 +10,7 @@ public class ScaleUpDown : MonoBehaviour
         Up,
         Down,
         Validate,
-        ValidateFromScaleMin
+        ValidateBackToScaleMin
     }
     [SerializeField] private RunState runState = RunState.None;
 
@@ -59,7 +59,7 @@ public class ScaleUpDown : MonoBehaviour
                 scaleState = Scale.None;
                 break;
 
-            case RunState.ValidateFromScaleMin:
+            case RunState.ValidateBackToScaleMin:
                 scaleState = Scale.None;
                 break;
         }
@@ -160,7 +160,7 @@ public class ScaleUpDown : MonoBehaviour
         if (rect != null)
         {
             defaultValue = rect.localScale;
-            if (runState == RunState.ValidateFromScaleMin)
+            if (runState == RunState.ValidateBackToScaleMin)
             {
                 defaultValue = scaleMin;
                 rect.localScale = defaultValue;
@@ -169,7 +169,7 @@ public class ScaleUpDown : MonoBehaviour
         }
 
         defaultValue = transform.localScale;
-        if (runState == RunState.ValidateFromScaleMin)
+        if (runState == RunState.ValidateBackToScaleMin)
         {
             defaultValue = scaleMin;
             transform.localScale = defaultValue;

@@ -20,50 +20,52 @@ public class Buff : AbilityBase
             case ToWho.None:
                 return;
 
-            case ToWho.RandomTeammate:
+            case ToWho.RandomMate:
                 BuffRandom();
                 break;
 
             case ToWho.TargetBot:
-                BuffTarget();
+                BuffTargetByItem();
                 break;
 
-        }
+            case var a when a == ToWho.NearestMateAhead:
+                BuffNearest(GetNearest(a, CurrentLevel.ToWhoCount));
+                break;
 
+            case var b when b == ToWho.NearestMateBehind:
+                BuffNearest(GetNearest(b, CurrentLevel.ToWhoCount));
+                break;
+
+            case ToWho.AllFriends:
+                BuffAll();
+                break;
+        }
+    }
+
+    private void BuffAll()
+    {
+        List<UnitController> teamUnitControllers = GetAllMates();
+
+        for (int i = 0; i < teamUnitControllers.Count; i++)
+        {
+            BuffUnit(teamUnitControllers[i]);
+        }
     }
 
     private void BuffRandom()
     {
-        List<UnitController> teamUnitControllers = new List<UnitController>();
-
-        for (int i = 0; i < TeamSlots.Length; i++)
-        {
-            var teamUnitController = TeamSlots[i].UnitController();
-            if (teamUnitController != null && teamUnitController != Controller)
-            {
-                teamUnitControllers.Add(teamUnitController);
-            }
-        }
-
-        if (teamUnitControllers.Count <= 0)
-            return;
+        List<UnitController> teamUnitControllers = GetAllMates();
 
         for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
         {
-            Random rnd = new Random();
-            int index = rnd.Next(0, teamUnitControllers.Count);
-
-            var unit = teamUnitControllers[index];
-
-            unit.Buff(
-                AbilityBase.IsPernament(CurrentLevel.AbilityDuration),
-                CurrentLevel.Buff);
+            var unit = GetRandomIn(ref teamUnitControllers);
+            BuffUnit(unit);
 
             teamUnitControllers.Remove(unit);
         }
     }
 
-    private void BuffTarget()
+    private void BuffTargetByItem()
     {
         if (PhaseShopUnitManager.Instance != null &&
                    PhaseShopUnitManager.Instance.TargetedController != null)
@@ -71,5 +73,26 @@ public class Buff : AbilityBase
             PhaseShopUnitManager.Instance.TargetedController.Buff(true, CurrentLevel.Buff);
         }
        
+    }
+
+    private void BuffNearest(List<UnitController> _units)
+    {
+        if (_units.Count == 0) 
+            return;
+
+        for (int i = 0; i < _units.Count; i++)
+        {
+            BuffUnit(_units[i]);
+        }
+    }
+
+    private void BuffUnit(UnitController _unit)
+    {
+        if (_unit == null)
+            return;
+
+        _unit.Buff(
+            IsPernament(CurrentLevel.AbilityDuration),
+            CurrentLevel.Buff);
     }
 }
