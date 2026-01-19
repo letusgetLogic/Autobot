@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 1
-  animSpeedAct: 3
+  animTime: 1
   colorMax: 1
   colorMin: 0.1
   animCurve:
@@ -315,8 +315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f522e53f92604f14e83d75847a8c83d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAutomatic: 1
-  animSpeedAct: 3
+  runState: 0
+  animTime: 1
   scaleMax: {x: 0.9, y: 0.45, z: 0}
   scaleMin: {x: 0.7, y: 0.35, z: 0}
   animCurve:
@@ -353,7 +353,7 @@ GameObject:
   m_Component:
   - component: {fileID: 132480885314422412}
   - component: {fileID: 5523288145169055422}
-  - component: {fileID: 3344295562065147624}
+  - component: {fileID: 3018586135745139902}
   - component: {fileID: 2951906009104834408}
   - component: {fileID: 5719285484096049178}
   - component: {fileID: 3831681500386076199}
@@ -392,7 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9147dedae6bd68448d175a15e898358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventHover
---- !u!114 &3344295562065147624
+--- !u!114 &3018586135745139902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -485,7 +485,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.25, y: 1.25}
+  m_Size: {x: 1.25, y: 2.25}
   m_EdgeRadius: 0
 --- !u!1 &3837084474997893691
 GameObject:

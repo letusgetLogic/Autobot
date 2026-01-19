@@ -11,6 +11,12 @@ public class CutScene : MonoBehaviour
     [SerializeField] private float delayOpen = 1f;
     [SerializeField] private float delayClose = 1f;
 
+    public ScaleUpDown OpenPanel => coverPanelOpen.GetComponent<ScaleUpDown>();
+    public ScaleUpDown ClosePanel => coverPanelClose.GetComponent<ScaleUpDown>();
+    public float DelayOpen => delayOpen;
+    public float DelayClose => delayClose;
+
+
     private void Awake()
     {
         if (Instance != null)
@@ -36,8 +42,7 @@ public class CutScene : MonoBehaviour
     {
         yield return new WaitForSeconds(delayOpen);
 
-        var openScene = coverPanelOpen.GetComponent<ScaleUpDown>();
-        openScene.ScaleUp(false);
+        OpenPanel.ScaleUp(false);
     }
 
     public void SwitchScene(string _scene)
@@ -49,10 +54,9 @@ public class CutScene : MonoBehaviour
     {
         yield return new WaitForSeconds(delayClose);
 
-        var closeScene = coverPanelClose.GetComponent<ScaleUpDown>();
-        closeScene.ScaleUp(true);
+        ClosePanel.ScaleUp(true);
 
-        yield return new WaitForSeconds(closeScene.AnimTime);
+        yield return new WaitForSeconds(ClosePanel.AnimTime);
         Debug.Log("Loading Scene: " + _scene);
         SceneManager.LoadScene(_scene);
     }

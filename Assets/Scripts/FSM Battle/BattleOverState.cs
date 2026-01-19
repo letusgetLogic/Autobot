@@ -22,7 +22,7 @@ public class BattleOverState : StateBase
         {
             GameManager.Instance.Switch(GameState.EndOfBattle, null);
             _ctx.SetState(null);
-            Debug.Log("-------------------------------");
+
             return;
         }
         if (player1.Data.Lives == 0)
@@ -43,7 +43,7 @@ public class BattleOverState : StateBase
         }
         else
         {
-            GameManager.Instance.Switch(GameState.EndOfBattle, null);
+            GameManager.Instance.Switch(GameState.EndOfGame, null);
         }
     }
 }

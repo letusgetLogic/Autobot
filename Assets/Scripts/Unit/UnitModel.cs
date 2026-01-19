@@ -393,8 +393,9 @@ public class UnitModel
     {
         if (Repair != null)
         {
-            int sum = _current + _addCurrent;
-            return Mathf.RoundToInt(sum * 0.5f);
+            return Calculator.RoundAverageBasedReference(_current, _addCurrent, _current + _addCurrent);
+            //int sum = _current + _addCurrent;
+            //return Mathf.RoundToInt(sum * 0.5f);
         }
         return _current;
     }

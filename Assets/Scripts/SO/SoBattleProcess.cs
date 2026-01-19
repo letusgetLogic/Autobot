@@ -11,7 +11,7 @@ public class SoBattleProcess : ScriptableObject
 
     [Range(0f, 2f)] public float DurationAttack = 0.5f;
 
-    [Range(0f, 2f)] public float DurationDelaySummon = 0.1f;
+    [Range(0f, 2f)] public float DurationDelayCraft = 0.1f;
 
     [Range(0f, 2f)] public float DurationHideAbilityDescription = 1.5f;
 

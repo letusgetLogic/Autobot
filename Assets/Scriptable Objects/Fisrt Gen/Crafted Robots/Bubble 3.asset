@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
-  m_Name: Sheep
+  m_Name: Bubble 3
   m_EditorClassIdentifier: 
   UnitType: 1
-  Sprite: {fileID: 2413468673506368606, guid: 52f0fd634a3e632428b3f80cfd832e69, type: 3}
+  Sprite: {fileID: -1711782600793773735, guid: c0d58c23788053440b2b4b152ab4ed99, type: 3}
   ID: 0
-  Name: Sheep
-  Health: 2
-  Attack: 2
+  Name: Bubble B3
+  Health: 6
+  Attack: 6
   Energy: {fileID: 0}
   HasUniqueCost: 0
   UniqueCostNuts: {fileID: 0}
@@ -25,71 +25,65 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Shutdown \u2192 Summon two 2/2 Rams."
-    HasAbility: 1
+    Description: 
+    HasAbility: 0
     ConsumedEnergy: {fileID: 0}
-    TriggerType: 3
+    TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 2
+    DoType: 0
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 3
+    AbilityDuration: 0
     Buff:
       HP: 0
       ATK: 0
       ENG: 0
-    UnitLimit: 2
-    SummonUnits:
-    - {fileID: 11400000, guid: 8fe4b1493edca6b478c12fedc5a98556, type: 2}
-    - {fileID: 11400000, guid: 8fe4b1493edca6b478c12fedc5a98556, type: 2}
+    UnitLimit: 0
+    SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
   - Index: 1
-    Description: "Shutdown \u2192 Summon two 4/4 Rams."
-    HasAbility: 1
+    Description: 
+    HasAbility: 0
     ConsumedEnergy: {fileID: 0}
-    TriggerType: 3
+    TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 2
+    DoType: 0
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 3
+    AbilityDuration: 0
     Buff:
       HP: 0
       ATK: 0
       ENG: 0
-    UnitLimit: 2
-    SummonUnits:
-    - {fileID: 11400000, guid: 23805f239cd92234bb07adbc750d80b5, type: 2}
-    - {fileID: 11400000, guid: 23805f239cd92234bb07adbc750d80b5, type: 2}
+    UnitLimit: 0
+    SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
   - Index: 2
-    Description: "Shutdown \u2192 Summon two 6/6 Rams."
-    HasAbility: 1
+    Description: 
+    HasAbility: 0
     ConsumedEnergy: {fileID: 0}
-    TriggerType: 3
+    TriggerType: 0
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 2
+    DoType: 0
     FromWho: 0
     ToWho: 0
     ToWhoCount: 0
-    AbilityDuration: 3
+    AbilityDuration: 0
     Buff:
       HP: 0
       ATK: 0
       ENG: 0
-    UnitLimit: 2
-    SummonUnits:
-    - {fileID: 11400000, guid: 5ede1bfb5b6418d40946ba269982f0cc, type: 2}
-    - {fileID: 11400000, guid: 5ede1bfb5b6418d40946ba269982f0cc, type: 2}
+    UnitLimit: 0
+    SummonUnits: []
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0

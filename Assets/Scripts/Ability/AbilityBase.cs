@@ -68,8 +68,8 @@ public abstract class AbilityBase
 
                 return new Buff(_controller, _level, _teamSlots);
 
-            case DoType.Summon:
-                return new Summon(_controller, _controller.Model, _level, _teamSlots);
+            case DoType.Craft:
+                return new Craft(_controller, _controller.Model, _level, _teamSlots);
 
             case DoType.ShutDown:
                 return new Shutdown(_controller, _level, _teamSlots);

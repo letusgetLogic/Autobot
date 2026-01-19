@@ -77,7 +77,7 @@ public class PhaseBattleView : MonoBehaviour
     /// <param name="_isGameOver"></param>
     public void ShowWinner(string _winner, bool _isGameOver)
     {
-        label.text = $"{_winner} won this {(_isGameOver ? "tournament" : "battle")}!";
+        label.text = $"{_winner} won this {(_isGameOver ? "game" : "battle")}!";
         label.enabled = true;
     }
 

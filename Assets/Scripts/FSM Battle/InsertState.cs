@@ -13,8 +13,8 @@ public class InsertState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- InsertState");
-        MoveCloserTogether(PhaseBattleController.Instance.Slots1());
-        MoveCloserTogether(PhaseBattleController.Instance.Slots2());
+        MoveCloserToCenter(PhaseBattleController.Instance.Slots1());
+        MoveCloserToCenter(PhaseBattleController.Instance.Slots2());
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
@@ -34,7 +34,7 @@ public class InsertState : StateBase
     /// Moves the units to the center.
     /// </summary>
     /// <param name="_slots"></param>
-    private void MoveCloserTogether(Slot[] _slots)
+    private void MoveCloserToCenter(Slot[] _slots)
     {
         bool[] isOccupied = new bool[_slots.Length];
         int mostFrontEmpty = 0;
@@ -58,6 +58,38 @@ public class InsertState : StateBase
                 }
 
                 mostFrontEmpty++;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Moves the units back from center.
+    /// </summary>
+    /// <param name="_slots"></param>
+    public static void MoveBackFromCenter(Slot[] _slots)
+    {
+        bool[] isOccupied = new bool[_slots.Length];
+        int mostBehindEmpty = _slots.Length - 1;
+
+        for (int i = _slots.Length - 1; i == 0; i--)
+        {
+            isOccupied[i] = false;
+
+            var movedUnit = _slots[i].Unit();
+
+            if (movedUnit != null)
+            {
+                isOccupied[i] = true;
+
+                if (i < _slots.Length) // skip the last slot
+                {
+                    PhaseBattleController.Instance.HideDescriptionByTransport();
+                    movedUnit.transform.SetParent(_slots[mostBehindEmpty].transform, false);
+                    mostBehindEmpty--;
+                    continue;
+                }
+
+                mostBehindEmpty--;
             }
         }
     }

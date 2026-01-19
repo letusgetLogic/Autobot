@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -15,7 +16,13 @@ public class Player : MonoBehaviour
     {
         Data.Turn++;
         SetDefault();
-        PhaseShopUnitManager.Instance.Initialize(this);
+
+        var phaseShop = PhaseShopUnitManager.Instance;
+        if (phaseShop == null)
+            return;
+
+        phaseShop.Initialize(this);
+
     }
 
     /// <summary>
@@ -23,11 +30,22 @@ public class Player : MonoBehaviour
     /// </summary>
     public void EndShop()
     {
+        var phaseShop = PhaseShopUnitManager.Instance;
+        if (phaseShop == null)
+            return;
+
         float delay = 0f;
 
-        // variant after turn 1 not giving energy for each.s
-        //if (Data.Turn == 1)
-            delay = PhaseShopUnitManager.Instance.ChargeBotsAtEndShop();
+        // from turn 2 charge energy at start of shop.
+        if (Data.Turn == 1)
+        {
+            delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
+            phaseShop.ChargeTeamBots();
+        }
+        else
+        {
+            delay = phaseShop.Process.DelayStartBattleAfterEndTurn;
+        }
 
         PhaseShopUnitManager.Instance.StartCoroutine(DelayEndShop(delay));
     }

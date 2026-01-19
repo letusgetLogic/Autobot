@@ -110,11 +110,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 break;
 
             case StartTurnState.ChargeBot:
-                var unit = ChargeSlot.UnitController();
-                if (unit == null)
-                    StartTurn(StartTurnState.Done);
-                else
-                    StartCoroutine(DelayChargeBotAtStartShop());
+                StartCoroutine(DelayChargeBotsAtStartShop());
                 break;
 
             case StartTurnState.Done:
@@ -271,25 +267,30 @@ public class PhaseShopUnitManager : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// Delays charging bot at start of phase shop.
+    /// Delays charging bots at start of phase shop.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator DelayChargeBotAtStartShop()
+    public IEnumerator DelayChargeBotsAtStartShop()
     {
-        yield return new WaitForSeconds(process.DelayChargingAtStart);
+        float delayOpenScene = CutScene.Instance ? CutScene.Instance.DelayOpen : 0f;
+
+        yield return new WaitForSeconds(delayOpenScene + process.DelayChargingAtStart);
 
         var unit = ChargeSlot.UnitController();
         if (unit != null)
             unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
 
+        if (Player.Data.Turn > 1)
+            ChargeTeamBots();
+
         StartTurn(StartTurnState.Done);
     }
 
     /// <summary>
-    /// Delays charging the bots at end of phase shop and returns the delay.
+    /// Charge team bots.
     /// </summary>
     /// <returns></returns>
-    public float ChargeBotsAtEndShop()
+    public void ChargeTeamBots()
     {
         foreach (var slot in teamSlots)
         {
@@ -302,8 +303,6 @@ public class PhaseShopUnitManager : MonoBehaviour
                 }
             }
         }
-
-        return process.DurationCharging + process.DelayStartBattleAfterCharging;
     }
 
     /// <summary>
@@ -489,18 +488,10 @@ public class PhaseShopUnitManager : MonoBehaviour
         // Search index is on next slot in the defined direction.
         int search = _target + _direction;
 
-
-        // Defines new length without inactive slots.
-        int length = 0;
-        for (int i = 1; i < teamSlots.Length; i++)
-        {
-            if (teamSlots[i].gameObject.activeSelf)
-                length++;
-        }
-
+        var teamSlots = TeamSlots();
 
         // Search empty slot and push the other to it.
-        while (search >= 0 && search < length)
+        while (search >= 0 && search < teamSlots.Length)
         {
             if (teamSlots[search].Unit() != null &&
                 teamSlots[search].Unit() != AttachedGameObject) // slot is occupied

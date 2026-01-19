@@ -16,7 +16,7 @@ public class SoShopProcess : ScriptableObject
     [Range(0f, 2f)] public float DurationCharging = 0.5f;
 
     [Tooltip("Delay starting the battle after charging")]
-    [Range(0f, 2f)] public float DelayStartBattleAfterCharging = 1f;
+    [Range(0f, 2f)] public float DelayStartBattleAfterEndTurn = 1f;
 
     [Tooltip("Delay pushing other bot to make space")]
     [Range(0f, 2f)] public float DelayPushing = 0.5f;
@@ -28,6 +28,6 @@ public class SoShopProcess : ScriptableObject
     [Range(0f, 2f)] public float DelayHideDescription = 1.5f;
 
     [Tooltip("Delay summon")]
-    [Range(0f, 2f)] public float DurationDelaySummon = 0.1f;
+    [Range(0f, 2f)] public float DurationDelayCraft = 0.1f;
 
 }
