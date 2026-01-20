@@ -516,7 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9fdfc6a6a73734589f9b086c656e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
-  IsModeDevelop: 1
+  IsModeDevelop: 0
   lives: 3
   timer: 90
   modeLocalDuelHeart: {fileID: 2004077453}
@@ -1005,6 +1005,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 88505269}
     m_Modifications:
     - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 92834944}
@@ -1013,8 +1021,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1435448137}
     - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 8954728998705801363}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: OnModeLocal1v1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: InitCheck
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: Pack, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614992859859025935, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2329202186686215251, guid: d10d20891cc7cb54483c17710d712359, type: 3}
       propertyPath: m_Name
@@ -1028,6 +1060,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 8961096157382169625}
+    - target: {fileID: 7701075753612956619, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7701075753612956619, guid: d10d20891cc7cb54483c17710d712359, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -1491,7 +1527,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 409.99982, y: 0}
+  m_AnchoredPosition: {x: 409.99976, y: 0}
   m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2950256793419180337
@@ -2911,7 +2947,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
     - target: {fileID: 6998188967520665777, guid: 07b5c5ae53a98db4896294966ec5906f, type: 3}
       propertyPath: m_text
-      value: Starter Pack
+      value: First Generation
       objectReference: {fileID: 0}
     - target: {fileID: 9144253869376757503, guid: 07b5c5ae53a98db4896294966ec5906f, type: 3}
       propertyPath: m_Name
@@ -3481,7 +3517,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -409.99982, y: 0}
+  m_AnchoredPosition: {x: -409.99976, y: 0}
   m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8787196859057151291
