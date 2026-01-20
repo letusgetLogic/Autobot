@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(Instance.gameObject);
+            Destroy(gameObject);
+            return;
         }
         else
         {
@@ -84,14 +85,14 @@ public class GameManager : MonoBehaviour
         players[1] = gameObject.AddComponent<Player>();
 
         // Load saved game.
-        var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
-        if (savedGame != null)
-        {
-            players[0].Data = savedGame.PlayerData1;
-            players[1].Data = savedGame.PlayerData2;
-            CurrentGame = savedGame;
-            return;
-        }
+        //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
+        //if (savedGame != null)
+        //{
+        //    players[0].Data = savedGame.PlayerData1;
+        //    players[1].Data = savedGame.PlayerData2;
+        //    CurrentGame = savedGame;
+        //    return;
+        //}
 
         // Create a new game.
         players[0].Data = new PlayerData(Name1, PlayerLives, 0);

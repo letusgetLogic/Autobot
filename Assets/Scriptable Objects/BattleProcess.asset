@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: BattleProcess
   m_EditorClassIdentifier: 
   DurationInit: 1.5
-  DurationCheckOutcome: 1
-  DurationInsert: 0.5
+  DurationCheckOutcome: 0.1
+  DurationInsert: 0.75
   DurationAttack: 0.5
-  DurationDelaySummon: 0.5
+  DurationDelayCraft: 1.5
   DurationHideAbilityDescription: 1.5
   DurationHandleEachAbility: 2
   DurationShutdown: 0.5
-  DurationBattleOver: 1
+  DurationBattleOver: 2

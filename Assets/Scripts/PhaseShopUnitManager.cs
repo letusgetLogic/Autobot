@@ -27,15 +27,10 @@ public class PhaseShopUnitManager : MonoBehaviour
     public UnitController TargetedController { get; set; }
 
     /// <summary>
-    /// To prevent pushing other away while an unit is attached by mouse click.
+    /// To prevent pushing other away while an unit is attached by mouse click and
+    /// to prevent end drag when set IsDragging = false while units are swapping.
     /// </summary>
     public bool IsDragging { get; set; } = false;
-
-    /// <summary>
-    /// To prevent dragging from a slot after an another unit is pushed in there,
-    /// while mouse is still holding down.
-    /// </summary>
-    public bool PreventDragging { get; set; } = false;
 
     private enum StartTurnState { None, Init, ShowingTurn, ChargeBot, Done }
     private StartTurnState startTurn;
@@ -97,7 +92,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 break;
 
             case StartTurnState.Init:
-                PackManager.Instance.AddUnitsByTier(Player.Data.Turn);
+                PackManager.Instance.AssignList(Player.Data.Turn);
                 PhaseShopUI.Instance.UpdateUI(Player);
                 SpawnSavedUnits();
                 SpawnShopUnits();
@@ -280,8 +275,8 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (unit != null)
             unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
 
-        if (Player.Data.Turn > 1)
-            ChargeTeamBots();
+        //if (Player.Data.Turn > 1)
+        //    ChargeTeamBots();
 
         StartTurn(StartTurnState.Done);
     }
@@ -455,10 +450,8 @@ public class PhaseShopUnitManager : MonoBehaviour
         SoundManager.Instance.PlayFusionSound();
 
         _attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
-        _attached.transform.SetParent(null);
 
         _attached.transform.SetParent(_dropSlot, false);
-        _attached.transform.localPosition = Vector3.zero;
 
         var unitView = _attached.GetComponent<UnitView>();
         var controller = _attached.GetComponent<UnitController>();
@@ -471,6 +464,39 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         controller.Model.SetData(UnitState.InSlotTeam);
         controller.View.SetBuyOrSell(controller.Model.Sell, false);
+
+        Player.UpdateUnitData();
+    }
+
+    public IEnumerator Swap(UnitController _unitTarget, Transform _slotTarget, UnitController _unitDragged, Transform _slotDragged)
+    {
+        HideDescriptionByTransport();
+
+        var _unit1View = _unitTarget.GetComponent<UnitView>();
+
+        float delay1 = default;
+        float delay2 = default;
+
+        if (_unitTarget != null && _slotTarget != null)
+        {
+            _unitTarget.transform.SetParent(null, true);
+            _unit1View.SetSpriteOverOther();
+            delay1 = _unitTarget.MoveToParent(_slotTarget.position, _slotTarget);
+        }
+        yield return new WaitForSeconds(delay1);
+
+        if (_unitTarget != null)
+            _unit1View.SetLocalPositionDefault();
+
+        if (_unitDragged  != null && _slotDragged != null)
+        {
+            _unitDragged.BeginSwap();
+            delay2 = _unitDragged.MoveToParent(_slotDragged.position, _slotDragged);
+        }
+        yield return new WaitForSeconds(delay2);
+
+        if (_unitDragged != null)
+            _unitDragged.EndSwap();
 
         Player.UpdateUnitData();
     }
@@ -517,7 +543,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                     Transport(AttachedGameObject, teamSlots[_target].transform, true, false);
                     SetAttachedGameObject(null);
 
-                    PreventDragging = true;
+                    //PreventDragging = true;
                 }
                 else if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
                     == UnitState.InSlotShop)
@@ -579,7 +605,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// <param name="_target"></param>
     public void SetAttachedGameObject(GameObject _target)
     {
-        Debug.Log("SetAttachedGameObject: " + _target);
         if (_target == null)
         {
             // previous attached object border disable

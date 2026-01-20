@@ -88,8 +88,14 @@ public abstract class AbilityBase
         if (_duration == AbilityDuration.Permanent)
             return true;
 
-        if (_duration == AbilityDuration.Both && PhaseShopUnitManager.Instance != null)
-            return true;
+        if (_duration == AbilityDuration.Both)
+            if (PhaseShopUnitManager.Instance != null)
+                return true;
+            else
+                return false;
+
+        if (_duration == AbilityDuration.UntilNextTurn)
+                return false;
 
         return false;
     }

@@ -4031,7 +4031,7 @@ PrefabInstance:
     - target: {fileID: 8852457248930216492, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
       propertyPath: m_text
       value: "Nuts are used to roll, to craft a robot or to exchange for an item.
-        \nIt resets each round"
+        \nThe capacity resets each round"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -4148,7 +4148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5805867915639909455, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
       propertyPath: m_Name
-      value: Tools Display
+      value: Wrench Display
       objectReference: {fileID: 0}
     - target: {fileID: 7406178959145909956, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
       propertyPath: m_IsActive
@@ -4168,7 +4168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8852457248930216492, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
       propertyPath: m_text
-      value: Tools are used to craft or repair a robot. It resets each round
+      value: Wrenchs are used to craft or repair a robot. It resets each round
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5362,7 +5362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8852457248930216492, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
       propertyPath: m_text
-      value: A round ends after the battle phase
+      value: A round includes a Draw Phase and a Battle Phase.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7445,6 +7445,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: cf16425e5bcdac640b46bb02e047d98e, type: 3}
+    - target: {fileID: 4145602340590130093, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7783019
+      objectReference: {fileID: 0}
+    - target: {fileID: 4145602340590130093, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
+      propertyPath: m_Color.g
+      value: 0.78028893
+      objectReference: {fileID: 0}
+    - target: {fileID: 4145602340590130093, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4813243355151466459, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
       propertyPath: m_text
       value: 'Lives
@@ -7485,7 +7497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8852457248930216492, guid: be6c171211fcb98418bcd12c0bb48bc6, type: 3}
       propertyPath: m_text
-      value: The first person to lose all their lives loses the game
+      value: 'Number of losses you can still suffer. '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

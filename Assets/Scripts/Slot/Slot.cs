@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class Slot : MonoBehaviour
@@ -7,6 +9,7 @@ public class Slot : MonoBehaviour
     [SerializeField] private SpriteRenderer border;
     [SerializeField] private EventHover eventHover;
     [SerializeField] private EventDragSlot eventDrag;
+    [SerializeField] private GameObject collider;
 
     [Tooltip("The hint of dropable slot.")]
     [SerializeField] private LightenUpDown lighten;
@@ -18,8 +21,6 @@ public class Slot : MonoBehaviour
         set { border = value; }
     }
 
-    public EventHover EventHover => eventHover;
-    public EventDragSlot EventDrag => eventDrag;
     public LightenUpDown Lighten => lighten;
     public ScaleUpDown LightenScale => lightenScale;
     public int Index { get; set; }
@@ -133,4 +134,22 @@ public class Slot : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Resets event drag.
+    /// </summary>
+    public void ResetEventDrag()
+    {
+        collider.SetActive(false);
+        StartCoroutine(DelayEnableDrag());
+    }
+
+    /// <summary>
+    /// Delay enabling event drag.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DelayEnableDrag()
+    {
+        yield return new WaitForSeconds(1f);
+        collider.SetActive(true);
+    }
 }

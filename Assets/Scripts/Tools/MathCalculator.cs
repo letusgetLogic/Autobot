@@ -1,6 +1,6 @@
 ﻿using System;
 
-public static class Calculator
+public static class MathCalculator
 {
     public static int RoundBasedReference(float a, int reference)
     {

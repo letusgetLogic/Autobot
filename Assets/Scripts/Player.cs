@@ -36,16 +36,19 @@ public class Player : MonoBehaviour
 
         float delay = 0f;
 
-        // from turn 2 charge energy at start of shop.
-        if (Data.Turn == 1)
-        {
-            delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
-            phaseShop.ChargeTeamBots();
-        }
-        else
-        {
-            delay = phaseShop.Process.DelayStartBattleAfterEndTurn;
-        }
+        //// from turn 2 charge energy at start of shop.
+        //if (Data.Turn == 1)
+        //{
+        //    delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
+        //    phaseShop.ChargeTeamBots();
+        //}
+        //else
+        //{
+        //    delay = phaseShop.Process.DelayStartBattleAfterEndTurn;
+        //}
+
+        delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
+        phaseShop.ChargeTeamBots();
 
         PhaseShopUnitManager.Instance.StartCoroutine(DelayEndShop(delay));
     }

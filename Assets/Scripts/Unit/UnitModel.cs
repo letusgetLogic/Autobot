@@ -95,6 +95,8 @@ public class UnitModel
         Repair = _repair;
         SoUnit = _soUnit;
         Data = _data;
+        Data.SetTempBuffHP(0);
+        Data.SetTempBuffATK(0);
         Debug.Log(Data.ID + " loaded.");
     }
 
@@ -393,7 +395,7 @@ public class UnitModel
     {
         if (Repair != null)
         {
-            return Calculator.RoundAverageBasedReference(_current, _addCurrent, _current + _addCurrent);
+            return MathCalculator.RoundAverageBasedReference(_current, _addCurrent, _current + _addCurrent);
             //int sum = _current + _addCurrent;
             //return Mathf.RoundToInt(sum * 0.5f);
         }

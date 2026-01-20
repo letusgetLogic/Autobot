@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Slot slot { get; set; }
-    
 
     private void Start()
     {
@@ -43,9 +42,6 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopUnitManager.Instance.PreventDragging)
-            return;
-
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
        
@@ -62,7 +58,11 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        PhaseShopUnitManager.Instance.PreventDragging = false;
+        GameManager.Instance.IsBlockingInput = false;
+
+        if (PhaseShopUnitManager.Instance.IsDragging == false)
+            return;
+
         PhaseShopUnitManager.Instance.IsDragging = false;
 
         if (eventData.button != PointerEventData.InputButton.Left)

@@ -2213,6 +2213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6079444853286274854}
   - component: {fileID: 1651141544470514720}
+  - component: {fileID: 2755608146511564057}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Dropable
@@ -2290,6 +2291,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2755608146511564057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7406705955813022837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605ddcb485355074986b4660c8fef850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: beb57d6ae461b4444ab03fa92e48408a, type: 2}
 --- !u!1 &7533849820317337209
 GameObject:
   m_ObjectHideFlags: 0
@@ -2704,6 +2718,7 @@ GameObject:
   - component: {fileID: 8643658486882797714}
   - component: {fileID: 4368942393228875258}
   - component: {fileID: 6062272584430887621}
+  - component: {fileID: 8761252099582369240}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Unit
@@ -2801,7 +2816,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 6264506661245693130}
   repairStepFillAtk2: {fileID: 1196285938440890385}
   repairStepFillAtk3: {fileID: 7162433002788989233}
-  canvas: {fileID: 879442083360165133}
+  canvasStats: {fileID: 879442083360165133}
   unitSettings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
   damageColor: {r: 0, g: 0, b: 0, a: 0}
   buffColor: {r: 0, g: 0, b: 0, a: 0}
@@ -2818,9 +2833,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitController
   view: {fileID: 4368942393228875258}
+  mover: {fileID: 8761252099582369240}
+  attackMover: {fileID: 2755608146511564057}
   definedUnit: {fileID: 0}
   isRepairOnValidateActive: 1
   definedPack: {fileID: 0}
+--- !u!114 &8761252099582369240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8212703507569859520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605ddcb485355074986b4660c8fef850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 90f746800025d4e4bb4ee963491444e1, type: 2}
 --- !u!1 &8580300401846943112
 GameObject:
   m_ObjectHideFlags: 0

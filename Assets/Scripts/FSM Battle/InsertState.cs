@@ -52,7 +52,12 @@ public class InsertState : StateBase
                 if (i > 0) // skip the first slot
                 {
                     PhaseBattleController.Instance.HideDescriptionByTransport();
-                    movedUnit.transform.SetParent(_slots[mostFrontEmpty].transform, false);
+
+                    var controller = movedUnit.GetComponent<UnitController>();
+                    var slot = _slots[mostFrontEmpty];
+
+                    controller.MoveToParent(slot.transform.position, slot.transform);
+
                     mostFrontEmpty++;
                     continue;
                 }

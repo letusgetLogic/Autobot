@@ -6,6 +6,8 @@ public class UnitController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private UnitView view;
+    [SerializeField] private LerpMoveForward mover;
+    [SerializeField] private LerpMoveForward attackMover;
 
     [Header("Editor Mode")]
     [SerializeField] private SoUnit definedUnit;
@@ -71,6 +73,16 @@ public class UnitController : MonoBehaviour
 
             Initialize(definedUnit, 0, default, UnitState.InSlotShop, null, true);
         }
+    }
+
+    private void OnEnable()
+    {
+        mover.OnPosition += SetParent;
+    }
+
+    private void OnDisable()
+    {
+        mover.OnPosition -= SetParent;
     }
 
     /// <summary>
@@ -316,14 +328,28 @@ public class UnitController : MonoBehaviour
         model.Repair?.SetDurability(false);
     }
 
+    /// <summary>
+    /// Begins swap.
+    /// </summary>
+    public void BeginSwap()
+    {
+        transform.SetParent(null, true);
+
+        // Position the root game object to the sprite.
+        var spritePos = view.DragSpritePosition;
+        view.SetLocalPositionDefault();
+        transform.position = spritePos;
+
+        view.SetSpriteOverOther();
+    }
 
     /// <summary>
-    /// Sets parent null and game object active false.
+    /// Ends swap.
     /// </summary>
-    public void Deactivate()
+    public void EndSwap()
     {
-        transform.parent = null;
-        gameObject.SetActive(false);
+        view.SetLocalPositionDefault();
+        view.SetVisualDefault();
     }
 
     /// <summary>
@@ -332,7 +358,27 @@ public class UnitController : MonoBehaviour
     /// <param name="_target"></param>
     public void MoveTo(Vector3 _target)
     {
+        mover.MoveTo(_target, null);
         //transform.DoMove();
+    }
+
+    /// <summary>
+    /// Moves the objects to the target and set it to the parent.
+    /// </summary>
+    /// <param name="_target"></param>
+    public float MoveToParent(Vector3 _target, Transform _parent)
+    {
+        float animDelay = mover.MoveTo(_target, _parent);
+      
+        //transform.DoMove();
+
+        return animDelay;
+    }
+
+    private void SetParent(Transform _parent)
+    {
+        if (_parent != null)
+            transform.SetParent(_parent, true);
     }
 
 
@@ -346,6 +392,15 @@ public class UnitController : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    /// <summary>
+    /// Sets parent null and game object active false.
+    /// </summary>
+    public void Deactivate()
+    {
+        transform.parent = null;
+        gameObject.SetActive(false);
     }
 
     /// <summary>

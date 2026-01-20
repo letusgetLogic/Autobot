@@ -8,4 +8,5 @@ public class SoUnitSettings : ScriptableObject
     public float DurationShowDamage;
     public float DurationShowTemporaryValue;
     public Vector3 OffsetDragOverOther;
+    public Vector3 OffsetMoveOverOther;
     }

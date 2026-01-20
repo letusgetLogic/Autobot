@@ -21,11 +21,26 @@ public class Pack : MonoBehaviour
     }
 
     /// <summary>
+    /// Initialize Check.
+    /// </summary>
+    public void InitCheck()
+    {
+        bool isChecked = false;
+
+        if (Check)
+        {
+            isChecked = Check.activeSelf;
+            Check.SetActive(isChecked);
+        }
+    }
+
+    /// <summary>
     /// Uncheck the pack.
     /// </summary>
     public void UnCheck()
     {
-        Check.SetActive(false);
+        if (Check) 
+            Check.SetActive(false);
     }
 
     /// <summary>
@@ -35,7 +50,8 @@ public class Pack : MonoBehaviour
     {
         GameSettings.Instance.UnCheckAllPacks();
 
-        Check.SetActive(true);
+        if (Check)
+            Check.SetActive(true);
         PackManager.Instance.InitPack(soPack);
     }
 }

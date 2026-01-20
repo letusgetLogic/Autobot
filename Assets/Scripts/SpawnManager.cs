@@ -10,7 +10,8 @@ public class SpawnManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(Instance.gameObject);
+            Destroy(gameObject);
+            return;
         }
         else
         {

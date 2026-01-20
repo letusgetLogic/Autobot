@@ -95,7 +95,7 @@ public class UnitView : MonoBehaviour
         repairStepFillAtk3;
 
     [Header("Settings")]
-    [SerializeField] private Canvas canvas;
+    [SerializeField] private Canvas canvasStats;
     [SerializeField] private SoUnitSettings unitSettings;
 
     [Header("Color")]
@@ -104,7 +104,8 @@ public class UnitView : MonoBehaviour
 
 
     public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
-
+    public Vector3 OffsetMoveOverOther => unitSettings.OffsetMoveOverOther;
+    public Vector2 DragSpritePosition => dragSpriteRenderer.transform.position;
     private Vector3 originalScale;
 
     private int originalSortingOrder;
@@ -239,7 +240,7 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.gameObject.transform.localScale *= unitSettings.DraggingScale;
 
         dragSpriteRenderer.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
-        canvas.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
+        canvasStats.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
     }
 
     /// <summary>
@@ -252,7 +253,7 @@ public class UnitView : MonoBehaviour
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
         dragSpriteRenderer.gameObject.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
-        canvas.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
+        canvasStats.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
     }
 
     /// <summary>
@@ -261,15 +262,41 @@ public class UnitView : MonoBehaviour
     /// <param name="eventData"></param>
     public void BeingReleased(PointerEventData eventData)
     {
-        dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;
-        dragSpriteRenderer.gameObject.transform.localScale = originalScale;
-        dragSpriteRenderer.sortingOrder = originalSortingOrder;
-        canvas.sortingOrder = originalSortingOrder;
-        canvas.transform.localPosition = Vector3.zero;
+        SetVisualDefault();
+        SetLocalPositionDefault();
     }
 
     #endregion
 
+
+    /// <summary>
+    /// Set the scale & sorting order default.
+    /// </summary>
+    public void SetVisualDefault()
+    {
+        dragSpriteRenderer.gameObject.transform.localScale = originalScale;
+        dragSpriteRenderer.sortingOrder = originalSortingOrder;
+        canvasStats.sortingOrder = originalSortingOrder;
+    }
+
+    /// <summary>
+    /// Set the local position to Vector3.zero.
+    /// </summary>
+    public void SetLocalPositionDefault()
+    {
+        dragSpriteRenderer.gameObject.transform.localPosition = Vector3.zero;
+        canvasStats.transform.localPosition = Vector3.zero;
+    }
+
+
+    /// <summary>
+    /// Set the sprite renderer & stats canvas over other.
+    /// </summary>
+    public void SetSpriteOverOther()
+    {
+        dragSpriteRenderer.gameObject.transform.position += unitSettings.OffsetMoveOverOther;
+        canvasStats.transform.position += unitSettings.OffsetMoveOverOther;
+    }
 
     /// <summary>
     /// Sets the xp step components active.

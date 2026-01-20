@@ -1,5 +1,4 @@
-﻿using NUnit.Framework.Interfaces;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScaleUpDown : MonoBehaviour
 {
@@ -95,7 +94,7 @@ public class ScaleUpDown : MonoBehaviour
     {
         if (scaleState == Scale.Up)
         {
-            if (currentValue == 1)
+            if (currentValue == 1f)
             {
                 scaleState = runState == RunState.Automatic ? Scale.Down : Scale.None;
                 return;
@@ -113,7 +112,7 @@ public class ScaleUpDown : MonoBehaviour
     {
         if (scaleState == Scale.Down)
         {
-            if (currentValue == 0)
+            if (currentValue == 0f)
             {
                 scaleState = runState == RunState.Automatic ? Scale.Up : Scale.None;
                 return;
@@ -126,11 +125,11 @@ public class ScaleUpDown : MonoBehaviour
     /// <summary>
     /// Interpolates the value and sets the scale.
     /// </summary>
-    /// <param name="target"></param>
-    private void Interpolate(float target)
+    /// <param name="_target"></param>
+    private void Interpolate(float _target)
     {
         currentValue = Mathf.MoveTowards(
-            currentValue, target, Time.fixedDeltaTime / animTime);
+            currentValue, _target, Time.fixedDeltaTime / animTime);
 
         //currentValue = Mathf.MoveTowards(
         //    currentValue, target, animSpeedAct * 0.0001f / Time.fixedDeltaTime);
@@ -187,4 +186,3 @@ public class ScaleUpDown : MonoBehaviour
         transform.localScale = defaultValue;
     }
 }
-

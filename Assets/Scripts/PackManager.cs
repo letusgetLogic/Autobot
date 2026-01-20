@@ -17,7 +17,8 @@ public class PackManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(Instance.gameObject);
+            Destroy(gameObject);
+            return;
         }
         else
         {
@@ -39,23 +40,23 @@ public class PackManager : MonoBehaviour
 
         MyPack = _selectedPack;
 
-        AddBots(MyPack.BotsTier1);
-        AddItems(MyPack.ItemsTier1);
+        //AddBots(MyPack.BotsTier1);
+        //AddItems(MyPack.ItemsTier1);
 
-        AddBots(MyPack.BotsTier2);
-        AddItems(MyPack.ItemsTier2);
+        //AddBots(MyPack.BotsTier2);
+        //AddItems(MyPack.ItemsTier2);
 
-        AddBots(MyPack.BotsTier3);
-        AddItems(MyPack.ItemsTier3);
+        //AddBots(MyPack.BotsTier3);
+        //AddItems(MyPack.ItemsTier3);
 
-        AddBots(MyPack.BotsTier4);
-        AddItems(MyPack.ItemsTier4);
+        //AddBots(MyPack.BotsTier4);
+        //AddItems(MyPack.ItemsTier4);
 
-        AddBots(MyPack.BotsTier5);
-        AddItems(MyPack.ItemsTier5);
+        //AddBots(MyPack.BotsTier5);
+        //AddItems(MyPack.ItemsTier5);
 
-        AddBots(MyPack.BotsTier6);
-        AddItems(MyPack.ItemsTier6);
+        //AddBots(MyPack.BotsTier6);
+        //AddItems(MyPack.ItemsTier6);
     }
 
     /// <summary>
@@ -89,13 +90,25 @@ public class PackManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Assigns the list when being loaded from saved data.
+    /// </summary>
+    /// <param name="_turns"></param>
+    public void AssignList(int _turns)
+    {
+        for (int i = 1; i <= _turns; i++)
+        {
+            AddUnitsByTier(i);
+        }
+    }
+
+    /// <summary>
     /// Adds units to the collection based on the specified turn and their availability tier.
     /// </summary>
     /// <remarks>This method checks the availability of units for each tier based on predefined turn
     /// thresholds. If the specified turn matches the availability turn for a particular tier, the corresponding units
     /// are added. If no match is found, no units are added.</remarks>
     /// <param name="_turns">The current turn number. Determines which tier of units will be added.</param>
-    public void AddUnitsByTier(int _turns)
+    private void AddUnitsByTier(int _turns)
     {
         int a = MyPack.Tier1AvaiableAtTurn.Value;
         int b = MyPack.Tier2AvaiableAtTurn.Value;
@@ -146,18 +159,6 @@ public class PackManager : MonoBehaviour
         foreach (var unit in _itemTier)
         {
             Items.Add(unit);
-        }
-    }
-
-    /// <summary>
-    /// Assigns the list when being loaded from saved data.
-    /// </summary>
-    /// <param name="_turns"></param>
-    public void AssignList(int _turns)
-    {
-        for (int i = 1; i <= _turns; i++)
-        {
-            AddUnitsByTier(i);
         }
     }
 

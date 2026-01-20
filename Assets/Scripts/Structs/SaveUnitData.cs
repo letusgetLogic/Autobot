@@ -38,8 +38,8 @@ public struct SaveUnitData
     public readonly Attribute TempBuff => temporaryBuff;
     private Attribute temporaryBuff;
 
-    public readonly int FullHP => Basis.HP + Buff.HP + TempBuff.HP;
-    public readonly int FullATK => Basis.ATK + Buff.ATK + TempBuff.ATK;
+    public readonly int FullHP => Basis.HP + Buff.HP;
+    public readonly int FullATK => Basis.ATK + Buff.ATK;
 
     public readonly int XP => xp;
     private int xp;

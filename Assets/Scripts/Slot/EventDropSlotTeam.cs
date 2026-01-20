@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,13 +21,25 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopUnitManager.Instance.PreventDragging)
-            return;
+        GameManager.Instance.IsBlockingInput = true;
 
         if (eventData.pointerDrag == null)
             return;
 
         PhaseShopUnitManager.Instance.ManageAttachedObject(slot);
         PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+
+        //StartCoroutine(DelayEnableInput()); // End drag set blocking input = false
+    }
+
+    /// <summary>
+    /// Delay enabling input.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DelayEnableInput()
+    {
+        yield return new WaitForEndOfFrame();
+
+        GameManager.Instance.IsBlockingInput = false;
     }
 }

@@ -8,7 +8,7 @@ public class MenuButton : MonoBehaviour
     /// </summary>
     public void OnButtonClick()
     {
-        GameManager.Instance.Switch(GameState.EndOfGame, null);
+        SceneManager.LoadScene("Menu");
     }
 }
 
