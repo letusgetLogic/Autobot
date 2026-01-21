@@ -6,18 +6,20 @@ public abstract class AbilityBase
 {
     protected UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
-    protected Slot[] TeamSlots;
+    protected Slot[] TeamSlots { get; private set; }
+    protected UnitController TargetedByItem { get; private set; }
 
     /// <summary>
     /// Base constructor with the given parameters. 
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
-    public AbilityBase(UnitController _controller, Level _currentLevel, Slot[] _teamSlots)
+    public AbilityBase(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem)
     {
         Controller = _controller;
         CurrentLevel = _currentLevel;
         TeamSlots = _teamSlots;
+        TargetedByItem = _targetedByItem;
     }
 
     /// <summary>
@@ -34,9 +36,9 @@ public abstract class AbilityBase
             Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
 
         Activate();
-        Debug.Log("... Wait " + _delayHideDescription);
+       
         yield return new WaitForSeconds(_delayHideDescription);
-        Debug.Log("Continue ");
+       
         if (Controller != null)
             Controller.View.SetDescriptionActive(false);
 
@@ -57,7 +59,12 @@ public abstract class AbilityBase
     /// <param name="_teamSlots"></param>
     /// <param name="_slot"></param>
     /// <returns></returns>
-    public static AbilityBase GetAbility(UnitController _controller, Level _level, Slot[] _teamSlots, Slot _slot)
+    public static AbilityBase GetAbility(
+        UnitController _controller, 
+        Level _level, 
+        Slot[] _teamSlots, 
+        Slot _slot,
+        UnitController _targetedByItem)
     {
         var type = _level.DoType;
         switch (type)
@@ -66,13 +73,13 @@ public abstract class AbilityBase
                 if (CheckOutcomeState.IsAnyoneIn(_teamSlots, _slot) == false)
                     return null;
 
-                return new Buff(_controller, _level, _teamSlots);
+                return new Buff(_controller, _level, _teamSlots, _targetedByItem);
 
             case DoType.Craft:
-                return new Craft(_controller, _controller.Model, _level, _teamSlots);
+                return new Craft(_controller, _controller.Model, _level, _teamSlots, _targetedByItem);
 
             case DoType.ShutDown:
-                return new Shutdown(_controller, _level, _teamSlots);
+                return new Shutdown(_controller, _level, _teamSlots, _targetedByItem);
         }
 
         return null;
@@ -89,7 +96,7 @@ public abstract class AbilityBase
             return true;
 
         if (_duration == AbilityDuration.Both)
-            if (PhaseShopUnitManager.Instance != null)
+            if (PhaseShopController.Instance != null)
                 return true;
             else
                 return false;

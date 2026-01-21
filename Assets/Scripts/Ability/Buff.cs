@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class Buff : AbilityBase
 {
@@ -8,8 +7,9 @@ public class Buff : AbilityBase
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
-    /// <param name="_teanSlots"></param>
-    public Buff(UnitController _controller, Level _currentLevel, Slot[] _teanSlots) : base(_controller, _currentLevel, _teanSlots)
+    /// <param name="_teamSlots"></param>
+    public Buff(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem)
+        : base(_controller, _currentLevel, _teamSlots, _targetedByItem)
     {
     }
 
@@ -67,12 +67,7 @@ public class Buff : AbilityBase
 
     private void BuffTargetByItem()
     {
-        if (PhaseShopUnitManager.Instance != null &&
-                   PhaseShopUnitManager.Instance.TargetedController != null)
-        {
-            PhaseShopUnitManager.Instance.TargetedController.Buff(true, CurrentLevel.Buff);
-        }
-       
+        TargetedByItem.Buff(true, CurrentLevel.Buff);
     }
 
     private void BuffNearest(List<UnitController> _units)

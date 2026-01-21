@@ -33,7 +33,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopUnitManager.Instance.AttachedGameObject == null &&
+        if (PhaseShopController.Instance.AttachedGameObject == null &&
             (eventData.pointerDrag == null ||
             eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null))
             return;
@@ -46,21 +46,21 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopUnitManager.Instance.IsDragging && CanPushOther())
+        if (PhaseShopController.Instance.IsDragging && CanPushOther())
         {
             if (!isCounting)
             {
                unitOnSlot = slot.Unit();
-               unitDragged = PhaseShopUnitManager.Instance.AttachedGameObject;
+               unitDragged = PhaseShopController.Instance.AttachedGameObject;
                draggedSlot = unitDragged.GetComponent<UnitController>().Slot;
 
-               isFusible = PhaseShopUnitManager.Instance.IsFusible(
+               isFusible = PhaseShopController.Instance.IsFusible(
                     slot.UnitController(),
                     unitDragged.GetComponent<UnitController>());
 
                 countDown = isFusible ?
-                PhaseShopUnitManager.Instance.Process.DelayPushingFusion :
-                PhaseShopUnitManager.Instance.Process.DelayPushing;
+                PhaseShopController.Instance.Process.DelayPushingFusion :
+                PhaseShopController.Instance.Process.DelayPushing;
 
                 //direction = DirectionMoveOther();
                 isCounting = true;
@@ -75,10 +75,10 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
             {
                 //PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
                 GameManager.Instance.IsBlockingInput = true;
-                PhaseShopUnitManager.Instance.IsDragging = false;
-                PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+                PhaseShopController.Instance.IsDragging = false;
+                PhaseShopController.Instance.SetAttachedGameObject(null);
 
-                StartCoroutine(PhaseShopUnitManager.Instance.Swap(
+                StartCoroutine(PhaseShopController.Instance.Swap(
                     unitOnSlot.GetComponent<UnitController>(), draggedSlot.transform,
                     unitDragged.GetComponent<UnitController>(), slot.transform));
 
@@ -136,7 +136,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     /// <returns></returns>
     private bool CanPushOther()
     {
-        var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+        var attached = PhaseShopController.Instance.AttachedGameObject;
 
         // if attached game object is null, return false.
         if (attached == null)
@@ -166,7 +166,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
             // if the unit is in the team or charging slot and only is dragging, return true.
             if (attachedModel.Data.UnitState == UnitState.InSlotTeam ||
                 attachedModel.Data.UnitState == UnitState.InSlotCharge &&
-                PhaseShopUnitManager.Instance.IsDragging)
+                PhaseShopController.Instance.IsDragging)
             {
                 return true;
             }

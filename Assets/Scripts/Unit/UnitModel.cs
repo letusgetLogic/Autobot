@@ -174,32 +174,32 @@ public class UnitModel
             case UnitState.InSlotShop:
                 view.IceCube.SetActive(false);
                 view.Shadow.enabled = true;
-                view.SetBuyOrSell(Currency(_unitState), true);
+                view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
                 view.SetShopView(true, false);
                 break;
 
             case UnitState.Freezed:
                 view.IceCube.SetActive(true);
                 view.Shadow.enabled = true;
-                view.SetBuyOrSell(Currency(_unitState), true);
+                view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
                 view.SetShopView(true, false);
                 break;
 
             case UnitState.InSlotTeam:
                 view.IceCube.SetActive(false);
-                view.SetBuyOrSell(Currency(_unitState), false);
+                view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
                 view.SetShopView(false, true);
                 break;
 
             case UnitState.InSlotCharge:
                 view.IceCube.SetActive(false);
-                view.SetBuyOrSell(Currency(_unitState), false);
+                view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
                 view.SetShopView(false, true);
                 break;
 
             case UnitState.InPhaseBattle:
                 view.HideObjectsDuringBattle();
-                view.SetBuyOrSell(Currency(_unitState), false);
+                view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
                 view.SetShopView(false, false);
                 break;
         }
@@ -307,7 +307,7 @@ public class UnitModel
     {
         CurrentLevel = SoUnit.Levels[_index];
         view.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy != null ? CurrentLevel.ConsumedEnergy.Value : 0);
-        view.SetBuyOrSell(Sell, false);
+        view.SetBuyOrSell(Sell, false, Data.UnitType);
     }
 
     #endregion

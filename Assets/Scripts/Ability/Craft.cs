@@ -14,8 +14,8 @@ public class Craft : AbilityBase
     /// <param name="_model"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public Craft(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots) :
-        base(_controller, _currentLevel, _teamSlots)
+    public Craft(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem) 
+        : base(_controller, _currentLevel, _teamSlots, _targetedByItem)
     {
         this.model = _model;
         craftedUnits = CurrentLevel.SummonUnits;
@@ -35,8 +35,8 @@ public class Craft : AbilityBase
     {
         float duration = 0f;
 
-        if (PhaseShopUnitManager.Instance != null)
-            duration = PhaseShopUnitManager.Instance.Process.DurationDelayCraft;
+        if (PhaseShopController.Instance != null)
+            duration = PhaseShopController.Instance.Process.DurationDelayCraft;
         if (PhaseBattleController.Instance != null)
             duration = PhaseBattleController.Instance.Process.DurationDelayCraft;
 
@@ -50,7 +50,7 @@ public class Craft : AbilityBase
                    new(),
                    model.Data.UnitState,
                    TeamSlots[slotIndex].transform,
-                   PhaseShopUnitManager.Instance != null ? true : model.Data.IsTeamLeft);
+                   PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
 
 
         //int teamlength = TeamSlots.Length;

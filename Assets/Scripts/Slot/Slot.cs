@@ -25,6 +25,7 @@ public class Slot : MonoBehaviour
     public ScaleUpDown LightenScale => lightenScale;
     public int Index { get; set; }
 
+    public bool IsDroppable => gameObject.CompareTag("Slot Team") || gameObject.CompareTag("Slot Charge");
 
     private void Start()
     {
@@ -121,10 +122,10 @@ public class Slot : MonoBehaviour
         if (UnitView() != null)
             UnitView().SetDescriptionActive(false);
 
-        if (PhaseShopUnitManager.Instance == null)
+        if (PhaseShopController.Instance == null)
             return;
 
-        var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+        var attached = PhaseShopController.Instance.AttachedGameObject;
         if (border.enabled &&
             (attached == null || attached != Unit()))
         {

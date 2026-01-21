@@ -1,28 +1,25 @@
-﻿using System;
+﻿using UnityEngine;
 
-public class SoundManager
+public class SoundManager : MonoBehaviour
 {
-    #region Instance 
-    public static SoundManager Instance
+    public static SoundManager Instance {  get; private set; }
+
+
+    private void Awake()
     {
-        get
+        if (Instance != null)
         {
-            // Lazy loading
-            if (instance == null)
-                instance = new SoundManager();
-
-            return instance;
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
-    private static SoundManager instance;
 
-    private SoundManager() { }
-
-    #endregion
-
-    public void PlayRollSound()
+    private void OnEnable()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Roll");
+        EventManager.Instance.OnTransportUnit += PlayFusionSound;
     }
 
     public void PlayCoinSound()
@@ -37,9 +34,9 @@ public class SoundManager
 
     public void PlayFusionSound()
     {
-        bool rnd = Convert.ToBoolean(new Random().Next(2));
+        int rnd = Random.Range(0, 2);
         FMODUnity.RuntimeManager.PlayOneShot(
-            rnd == true ? "event:/Fusion_1" : "event:/Fusion_2");
+            rnd == 0 ? "event:/Fusion_1" : "event:/Fusion_2");
     }
 
     public void PlayLockSound()
@@ -54,9 +51,9 @@ public class SoundManager
 
     public void PlayOnDropSound()
     {
-        bool rnd = Convert.ToBoolean(new Random().Next(2));
+        int rnd = Random.Range(0, 2);
         FMODUnity.RuntimeManager.PlayOneShot(
-            rnd == true ? "event:/Fusion_1" : "event:/Fusion_2");
+            rnd == 0 ? "event:/Fusion_1" : "event:/Fusion_2");
     }
 
 

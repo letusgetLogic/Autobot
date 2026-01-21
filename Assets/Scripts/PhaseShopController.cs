@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class PhaseShopUnitManager : MonoBehaviour
+public class PhaseShopController : MonoBehaviour
 {
-    public static PhaseShopUnitManager Instance { get; private set; }
+    public static PhaseShopController Instance { get; private set; }
 
-    public UnityAction OnSettingAttachedObject { get; set; }
-    public UnityAction OnSettingNullObject { get; set; }
-
+    [Header("References")]
     [Header("Slots")]
     [SerializeField] private Slot[] teamSlots;
     [SerializeField] private Slot chargeSlot;
@@ -24,7 +21,6 @@ public class PhaseShopUnitManager : MonoBehaviour
     public Player Player { get; private set; }
 
     public GameObject AttachedGameObject { get; private set; }
-    public UnitController TargetedController { get; set; }
 
     /// <summary>
     /// To prevent pushing other away while an unit is attached by mouse click and
@@ -32,8 +28,7 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// </summary>
     public bool IsDragging { get; set; } = false;
 
-    private enum StartTurnState { None, Init, ShowingTurn, ChargeBot, Done }
-    private StartTurnState startTurn;
+    private StartTurnState startTurn = StartTurnState.None;
 
     private void Awake()
     {
@@ -48,20 +43,18 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
-
-        startTurn = StartTurnState.None;
     }
 
     private void OnEnable()
     {
-        OnSettingAttachedObject += () => SetDropHint(true);
-        OnSettingNullObject += () => SetDropHint(false);
+        EventManager.Instance.OnSettingAttachedObject += () => SetDropHint(true);
+        EventManager.Instance.OnSettingNullObject += () => SetDropHint(false);
     }
 
     private void OnDisable()
     {
-        OnSettingAttachedObject -= () => SetDropHint(true);
-        OnSettingNullObject -= () => SetDropHint(false);
+        EventManager.Instance.OnSettingAttachedObject -= () => SetDropHint(true);
+        EventManager.Instance.OnSettingNullObject -= () => SetDropHint(false);
     }
 
     /// <summary>
@@ -74,16 +67,20 @@ public class PhaseShopUnitManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes the slots.
+    /// Initializes the template of player.
     /// </summary>
     /// <param name="_player"></param>
     public void Initialize(Player _player)
     {
         Player = _player;
-        StartTurn(StartTurnState.Init);
+        SetStartTurn(StartTurnState.Init);
     }
 
-    private void StartTurn(StartTurnState _state)
+    /// <summary>
+    /// Set start turn state.
+    /// </summary>
+    /// <param name="_state"></param>
+    private void SetStartTurn(StartTurnState _state)
     {
         startTurn = _state;
         switch (startTurn)
@@ -98,7 +95,7 @@ public class PhaseShopUnitManager : MonoBehaviour
                 SpawnShopUnits();
                 Player.UpdateUnitData();
                 PhaseShopUI.Instance.SetChargingStationAt(Player.Data.Turn);
-                StartTurn(StartTurnState.ChargeBot);
+                SetStartTurn(StartTurnState.ChargeBot);
                 break;
 
             case StartTurnState.ShowingTurn:
@@ -110,7 +107,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
             case StartTurnState.Done:
                 GameManager.Instance.Switch(GameState.ShopPhase, null);
-                StartTurn(StartTurnState.None);
+                SetStartTurn(StartTurnState.None);
                 break;
 
         }
@@ -278,7 +275,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         //if (Player.Data.Turn > 1)
         //    ChargeTeamBots();
 
-        StartTurn(StartTurnState.Done);
+        SetStartTurn(StartTurnState.Done);
     }
 
     /// <summary>
@@ -301,43 +298,42 @@ public class PhaseShopUnitManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Manages the attached object.
+    ///  Manages the attached unit.
     /// </summary>
-    /// <param name="_slot"></param>
-    public void ManageAttachedObject(Slot _slot)
+    /// <param name="_attachedController"></param>
+    /// <param name="_targetSlot"></param>
+    public void ManageAttachedUnit(UnitController _attached, Slot _targetSlot, UnitController _target)
     {
-        if (AttachedGameObject == null)
-            return;
+        var attachedState = _attached.Model.Data.UnitState;
 
-        if (AttachedGameObject.CompareTag("Unit"))
+        // If unit is in the shop and
+        if (attachedState == UnitState.InSlotShop || attachedState == UnitState.Freezed)
         {
-            var attachedModel = AttachedGameObject.GetComponent<UnitController>().Model;
-            var unitState = attachedModel.Data.UnitState;
-
-            if (unitState == UnitState.InSlotShop || unitState == UnitState.Freezed)
+            // player has enough currency for buying unit,
+            if (PhaseShopUI.Instance.HasEnoughCurrency(
+                _attached.Model.Cost.Nut, _attached.Model.Cost.Tool))
             {
-                // "not able to buy" - cases:
-
-                // case: target is item.
-                var targetedSlotController = _slot.UnitController();
-                if (targetedSlotController != null &&
-                    targetedSlotController.Model.Data.UnitType == UnitType.Item)
-                    return;
-
-                // case: not enough currency.
-                if (!PhaseShopUI.Instance.HasEnoughCurrency(
-                    attachedModel.Cost.Nut, attachedModel.Cost.Tool))
-                {
-                    return;
-                }
-                //
-
-                Buy(_slot);
+                // then buy.
+                Buy(_attached, _targetSlot, _target);
             }
-            else if (unitState == UnitState.InSlotTeam || unitState == UnitState.InSlotCharge)
+        }
+        // If unit is in the team and
+        else if (attachedState == UnitState.InSlotTeam || attachedState == UnitState.InSlotCharge)
+        {
+            // unit is a robot,
+            if (_attached.Model.Data.IsRobot())
             {
-                if (attachedModel.Data.IsRobot())
-                    TransportOrFusion(_slot);
+                // then check if the slot is empty,
+                if (_target == null)
+                    // transport the unit to it,
+                    Transport(_attached.gameObject, _targetSlot.transform, true, true);
+                else
+                    // else fusion, if both are fusible.
+                    if (IsFusible(_target, _attached)) 
+                {
+                    _target.UpdateLevel(_attached.Model, true);
+                    Destroy(_attached.gameObject);
+                }
             }
         }
     }
@@ -346,94 +342,50 @@ public class PhaseShopUnitManager : MonoBehaviour
     /// Checks if it's purchasable, then buy the attached object.
     /// </summary>
     /// <param name="_targetedSlot"></param>
-    private void Buy(Slot _targetedSlot)
+    private void Buy(UnitController _purchased, Slot _targetSlot, UnitController _target)
     {
-        if (AttachedGameObject.CompareTag("Unit"))
+        if (_target != null) // on drop, not on click
         {
-            // unit on target slot, where the mouse was released.
-            var targetedController = _targetedSlot.UnitController();
-
-            var attachedController = AttachedGameObject.GetComponent<UnitController>();
-            var attachedModel = attachedController.Model;
-
-            if (targetedController != null)
+            // case: buy & destroy item
+            if (_purchased.Model.Data.UnitType == UnitType.Item)
             {
-                // case: buy & destroy item
-                if (attachedModel.Data.UnitType == UnitType.Item)
-                {
-                    PhaseShopUI.Instance.UpdateCurrency(
-                       attachedModel.Cost.Nut, attachedModel.Cost.Tool);
+                _purchased.TargetedByItem = _target;
+                _purchased.TriggerCraft();
 
-                    TargetedController = targetedController;
+                PhaseShopUI.Instance.UpdateCurrency(
+                     _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                    attachedController.GetBought();
-
-                    Destroy(AttachedGameObject);
-
-                    TargetedController = null;
-                    return;
-                }
-
-                // case: buy and bots are fusible.
-                if (IsFusible(targetedController, attachedController))
-                {
-                    PhaseShopUI.Instance.UpdateCurrency(
-                        attachedModel.Cost.Nut, attachedModel.Cost.Tool);
-
-                    targetedController.UpdateLevel(attachedModel, true);
-
-                    targetedController.GetBought();
-
-                    Destroy(AttachedGameObject);
-                    return;
-                }
-
+                Destroy(_purchased.gameObject);
             }
-            else // case: buy and place dragging bot on empty slot.
+            // case: buy and bots are fusible.
+            else if (IsFusible(_target, _purchased))
             {
-                if (attachedModel.Data.IsRobot())
-                {
-                    PhaseShopUI.Instance.UpdateCurrency(
-                       attachedModel.Cost.Nut, attachedModel.Cost.Tool);
+                _target.UpdateLevel(_purchased.Model, true);
+                _target.TriggerCraft();
 
-                    Transport(AttachedGameObject, _targetedSlot.transform, true, true);
+                PhaseShopUI.Instance.UpdateCurrency(
+                     _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                    attachedController.GetBought();
-                    return;
-                }
+                Destroy(_purchased.gameObject);
             }
 
+        }
+        else // case: buy and place dragging bot on empty slot.
+        {
+            if (_purchased.Model.Data.IsRobot())
+            {
+                PhaseShopUI.Instance.UpdateCurrency(
+                   _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
+
+                Transport(AttachedGameObject, _targetSlot.transform, true, true);
+
+                _purchased.TriggerCraft();
+            }
         }
     }
 
     /// <summary>
-    /// Transports or merges the attached unit.
-    /// </summary>
-    /// <param name="_slot"></param>
-    private void TransportOrFusion(Slot _slot)
-    {
-        var unitOnSlot = _slot.UnitController();
-        var attachedController = AttachedGameObject.GetComponent<UnitController>();
-
-        if (unitOnSlot != null)
-        {
-            if (unitOnSlot == attachedController) // attached unit shouldn't be unit on the slot.
-                return;
-
-            if (IsFusible(unitOnSlot, attachedController)) // case: only fusion.
-            {
-                unitOnSlot.UpdateLevel(attachedController.Model, true);
-                Destroy(AttachedGameObject);
-            }
-        }
-        else // case: move dragging unit to empty slot.
-        {
-            Transport(AttachedGameObject, _slot.transform, true, true);
-        }
-    }
-
-    /// <summary>
-    /// Transports the attached game object to the drop slot.
+    /// Transports the attached game object to the drop slot in Phase Shop.
     /// </summary>
     /// <param name="_attached"></param>
     /// <param name="_dropSlot"></param>
@@ -447,24 +399,33 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (_attached == null)
             return;
 
-        SoundManager.Instance.PlayFusionSound();
-
         _attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
-
         _attached.transform.SetParent(_dropSlot, false);
 
-        var unitView = _attached.GetComponent<UnitView>();
         var controller = _attached.GetComponent<UnitController>();
+        var model = controller.Model;
+        var view = controller.View;
 
-        if (_mouseRelease)
-            unitView.BeingReleased(null);
+        if (model != null)
+        {
+            model.SetData(_dropSlot.CompareTag("Slot Charge") ?
+                UnitState.InSlotCharge :
+                UnitState.InSlotTeam);
+        }
 
-        if (_disableShadow)
-            unitView.Shadow.enabled = false;
+        if (view != null)
+        {
+            if (_mouseRelease)
+                view.BeingReleased(null);
 
-        controller.Model.SetData(UnitState.InSlotTeam);
-        controller.View.SetBuyOrSell(controller.Model.Sell, false);
+            if (_disableShadow)
+                view.Shadow.enabled = false;
 
+            if (model != null)
+                view.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
+        }
+
+        EventManager.Instance.OnTransportUnit?.Invoke();
         Player.UpdateUnitData();
     }
 
@@ -488,7 +449,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         if (_unitTarget != null)
             _unit1View.SetLocalPositionDefault();
 
-        if (_unitDragged  != null && _slotDragged != null)
+        if (_unitDragged != null && _slotDragged != null)
         {
             _unitDragged.BeginSwap();
             delay2 = _unitDragged.MoveToParent(_slotDragged.position, _slotDragged);
@@ -592,7 +553,7 @@ public class PhaseShopUnitManager : MonoBehaviour
         return false;
     }
 
-    public void HandleMouseDown(GameObject _unit, UnitModel _model)
+    public void SwitchAttached(GameObject _unit, UnitModel _model)
     {
         SetAttachedGameObject(null);
         SetAttachedGameObject(_unit);
@@ -614,13 +575,13 @@ public class PhaseShopUnitManager : MonoBehaviour
 
             PhaseShopUI.Instance.SetButtonActive(null);
             AttachedGameObject = _target;
-            OnSettingNullObject?.Invoke();
+            EventManager.Instance.OnSettingNullObject?.Invoke();
         }
         else
         {
             _target.transform.parent.GetComponent<Slot>().Border.enabled = true;
             AttachedGameObject = _target;
-            OnSettingAttachedObject?.Invoke();
+            EventManager.Instance.OnSettingAttachedObject?.Invoke();
         }
     }
 
@@ -670,7 +631,7 @@ public class PhaseShopUnitManager : MonoBehaviour
 
         bool slotOccupied = _slot.Unit() != null;
 
-        return isAttachedItem ? slotOccupied : true;
+        return isAttachedItem ? true : slotOccupied;
     }
 
     /// <summary>

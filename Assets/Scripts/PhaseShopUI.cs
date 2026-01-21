@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -111,7 +110,7 @@ public class PhaseShopUI : MonoBehaviour
                 chargingStation.SetActive(false);
                 energyBonusLabel.SetActive(true);
                 break;
-            case >= 2:
+            case >= 3:
                 chargingStation.SetActive(true);
                 energyBonusLabel.SetActive(false);
                 break;
@@ -134,7 +133,7 @@ public class PhaseShopUI : MonoBehaviour
 
         SoundManager.Instance.PlayCoinSound();
         UpdateCurrency(rollCost.Nut, rollCost.Tool);
-        PhaseShopUnitManager.Instance.SpawnShopUnits();
+        PhaseShopController.Instance.SpawnShopUnits();
     }
 
     /// <summary>
@@ -161,9 +160,9 @@ public class PhaseShopUI : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
         {
-            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+            var unit = PhaseShopController.Instance.AttachedGameObject.
                 GetComponent<UnitController>();
 
             if (!HasEnoughCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool))
@@ -187,11 +186,11 @@ public class PhaseShopUI : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             SoundManager.Instance.PlayLockSound();
 
-            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+            var unit = PhaseShopController.Instance.AttachedGameObject.
                GetComponent<UnitController>();
 
             unit.Model.SetData(UnitState.Freezed);
@@ -208,11 +207,11 @@ public class PhaseShopUI : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
         {
             SoundManager.Instance.PlayUnlockSound();
 
-            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+            var unit = PhaseShopController.Instance.AttachedGameObject.
              GetComponent<UnitController>();
 
             unit.Model.SetData(UnitState.InSlotShop);
@@ -234,9 +233,9 @@ public class PhaseShopUI : MonoBehaviour
         SetButtonActive(null);
         DeactivateManageButtons();
 
-        if (PhaseShopUnitManager.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
         {
-            var unit = PhaseShopUnitManager.Instance.AttachedGameObject.
+            var unit = PhaseShopController.Instance.AttachedGameObject.
                 GetComponent<UnitController>();
 
             if (!HasEnoughCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool))
@@ -246,7 +245,7 @@ public class PhaseShopUI : MonoBehaviour
             unit.GetSelled();
             UpdateCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool);
 
-            PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+            PhaseShopController.Instance.SetAttachedGameObject(null);
         }
         else GameManager.Instance.IsBlockingInput = false;
     }

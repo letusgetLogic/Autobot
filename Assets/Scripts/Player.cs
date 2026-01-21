@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
         Data.Turn++;
         SetDefault();
 
-        var phaseShop = PhaseShopUnitManager.Instance;
+        var phaseShop = PhaseShopController.Instance;
         if (phaseShop == null)
             return;
 
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void EndShop()
     {
-        var phaseShop = PhaseShopUnitManager.Instance;
+        var phaseShop = PhaseShopController.Instance;
         if (phaseShop == null)
             return;
 
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
         delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
         phaseShop.ChargeTeamBots();
 
-        PhaseShopUnitManager.Instance.StartCoroutine(DelayEndShop(delay));
+        PhaseShopController.Instance.StartCoroutine(DelayEndShop(delay));
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateUnitData()
     {
-        var shopBotSlots = PhaseShopUnitManager.Instance.ShopBotSlots();
+        var shopBotSlots = PhaseShopController.Instance.ShopBotSlots();
         Data.ShopBotDatas = new SaveUnitData[shopBotSlots.Length];
         for (int i = 0; i < Data.ShopBotDatas.Length; i++)
         {
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
             Data.ShopBotDatas[i] = unit.Model.Data;
         }
 
-        var shopItemSlots = PhaseShopUnitManager.Instance.ShopItemSlots();
+        var shopItemSlots = PhaseShopController.Instance.ShopItemSlots();
         Data.ShopItemDatas = new SaveUnitData[shopItemSlots.Length];
         for (int i = 0; i < Data.ShopItemDatas.Length; i++)
         {
@@ -122,7 +122,7 @@ public class Player : MonoBehaviour
             Data.ShopItemDatas[i] = unit.Model.Data;
         }
 
-        var teamSlots = PhaseShopUnitManager.Instance.TeamSlots();
+        var teamSlots = PhaseShopController.Instance.TeamSlots();
         Data.TeamUnitDatas = new SaveUnitData[teamSlots.Length];
         for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
@@ -136,7 +136,7 @@ public class Player : MonoBehaviour
         }
 
         Data.ChargeUnitData = default;
-        var chargeUnit = PhaseShopUnitManager.Instance.ChargeSlot.UnitController();
+        var chargeUnit = PhaseShopController.Instance.ChargeSlot.UnitController();
         if (chargeUnit != null)
         {
             Data.ChargeUnitData = chargeUnit.Model.Data;

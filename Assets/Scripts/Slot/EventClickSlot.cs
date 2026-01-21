@@ -19,20 +19,26 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
         if (GameManager.Instance.IsBlockingInput)
             return;
 
+        // The slot is empty.
         if (slot.Unit() == null)
         {
-            var attached = PhaseShopUnitManager.Instance.AttachedGameObject;
+            var attached = PhaseShopController.Instance.AttachedGameObject;
+            if (attached == null)
+                return;
 
-            // Transports unit per click, only to slot team.
-            if (attached != null && slot.CompareTag("Slot Team"))
+            bool isAttachedUnit = attached.CompareTag("Unit");
+
+            // Transports unit per click, only to slot team and slot charge.
+            if (isAttachedUnit && slot.IsDroppable)
             {
-                PhaseShopUnitManager.Instance.ManageAttachedObject(slot);
-                PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+                var controller = attached.GetComponent<UnitController>();
+                PhaseShopController.Instance.ManageAttachedUnit(controller, slot, null);
+                PhaseShopController.Instance.SetAttachedGameObject(null);
             }
         }
-        else // An unit is on the slot.
+        else // An unit is on the slot, switch attached to it.
         {
-            PhaseShopUnitManager.Instance.HandleMouseDown(slot.Unit(), slot.UnitController().Model);
+            PhaseShopController.Instance.SwitchAttached(slot.Unit(), slot.UnitController().Model);
         }
     }
 }

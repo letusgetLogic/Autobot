@@ -178,9 +178,9 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetBuyOrSell(Currency _cur, bool _isForBuying)
+    public void SetBuyOrSell(Currency _cur, bool _isForBuying, UnitType _type)
     {
-        craftText.text = _isForBuying ? "craft" : "recycle";
+        craftText.text = _isForBuying ? "Craft" : (_type == UnitType.Item ? "Install" : "Recycle");
 
         if (_cur.Nut != 0)
         {

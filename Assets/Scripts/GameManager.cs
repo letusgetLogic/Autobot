@@ -44,11 +44,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
     }
 
     /// <summary>
@@ -139,7 +138,7 @@ public class GameManager : MonoBehaviour
             case GameState.EndOfTurn:
                 SaveSystem.SaveGame(CurrentGame);
                 Destroy(PhaseShopUI.Instance.gameObject);
-                Destroy(PhaseShopUnitManager.Instance.gameObject);
+                Destroy(PhaseShopController.Instance.gameObject);
                 StartCoroutine(DelayLoadScene());
                 break;
 
@@ -198,7 +197,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartTurn(Player _player)
     {
         yield return new WaitUntil(() =>
-            PhaseShopUnitManager.Instance != null &&
+            PhaseShopController.Instance != null &&
             PhaseShopUI.Instance != null);
 
         Switch(GameState.StartOfTurn, _player);

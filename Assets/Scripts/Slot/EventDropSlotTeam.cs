@@ -21,13 +21,23 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        GameManager.Instance.IsBlockingInput = true;
-
         if (eventData.pointerDrag == null)
             return;
 
-        PhaseShopUnitManager.Instance.ManageAttachedObject(slot);
-        PhaseShopUnitManager.Instance.SetAttachedGameObject(null);
+        var attached = PhaseShopController.Instance.AttachedGameObject;
+        if (attached == null || attached == slot.Unit())
+            return;
+
+        GameManager.Instance.IsBlockingInput = true;
+
+        bool isAttachedUnit = attached.CompareTag("Unit");
+
+        if (isAttachedUnit)
+        {
+            var controller = attached.GetComponent<UnitController>();
+            PhaseShopController.Instance.ManageAttachedUnit(controller, slot, slot.UnitController());
+            PhaseShopController.Instance.SetAttachedGameObject(null);
+        }
 
         //StartCoroutine(DelayEnableInput()); // End drag set blocking input = false
     }

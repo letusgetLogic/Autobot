@@ -23,7 +23,8 @@ public class UnitController : MonoBehaviour
     public UnitModel Model => model;
     private UnitModel model;
 
-    public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel, TeamSlots, Slot);
+    public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel, TeamSlots, Slot, TargetedByItem);
+    public UnitController TargetedByItem { get; set; } = null;
 
     public SoPack Pack
     {
@@ -46,7 +47,7 @@ public class UnitController : MonoBehaviour
                     PhaseBattleController.Instance.Slots1() :
                     PhaseBattleController.Instance.Slots2();
             }
-            else return PhaseShopUnitManager.Instance.TeamSlots();
+            else return PhaseShopController.Instance.TeamSlots();
         }
     }
     public Slot Slot
@@ -62,7 +63,6 @@ public class UnitController : MonoBehaviour
         }
     }
     private bool flipSprite = false;
-
 
 
     private void OnValidate()
@@ -138,13 +138,13 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Triggers the ability if it is existent and destroys the unit.
     /// </summary>
-    public void GetBought()
+    public void TriggerCraft()
     {
         var ability = TriggerAbility(TriggerType.Craft);
         if (ability != null)
         {
-            PhaseShopUnitManager.Instance.StartCoroutine(
-                PhaseShopUnitManager.Instance.HandleAbility(ability, false));
+            PhaseShopController.Instance.StartCoroutine(
+                PhaseShopController.Instance.HandleAbility(ability, false));
         }
     }
 
@@ -156,8 +156,8 @@ public class UnitController : MonoBehaviour
         var ability = TriggerAbility(TriggerType.Recycle);
         if (ability != null)
         {
-            PhaseShopUnitManager.Instance.StartCoroutine(
-                PhaseShopUnitManager.Instance.HandleAbility(ability, true));
+            PhaseShopController.Instance.StartCoroutine(
+                PhaseShopController.Instance.HandleAbility(ability, true));
         }
         else
         {
@@ -251,16 +251,16 @@ public class UnitController : MonoBehaviour
                 Debug.Log($"{ability.ToString()} enqueue");
                 Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
             }
-            if (PhaseShopUnitManager.Instance != null)
+            if (PhaseShopController.Instance != null)
             {
-                PhaseShopUnitManager.Instance.StartCoroutine(ability.Handle(
-                    PhaseShopUnitManager.Instance.Process.DelayHideDescription,
+                PhaseShopController.Instance.StartCoroutine(ability.Handle(
+                    PhaseShopController.Instance.Process.DelayHideDescription,
                     true));
             }
         }
         else
         {
-            if (PhaseShopUnitManager.Instance != null)
+            if (PhaseShopController.Instance != null)
             {
                 Destroy(gameObject);
             }

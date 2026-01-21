@@ -20,7 +20,7 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                 }
                 else
                 {
-                    var phaseShop = PhaseShopUnitManager.Instance;
+                    var phaseShop = PhaseShopController.Instance;
                     if (phaseShop)
                         phaseShop.SetAttachedGameObject(null);
                 }
