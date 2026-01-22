@@ -9,11 +9,14 @@ public class Slot : MonoBehaviour
     [SerializeField] private SpriteRenderer border;
     [SerializeField] private EventHover eventHover;
     [SerializeField] private EventDragSlot eventDrag;
-    [SerializeField] private GameObject collider;
 
     [Tooltip("The hint of dropable slot.")]
+    [SerializeField] private SpriteRenderer hintLight;
     [SerializeField] private LightenUpDown lighten;
     [SerializeField] private ScaleUpDown lightenScale;
+    [SerializeField] private Color itemColor;
+    [SerializeField] private Color fusionColor;
+    [SerializeField] private Color swapColor;
 
     public SpriteRenderer Border
     {
@@ -22,6 +25,7 @@ public class Slot : MonoBehaviour
     }
 
     public LightenUpDown Lighten => lighten;
+    private Color defaultColor;
     public ScaleUpDown LightenScale => lightenScale;
     public int Index { get; set; }
 
@@ -33,13 +37,18 @@ public class Slot : MonoBehaviour
             border.enabled = false;
 
         if (lighten != null)
+        {
             lighten.enabled = false;
+        }
         if (lightenScale != null)
-            lightenScale.enabled = /*false*/true;
+            lightenScale.enabled = false;
     }
 
     private void OnEnable()
     {
+        if (hintLight != null)
+            defaultColor = hintLight.color;
+
         eventHover.OnMouseOverEvent += ShowDescription;
         eventHover.OnMouseExitEvent += HideDescription;
 
@@ -47,6 +56,9 @@ public class Slot : MonoBehaviour
 
     private void OnDisable()
     {
+        if (hintLight != null)
+            hintLight.color = defaultColor;
+
         eventHover.OnMouseOverEvent -= ShowDescription;
         eventHover.OnMouseExitEvent -= HideDescription;
     }
@@ -136,21 +148,31 @@ public class Slot : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// Resets event drag.
+    /// 0 = disable, 1 = default, 2 = item, 3 = fusion, 4 = swap
     /// </summary>
-    public void ResetEventDrag()
+    /// <param name="_isfusion"></param>
+    public void SetHintLight(int _state)
     {
-        collider.SetActive(false);
-        StartCoroutine(DelayEnableDrag());
-    }
+        switch(_state)
+        {
+            case 0:
+                break;
 
-    /// <summary>
-    /// Delay enabling event drag.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator DelayEnableDrag()
-    {
-        yield return new WaitForSeconds(1f);
-        collider.SetActive(true);
+            case 1:
+                hintLight.color = defaultColor;
+                break;
+
+            case 2:
+                hintLight.color = itemColor;
+                break;
+
+            case 3:
+                hintLight.color = fusionColor;
+                break;
+
+            case 4:
+                hintLight.color = swapColor;
+                break;
+        }
     }
 }

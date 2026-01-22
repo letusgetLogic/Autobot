@@ -24,7 +24,15 @@ public class SetRectLocalScaleClick : MonoBehaviour,
         originalScale = GetComponent<RectTransform>().localScale;
 
         if (rotatedSprite != null)
+        {
+            rotatedSprite.gameObject.SetActive(false);
             originalRotation = rotatedSprite.localRotation;
+        }
+
+        if (rotatedSprite2 != null)
+        {
+            rotatedSprite2.gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -35,6 +43,15 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     {
         isHeld = true;
         GetComponent<RectTransform>().localScale = originalScale * scaleFactor;
+
+        if (rotatedSprite != null)
+            rotatedSprite.gameObject.SetActive(true);
+
+        if (rotatedSprite2 != null)
+        {
+            rotatedSprite2.gameObject.SetActive(true);
+            rotatedSprite2.localRotation = originalRotation;
+        }
     }
 
     /// <summary>
@@ -50,7 +67,9 @@ public class SetRectLocalScaleClick : MonoBehaviour,
             rotatedSprite.localRotation = originalRotation;
 
         if (rotatedSprite2 != null)
+        {
             rotatedSprite2.localRotation = originalRotation;
+        }
     }
 
     private void Update()
@@ -62,7 +81,7 @@ public class SetRectLocalScaleClick : MonoBehaviour,
                 Quaternion rotate = new Quaternion(
               rotatedSprite.localRotation.x,
               rotatedSprite.localRotation.y,
-              rotatedSprite.localRotation.z + rotateSpeed * Time.deltaTime,
+              rotatedSprite.localRotation.z - rotateSpeed * Time.deltaTime,
               rotatedSprite.localRotation.w
               );
                 rotatedSprite.localRotation = rotate;

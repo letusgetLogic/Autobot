@@ -27,7 +27,7 @@ public abstract class AbilityBase
     /// </summary>
     /// <param name="_delayHideDescription"></param>
     /// <returns></returns>
-    public IEnumerator Handle(float _delayHideDescription, bool _isDestroying)
+    public IEnumerator Handle(float _delayHideDescription, bool _isDestroying, bool _timeOfBattle)
     {
         Controller.View.SetDescriptionActive(true);
 
@@ -36,9 +36,17 @@ public abstract class AbilityBase
             Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
 
         Activate();
-       
-        yield return new WaitForSeconds(_delayHideDescription);
-       
+
+        if (!_timeOfBattle)
+        {
+            yield return new WaitForSeconds(_delayHideDescription);
+
+            HideDescription(_isDestroying);
+        }
+    }
+
+    public void HideDescription(bool _isDestroying)
+    {
         if (Controller != null)
             Controller.View.SetDescriptionActive(false);
 

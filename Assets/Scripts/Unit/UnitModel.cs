@@ -108,7 +108,7 @@ public class UnitModel
     {
         view = _view;
 
-        if (Data.IsRobot())
+        if (IsRobot())
         {
             if (Repair != null)
             {
@@ -435,5 +435,40 @@ public class UnitModel
     }
 
 
+    /// <summary>
+    /// Return boolean, if it is a robot.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsRobot()
+    {
+        if (Data.UnitType == UnitType.Robot || Data.UnitType == UnitType.SummonedRobot)
+            return true;
+
+        return false;
+    }
+
+    /// <summary>
+    /// Is unit in shop?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsInShop()
+    {
+        if (Data.UnitState == UnitState.InSlotShop || Data.UnitState == UnitState.Freezed)
+            return true;
+
+        return false;
+    }
+
+    /// <summary>
+    /// Is that a robot in shop?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsRobotInShop()
+    {
+        if (Data.UnitType == UnitType.Robot && IsInShop())
+            return true;
+
+        return false;
+    }
 }
 

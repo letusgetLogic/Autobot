@@ -3,6 +3,7 @@
 public class LightenUpDown : MonoBehaviour
 {
     [SerializeField] private bool isAutomatic = true;
+    [SerializeField] private bool isDisableAtAwake = false;
     [SerializeField] private float animTime = 1f;
     [SerializeField] private float colorMax = 1f;
     [SerializeField] private float colorMin = 0.1f;
@@ -17,6 +18,12 @@ public class LightenUpDown : MonoBehaviour
     private Lighten lightenState = Lighten.None;
 
     private float currentValue = 0f;
+
+    private void Awake()
+    {
+        if (isDisableAtAwake)
+            this.enabled = false;
+    }
 
     private void OnEnable()
     {

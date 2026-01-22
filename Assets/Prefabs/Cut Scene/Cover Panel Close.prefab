@@ -88,7 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f522e53f92604f14e83d75847a8c83d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAutomatic: 0
+  runState: 5
+  isDisableAtAwake: 0
   animTime: 1
   scaleMax: {x: 1, y: 1, z: 1}
   scaleMin: {x: 0, y: 1, z: 1}

@@ -106,7 +106,7 @@ public class UnitController : MonoBehaviour
         else // otherwise create a new model with SO reference and the saved data.
         {
             model = new UnitModel(this, _soUnit, _data,
-                GameManager.Instance.IsRepairSystemActive && _data.IsRobot()
+                GameManager.Instance.IsRepairSystemActive && IsRobot(_data.UnitType)
                 ? new RepairSystem() : null);
         }
 

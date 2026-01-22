@@ -203,7 +203,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.6, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.35, z: 0.7}
+  m_LocalScale: {x: 0.9, y: 0.45, z: 0.9}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3722615455089316458}
@@ -276,6 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 1
+  isDisableAtAwake: 1
   animTime: 1
   colorMax: 1
   colorMin: 0.1
@@ -315,7 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f522e53f92604f14e83d75847a8c83d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runState: 0
+  runState: 1
+  isDisableAtAwake: 1
   animTime: 1
   scaleMax: {x: 0.9, y: 0.45, z: 0}
   scaleMin: {x: 0.7, y: 0.35, z: 0}
@@ -631,9 +633,12 @@ MonoBehaviour:
   border: {fileID: 2947824509385607006}
   eventHover: {fileID: 5523288145169055422}
   eventDrag: {fileID: 5719285484096049178}
-  collider: {fileID: 3581023165317997160}
+  hintLight: {fileID: 2213838051074973382}
   lighten: {fileID: 595244970458298620}
   lightenScale: {fileID: 8879341769714474662}
+  itemColor: {r: 0.9372549, g: 0.513707, b: 0.29019606, a: 1}
+  fusionColor: {r: 0.29019606, g: 0.9372549, b: 0.3034214, a: 1}
+  swapColor: {r: 0.49581385, g: 0.45759168, b: 0.8584906, a: 1}
 --- !u!1 &7159559045421461922
 GameObject:
   m_ObjectHideFlags: 0

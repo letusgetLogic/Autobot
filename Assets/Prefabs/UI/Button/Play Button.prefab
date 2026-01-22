@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 9132580950475491939}
+  DeactivatedParent: {fileID: 0}
   background: {fileID: 0}
   rotatedSprite: {fileID: 2574301439102984440}
   rotatedSprite2: {fileID: 3674160305602302953}
@@ -208,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2555827486814992338
 RectTransform:
   m_ObjectHideFlags: 0
@@ -283,7 +284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1065099675832114165
 RectTransform:
   m_ObjectHideFlags: 0

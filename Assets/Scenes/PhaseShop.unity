@@ -904,6 +904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 0
+  isDisableAtAwake: 0
   animTime: 1
   colorMax: 1
   colorMin: 0
@@ -2003,6 +2004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 0
+  isDisableAtAwake: 0
   animTime: 1
   colorMax: 1
   colorMin: 0
@@ -4253,6 +4255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 0
+  isDisableAtAwake: 0
   animTime: 1
   colorMax: 1
   colorMin: 0
@@ -6604,9 +6607,11 @@ MonoBehaviour:
   border: {fileID: 0}
   eventHover: {fileID: 2425711100583932335}
   eventDrag: {fileID: 0}
-  collider: {fileID: 0}
+  hintLight: {fileID: 0}
   lighten: {fileID: 0}
   lightenScale: {fileID: 0}
+  itemColor: {r: 0, g: 0, b: 0, a: 0}
+  fusionColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &4218155108117915018
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7319,11 +7324,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhaseShopUnitManager
   teamSlots:
-  - {fileID: 1137767515}
-  - {fileID: 297879730}
-  - {fileID: 396102980}
-  - {fileID: 1742289848}
   - {fileID: 1897667952}
+  - {fileID: 1742289848}
+  - {fileID: 396102980}
+  - {fileID: 297879730}
+  - {fileID: 1137767515}
   chargeSlot: {fileID: 2022055366}
   shopBotSlots:
   - {fileID: 1829035574}

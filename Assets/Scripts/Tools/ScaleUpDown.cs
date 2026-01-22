@@ -12,6 +12,7 @@ public class ScaleUpDown : MonoBehaviour
         ValidateBackToScaleMin
     }
     [SerializeField] private RunState runState = RunState.None;
+    [SerializeField] private bool isDisableAtAwake = false;
 
     [SerializeField] private float animTime = 1f;
     [SerializeField] private Vector3 scaleMax = new(1f, 1f);
@@ -31,13 +32,21 @@ public class ScaleUpDown : MonoBehaviour
     private float currentValue = 0f;
     private Vector3 defaultValue;
 
+    private void Awake()
+    {
+        if (isDisableAtAwake)
+            this.enabled = false;
+        //Debug.Log($"{gameObject.name}.{this} enabled " + this.enabled);
+    }
+
     private void OnEnable()
     {
         GetDefault();
         currentValue = 0f;
-        switch(runState)
+        switch (runState)
         {
             case RunState.None:
+                Debug.LogWarning($"{gameObject.name} Run State = None");
                 scaleState = Scale.None;
                 break;
 
@@ -82,6 +91,12 @@ public class ScaleUpDown : MonoBehaviour
     /// <param name="_isUp"></param>
     public void ScaleUp(bool _isUp)
     {
+        if (runState == RunState.None)
+        {
+            Debug.LogWarning($"{gameObject.name} Run State = None");
+            return;
+        }
+
         currentValue = _isUp ? 0f : 1f;
         scaleState = _isUp ? Scale.Up : Scale.Down;
     }
