@@ -11,12 +11,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool isNotSavingGame;
     [SerializeField] public bool IsRepairSystemActive;
 
-    [Header("Battle Speed Settings")]
-    public float DefaultSpeedMultiplier = 1f;
-    public float MaxSpeedMultiplier = 2f;
-    public float CurrentSpeedMultiplier { get; set; }
-    public bool IsDefaultMult { get; set; } = true;
-
+    //[Header("Battle Speed Settings")] 
+    //public float DefaultSpeedMultiplier = 1f;
+    //public float MaxSpeedMultiplier = 2f;
+    //public float CurrentSpeedMultiplier { get; set; }
+    //public bool IsDefaultMult { get; set; } = true;
+    //
+    // This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
 
     public GameMode Mode { get; set; }
 
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour
                 );
 
         // Set default speed multiplier for phase battle
-        CurrentSpeedMultiplier = DefaultSpeedMultiplier;
+        //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
 
     public void Switch(GameState _state, Player _player)

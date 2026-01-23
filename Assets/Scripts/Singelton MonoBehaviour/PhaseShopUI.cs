@@ -1,5 +1,4 @@
 ﻿using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PhaseShopUI : MonoBehaviour
@@ -41,6 +40,7 @@ public class PhaseShopUI : MonoBehaviour
     [Header("Charging Station")]
     [SerializeField] private GameObject chargingStation;
     [SerializeField] private TextMeshProUGUI energyText;
+    [SerializeField] private int turnToEnable = 1;
 
     public Player Player { get; private set; }
 
@@ -102,19 +102,26 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="_turn"></param>
     public void SetChargingStationAt(int _turn)
     {
-        switch (_turn)
+        if (_turn >= turnToEnable)
         {
-            case 0:
-                break;
-            case 1:
-                chargingStation.SetActive(false);
-                energyBonusLabel.SetActive(true);
-                break;
-            case >= 2:
-                chargingStation.SetActive(true);
-                energyBonusLabel.SetActive(false);
-                break;
+            chargingStation.SetActive(true);
         }
+        else
+        {
+            chargingStation.SetActive(false);
+        }
+
+            switch (_turn)
+            {
+                case 0:
+                    break;
+                case 1:
+                    energyBonusLabel.SetActive(true);
+                    break;
+                case >= 2:
+                    energyBonusLabel.SetActive(false);
+                    break;
+            }
         energyText.text = "+" + PackManager.Instance.MyPack.ChargingEnergy.Value.ToString();
     }
 
@@ -354,13 +361,7 @@ public class PhaseShopUI : MonoBehaviour
     {
         bool value = true;
 
-        if (_nuts > 0 || _tools > 0)
-            return false;
-
-        if (_nuts == 0 && _tools == 0)
-            return false;
-
-        if (Player.Data.Nuts + _nuts < 0)
+       if (Player.Data.Nuts + _nuts < 0)
         {
             if (_activeHint)
                 HintNotEnoughCoins();

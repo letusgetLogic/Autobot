@@ -23,7 +23,7 @@ public class SoundManager : MonoBehaviour
 
         EventManager.Instance.OnRoll += PlayCoinSound;
         EventManager.Instance.OnRepair += PlayCoinSound;
-        EventManager.Instance.OnRepair += PlayCoinSound;
+        EventManager.Instance.OnRecycle += PlayCoinSound;
         EventManager.Instance.OnLock += PlayLockSound;
         EventManager.Instance.OnUnlock += PlayUnlockSound;
 

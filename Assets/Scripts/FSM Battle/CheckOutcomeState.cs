@@ -73,7 +73,7 @@ public class CheckOutcomeState : StateBase
                     PhaseBattleController.Instance.Player2.Data);
             }
 
-            PhaseBattleView.Instance.SetSpeedButton(false);
+            //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
         }
         else
@@ -95,7 +95,7 @@ public class CheckOutcomeState : StateBase
               PhaseBattleController.Instance.Player1.Data,
               PhaseBattleController.Instance.Player2.Data);
 
-            PhaseBattleView.Instance.SetSpeedButton(false);
+            //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
         }
     }

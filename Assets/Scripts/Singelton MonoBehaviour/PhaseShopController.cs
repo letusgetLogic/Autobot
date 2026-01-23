@@ -5,7 +5,7 @@ using UnityEngine;
 public class PhaseShopController : MonoBehaviour
 {
     public static PhaseShopController Instance { get; private set; }
-
+   
     [Header("References")]
     [Header("Slots")]
     [SerializeField] private Slot[] teamSlots;

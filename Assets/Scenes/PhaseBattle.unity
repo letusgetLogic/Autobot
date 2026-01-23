@@ -1261,7 +1261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -120, y: -100}
+  m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 100, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &365003929
@@ -1854,7 +1854,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &535392213
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5121,9 +5121,6 @@ MonoBehaviour:
   wins2: {fileID: 0}
   lives2: {fileID: 171584344}
   label: {fileID: 958982018}
-  speedButton: {fileID: 535392212}
-  defaultMult: {fileID: 755141450}
-  maxMult: {fileID: 1597129682}
   playButton: {fileID: 365003927}
   play: {fileID: 853368490}
   stop: {fileID: 378951886}

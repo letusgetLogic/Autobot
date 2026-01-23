@@ -16,10 +16,11 @@ public class PhaseBattleView : MonoBehaviour
     [Header("Info Label")]
     [SerializeField] private TextMeshProUGUI label;
 
-    [Header("Speed Controller")]
-    [SerializeField] private GameObject speedButton;
-    [SerializeField] private TextMeshProUGUI defaultMult;
-    [SerializeField] private TextMeshProUGUI maxMult;
+    // This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
+    //[Header("Speed Controller")]
+    //[SerializeField] private GameObject speedButton;
+    //[SerializeField] private TextMeshProUGUI defaultMult;
+    //[SerializeField] private TextMeshProUGUI maxMult;
 
     [Header("Running states")]
     [SerializeField] private GameObject playButton;
@@ -53,9 +54,10 @@ public class PhaseBattleView : MonoBehaviour
         if (wins2) wins2.text = _player2.Wins.ToString();
         if (lives2) lives2.text = _player2.Lives.ToString();
 
-        defaultMult.text = GameManager.Instance.DefaultSpeedMultiplier.ToString();
-        maxMult.text = GameManager.Instance.MaxSpeedMultiplier.ToString();
-        ShowSpeedMult();
+        // This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
+        //defaultMult.text = GameManager.Instance.DefaultSpeedMultiplier.ToString();
+        //maxMult.text = GameManager.Instance.MaxSpeedMultiplier.ToString();
+        //ShowSpeedMult();
     }
 
     /// <summary>
@@ -76,46 +78,47 @@ public class PhaseBattleView : MonoBehaviour
     /// <param name="_isGameOver"></param>
     public void ShowWinner(string _winner, bool _isGameOver)
     {
+        playButton.SetActive(false);
         label.text = $"{_winner} won this {(_isGameOver ? "game" : "battle")}!";
         label.enabled = true;
     }
 
 
-    #region Speed Controller
+    #region Speed Controller - This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
 
-    /// <summary>
-    /// Sets the speed multiplier active true/false.
-    /// </summary>
-    /// <param name="_value"></param>
-    public void SetSpeedButton(bool _value)
-    {
-        playButton.SetActive(_value);
-        speedButton.SetActive(_value);
-    }
+    ///// <summary>
+    ///// Sets the speed multiplier active true/false.
+    ///// </summary>
+    ///// <param name="_value"></param>
+    //public void SetSpeedButton(bool _value)
+    //{
+    //    playButton.SetActive(_value);
+    //    speedButton.SetActive(_value);
+    //}
 
-    /// <summary>
-    /// Switchs speed multipliers.
-    /// </summary>
-    public void SetMultiplier()
-    {
-        GameManager.Instance.IsDefaultMult = !GameManager.Instance.IsDefaultMult;
+    ///// <summary>
+    ///// Switchs speed multipliers.
+    ///// </summary>
+    //public void SetMultiplier()
+    //{
+    //    GameManager.Instance.IsDefaultMult = !GameManager.Instance.IsDefaultMult;
 
-        GameManager.Instance.CurrentSpeedMultiplier =
-            GameManager.Instance.IsDefaultMult
-            ? GameManager.Instance.DefaultSpeedMultiplier
-            : GameManager.Instance.MaxSpeedMultiplier;
+    //    GameManager.Instance.CurrentSpeedMultiplier =
+    //        GameManager.Instance.IsDefaultMult
+    //        ? GameManager.Instance.DefaultSpeedMultiplier
+    //        : GameManager.Instance.MaxSpeedMultiplier;
 
-       ShowSpeedMult();
-    }
+    //   ShowSpeedMult();
+    //}
 
-    /// <summary>
-    /// Shows the speed nultiplier based on boolean.
-    /// </summary>
-    private void ShowSpeedMult()
-    {
-        defaultMult.enabled = GameManager.Instance.IsDefaultMult;
-        maxMult.enabled = !GameManager.Instance.IsDefaultMult;
-    }
+    ///// <summary>
+    ///// Shows the speed nultiplier based on boolean.
+    ///// </summary>
+    //private void ShowSpeedMult()
+    //{
+    //    defaultMult.enabled = GameManager.Instance.IsDefaultMult;
+    //    maxMult.enabled = !GameManager.Instance.IsDefaultMult;
+    //}
 
     #endregion
 

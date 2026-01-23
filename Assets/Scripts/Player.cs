@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
         if (phaseShop == null)
             return;
 
+        phaseShop.SetAttachedGameObject(null);
+
         float delay = 0f;
 
         //// from turn 2 charge energy at start of shop.

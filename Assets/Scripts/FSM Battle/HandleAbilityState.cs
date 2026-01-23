@@ -21,7 +21,7 @@ public class HandleAbilityState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        if (TimeCount < 0)
+        if (TimeCount < 0f)
         {
             TimeCount += _speed;
         }
@@ -55,7 +55,8 @@ public class HandleAbilityState : StateBase
             Debug.Log($"{ability.ToString()} dequeue/activate");
             Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities left");
 
-            ability.Handle(0f, false, true);
+            PhaseBattleController.Instance.StartCoroutine(ability.Handle(
+                PhaseBattleController.Instance.Process.DelayHideAbilityDescription, false));
         }
         else
             isDone = true;

@@ -38,7 +38,7 @@ public class Craft : AbilityBase
         if (PhaseShopController.Instance != null)
             duration = PhaseShopController.Instance.Process.DurationDelayCraft;
         if (PhaseBattleController.Instance != null)
-            duration = PhaseBattleController.Instance.Process.DurationDelayCraft;
+            duration = PhaseBattleController.Instance.Process.DelayCraft;
 
         yield return new WaitForSeconds(duration);
 

@@ -26,32 +26,25 @@ public abstract class AbilityBase
     /// Shows and hides with the given delay time, and executes the ability.
     /// </summary>
     /// <param name="_delayHideDescription"></param>
+    /// <param name="_isDestroying"></param>
     /// <returns></returns>
-    public IEnumerator Handle(float _delayHideDescription, bool _isDestroying, bool _timeOfBattle)
+    public IEnumerator Handle(float _delayHideDescription, bool _isDestroying)
     {
         Controller.View.SetDescriptionActive(true);
 
-        // Consume energy
         if (CurrentLevel.ConsumedEnergy != null)
-            Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
+             Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
 
         Activate();
 
-        if (!_timeOfBattle)
+        yield return new WaitForSeconds(_delayHideDescription);
         {
-            yield return new WaitForSeconds(_delayHideDescription);
+            if (Controller != null)
+                Controller.View.SetDescriptionActive(false);
 
-            HideDescription(_isDestroying);
+            if (_isDestroying)
+                Controller.DestroyObject();
         }
-    }
-
-    public void HideDescription(bool _isDestroying)
-    {
-        if (Controller != null)
-            Controller.View.SetDescriptionActive(false);
-
-        if (_isDestroying)
-            Controller.DestroyObject();
     }
 
     /// <summary>
@@ -68,9 +61,9 @@ public abstract class AbilityBase
     /// <param name="_slot"></param>
     /// <returns></returns>
     public static AbilityBase GetAbility(
-        UnitController _controller, 
-        Level _level, 
-        Slot[] _teamSlots, 
+        UnitController _controller,
+        Level _level,
+        Slot[] _teamSlots,
         Slot _slot,
         UnitController _targetedByItem)
     {
@@ -110,7 +103,7 @@ public abstract class AbilityBase
                 return false;
 
         if (_duration == AbilityDuration.UntilNextTurn)
-                return false;
+            return false;
 
         return false;
     }

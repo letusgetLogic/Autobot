@@ -92,7 +92,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         if (state == null)
             return;
 
-        float speed = IsRunning * Time.deltaTime * GameManager.Instance.CurrentSpeedMultiplier;
+        float speed = IsRunning * Time.deltaTime/* * GameManager.Instance.CurrentSpeedMultiplier*/;
 
         state.OnUpdate(this, speed);
     }
@@ -124,7 +124,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         Player2 = _player2;
 
         StartBattle?.Invoke();
-        PhaseBattleView.Instance.SetSpeedButton(true);
+        //PhaseBattleView.Instance.SetSpeedButton(true);
 
         Player1.StartBattle();
         Player2.StartBattle();
