@@ -337,7 +337,7 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the activity of the repair panels.
+    /// Sets the activity of the repair panels / layers.
     /// </summary>
     /// <param name="_panel2"></param>
     /// <param name="_panel3"></param>

@@ -364,11 +364,11 @@ public class UnitModel
         Data.SetTempBuffHP(Data.TempBuff.HP + GetAddValue(ref remainFill_HP, _buffTemp.HP));
         Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTemp.ATK));
 
-        int hp = GetAverage(Data.Cur.HP, _otherCurrent.HP);
-        int atk = GetAverage(Data.Cur.ATK, _otherCurrent.ATK);
+        int hp = Repair == null ? Data.Cur.HP : GetAverage(Data.Cur.HP, _otherCurrent.HP);
+        int atk = Repair == null ? Data.Cur.ATK : GetAverage(Data.Cur.ATK, _otherCurrent.ATK);
 
-        int addHP = Repair != null ? 0 : _basis.HP + _buff.HP + _buffTemp.HP;
-        int addATK = Repair != null ? 0 : _basis.ATK + _buff.ATK + _buffTemp.ATK;
+        int addHP = Repair == null ? _basis.HP + _buff.HP + _buffTemp.HP : 0;
+        int addATK = Repair == null ? _basis.ATK + _buff.ATK + _buffTemp.ATK : 0;
 
         Data.SetHP(hp + addHP, Repair == null ? null : Repair.SetRepairPanel);
         Data.SetATK(atk + addATK);
@@ -393,13 +393,9 @@ public class UnitModel
     /// <returns></returns>
     private int GetAverage(int _current, int _addCurrent)
     {
-        if (Repair != null)
-        {
-            return MathCalculator.RoundAverageBasedReference(_current, _addCurrent, _current + _addCurrent);
-            //int sum = _current + _addCurrent;
-            //return Mathf.RoundToInt(sum * 0.5f);
-        }
-        return _current;
+        //int sum = _current + _addCurrent;
+        //return Mathf.RoundToInt(sum * 0.5f);
+        return MathCalculator.RoundAverageBasedReference(_current, _addCurrent, _current + _addCurrent);
     }
 
     /// <summary>
