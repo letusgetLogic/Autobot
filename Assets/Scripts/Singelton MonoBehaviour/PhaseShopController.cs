@@ -50,6 +50,8 @@ public class PhaseShopController : MonoBehaviour
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
 
+
+        GameManager.Instance.Switch(GameState.StartOfTurn);
         GameManager.Instance.PhaseShopIndex++;
         Debug.Log("PhaseShop " + GameManager.Instance.PhaseShopIndex);
     }
@@ -118,7 +120,7 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.Done:
-                GameManager.Instance.Switch(GameState.ShopPhase, null);
+                GameManager.Instance.Switch(GameState.ShopPhase);
                 SetStartTurn(StartTurnState.None);
                 break;
 

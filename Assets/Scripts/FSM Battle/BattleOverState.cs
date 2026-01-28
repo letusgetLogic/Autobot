@@ -18,13 +18,16 @@ public class BattleOverState : StateBase
         player1.EndBattle();
         player2.EndBattle();
 
+        // continue the game, when both have more than 0 lives.
         if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
         {
-            GameManager.Instance.Switch(GameState.EndOfBattle, null);
+            PhaseBattleController.Instance.SetDetectClickActive(true);
+            GameManager.Instance.Switch(GameState.EndOfBattle);
             _ctx.SetState(null);
-
             return;
         }
+
+        // end game
         if (player1.Data.Lives == 0)
         {
             PhaseBattleView.Instance.ShowWinner(player2.Data.Name, true);
@@ -43,7 +46,7 @@ public class BattleOverState : StateBase
         }
         else
         {
-            GameManager.Instance.Switch(GameState.EndOfGame, null);
+            GameManager.Instance.Switch(GameState.EndOfGame);
         }
     }
 }

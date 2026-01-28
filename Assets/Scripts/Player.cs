@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,7 +8,7 @@ public class Player : MonoBehaviour
     public UnitController[] BattleUnits;
 
 
-     /// <summary>
+    /// <summary>
     /// Starts the phase shop.
     /// </summary>
     public void StartShop()
@@ -19,7 +18,10 @@ public class Player : MonoBehaviour
 
         var phaseShop = PhaseShopController.Instance;
         if (phaseShop == null)
+        {
+            Debug.LogError("PhaseShop is null");
             return;
+        }
 
         phaseShop.Initialize(this);
 
@@ -32,7 +34,10 @@ public class Player : MonoBehaviour
     {
         var phaseShop = PhaseShopController.Instance;
         if (phaseShop == null)
+        {
+            Debug.LogError("PhaseShop is null");
             return;
+        }
 
         phaseShop.SetAttachedGameObject(null);
 
@@ -65,7 +70,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(_delay);
 
         UpdateUnitData();
-        GameManager.Instance.Switch(GameState.EndOfTurn, null);
+        GameManager.Instance.Switch(GameState.EndOfTurn);
     }
 
     /// <summary>

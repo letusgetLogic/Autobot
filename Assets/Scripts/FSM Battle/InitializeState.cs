@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class InitializeState : StateBase
 {
@@ -14,7 +15,7 @@ public class InitializeState : StateBase
     {
         Debug.Log(PhaseBattleController.Instance.Player1.Data.Turn);
         Debug.Log("--- InitState");
-        Initialize();
+        PhaseBattleController.Instance.StartCoroutine(Initialize());
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
@@ -34,8 +35,10 @@ public class InitializeState : StateBase
     /// <summary>
     /// Initializes the unit team of players.
     /// </summary>
-    private void Initialize()
+    private IEnumerator Initialize()
     {
+        yield return new WaitUntil(() => PhaseBattleView.Instance != null);
+
         PhaseBattleView.Instance.Initialize(
             PhaseBattleController.Instance.Player1.Data,
             PhaseBattleController.Instance.Player2.Data);

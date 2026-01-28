@@ -19,6 +19,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [SerializeField]
     private Slot[] slots2;
 
+    [Header("Detect Click Enviroment")]
+    [SerializeField] private GameObject detectClickEnviroment;
+
     private StateBase state { get;set; }
 
     public Player Player1 { get; private set; }
@@ -66,6 +69,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         Instance = this;
 
         Time.timeScale = 1f;
+        detectClickEnviroment.SetActive(false);
+        GameManager.Instance.Switch(GameState.StartOfBattle);
     }
 
     private void Start()
@@ -153,6 +158,15 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         {
             slot.HideDescription();
         }
+    }
+
+    /// <summary>
+    /// Set the detect click active or not.
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetDetectClickActive(bool _value)
+    {
+        detectClickEnviroment.SetActive(_value);
     }
 
     /// <summary>

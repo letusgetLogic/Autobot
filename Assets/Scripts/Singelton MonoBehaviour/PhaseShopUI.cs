@@ -42,6 +42,9 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI energyText;
     [SerializeField] private int turnToEnable = 1;
 
+    [Header("Detect Click Enviroment")]
+    [SerializeField] private GameObject detectClickEnviroment;
+
     public Player Player { get; private set; }
 
     private Currency rollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
@@ -67,6 +70,7 @@ public class PhaseShopUI : MonoBehaviour
             toolLabel.transform.parent.parent.gameObject.SetActive(false);
         }
 
+        detectClickEnviroment.SetActive(false);
         SetButtonActive(null);
     }
 
@@ -154,6 +158,7 @@ public class PhaseShopUI : MonoBehaviour
 
         EventManager.Instance.OnEndTurn?.Invoke();
         GameManager.Instance.IsBlockingInput = true;
+        detectClickEnviroment.SetActive(true);
         Player.EndShop();
     }
 

@@ -1,6 +1,9 @@
 ﻿public enum GameState
 {
     None,
+
+    PlayCutScene,
+    WaitingSwitchScene,
     LoadScene,
 
     StartOfTurn,

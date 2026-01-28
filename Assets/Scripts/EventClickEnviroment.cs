@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
 {
@@ -9,6 +10,14 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
+        var game = GameManager.Instance.CurrentGame;
+        if (game != null && game.State == GameState.WaitingSwitchScene)
+        {
+            GameManager.Instance.Switch(GameState.LoadScene);
+            return;
+        }
+
+
         switch (GameManager.Instance.SceneName)
         {
             case "PhaseShop":

@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CutScene : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class CutScene : MonoBehaviour
     [SerializeField] private RectTransform coverPanelClose;
     [SerializeField] private float delayOpen = 1f;
     [SerializeField] private float delayClose = 1f;
+    [SerializeField] private MoveToTarget hintClick;
 
     public ScaleUpDown OpenPanel => coverPanelOpen.GetComponent<ScaleUpDown>();
     public ScaleUpDown ClosePanel => coverPanelClose.GetComponent<ScaleUpDown>();
@@ -57,10 +57,17 @@ public class CutScene : MonoBehaviour
     {
         yield return new WaitForSeconds(delayClose);
 
+        GameManager.Instance.SceneToLoad = _scene;
         ClosePanel.ScaleUp(true);
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
-        Debug.Log("Loading Scene: " + _scene);
-        SceneManager.LoadScene(_scene);
+
+        //SceneManager.LoadScene(GameManager.Instance.SceneToLoad);
+
+        GameManager.Instance.Switch(GameState.WaitingSwitchScene);
+
+        if (hintClick != null)
+            hintClick.Trigger();
     }
+
 }
