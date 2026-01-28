@@ -9,15 +9,13 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     private Slot slot { get; set; }
     private float countDown { get; set; }
     private bool isCounting { get; set; }
-    private int direction { get; set; }
 
-    private GameObject unitOnSlot { get; set; }
-    private GameObject unitDragged { get; set; }
+    private UnitController unitOnSlot { get; set; }
+    private UnitController unitDragged { get; set; }
     private Slot draggedSlot { get; set; }
-    private bool isFusible { get; set; }
 
 
-    private void Start()
+    private void OnEnable()
     {
         slot = transform.parent.GetComponent<Slot>();
     }
@@ -31,12 +29,15 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopController.Instance.AttachedGameObject == null &&
-            (eventData.pointerDrag == null ||
-            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit() == null))
+        if (PhaseShopController.Instance.IsBlockingInputsByItemRandomness(slot)) 
             return;
 
-        slot.Border.enabled = true;
+        if (PhaseShopController.Instance.AttachedController != null ||
+            (eventData.pointerDrag != null &&
+            eventData.pointerDrag.transform.parent.GetComponent<Slot>().Unit() != null))
+        {
+            slot.SetIndicatorActive(true);
+        }
     }
 
     private void OnMouseOver()
@@ -44,18 +45,24 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (GameManager.Instance.IsBlockingInput)
             return;
 
+        if (PhaseShopController.Instance.IsBlockingInputsByItemRandomness(slot))
+            return;
+
         if (PhaseShopController.Instance.IsDragging && CanPushOther())
         {
             if (!isCounting)
             {
-               unitOnSlot = slot.Unit();
-               unitDragged = PhaseShopController.Instance.AttachedGameObject;
-               draggedSlot = unitDragged.GetComponent<UnitController>().Slot;
+                //Initialize references
+                unitOnSlot = slot.UnitController();
+                unitDragged = PhaseShopController.Instance.AttachedController;
+                draggedSlot = unitDragged.GetComponent<UnitController>().Slot;
 
-               isFusible = PhaseShopController.Instance.IsFusible(
+                // Check if unit on slot is fusible with attached.
+                bool isFusible = PhaseShopController.Instance.IsFusible(
                     slot.UnitController(),
-                    unitDragged.GetComponent<UnitController>());
+                    unitDragged);
 
+                // Set countdown based on fusibility.
                 countDown = isFusible ?
                 PhaseShopController.Instance.Process.DelayPushingFusion :
                 PhaseShopController.Instance.Process.DelayPushing;
@@ -77,8 +84,8 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
                 PhaseShopController.Instance.SetAttachedGameObject(null);
 
                 StartCoroutine(PhaseShopController.Instance.Swap(
-                    unitOnSlot.GetComponent<UnitController>(), draggedSlot.transform,
-                    unitDragged.GetComponent<UnitController>(), slot.transform));
+                    unitOnSlot, draggedSlot.transform,
+                    unitDragged, slot.transform));
 
                 //PhaseShopUnitManager.Instance.Transport(unitOnSlot, draggedSlot.transform, true, false);
                 //PhaseShopUnitManager.Instance.Transport(unitDragged, slot.transform, true, false);
@@ -95,7 +102,6 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         unitOnSlot = default;
         unitDragged = default;
         draggedSlot = default;
-        isFusible = default;
     }
 
     /// <summary>
@@ -134,7 +140,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     /// <returns></returns>
     private bool CanPushOther()
     {
-        var attached = PhaseShopController.Instance.AttachedGameObject;
+        var attached = PhaseShopController.Instance.AttachedController;
 
         // if attached game object is null, return false.
         if (attached == null)

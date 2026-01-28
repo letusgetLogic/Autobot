@@ -30,7 +30,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         slot.UnitView().BeingAttached(eventData);
 
-        PhaseShopController.Instance.SwitchAttached(slot.Unit(), slot.UnitController().Model);
+        PhaseShopController.Instance.SwitchAttached(slot.UnitController());
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
-       
+
         if (slot.UnitView() == null)
             return;
 
@@ -72,6 +72,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
 
         slot.UnitView().BeingReleased(eventData);
+
         PhaseShopController.Instance.SetAttachedGameObject(null);
     }
 }

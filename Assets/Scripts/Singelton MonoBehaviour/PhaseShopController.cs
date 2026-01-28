@@ -5,13 +5,14 @@ using UnityEngine;
 public class PhaseShopController : MonoBehaviour
 {
     public static PhaseShopController Instance { get; private set; }
-   
+
     [Header("References")]
     [Header("Slots")]
     [SerializeField] private Slot[] teamSlots;
     [SerializeField] private Slot chargeSlot;
     [SerializeField] private Slot[] shopBotSlots;
     [SerializeField] private Slot[] shopItemSlots;
+    [SerializeField] private Slot itemRandomnessDropSlot;
     public Slot ChargeSlot => chargeSlot;
 
     [Header("Settings")]
@@ -20,7 +21,13 @@ public class PhaseShopController : MonoBehaviour
 
     public Player Player { get; private set; }
 
-    public GameObject AttachedGameObject { get; private set; }
+    public UnitController AttachedController { get; private set; }
+
+    /// <summary>
+    /// Blocks hover and drop events in team slots and charge slots. 
+    /// When an item has randomness ability and being attached, only the drop slot for it can being hovered.
+    /// </summary>
+    private bool isRandomnessItemAttached { get; set; } = false;
 
     /// <summary>
     /// To prevent pushing other away while an unit is attached by mouse click and
@@ -49,6 +56,9 @@ public class PhaseShopController : MonoBehaviour
 
     private void OnEnable()
     {
+        if (itemRandomnessDropSlot != null)
+            itemRandomnessDropSlot.gameObject.SetActive(false);
+
         EventManager.Instance.OnSettingAttachedObject += () => SetDropHint(true);
         EventManager.Instance.OnSettingNullObject += () => SetDropHint(false);
     }
@@ -333,7 +343,7 @@ public class PhaseShopController : MonoBehaviour
                 // then check if the slot is empty,
                 if (_target == null)
                     // transport the unit to it,
-                    Transport(_attached.gameObject, _targetSlot.transform, true, true);
+                    Transport(_attached, _targetSlot.transform, true, true);
                 else
                     // else fusion, if both are fusible.
                     if (IsFusible(_target, _attached))
@@ -343,6 +353,12 @@ public class PhaseShopController : MonoBehaviour
                 }
             }
         }
+        // Set drop slot inactive for randomness item.
+        if (itemRandomnessDropSlot != null &&
+            itemRandomnessDropSlot.gameObject.activeSelf)
+        {
+            itemRandomnessDropSlot.gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -351,7 +367,7 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_targetedSlot"></param>
     private void Buy(UnitController _purchased, Slot _targetSlot, UnitController _target)
     {
-        if (_target != null) // on drop, not on click
+        if (_target != null || _purchased.Model.IsItemDoRandomness) // on drop, not on click
         {
             // case: buy & destroy item
             if (_purchased.Model.Data.UnitType == UnitType.Item)
@@ -384,7 +400,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                    _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                Transport(AttachedGameObject, _targetSlot.transform, true, true);
+                Transport(_purchased, _targetSlot.transform, true, true);
 
                 _purchased.TriggerCraft();
             }
@@ -398,7 +414,7 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_dropSlot"></param>
     /// <param name="_mouseRelease"> unitView.BeingReleased(null); </param>
     /// <param name="_disableShadow">  unitView.Shadow.enabled = false;</param>
-    public void Transport(GameObject _attached, Transform _dropSlot,
+    public void Transport(UnitController _attached, Transform _dropSlot,
         bool _mouseRelease, bool _disableShadow)
     {
         HideDescriptionByTransport();
@@ -406,12 +422,11 @@ public class PhaseShopController : MonoBehaviour
         if (_attached == null)
             return;
 
-        _attached.transform.parent.GetComponent<Slot>().Border.enabled = false;
+        _attached.transform.parent.GetComponent<Slot>().SetIndicatorActive(false);
         _attached.transform.SetParent(_dropSlot, false);
 
-        var controller = _attached.GetComponent<UnitController>();
-        var model = controller.Model;
-        var view = controller.View;
+        var model = _attached.Model;
+        var view = _attached.View;
 
         if (model != null)
         {
@@ -487,8 +502,8 @@ public class PhaseShopController : MonoBehaviour
         // Search empty slot and push the other to it.
         while (search >= 0 && search < teamSlots.Length)
         {
-            if (teamSlots[search].Unit() != null &&
-                teamSlots[search].Unit() != AttachedGameObject) // slot is occupied
+            if (teamSlots[search].UnitController() != null &&
+                teamSlots[search].UnitController() != AttachedController) // slot is occupied
             {
                 search += _direction; // continue search for an emnpty space
             }
@@ -498,25 +513,23 @@ public class PhaseShopController : MonoBehaviour
                 {
                     int previous = empty - _direction; // swap the previous slot index to the empty slot index
 
-                    var movedUnit = teamSlots[previous].Unit();
+                    var movedUnit = teamSlots[previous].UnitController();
                     if (movedUnit == null ||
-                        movedUnit == AttachedGameObject) // unit being moved is null or self, break foe loop
+                        movedUnit == AttachedController) // unit being moved is null or self, break foe loop
                         break;
                     Transport(movedUnit, teamSlots[empty].transform, false, false);
                 }
 
-                if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
+                if (AttachedController.Model.Data.UnitState
                     == UnitState.InSlotTeam)
                 {
-                    Transport(AttachedGameObject, teamSlots[_target].transform, true, false);
+                    Transport(AttachedController, teamSlots[_target].transform, true, false);
                     SetAttachedGameObject(null);
-
-                    //PreventDragging = true;
                 }
-                else if (AttachedGameObject.GetComponent<UnitController>().Model.Data.UnitState
+                else if (AttachedController.Model.Data.UnitState
                     == UnitState.InSlotShop)
                 {
-                    teamSlots[_target].Border.enabled = true;
+                    teamSlots[_target].SetIndicatorActive(true);
                 }
 
                 return;
@@ -563,35 +576,34 @@ public class PhaseShopController : MonoBehaviour
         return false;
     }
 
-    public void SwitchAttached(GameObject _unit, UnitModel _model)
+    public void SwitchAttached(UnitController _unit)
     {
         SetAttachedGameObject(null);
         SetAttachedGameObject(_unit);
-        PhaseShopUI.Instance.SetButtonActive(_model);
+        PhaseShopUI.Instance.SetButtonActive(_unit.Model);
     }
 
     /// <summary>
     /// Sets attached game object being clicked or dragged.
     /// </summary>
     /// <param name="_target"></param>
-    public void SetAttachedGameObject(GameObject _target)
+    public void SetAttachedGameObject(UnitController _target)
     {
         if (_target == null)
         {
             // previous attached object border disable
-            if (AttachedGameObject != null)
-                AttachedGameObject.transform.parent.
-                    GetComponent<Slot>().Border.enabled = false;
+            if (AttachedController != null)
+                AttachedController.Slot.SetIndicatorActive(false);
 
             PhaseShopUI.Instance.SetButtonActive(null);
-            AttachedGameObject = _target;
+            AttachedController = _target;
             EventManager.Instance.OnSettingNullObject?.Invoke();
             //Debug.Log("OnNullObject");
         }
         else
         {
-            _target.transform.parent.GetComponent<Slot>().Border.enabled = true;
-            AttachedGameObject = _target;
+            _target.Slot.SetIndicatorActive(true);
+            AttachedController = _target;
             EventManager.Instance.OnSettingAttachedObject?.Invoke();
             //Debug.Log("OnAttachedObject " + AttachedGameObject.gameObject.name);
         }
@@ -614,19 +626,42 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_value"></param>
     private void SetDropHint(bool _value)
     {
-        if (AttachedGameObject != null)
+        if (AttachedController != null)
         {
-            var controller = AttachedGameObject.GetComponent<UnitController>();
-            if (controller != null && controller.Model.IsInShop())
+            if (AttachedController.Model.IsInShop())
             {
                 if (PhaseShopUI.Instance.HasEnoughCurrency(
-                    controller.Model.Cost.Nut, controller.Model.Cost.Tool, false) == false)
+                    AttachedController.Model.Cost.Nut, AttachedController.Model.Cost.Tool, false) == false)
                     return;
+
+                if (AttachedController.Model.IsItemDoRandomness)
+                {
+                    if (itemRandomnessDropSlot != null)
+                    {
+                        isRandomnessItemAttached = true;
+                        itemRandomnessDropSlot.gameObject.SetActive(true);
+                        Debug.Log("Set drop hint true for randomness item");
+                    }
+                }
             }
         }
-       
+
+        if (_value == false)
+        {
+            if (itemRandomnessDropSlot != null)
+            {
+                if (!IsDragging)
+                {
+                    isRandomnessItemAttached = false;
+                    itemRandomnessDropSlot.gameObject.SetActive(false);
+                    Debug.Log("Set drop hint false");
+                }
+
+            }
+        }
+
         //Debug.Log("Set drop hint: " + _value);
-        
+
         int debugCount = -1;
 
         foreach (var slot in teamSlots)
@@ -640,8 +675,15 @@ public class PhaseShopController : MonoBehaviour
 
             slot.SetHintLight(ColorIndex(slot));
 
-            slot.Lighten.enabled = ColorIndex(slot) == 0 ? false : _value;
+            slot.LightenUpDown.enabled = ColorIndex(slot) == 0 ? false : _value;
             slot.LightenScale.enabled = ColorIndex(slot) == 0 ? false : _value;
+        }
+
+        // Not hint charging station
+        if (AttachedController != null &&
+            AttachedController.Model.Data.UnitType == UnitType.Item)
+        {
+            return;
         }
 
         // Charging station
@@ -654,7 +696,7 @@ public class PhaseShopController : MonoBehaviour
 
         chargeSlot.SetHintLight(ColorIndex(chargeSlot));
 
-        chargeSlot.Lighten.enabled = ColorIndex(chargeSlot) == 0 ? false : _value;
+        chargeSlot.LightenUpDown.enabled = ColorIndex(chargeSlot) == 0 ? false : _value;
         chargeSlot.LightenScale.enabled = ColorIndex(chargeSlot) == 0 ? false : _value;
 
         //Debug.Log("isDroppable " + isDroppable);
@@ -668,17 +710,15 @@ public class PhaseShopController : MonoBehaviour
     /// <returns></returns>
     private int ColorIndex(Slot _slot)
     {
-        if (AttachedGameObject == null)
+        if (AttachedController == null)
             return 0;
-
-        var attachedController = AttachedGameObject.GetComponent<UnitController>();
 
         bool slotEmpty = _slot.Unit() == null;
 
-        bool isFusible = slotEmpty ? false : IsFusible(_slot.UnitController(), attachedController);
+        bool isFusible = slotEmpty ? false : IsFusible(_slot.UnitController(), AttachedController);
 
-        bool isAttachedItem = attachedController.Model.Data.UnitType == UnitType.Item;
-        bool isAttachedBotInShop = attachedController.Model.IsRobotInShop();
+        bool isAttachedItem = AttachedController.Model.Data.UnitType == UnitType.Item;
+        bool isAttachedBotInShop = AttachedController.Model.IsRobotInShop();
 
         // is attached item? and slot empty? yes / no ->
         return isAttachedItem ? (slotEmpty ? 0 : 2) :
@@ -729,5 +769,32 @@ public class PhaseShopController : MonoBehaviour
                 activeSlots.Add(slot);
         }
         return activeSlots.ToArray();
+    }
+
+    /// <summary>
+    /// Is blocking inputs by randomness item being attached?
+    /// </summary>
+    /// <param name="_slot"></param>
+    /// <returns></returns>
+    public bool IsBlockingInputsByItemRandomness(Slot _slot)
+    {
+        if (AttachedController == null)
+            return false;
+        return isRandomnessItemAttached && (_slot != AttachedController.Slot && _slot != itemRandomnessDropSlot);
+    }
+
+    /// <summary>
+    /// Is blocking drop by randomness item being attached?
+    /// </summary>
+    /// <param name="_slot"></param>
+    /// <returns></returns>
+    public bool IsBlockingDropByItemRandomness(Slot _slot)
+    {
+        return isRandomnessItemAttached && _slot != itemRandomnessDropSlot;
+    }
+
+    public void SetItemRandomnessInactive()
+    {
+        itemRandomnessDropSlot.gameObject.SetActive(false);
     }
 }

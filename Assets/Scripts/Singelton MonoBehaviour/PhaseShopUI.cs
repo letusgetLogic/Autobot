@@ -167,10 +167,9 @@ public class PhaseShopUI : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedController.CompareTag("Unit"))
         {
-            var unit = PhaseShopController.Instance.AttachedGameObject.
-                GetComponent<UnitController>();
+            var unit = PhaseShopController.Instance.AttachedController;
 
             if (!HasEnoughCurrency( unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool, true))
                 return;
@@ -193,12 +192,11 @@ public class PhaseShopUI : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedController.CompareTag("Unit"))
         {
             EventManager.Instance.OnLock?.Invoke();
 
-            var unit = PhaseShopController.Instance.AttachedGameObject.
-               GetComponent<UnitController>();
+            var unit = PhaseShopController.Instance.AttachedController; 
 
             unit.Model.SetData(UnitState.Freezed);
 
@@ -214,12 +212,11 @@ public class PhaseShopUI : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedController.CompareTag("Unit"))
         {
             EventManager.Instance.OnUnlock?.Invoke();
 
-            var unit = PhaseShopController.Instance.AttachedGameObject.
-             GetComponent<UnitController>();
+            var unit = PhaseShopController.Instance.AttachedController;
 
             unit.Model.SetData(UnitState.InSlotShop);
 
@@ -240,10 +237,9 @@ public class PhaseShopUI : MonoBehaviour
         SetButtonActive(null);
         DeactivateManageButtons();
 
-        if (PhaseShopController.Instance.AttachedGameObject.CompareTag("Unit"))
+        if (PhaseShopController.Instance.AttachedController.CompareTag("Unit"))
         {
-            var unit = PhaseShopController.Instance.AttachedGameObject.
-                GetComponent<UnitController>();
+            var unit = PhaseShopController.Instance.AttachedController;
 
             if (!HasEnoughCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool, true))
                 return;

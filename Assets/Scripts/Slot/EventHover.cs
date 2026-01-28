@@ -15,6 +15,7 @@ public class EventHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         Data = eventData;
+        Debug.Log("Pointer entered: " + gameObject.name);
         OnMouseOverEvent?.Invoke();
     }
 

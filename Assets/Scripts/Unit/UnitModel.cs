@@ -50,6 +50,8 @@ public class UnitModel
         }
     }
 
+    public bool IsItemDoRandomness => Data.UnitType == UnitType.Item && CurrentLevel.ToWho == ToWho.RandomMate;
+
     /// <summary>
     /// Constructor of UnitModel for new unit.
     /// </summary>

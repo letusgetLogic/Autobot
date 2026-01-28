@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
     /// To block player's input while animation is running.
     /// </summary>
     public bool IsBlockingInput { get; set; } = false;
+
     public int PhaseShopIndex { get; set; } = 0;
 
     private void Awake()

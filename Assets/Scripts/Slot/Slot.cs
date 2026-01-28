@@ -1,47 +1,33 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("The hint of attached object.")]
-    [SerializeField] private SpriteRenderer border;
+    [SerializeField] private SpriteRenderer indicator;
     [SerializeField] private EventHover eventHover;
     [SerializeField] private EventDragSlot eventDrag;
 
     [Tooltip("The hint of dropable slot.")]
     [SerializeField] private SpriteRenderer hintLight;
-    [SerializeField] private LightenUpDown lighten;
+    [SerializeField] private LightenUpDown lightenUpDown;
     [SerializeField] private ScaleUpDown lightenScale;
     [SerializeField] private Color itemColor;
     [SerializeField] private Color fusionColor;
     [SerializeField] private Color swapColor;
 
-    public SpriteRenderer Border
-    {
-        get { return border; }
-        set { border = value; }
-    }
-
-    public LightenUpDown Lighten => lighten;
-    private Color defaultColor;
+    public LightenUpDown LightenUpDown => lightenUpDown;
     public ScaleUpDown LightenScale => lightenScale;
+
+    private Color defaultColor;
     public int Index { get; set; }
 
     public bool IsDroppable => gameObject.CompareTag("Slot Team") || gameObject.CompareTag("Slot Charge");
 
     private void Start()
     {
-        if (border != null)
-            border.enabled = false;
-
-        if (lighten != null)
-        {
-            lighten.enabled = false;
-        }
-        if (lightenScale != null)
-            lightenScale.enabled = false;
+        if (indicator != null)
+            indicator.enabled = false;
     }
 
     private void OnEnable()
@@ -117,13 +103,20 @@ public class Slot : MonoBehaviour
     /// </summary>
     private void ShowDescription()
     {
+        if (GameManager.Instance.IsBlockingInput)
+            return;
+
         if (UnitView() == null)
             return;
 
         UnitView().SetDescriptionActive(true);
-
-        if (border != null)
-            border.enabled = true;
+    
+        if (PhaseShopController.Instance &&
+            PhaseShopController.Instance.IsBlockingInputsByItemRandomness(this))
+            return;
+     
+        if (indicator != null)
+            indicator.enabled = true;
     }
 
     /// <summary>
@@ -137,11 +130,11 @@ public class Slot : MonoBehaviour
         if (PhaseShopController.Instance == null)
             return;
 
-        var attached = PhaseShopController.Instance.AttachedGameObject;
-        if (border.enabled &&
+        var attached = PhaseShopController.Instance.AttachedController;
+        if (indicator.enabled &&
             (attached == null || attached != Unit()))
         {
-            border.enabled = false;
+            indicator.enabled = false;
         }
     }
 
@@ -174,5 +167,15 @@ public class Slot : MonoBehaviour
                 hintLight.color = swapColor;
                 break;
         }
+    }
+
+    /// <summary>
+    /// Set indicator active or not.
+    /// </summary>
+    /// <param name="_isActive"></param>
+    public void SetIndicatorActive(bool _isActive)
+    {
+        if (indicator != null)
+            indicator.enabled = _isActive;
     }
 }

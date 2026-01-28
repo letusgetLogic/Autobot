@@ -7,7 +7,7 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
 {
     private Slot slot { get; set; }
 
-    private void Start()
+    private void OnEnable()
     {
         slot = transform.parent.GetComponent<Slot>();
     }
@@ -24,20 +24,26 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
         if (eventData.pointerDrag == null)
             return;
 
-        var attached = PhaseShopController.Instance.AttachedGameObject;
-        if (attached == null || attached == slot.Unit())
+        if (PhaseShopController.Instance.IsBlockingDropByItemRandomness(slot))
             return;
+
+        var attached = PhaseShopController.Instance.AttachedController;
+        if (attached == null || attached == slot.UnitController())
+            return;
+
+        // Prevent dropping items into charge slots
+        if (slot.CompareTag("Slot Charge"))
+        {
+            if (attached.Model.Data.UnitType == UnitType.Item)
+                return;
+        }
 
         GameManager.Instance.IsBlockingInput = true;
 
-        bool isAttachedUnit = attached.CompareTag("Unit");
+        PhaseShopController.Instance.ManageAttachedUnit(attached, slot, slot.UnitController());
+        PhaseShopController.Instance.SetAttachedGameObject(null);
+        PhaseShopController.Instance.SetItemRandomnessInactive();
 
-        if (isAttachedUnit)
-        {
-            var controller = attached.GetComponent<UnitController>();
-            PhaseShopController.Instance.ManageAttachedUnit(controller, slot, slot.UnitController());
-            PhaseShopController.Instance.SetAttachedGameObject(null);
-        }
 
         //StartCoroutine(DelayEnableInput()); // End drag set blocking input = false
     }
