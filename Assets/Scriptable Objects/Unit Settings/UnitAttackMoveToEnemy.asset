@@ -10,32 +10,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 946b8e70abf6ca347ab9d1c31297660b, type: 3}
-  m_Name: UnitAttack
+  m_Name: UnitAttackMoveToEnemy
   m_EditorClassIdentifier: 
   RunBackward: 1
-  AnimTime: 0.25
-  DeltaPosition: {x: 0.5, y: 0, z: 0}
+  AnimTime: 0.15
+  DeltaPosition: {x: 0.75, y: 0, z: 0}
   AnimCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.49987754
+      value: 0.8062256
+      inSlope: 1.0492954
+      outSlope: 1.0492954
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7415304
+      value: 0.96161366
+      inSlope: 0.5000472
+      outSlope: 0.5000472
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0.043956134
-      outSlope: 0.043956134
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.65
-      outWeight: 0
     m_PreInfinity: 2
-    m_PostInfinity: 0
+    m_PostInfinity: 2
     m_RotationOrder: 4

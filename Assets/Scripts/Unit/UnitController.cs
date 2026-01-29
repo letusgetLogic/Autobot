@@ -346,15 +346,6 @@ public class UnitController : MonoBehaviour
     }
 
     /// <summary>
-    /// Ends swap.
-    /// </summary>
-    public void EndSwap()
-    {
-        view.SetLocalPositionDefault();
-        view.SetVisualDefault();
-    }
-
-    /// <summary>
     /// Moves the objects to the target.
     /// </summary>
     /// <param name="_target"></param>

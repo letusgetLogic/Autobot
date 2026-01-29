@@ -119,7 +119,7 @@ public class UnitView : MonoBehaviour
     private void Awake()
     {
         description.SetActive(false);
-        iceCubeSpriteRenderer.gameObject.SetActive(false);
+        iceCubeSpriteRenderer.enabled = false;
         SetRepairDisplayActive(false);
     }
 

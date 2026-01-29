@@ -264,26 +264,30 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="_manage"></param>
     public void SetButtonActive(UnitModel _unitModel)
     {
+        DeactivateManageButtons();
+
         if (_unitModel == null)
-        {
-            DeactivateManageButtons();
             return;
-        }
 
         switch (_unitModel.Data.UnitState)
         {
             case UnitState.InSlotShop:
-                DeactivateManageButtons();
                 lockButton.SetActive(true);
                 break;
 
             case UnitState.Freezed:
-                DeactivateManageButtons();
                 unlockButton.SetActive(true);
                 break;
 
             case UnitState.InSlotTeam:
-                DeactivateManageButtons();
+                recycleButton.SetActive(true);
+                SetButtonData(
+                    recycleTool.GetComponentInChildren<TextMeshProUGUI>(),
+                    recycleNut.GetComponentInChildren<TextMeshProUGUI>(),
+                    _unitModel.Sell);
+                break;
+
+            case UnitState.InSlotCharge:
                 recycleButton.SetActive(true);
                 SetButtonData(
                     recycleTool.GetComponentInChildren<TextMeshProUGUI>(),

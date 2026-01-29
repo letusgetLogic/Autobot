@@ -58,11 +58,10 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        GameManager.Instance.IsBlockingInput = false;
-
         if (PhaseShopController.Instance.IsDragging == false)
             return;
 
+        GameManager.Instance.IsBlockingInput = false;
         PhaseShopController.Instance.IsDragging = false;
 
         if (eventData.button != PointerEventData.InputButton.Left)

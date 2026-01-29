@@ -85,12 +85,6 @@ public class ScaleUpDown : MonoBehaviour
         ScaleDown();
     }
 
-    private void OnDisable()
-    {
-        scaleState = Scale.None;
-        SetDefault();
-    }
-
     /// <summary>
     /// Scales up (true) or down (false).
     /// </summary>
@@ -118,6 +112,9 @@ public class ScaleUpDown : MonoBehaviour
             if (currentValue == 1f)
             {
                 scaleState = runState == RunState.Automatic ? Scale.Down : Scale.None;
+
+                if (runState == RunState.ValidateBackToScaleMin)
+                    SetDefault();
                 return;
             }
 

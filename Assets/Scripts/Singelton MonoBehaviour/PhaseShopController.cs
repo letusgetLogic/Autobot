@@ -30,8 +30,9 @@ public class PhaseShopController : MonoBehaviour
     private bool isRandomnessItemAttached { get; set; } = false;
 
     /// <summary>
-    /// To prevent pushing other away while an unit is attached by mouse click and
-    /// to prevent end drag when set IsDragging = false while units are swapping.
+    /// To enable some actions when player is dragging something.
+    /// To prevent pushing other away while an unit is attached by mouse click.
+    /// To prevent end drag when set IsDragging = false while units are swapping.
     /// </summary>
     public bool IsDragging { get; set; } = false;
 
@@ -424,7 +425,9 @@ public class PhaseShopController : MonoBehaviour
         if (_attached == null)
             return;
 
-        _attached.transform.parent.GetComponent<Slot>().SetIndicatorActive(false);
+        if (_attached.transform.parent)
+             _attached.transform.parent.GetComponent<Slot>().SetIndicatorActive(false);
+
         _attached.transform.SetParent(_dropSlot, false);
 
         var model = _attached.Model;
@@ -450,37 +453,39 @@ public class PhaseShopController : MonoBehaviour
         Player.UpdateUnitData();
     }
 
-    public IEnumerator Swap(UnitController _unitTarget, Transform _slotTarget, UnitController _unitDragged, Transform _slotDragged)
+    public IEnumerator Swap(UnitController _unitTarget, Transform _slotDragged, UnitController _unitDragged, Transform _slotTarget)
     {
         HideDescriptionByTransport();
-
+        bool a = GameManager.Instance.IsBlockingInput;
         var _unit1View = _unitTarget.GetComponent<UnitView>();
 
         float delay1 = default;
         float delay2 = default;
 
-        if (_unitTarget != null && _slotTarget != null)
+        if (_unitTarget != null && _slotDragged != null)
         {
             _unitTarget.transform.SetParent(null, true);
             _unit1View.SetSpriteOverOther();
-            delay1 = _unitTarget.MoveToParent(_slotTarget.position, _slotTarget);
+            delay1 = _unitTarget.MoveToParent(_slotDragged.position, _slotDragged);
         }
-        yield return new WaitForSeconds(delay1);
+        yield return new WaitUntil(() => _unitTarget.transform.parent != null);
+ 
+        Transport(_unitTarget, _slotDragged, false);
 
         if (_unitTarget != null)
             _unit1View.SetLocalPositionDefault();
 
-        if (_unitDragged != null && _slotDragged != null)
+        if (_unitDragged != null && _slotTarget != null)
         {
             _unitDragged.BeginSwap();
-            delay2 = _unitDragged.MoveToParent(_slotDragged.position, _slotDragged);
+            delay2 = _unitDragged.MoveToParent(_slotTarget.position, _slotTarget);
         }
-        yield return new WaitForSeconds(delay2);
+        yield return new WaitUntil(() => _unitDragged.transform.parent != null);
 
-        if (_unitDragged != null)
-            _unitDragged.EndSwap();
+        Transport(_unitDragged, _slotTarget, true);
 
         Player.UpdateUnitData();
+        GameManager.Instance.IsBlockingInput = false;
     }
 
     ///summary>

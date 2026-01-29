@@ -9,6 +9,7 @@ public class CutScene : MonoBehaviour
     [SerializeField] private RectTransform coverPanelClose;
     [SerializeField] private float delayOpen = 1f;
     [SerializeField] private float delayClose = 1f;
+    [SerializeField] private LerpMovement hintClickClose;
     [SerializeField] private LerpMovement hintClick;
 
     public ScaleUpDown OpenPanel => coverPanelOpen.GetComponent<ScaleUpDown>();
@@ -27,6 +28,12 @@ public class CutScene : MonoBehaviour
 
         if (coverPanelOpen != null)
         {
+            if (hintClickClose)
+            {
+                hintClickClose.gameObject.SetActive(true);
+                hintClickClose.Trigger();
+            }
+
             coverPanelOpen.gameObject.SetActive(true);
             StartCoroutine(OpenScene());
         }
