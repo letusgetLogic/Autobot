@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "UnitMovement", menuName = "ScriptableObject/UnitMovement")]
-public class SoUnitMovement : ScriptableObject
+[CreateAssetMenu(fileName = "LerpMovement", menuName = "ScriptableObject/LerpMovement")]
+public class SoLerpMovementSettings : ScriptableObject
     {
     public bool RunBackward = false;
     public float AnimTime = 1f;

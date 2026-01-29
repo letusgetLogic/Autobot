@@ -131,7 +131,6 @@ public class UnitModel
             view.HideAttributes();
         }
 
-        view.Shadow.enabled = false;
         view.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
 
         if (Application.isPlaying == false)
@@ -174,35 +173,29 @@ public class UnitModel
         switch (_unitState)
         {
             case UnitState.InSlotShop:
-                view.IceCube.SetActive(false);
-                view.Shadow.enabled = true;
                 view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
-                view.SetShopView(true, false);
+                view.SetShopView(true, false, false);
                 break;
 
             case UnitState.Freezed:
-                view.IceCube.SetActive(true);
-                view.Shadow.enabled = true;
                 view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
-                view.SetShopView(true, false);
+                view.SetShopView(true, false, true);
                 break;
 
             case UnitState.InSlotTeam:
-                view.IceCube.SetActive(false);
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true);
+                view.SetShopView(false, true, false);
                 break;
 
             case UnitState.InSlotCharge:
-                view.IceCube.SetActive(false);
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true);
+                view.SetShopView(false, true, false);
                 break;
 
             case UnitState.InPhaseBattle:
                 view.HideObjectsDuringBattle();
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, false);
+                view.SetShopView(false, false, false);
                 break;
         }
 

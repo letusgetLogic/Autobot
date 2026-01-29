@@ -9,7 +9,7 @@ public class CutScene : MonoBehaviour
     [SerializeField] private RectTransform coverPanelClose;
     [SerializeField] private float delayOpen = 1f;
     [SerializeField] private float delayClose = 1f;
-    [SerializeField] private MoveToTarget hintClick;
+    [SerializeField] private LerpMovement hintClick;
 
     public ScaleUpDown OpenPanel => coverPanelOpen.GetComponent<ScaleUpDown>();
     public ScaleUpDown ClosePanel => coverPanelClose.GetComponent<ScaleUpDown>();

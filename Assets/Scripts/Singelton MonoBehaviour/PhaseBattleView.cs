@@ -27,6 +27,8 @@ public class PhaseBattleView : MonoBehaviour
     [SerializeField] private GameObject play;
     [SerializeField] private GameObject stop;
 
+    [Header("Visuals")]
+    [SerializeField] private ScaleUpDown collideVisual;
 
     private void Awake()
     {
@@ -140,4 +142,11 @@ public class PhaseBattleView : MonoBehaviour
         stop.SetActive(PhaseBattleController.Instance.IsStopped);
     }
 
+    /// <summary>
+    /// Shows the collide.
+    /// </summary>
+    public void ShowCollideVisual()
+    {
+        collideVisual.ScaleUp(true);
+    }
 }

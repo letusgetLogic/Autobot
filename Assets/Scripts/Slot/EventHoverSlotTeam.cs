@@ -147,8 +147,8 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
             return false;
 
         // if no game object is on the slot or it is self, return false.
-        if (slot.Unit() == null ||
-            slot.Unit() == attached)
+        if (slot.UnitController() == null ||
+            slot.UnitController() == attached)
             return false;
 
         if (attached.CompareTag("Unit"))

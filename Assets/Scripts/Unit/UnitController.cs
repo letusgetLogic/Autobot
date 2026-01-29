@@ -1,19 +1,23 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.GraphicsBuffer;
 
 public class UnitController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private UnitView view;
-    [SerializeField] private LerpMoveForward mover;
-    [SerializeField] private LerpMoveForward attackMover;
+    [SerializeField] private LerpMovement toNextSlotMover;
+    [SerializeField] private LerpMovement attackMover;
 
     [Header("Editor Mode")]
-    [SerializeField] private SoUnit definedUnit;
-    [SerializeField] private bool isRepairOnValidateActive = true;
-    [SerializeField] private SoPack definedPack;
-    public SoPack DefinedPack => definedPack;
+    [SerializeField] private SoUnit editorSoUnit;
+    [SerializeField] private bool editorRename = false;
+    [SerializeField] private bool editorIsOnRightSide = false;
+    [SerializeField] private UnitState editorUnitState;
+    [SerializeField] private bool editorIsRepairOnValidateActive = true;
+    [SerializeField] private SoPack editorDefinedPack;
+    public SoPack DefinedPack => editorDefinedPack;
 
     public event Action<Slot> OnAttack;
     public event Action<Slot> OnShutdown;
@@ -62,35 +66,34 @@ public class UnitController : MonoBehaviour
             return null;
         }
     }
-    private bool flipSprite = false;
 
 
     private void OnValidate()
     {
-        if (definedUnit != null)
+        if (editorSoUnit != null)
         {
-            gameObject.name = definedUnit.Name;
+            if (editorRename)
+                gameObject.name = editorSoUnit.Name;
 
-            Initialize(definedUnit, 0, default, UnitState.InSlotShop, null, true);
+             Initialize(editorSoUnit, 0, default, editorUnitState, !editorIsOnRightSide);
         }
     }
 
     private void OnEnable()
     {
-        mover.OnPosition += SetParent;
+        toNextSlotMover.OnPosition += SetParent;
     }
 
     private void OnDisable()
     {
-        mover.OnPosition -= SetParent;
+        toNextSlotMover.OnPosition -= SetParent;
     }
 
     /// <summary>
     /// Initializes data.
     /// </summary>
     /// <param name="_soUnit"></param>
-    public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState,
-        UnityAction _unityAction, bool _isTeamLeft)
+    public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState, bool _isTeamLeft)
     {
         // If the saved data has no reference, 
         if (_data.HasReference == false)
@@ -98,7 +101,7 @@ public class UnitController : MonoBehaviour
             // ... create a new model with SO reference and the given index,
 
             bool isRepairActive = GameManager.Instance == null
-                ? isRepairOnValidateActive
+                ? editorIsRepairOnValidateActive
                 : GameManager.Instance.IsRepairSystemActive && IsRobot(_soUnit.UnitType);
 
             model = new UnitModel(this, _soUnit, _index, isRepairActive ? new RepairSystem() : null);
@@ -110,8 +113,7 @@ public class UnitController : MonoBehaviour
                 ? new RepairSystem() : null);
         }
 
-        flipSprite = !_isTeamLeft;
-        _unityAction?.Invoke();
+        SetSprite(_isTeamLeft);
         model.InitView(view);
         model.SetData(_unitState);
     }
@@ -119,16 +121,16 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Flips the sprite when the unit is on the right team.
     /// </summary>
-    public void FlipSprite()
+    public void SetSprite(bool _isTeamLeft)
     {
-        if (flipSprite)
+        if (_isTeamLeft)
         {
-            view.SetRightSide();
-            model.Data.IsTeamLeft = false;
+            model.Data.IsTeamLeft = true;
         }
         else
         {
-            model.Data.IsTeamLeft = true;
+            view.SetRightSide();
+            model.Data.IsTeamLeft = false;
         }
     }
 
@@ -358,8 +360,26 @@ public class UnitController : MonoBehaviour
     /// <param name="_target"></param>
     public void MoveTo(Vector3 _target)
     {
-        mover.MoveTo(_target, null);
+        toNextSlotMover.MoveTo(_target, null);
         //transform.DoMove();
+    }
+
+    /// <summary>
+    /// Moves the objects to the target.
+    /// </summary>
+    /// <param name="_target"></param>
+    public float MoveWhileAttacking()
+    {
+        float direction = model.Data.IsTeamLeft ? 1 : -1;
+
+        Vector3 deltaPosition = new Vector3(
+            attackMover.SoSettings.DeltaPosition.x * direction,
+            attackMover.SoSettings.DeltaPosition.y,
+            attackMover.SoSettings.DeltaPosition.z);
+
+        float animDelay = attackMover.MoveWithDelta(deltaPosition);
+
+        return animDelay;
     }
 
     /// <summary>
@@ -368,9 +388,7 @@ public class UnitController : MonoBehaviour
     /// <param name="_target"></param>
     public float MoveToParent(Vector3 _target, Transform _parent)
     {
-        float animDelay = mover.MoveTo(_target, _parent);
-      
-        //transform.DoMove();
+        float animDelay = toNextSlotMover.MoveTo(_target, _parent);
 
         return animDelay;
     }

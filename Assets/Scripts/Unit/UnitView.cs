@@ -20,8 +20,6 @@ public class UnitView : MonoBehaviour
     [SerializeField] private SpriteRenderer shadowSpriteRenderer;
     [SerializeField] private SpriteRenderer dragSpriteRenderer;
     [SerializeField] private SpriteRenderer iceCubeSpriteRenderer;
-    public SpriteRenderer Shadow => shadowSpriteRenderer;
-    public GameObject IceCube => iceCubeSpriteRenderer.gameObject;
 
     [Header("Description")]
     [SerializeField] private GameObject description;
@@ -146,11 +144,13 @@ public class UnitView : MonoBehaviour
     /// Sets the components view in slot shop.
     /// </summary>
     /// <param name="_value"></param>
-    public void SetShopView(bool _value, bool _showLevel)
+    public void SetShopView(bool _value, bool _showLevel, bool _isFreezed)
     {
         levelDisplay.SetActive(_showLevel);
         ShowFullAttributes(!_value);
         energyIcon.SetActive(!_value);
+        shadowSpriteRenderer.enabled = _value;
+        iceCubeSpriteRenderer.enabled = _isFreezed;
     }
 
     /// <summary>

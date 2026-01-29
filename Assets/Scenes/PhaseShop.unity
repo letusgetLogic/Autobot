@@ -4766,6 +4766,14 @@ PrefabInstance:
       propertyPath: _target
       value: 
       objectReference: {fileID: 1019797338}
+    - target: {fileID: 1052812876946986172, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
+      propertyPath: soSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 62447ac17c5209f4c8876074f5a96166, type: 2}
+    - target: {fileID: 1052812876946986172, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
+      propertyPath: definedTargetTransform
+      value: 
+      objectReference: {fileID: 1019797339}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4868,7 +4876,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0b885150b291ee4081ea9a708f5e40e, type: 3}
+  m_Script: {fileID: 11500000, guid: 605ddcb485355074986b4660c8fef850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1845236395

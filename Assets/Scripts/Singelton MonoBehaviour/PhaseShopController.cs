@@ -345,7 +345,7 @@ public class PhaseShopController : MonoBehaviour
                 // then check if the slot is empty,
                 if (_target == null)
                     // transport the unit to it,
-                    Transport(_attached, _targetSlot.transform, true, true);
+                    Transport(_attached, _targetSlot.transform, true);
                 else
                     // else fusion, if both are fusible.
                     if (IsFusible(_target, _attached))
@@ -402,7 +402,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                    _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                Transport(_purchased, _targetSlot.transform, true, true);
+                Transport(_purchased, _targetSlot.transform, true);
 
                 _purchased.TriggerCraft();
             }
@@ -417,7 +417,7 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_mouseRelease"> unitView.BeingReleased(null); </param>
     /// <param name="_disableShadow">  unitView.Shadow.enabled = false;</param>
     public void Transport(UnitController _attached, Transform _dropSlot,
-        bool _mouseRelease, bool _disableShadow)
+        bool _mouseRelease)
     {
         HideDescriptionByTransport();
 
@@ -441,9 +441,6 @@ public class PhaseShopController : MonoBehaviour
         {
             if (_mouseRelease)
                 view.BeingReleased(null);
-
-            if (_disableShadow)
-                view.Shadow.enabled = false;
 
             if (model != null)
                 view.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
@@ -519,13 +516,13 @@ public class PhaseShopController : MonoBehaviour
                     if (movedUnit == null ||
                         movedUnit == AttachedController) // unit being moved is null or self, break foe loop
                         break;
-                    Transport(movedUnit, teamSlots[empty].transform, false, false);
+                    Transport(movedUnit, teamSlots[empty].transform, false);
                 }
 
                 if (AttachedController.Model.Data.UnitState
                     == UnitState.InSlotTeam)
                 {
-                    Transport(AttachedController, teamSlots[_target].transform, true, false);
+                    Transport(AttachedController, teamSlots[_target].transform, true);
                     SetAttachedGameObject(null);
                 }
                 else if (AttachedController.Model.Data.UnitState

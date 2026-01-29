@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
+using UnityEngine;
 
 public class AttackState : StateBase
 {
@@ -12,7 +14,7 @@ public class AttackState : StateBase
 
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
-        Debug.WriteLine("--- AttackState");
+        System.Diagnostics.Debug.WriteLine("--- AttackState");
 
         AttackEachOther();
     }
@@ -40,7 +42,19 @@ public class AttackState : StateBase
         if (unit1 == null || unit2 == null)
             return;
 
+        unit1.MoveWhileAttacking();
+        float animDelay = unit2.MoveWhileAttacking();
+
         unit1.TakeDamage(unit2.TriggerAttack());
         unit2.TakeDamage(unit1.TriggerAttack());
+
+        PhaseBattleController.Instance.StartCoroutine(ShowCollider(animDelay));
+    }
+
+    private IEnumerator ShowCollider(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+
+        PhaseBattleView.Instance.ShowCollideVisual();
     }
 }

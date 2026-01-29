@@ -43,7 +43,7 @@ public class InsertState : StateBase
         {
             isOccupied[i] = false;
 
-            var movedUnit = _slots[i].Unit();
+            var movedUnit = _slots[i].UnitController();
 
             if (movedUnit != null)
             {
@@ -53,7 +53,7 @@ public class InsertState : StateBase
                 {
                     PhaseBattleController.Instance.HideDescriptionByTransport();
 
-                    var controller = movedUnit.GetComponent<UnitController>();
+                    var controller = movedUnit;
                     var slot = _slots[mostFrontEmpty];
 
                     controller.MoveToParent(slot.transform.position, slot.transform);

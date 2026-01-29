@@ -132,7 +132,7 @@ public class Slot : MonoBehaviour
 
         var attached = PhaseShopController.Instance.AttachedController;
         if (indicator.enabled &&
-            (attached == null || attached != Unit()))
+            (attached == null || attached != UnitController()))
         {
             indicator.enabled = false;
         }

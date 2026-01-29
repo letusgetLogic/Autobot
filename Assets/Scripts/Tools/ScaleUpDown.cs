@@ -11,6 +11,12 @@ public class ScaleUpDown : MonoBehaviour
         Validate,
         ValidateBackToScaleMin
     }
+
+    [Tooltip("Automatic - Scale up and down when component is enabled\n" +
+        "Up - Scale up when component is enabled\n" +
+        "Down - Scale down when component is enabled\n" +
+        "Validate - Scale when a method is called to scale up or down\n" +
+        "ValidateBackToScaleMin - Set Transform back to scaleMin")]
     [SerializeField] private RunState runState = RunState.None;
     [SerializeField] private bool isDisableAtAwake = false;
 

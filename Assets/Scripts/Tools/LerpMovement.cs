@@ -1,11 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-public class LerpMoveForward : MonoBehaviour
+[ExecuteAlways]
+public class LerpMovement : MonoBehaviour
 {
-    [SerializeField] private SoUnitMovement settings;
+    [Header("External Settings")]
+    [SerializeField] private SoLerpMovementSettings soSettings;
+    public SoLerpMovementSettings SoSettings => soSettings;
+    
+    [Header("Editor Settings")]
+    [SerializeField] private Transform definedTargetTransform;
 
-    public Action<Transform> OnPosition;
+    public Action<Transform> OnPosition {  get; set; }
 
     private enum Direction
     {
@@ -25,7 +31,7 @@ public class LerpMoveForward : MonoBehaviour
         SetDefault();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         MoveForward();
         MoveBackward();
@@ -35,25 +41,61 @@ public class LerpMoveForward : MonoBehaviour
     {
         currentValue = 0f;
         defaultPosition = transform.position;
-        targetPosition = defaultPosition + settings.DeltaPosition;
+
+        if (definedTargetTransform)
+            targetPosition = definedTargetTransform.position;
+        else
+        {
+            if (soSettings)
+                targetPosition = defaultPosition + soSettings.DeltaPosition;
+        }
     }
 
-    public void Move()
+    [ContextMenu("Move")]
+    public void OnMove()
     {
         SetDefault();
         moveState = Direction.Forward;
     }
 
-    public float MoveTo(Vector3 _target, Transform _parent)
+    public float Trigger()
+    {
+        SetDefault();
+        moveState = Direction.Forward;
+
+        if (soSettings)
+            return soSettings.AnimTime;
+
+        return default;
+    }
+
+    public float MoveTo(Vector3 _target, Transform _targetTf)
     {
         SetDefault();
 
         targetPosition = _target;
+        targetTransform = _targetTf;
+
         moveState = Direction.Forward;
 
-        targetTransform = _parent;
+        if (soSettings)
+            return soSettings.AnimTime;
 
-        return settings.AnimTime;
+        return default;
+    }
+
+    public float MoveWithDelta(Vector3 _deltaPosition)
+    {
+        SetDefault();
+
+        targetPosition = defaultPosition + _deltaPosition;
+
+        moveState = Direction.Forward;
+
+        if (soSettings)
+            return soSettings.AnimTime;
+
+        return default;
     }
 
     /// <summary>
@@ -66,15 +108,12 @@ public class LerpMoveForward : MonoBehaviour
         {
             if (currentValue == 1f)
             {
-                if (settings.RunBackward)
+                if (soSettings.RunBackward)
                 {
                     moveState = Direction.Backward;
                 }
                 else
                 {
-                    Debug.Log($"{gameObject.name} transform.position {transform.position}");
-                    Debug.Log($"{targetTransform.gameObject.name} transform.position {targetTransform.position}");
-
                     moveState = Direction.None;
                     OnPosition?.Invoke(targetTransform);
                 }
@@ -111,9 +150,9 @@ public class LerpMoveForward : MonoBehaviour
     private void Interpolate(float _target)
     {
         currentValue = Mathf.MoveTowards(
-            currentValue, _target, Time.fixedDeltaTime / settings.AnimTime);
+            currentValue, _target, Time.deltaTime / soSettings.AnimTime);
 
-        Vector3 position = Vector3.Lerp(defaultPosition, targetPosition, settings.AnimCurve.Evaluate(currentValue));
+        Vector3 position = Vector3.Lerp(defaultPosition, targetPosition, soSettings.AnimCurve.Evaluate(currentValue));
         SetPosition(position);
     }
 

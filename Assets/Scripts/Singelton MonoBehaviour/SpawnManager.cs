@@ -34,7 +34,7 @@ public class SpawnManager : MonoBehaviour
         var unit = Instantiate(unitPrefab, _parent, false);
 
         var controller = unit.GetComponent<UnitController>();
-        controller.Initialize(_soUnit, _index, _data, _unitState, null, default);
+        controller.Initialize(_soUnit, _index, _data, _unitState, true);
 
         return controller;
     }
@@ -55,7 +55,7 @@ public class SpawnManager : MonoBehaviour
         var unit = Instantiate(unitPrefab, _parent, false);
 
         var unitController = unit.GetComponent<UnitController>();
-        unitController.Initialize(_soUnit, _index, _data, _unitState, unitController.FlipSprite, _isTeam1);
+        unitController.Initialize(_soUnit, _index, _data, _unitState, _isTeam1);
 
         return unitController;
     }
