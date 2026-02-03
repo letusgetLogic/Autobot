@@ -11,13 +11,16 @@ public class SoBattleProcess : ScriptableObject
 
     [Range(0f, 2f)] public float DurationAttack = 0.5f;
 
-    [Range(0f, 2f)] public float DelayCraft = 1f;
-
-    [Range(0f, 2f)] public float DelayHideAbilityDescription = 1.5f;
-
     [Range(0f, 2f)] public float DurationHandleEachAbility = 2.0f;
 
     [Range(0f, 2f)] public float DurationShutdown = 0.5f;
 
     [Range(0f, 2f)] public float DurationBattleOver = 1.0f;
+
+
+    [Range(0f, 2f)] public float DelayCraft = 1f;
+
+    [Range(0f, 2f)] public float DurationShowDescription = 1.5f;
+
+    [Range(0f, 2f)] public float DurationShowCollide = 1.5f;
 }

@@ -2354,7 +2354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5870968745957611585, guid: ecd6da0f071fbf4469b3cf3f94381c90, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.336
+      value: -0.336
       objectReference: {fileID: 0}
     - target: {fileID: 6062272584430887621, guid: ecd6da0f071fbf4469b3cf3f94381c90, type: 3}
       propertyPath: definedPack
@@ -4287,7 +4287,7 @@ GameObject:
   - component: {fileID: 1367017136}
   - component: {fileID: 1367017135}
   m_Layer: 5
-  m_Name: Damage Visual
+  m_Name: Collide Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4349,7 +4349,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367017133}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f522e53f92604f14e83d75847a8c83d4, type: 3}
   m_Name: 
@@ -6334,7 +6334,8 @@ MonoBehaviour:
   playButton: {fileID: 365003927}
   play: {fileID: 853368490}
   stop: {fileID: 378951886}
-  collideVisual: {fileID: 1367017136}
+  collideVisual: {fileID: 1367017135}
+  durationCollider: 0
 --- !u!224 &4968167037444876173
 RectTransform:
   m_ObjectHideFlags: 0

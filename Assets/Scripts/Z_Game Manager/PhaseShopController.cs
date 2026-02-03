@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,12 @@ public class PhaseShopController : MonoBehaviour
 
     private StartTurnState startTurn = StartTurnState.None;
 
+    private Action<AbilityBase, bool> OnAbility => (_ability, _isDestroyingUnit) =>
+   {
+       StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
+       Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
+   };
+
     private void Awake()
     {
         if (Instance != null)
@@ -62,14 +69,12 @@ public class PhaseShopController : MonoBehaviour
         if (itemRandomnessDropSlot != null)
             itemRandomnessDropSlot.gameObject.SetActive(false);
 
-        EventManager.Instance.OnSettingAttachedObject += () => SetDropHint(true);
-        EventManager.Instance.OnSettingNullObject += () => SetDropHint(false);
+        EventManager.Instance.OnTriggerAbility += OnAbility;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.OnSettingAttachedObject -= () => SetDropHint(true);
-        EventManager.Instance.OnSettingNullObject -= () => SetDropHint(false);
+        EventManager.Instance.OnTriggerAbility -= OnAbility;
     }
 
     /// <summary>
@@ -228,7 +233,7 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Bots.Count == 0)
                 return;
 
-            int rand = Random.Range(0, PackManager.Instance.Bots.Count);
+            int rand = UnityEngine.Random.Range(0, PackManager.Instance.Bots.Count);
             var data = PackManager.Instance.Bots[rand];
 
             SpawnManager.Instance.Spawn(
@@ -259,7 +264,7 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Items.Count == 0)
                 return;
 
-            int rand = Random.Range(0, PackManager.Instance.Items.Count);
+            int rand = UnityEngine.Random.Range(0, PackManager.Instance.Items.Count);
             var data = PackManager.Instance.Items[rand];
 
             SpawnManager.Instance.Spawn(
@@ -426,7 +431,7 @@ public class PhaseShopController : MonoBehaviour
             return;
 
         if (_attached.transform.parent)
-             _attached.transform.parent.GetComponent<Slot>().SetIndicatorActive(false);
+            _attached.transform.parent.GetComponent<Slot>().SetIndicatorActive(false);
 
         _attached.transform.SetParent(_dropSlot, false);
 
@@ -469,7 +474,7 @@ public class PhaseShopController : MonoBehaviour
             delay1 = _unitTarget.MoveToParent(_slotDragged.position, _slotDragged);
         }
         yield return new WaitUntil(() => _unitTarget.transform.parent != null);
- 
+
         Transport(_unitTarget, _slotDragged, false);
 
         if (_unitTarget != null)
@@ -580,37 +585,22 @@ public class PhaseShopController : MonoBehaviour
         return false;
     }
 
-    public void SwitchAttached(UnitController _unit)
-    {
-        SetAttachedGameObject(null);
-        SetAttachedGameObject(_unit);
-        PhaseShopUI.Instance.SetButtonActive(_unit.Model);
-    }
-
     /// <summary>
     /// Sets attached game object being clicked or dragged.
     /// </summary>
     /// <param name="_target"></param>
     public void SetAttachedGameObject(UnitController _target)
     {
-        if (_target == null)
-        {
-            // previous attached object border disable
-            if (AttachedController != null)
-                AttachedController.Slot.SetIndicatorActive(false);
+        if (AttachedController != null)
+            AttachedController.Slot.SetIndicatorActive(false);
 
-            PhaseShopUI.Instance.SetButtonActive(null);
-            AttachedController = _target;
-            EventManager.Instance.OnSettingNullObject?.Invoke();
-            //Debug.Log("OnNullObject");
-        }
-        else
-        {
+        if (_target != null)
             _target.Slot.SetIndicatorActive(true);
-            AttachedController = _target;
-            EventManager.Instance.OnSettingAttachedObject?.Invoke();
-            //Debug.Log("OnAttachedObject " + AttachedGameObject.gameObject.name);
-        }
+
+        PhaseShopUI.Instance.SetButtonActive(_target != null ? _target.Model : null);
+        AttachedController = _target;
+        EventManager.Instance.OnSettingAttachedObject?.Invoke(_target);
+        SetDropHint(_target != null);
     }
 
     /// <summary>

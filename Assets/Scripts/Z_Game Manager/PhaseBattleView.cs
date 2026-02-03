@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhaseBattleView : MonoBehaviour
 {
@@ -28,7 +30,7 @@ public class PhaseBattleView : MonoBehaviour
     [SerializeField] private GameObject stop;
 
     [Header("Visuals")]
-    [SerializeField] private ScaleUpDown collideVisual;
+    [SerializeField] private Image collideVisual;
 
     private void Awake()
     {
@@ -37,6 +39,8 @@ public class PhaseBattleView : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+        collideVisual.enabled = false;
     }
 
     /// <summary>
@@ -147,6 +151,17 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     public void ShowCollideVisual()
     {
-        collideVisual.ScaleUp(true);
+        collideVisual.enabled = true;
+    }
+
+    /// <summary>
+    /// Hides the collide visual after duration.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator HideCollideVisual(float _duration)
+    {
+        yield return new WaitForSeconds(_duration);
+
+        collideVisual.enabled = false;
     }
 }

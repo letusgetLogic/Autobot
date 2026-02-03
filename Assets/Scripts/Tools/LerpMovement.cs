@@ -163,7 +163,7 @@ public class LerpMovement : MonoBehaviour
     private void SetPosition(Vector3 _pos)
     {
         transform.position = _pos;
-        Debug.Log($"{gameObject.name} transform.position {transform.position}");
+        //Debug.Log($"{gameObject.name} transform.position {transform.position}");
     }
 }
 

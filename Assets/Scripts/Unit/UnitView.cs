@@ -17,9 +17,13 @@ public class UnitView : MonoBehaviour
 
     [Header("Sprites")]
     [Tooltip(("The shadow is showing, when sprite is being dragged out of the slot shop."))]
-    [SerializeField] private SpriteRenderer shadowSpriteRenderer;
     [SerializeField] private SpriteRenderer dragSpriteRenderer;
-    [SerializeField] private SpriteRenderer iceCubeSpriteRenderer;
+    [SerializeField]
+    private SpriteRenderer
+        shadowSpriteRenderer,
+        iceCubeSpriteRenderer,
+        damageSpriteRenderer,
+        shutdownSpriteRenderer;
 
     [Header("Description")]
     [SerializeField] private GameObject description;
@@ -70,9 +74,9 @@ public class UnitView : MonoBehaviour
 
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
-    [SerializeField] 
-    private GameObject 
-        repairPanelHp2, 
+    [SerializeField]
+    private GameObject
+        repairPanelHp2,
         repairPanelHp3;
     [SerializeField]
     private GameObject
@@ -96,11 +100,6 @@ public class UnitView : MonoBehaviour
     [SerializeField] private Canvas canvasStats;
     [SerializeField] private SoUnitSettings unitSettings;
 
-    [Header("Color")]
-    [SerializeField] private Color damageColor;
-    [SerializeField] private Color buffColor;
-
-
     public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
     public Vector3 OffsetMoveOverOther => unitSettings.OffsetMoveOverOther;
     public Vector2 DragSpritePosition => dragSpriteRenderer.transform.position;
@@ -120,6 +119,8 @@ public class UnitView : MonoBehaviour
     {
         description.SetActive(false);
         iceCubeSpriteRenderer.enabled = false;
+        damageSpriteRenderer.enabled = false;
+        shutdownSpriteRenderer.enabled = false;
         SetRepairDisplayActive(false);
     }
 
@@ -135,6 +136,7 @@ public class UnitView : MonoBehaviour
     public void SetData(Sprite _sprite, string _name, string _id)
     {
         dragSpriteRenderer.sprite = _sprite;
+        damageSpriteRenderer.sprite = _sprite;
         shadowSpriteRenderer.sprite = _sprite;
         myName.text = _name;
         gameObject.name = _id;
@@ -386,7 +388,9 @@ public class UnitView : MonoBehaviour
         health.text = _health.ToString();
         damage.enabled = true;
         damage.text = _damage.ToString();
+        damageSpriteRenderer.enabled = true;
         StartCoroutine(HideDamage());
+        StartCoroutine(HideDamageVisual());
     }
 
     /// <summary>
@@ -398,6 +402,17 @@ public class UnitView : MonoBehaviour
         yield return new WaitForSeconds(unitSettings.DurationShowDamage);
 
         damage.enabled = false;
+    }
+
+    /// <summary>
+    /// Hides damage visual.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator HideDamageVisual()
+    {
+        yield return new WaitForSeconds(unitSettings.DurationShowDamageVisual);
+
+        damageSpriteRenderer.enabled = false;
     }
 
     /// <summary>
@@ -480,4 +495,13 @@ public class UnitView : MonoBehaviour
         attributeGroup.SetActive(false);
     }
 
+    /// <summary>
+    /// Enables the shutdown indicator by activating its sprite renderer.
+    /// </summary>
+    /// <remarks>Call this method to visually indicate that the shutdown state is active. The shutdown
+    /// indicator will become visible in the UI.</remarks>
+    public void SetShutdown()
+    {
+        shutdownSpriteRenderer.enabled = true;
+    }
 }

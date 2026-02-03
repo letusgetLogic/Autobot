@@ -30,7 +30,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         slot.UnitView().BeingAttached(eventData);
 
-        PhaseShopController.Instance.SwitchAttached(slot.UnitController());
+        PhaseShopController.Instance.SetAttachedGameObject(slot.UnitController());
     }
 
     /// <summary>

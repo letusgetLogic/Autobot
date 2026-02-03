@@ -6,7 +6,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 {
     public static PhaseBattleController Instance { get; private set; }
 
-    public UnityAction StartBattle {  get; private set; }
+    public UnityAction StartBattle { get; private set; }
 
     [Header("Duration of each state")]
     [SerializeField]
@@ -22,13 +22,14 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [Header("Detect Click Enviroment")]
     [SerializeField] private GameObject detectClickEnviroment;
 
-    private StateBase state { get;set; }
+    private StateBase state { get; set; }
 
     public Player Player1 { get; private set; }
-    public Player Player2 {  get; private set; }
+    public Player Player2 { get; private set; }
 
     public UnitController AttackingUnit1 => slots1[0].UnitController();
     public UnitController AttackingUnit2 => slots2[0].UnitController();
+
     public Queue<AbilityBase> UnitAbilities
     {
         get
@@ -37,26 +38,20 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
                 unitAbilities = new Queue<AbilityBase>();
             return unitAbilities;
         }
-        set
-        {
-            unitAbilities = value;
-        }
     }
     private Queue<AbilityBase> unitAbilities;
-    public Queue<GameObject> ShutdownUnits
+
+    public Queue<UnitController> ShutdownUnits
     {
         get
         {
             if (shutdownUnits == null)
-                shutdownUnits = new Queue<GameObject>();
+                shutdownUnits = new Queue<UnitController>();
             return shutdownUnits;
         }
-        set
-        {
-            shutdownUnits = value;
-        }
     }
-    private Queue<GameObject> shutdownUnits;
+    private Queue<UnitController> shutdownUnits;
+
     public bool IsStopped { get; set; } = false;
     public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
 
@@ -78,6 +73,33 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         PhaseBattleView.Instance.SetRunningButton();
         SetIndex(slots1);
         SetIndex(slots2);
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.OnTriggerAbility += (ability, isDestroyingUnit) =>
+        {
+            UnitAbilities.Enqueue(ability);
+            Debug.Log($"{ability.ToString()} enqueue");
+            Debug.Log($"{unitAbilities.Count} UnitAbilities");
+        };
+
+        EventManager.Instance.OnShutdown += unit =>
+        {
+            ShutdownUnits.Enqueue(unit);
+            Debug.Log($"{unit.gameObject.name} enqueue");
+            Debug.Log($"{shutdownUnits.Count} ShutdownUnits");
+        };
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnTriggerAbility -= (ability, isDestroyingUnit) =>
+        {
+            UnitAbilities.Enqueue(ability);
+        };
+
+        EventManager.Instance.OnShutdown -= unit => ShutdownUnits.Enqueue(unit);
     }
 
     /// <summary>

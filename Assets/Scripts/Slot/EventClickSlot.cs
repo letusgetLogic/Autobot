@@ -35,7 +35,7 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
         }
         else // An unit is on the slot, switch attached to it.
         {
-            PhaseShopController.Instance.SwitchAttached(slot.UnitController());
+            PhaseShopController.Instance.SetAttachedGameObject(slot.UnitController());
         }
     }
 }

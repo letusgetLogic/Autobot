@@ -28,6 +28,8 @@ public class SoundManager : MonoBehaviour
         EventManager.Instance.OnUnlock += PlayUnlockSound;
 
         EventManager.Instance.OnEndTurn += PlayButtonSound;
+
+        EventManager.Instance.OnUpdateLevel += PlayFusionSound;
     }
 
     private void OnDisable()
@@ -41,6 +43,8 @@ public class SoundManager : MonoBehaviour
         EventManager.Instance.OnUnlock -= PlayUnlockSound;
 
         EventManager.Instance.OnEndTurn -= PlayButtonSound;
+
+        EventManager.Instance.OnUpdateLevel -= PlayFusionSound;
     }
 
     public void PlayCoinSound()

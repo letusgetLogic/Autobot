@@ -19,9 +19,6 @@ public class UnitController : MonoBehaviour
     [SerializeField] private SoPack editorDefinedPack;
     public SoPack DefinedPack => editorDefinedPack;
 
-    public event Action<Slot> OnAttack;
-    public event Action<Slot> OnShutdown;
-
     public UnitView View => view;
 
     public UnitModel Model => model;
@@ -108,9 +105,9 @@ public class UnitController : MonoBehaviour
         }
         else // otherwise create a new model with SO reference and the saved data.
         {
-            model = new UnitModel(this, _soUnit, _data,
-                GameManager.Instance.IsRepairSystemActive && IsRobot(_data.UnitType)
-                ? new RepairSystem() : null);
+            bool isRepairActive = GameManager.Instance.IsRepairSystemActive && IsRobot(_data.UnitType);
+
+            model = new UnitModel(this, _soUnit, _data, isRepairActive ? new RepairSystem() : null);
         }
 
         SetSprite(_isTeamLeft);
@@ -145,8 +142,7 @@ public class UnitController : MonoBehaviour
         var ability = TriggerAbility(TriggerType.Craft);
         if (ability != null)
         {
-            PhaseShopController.Instance.StartCoroutine(
-                PhaseShopController.Instance.HandleAbility(ability, false));
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, false);
         }
     }
 
@@ -158,8 +154,7 @@ public class UnitController : MonoBehaviour
         var ability = TriggerAbility(TriggerType.Recycle);
         if (ability != null)
         {
-            PhaseShopController.Instance.StartCoroutine(
-                PhaseShopController.Instance.HandleAbility(ability, true));
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, true);
         }
         else
         {
@@ -184,7 +179,7 @@ public class UnitController : MonoBehaviour
         model.UpdateLevelXP(_isPhaseShop);
         model.Repair?.SetDurability(false);
 
-        SoundManager.Instance.PlayFusionSound();
+        EventManager.Instance.OnUpdateLevel?.Invoke();
     }
 
     #endregion
@@ -196,40 +191,30 @@ public class UnitController : MonoBehaviour
     /// Triggers the ability while attacking.
     /// </summary>
     /// <returns></returns>
-    public uint TriggerAttack()
+    public Damage TriggerAttack()
     {
-        //var ability = TriggerAbility(TriggerType.BeforeAttack);
-        //if (ability != null)
-        //{
-        //    PhaseBattleController.Instance.StartCoroutine(
-        //       ability.Handle(
-        //           PhaseBattleController.Instance.Process.DurationEachAbility));
-        //}
-
-        OnAttack?.Invoke(Slot);
+        EventManager.Instance.OnAttack?.Invoke(this);
 
         var ability = TriggerAbility(TriggerType.AfterAttack);
         if (ability != null)
-            PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, default);
 
-        return (uint)model.Data.Cur.ATK;
+        return new Damage(model.Data.Cur.ATK);
     }
 
     /// <summary> 
     /// Takes damage.
     /// </summary>
     /// <param name="_damage"></param>
-    public void TakeDamage(uint _damage)
+    public void TakeDamage(Damage _damage)
     {
         model.ReduceHp(_damage);
 
         if (model.Data.Cur.HP <= 0)
         {
+            EventManager.Instance.OnShutdown?.Invoke(this);
+            view.SetShutdown();
             TriggerShutdown();
-            PhaseBattleController.Instance.ShutdownUnits.Enqueue(gameObject);
-
-            Debug.Log($"{gameObject.name} enqueue");
-            Debug.Log($"{PhaseBattleController.Instance.ShutdownUnits.Count} FaintUnits");
         }
     }
 
@@ -245,28 +230,16 @@ public class UnitController : MonoBehaviour
         var ability = TriggerAbility(TriggerType.Shutdown);
         if (ability != null)
         {
-            if (PhaseBattleController.Instance != null)
-            {
-                PhaseBattleController.Instance.UnitAbilities.Enqueue(ability);
-                OnShutdown?.Invoke(Slot);
-
-                Debug.Log($"{ability.ToString()} enqueue");
-                Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities");
-            }
-            if (PhaseShopController.Instance != null)
-            {
-                PhaseShopController.Instance.StartCoroutine(ability.Handle(
-                    PhaseShopController.Instance.Process.DelayHideDescription,
-                    true));
-            }
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, true);
         }
-        else
-        {
-            if (PhaseShopController.Instance != null)
-            {
-                Destroy(gameObject);
-            }
-        }
+        // Destroy already in the ability handler but with a delay.
+        //else
+        //{
+        //    if (PhaseShopController.Instance != null)
+        //    {
+        //        Destroy(gameObject);
+        //    }
+        //}
     }
 
     /// <summary>

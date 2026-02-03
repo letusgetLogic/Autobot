@@ -56,5 +56,9 @@ public class AttackState : StateBase
         yield return new WaitForSeconds(_delay);
 
         PhaseBattleView.Instance.ShowCollideVisual();
+
+        PhaseBattleController.Instance.StartCoroutine(
+            PhaseBattleView.Instance.HideCollideVisual(
+                PhaseBattleController.Instance.Process.DurationShowCollide));
     }
 }

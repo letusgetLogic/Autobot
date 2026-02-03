@@ -97,8 +97,14 @@ public class UnitModel
         Repair = _repair;
         SoUnit = _soUnit;
         Data = _data;
-        Data.SetTempBuffHP(0);
-        Data.SetTempBuffATK(0);
+        if (PhaseShopController.Instance != null)
+        {
+            int hp = _data.Cur.HP - _data.TempBuff.HP;
+            Data.SetHP(hp < 0 ? 0 : hp, null);
+            Data.SetATK(_data.Cur.ATK - _data.TempBuff.ATK);
+            Data.SetTempBuffHP(0);
+            Data.SetTempBuffATK(0);
+        }
         Debug.Log(Data.ID + " loaded.");
     }
 
@@ -419,10 +425,10 @@ public class UnitModel
     /// Reduces HP at the damage and updates view.
     /// </summary>
     /// <param name="_damage"></param>
-    public void ReduceHp(uint _damage)
+    public void ReduceHp(Damage _damage)
     {
-        Data.SetHP(Data.Cur.HP - (int)_damage, Repair == null ? null : Repair.SetRepairPanel);
-        view.ShowDamage((int)_damage, Data.Cur.HP);
+        Data.SetHP(Data.Cur.HP - _damage.Value, Repair == null ? null : Repair.SetRepairPanel);
+        view.ShowDamage(_damage.Value, Data.Cur.HP);
     }
 
 
