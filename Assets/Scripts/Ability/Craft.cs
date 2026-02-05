@@ -52,6 +52,7 @@ public class Craft : AbilityBase
                    TeamSlots[slotIndex].transform,
                    PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
 
+        EventManager.Instance.OnSummon?.Invoke();   
 
         //int teamlength = TeamSlots.Length;
         //int leftCrafted = craftedUnits.Length;

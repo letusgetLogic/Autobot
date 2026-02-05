@@ -179,7 +179,7 @@ public class UnitController : MonoBehaviour
         model.UpdateLevelXP(_isPhaseShop);
         model.Repair?.SetDurability(false);
 
-        EventManager.Instance.OnUpdateLevel?.Invoke();
+        EventManager.Instance.OnFusion?.Invoke();
     }
 
     #endregion
@@ -193,7 +193,7 @@ public class UnitController : MonoBehaviour
     /// <returns></returns>
     public Damage TriggerAttack()
     {
-        EventManager.Instance.OnAttack?.Invoke(this);
+        EventManager.Instance.OnAttack?.Invoke();
 
         var ability = TriggerAbility(TriggerType.AfterAttack);
         if (ability != null)
@@ -253,7 +253,10 @@ public class UnitController : MonoBehaviour
         model.Data.SetEnergy(value);
 
         if (_energy > 0)
+        {
             view.ShowBuff(new Attribute(0, 0, _energy));
+            EventManager.Instance.OnBuff?.Invoke();
+        }
         else
         {
             view.ShowConsume(_energy);
@@ -301,6 +304,8 @@ public class UnitController : MonoBehaviour
 
         view.ShowBuff(_attribute);
         model.Repair?.SetDurability(false);
+
+        EventManager.Instance.OnBuff?.Invoke();
     }
 
     /// <summary>

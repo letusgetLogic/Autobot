@@ -284,6 +284,8 @@ public class UnitModel
         //                  level  box1   box2  step1  step2  box3  step3  step4  step5  
         view.SetXpStepActive("2", false, false, false, false, true, false, false, false);
         SetCurrentLevel(1);
+
+        EventManager.Instance.OnLevelUp?.Invoke();
     }
 
     /// <summary>
@@ -298,6 +300,8 @@ public class UnitModel
         //                 level  box1   box2  step1  step2  box3  step3  step4  step5  
         view.SetXpStepActive("3", true, false, false, false, false, false, false, false);
         SetCurrentLevel(2);
+
+        EventManager.Instance.OnLevelUp?.Invoke();
     }
 
     /// <summary>

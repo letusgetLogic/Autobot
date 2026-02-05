@@ -142,9 +142,10 @@ public class PhaseShopUI : MonoBehaviour
         if (!HasEnoughCurrency(rollCost.Nut, rollCost.Tool, true))
             return;
 
-        EventManager.Instance.OnRoll?.Invoke();
         UpdateCurrency(rollCost.Nut, rollCost.Tool);
         PhaseShopController.Instance.SpawnShopUnits();
+
+        EventManager.Instance.OnRoll?.Invoke();
     }
 
     /// <summary>
@@ -156,10 +157,11 @@ public class PhaseShopUI : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        EventManager.Instance.OnEndTurn?.Invoke();
         GameManager.Instance.IsBlockingInput = true;
         detectClickEnviroment.SetActive(true);
         Player.EndShop();
+
+        EventManager.Instance.OnEndTurn?.Invoke();
     }
 
     #region Manage Buttons
@@ -179,13 +181,13 @@ public class PhaseShopUI : MonoBehaviour
             if (!HasEnoughCurrency( unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool, true))
                 return;
 
-            EventManager.Instance.OnRepair?.Invoke();
-
             UpdateCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool);
 
             unit.Model.Repair?.RiseDurability();
 
             SetButtonActive(unit.Model);
+
+            EventManager.Instance.OnRepair?.Invoke();
         }
     }
 
@@ -199,13 +201,13 @@ public class PhaseShopUI : MonoBehaviour
 
         if (PhaseShopController.Instance.AttachedController.CompareTag("Unit"))
         {
-            EventManager.Instance.OnLock?.Invoke();
-
             var unit = PhaseShopController.Instance.AttachedController; 
 
             unit.Model.SetData(UnitState.Freezed);
 
             SetButtonActive(unit.Model);
+
+            EventManager.Instance.OnLock?.Invoke();
         }
     }
 
@@ -219,13 +221,13 @@ public class PhaseShopUI : MonoBehaviour
 
         if (PhaseShopController.Instance.AttachedController.CompareTag("Unit"))
         {
-            EventManager.Instance.OnUnlock?.Invoke();
-
             var unit = PhaseShopController.Instance.AttachedController;
 
             unit.Model.SetData(UnitState.InSlotShop);
 
             SetButtonActive(unit.Model);
+
+            EventManager.Instance.OnUnlock?.Invoke();
         }
     }
 
@@ -249,11 +251,12 @@ public class PhaseShopUI : MonoBehaviour
             if (!HasEnoughCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool, true))
                 return;
 
-            EventManager.Instance.OnRecycle?.Invoke();
             unit.GetSelled();
             UpdateCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool);
 
             PhaseShopController.Instance.SetAttachedGameObject(null);
+
+            EventManager.Instance.OnRecycle?.Invoke();
         }
         else GameManager.Instance.IsBlockingInput = false;
     }

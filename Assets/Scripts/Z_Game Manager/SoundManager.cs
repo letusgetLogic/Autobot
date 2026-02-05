@@ -2,7 +2,7 @@
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance {  get; private set; }
+    public static SoundManager Instance { get; private set; }
 
 
     private void Awake()
@@ -19,49 +19,94 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.OnTransportUnit += PlayFusionSound;
+        EventManager.Instance.OnAttachedUnit += PlayAttachUnit;
+        EventManager.Instance.OnDropUnit += PlayDropSound;
 
-        EventManager.Instance.OnRoll += PlayCoinSound;
-        EventManager.Instance.OnRepair += PlayCoinSound;
-        EventManager.Instance.OnRecycle += PlayCoinSound;
+        EventManager.Instance.OnRoll += PlayRollSound;
+        EventManager.Instance.OnEndTurn += PlayEndTurn;
+
+        EventManager.Instance.OnCraft += PlayBuySound;
+        EventManager.Instance.OnRecycle += PlaySellSound;
+
+        EventManager.Instance.OnRepair += PlayRepairSound;
+
         EventManager.Instance.OnLock += PlayLockSound;
         EventManager.Instance.OnUnlock += PlayUnlockSound;
 
-        EventManager.Instance.OnEndTurn += PlayButtonSound;
+        EventManager.Instance.OnFusion += PlayFusionSound;
+        EventManager.Instance.OnLevelUp += PlayLevelUp;
 
-        EventManager.Instance.OnUpdateLevel += PlayFusionSound;
+        EventManager.Instance.OnAttack += PlayCollideSound;
+        EventManager.Instance.OnBuff += PlayBuffSound;
+        EventManager.Instance.OnSummon += PlaySummonSound;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.OnTransportUnit -= PlayFusionSound;
+        EventManager.Instance.OnAttachedUnit -= PlayAttachUnit;
+        EventManager.Instance.OnDropUnit -= PlayDropSound;
 
-        EventManager.Instance.OnRoll -= PlayCoinSound;
-        EventManager.Instance.OnRepair -= PlayCoinSound;
-        EventManager.Instance.OnRecycle -= PlayCoinSound;
+        EventManager.Instance.OnRoll -= PlayRollSound;
+        EventManager.Instance.OnEndTurn -= PlayEndTurn;
+
+        EventManager.Instance.OnCraft -= PlayBuySound;
+        EventManager.Instance.OnRecycle -= PlaySellSound;
+
+        EventManager.Instance.OnRepair -= PlayRepairSound;
+
         EventManager.Instance.OnLock -= PlayLockSound;
         EventManager.Instance.OnUnlock -= PlayUnlockSound;
 
-        EventManager.Instance.OnEndTurn -= PlayButtonSound;
+        EventManager.Instance.OnFusion -= PlayFusionSound;
+        EventManager.Instance.OnLevelUp -= PlayLevelUp;
 
-        EventManager.Instance.OnUpdateLevel -= PlayFusionSound;
+        EventManager.Instance.OnAttack -= PlayCollideSound;
+        EventManager.Instance.OnBuff -= PlayBuffSound;
+        EventManager.Instance.OnSummon -= PlaySummonSound;
     }
 
-    public void PlayCoinSound()
+    public void PlayAttachUnit(UnitController _unit)
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Coin");
+        if (_unit != null)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Attach_Unit");
+        }
     }
 
-    public void PlayButtonSound()
+    public void PlayDropSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Drop_Unit");
+    }
+
+    //public void PlayCoinSound()
+    //{
+    //    FMODUnity.RuntimeManager.PlayOneShot("event:/Coin");
+    //}
+
+
+    public void PlayRollSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Roll");
+    }
+
+    public void PlayEndTurn()
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/Button");
     }
 
-    public void PlayFusionSound()
+    public void PlayBuySound()
     {
-        int rnd = Random.Range(0, 2);
-        FMODUnity.RuntimeManager.PlayOneShot(
-            rnd == 0 ? "event:/Fusion_1" : "event:/Fusion_2");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Buy");
+    }
+
+    public void PlaySellSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Sell");
+    }
+
+    public void PlayRepairSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Repair");
     }
 
     public void PlayLockSound()
@@ -74,13 +119,28 @@ public class SoundManager : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Unlock");
     }
 
-    public void PlayOnDropSound()
+    public void PlayFusionSound()
     {
-        int rnd = Random.Range(0, 2);
-        FMODUnity.RuntimeManager.PlayOneShot(
-            rnd == 0 ? "event:/Fusion_1" : "event:/Fusion_2");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Fusion");
     }
 
+    public void PlayLevelUp()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Level_Up");
+    }
 
+    public void PlayCollideSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Collide");
+    }
 
+    public void PlayBuffSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Buff");
+    }
+
+    public void PlaySummonSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Summon");
+    }
 }

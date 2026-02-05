@@ -386,6 +386,8 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                      _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
+                EventManager.Instance.OnCraft?.Invoke();
+
                 Destroy(_purchased.gameObject);
             }
             // case: buy and bots are fusible.
@@ -396,6 +398,8 @@ public class PhaseShopController : MonoBehaviour
 
                 PhaseShopUI.Instance.UpdateCurrency(
                      _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
+
+                EventManager.Instance.OnCraft?.Invoke();
 
                 Destroy(_purchased.gameObject);
             }
@@ -409,6 +413,8 @@ public class PhaseShopController : MonoBehaviour
                    _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
                 Transport(_purchased, _targetSlot.transform, true);
+
+                EventManager.Instance.OnCraft?.Invoke();
 
                 _purchased.TriggerCraft();
             }
@@ -454,7 +460,7 @@ public class PhaseShopController : MonoBehaviour
                 view.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
         }
 
-        EventManager.Instance.OnTransportUnit?.Invoke();
+        EventManager.Instance.OnDropUnit?.Invoke();
         Player.UpdateUnitData();
     }
 
@@ -599,8 +605,10 @@ public class PhaseShopController : MonoBehaviour
 
         PhaseShopUI.Instance.SetButtonActive(_target != null ? _target.Model : null);
         AttachedController = _target;
-        EventManager.Instance.OnSettingAttachedObject?.Invoke(_target);
         SetDropHint(_target != null);
+
+        if (_target != null)
+            EventManager.Instance.OnAttachedUnit?.Invoke(_target);
     }
 
     /// <summary>
