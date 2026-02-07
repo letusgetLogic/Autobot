@@ -7,6 +7,7 @@ public class Slot : MonoBehaviour
     [SerializeField] private SpriteRenderer indicator;
     [SerializeField] private EventHover eventHover;
     [SerializeField] private EventDragSlot eventDrag;
+    [SerializeField] private GameObject lighting;
 
     [Tooltip("The hint of dropable slot.")]
     [SerializeField] private SpriteRenderer hintLight;
@@ -35,6 +36,9 @@ public class Slot : MonoBehaviour
         if (hintLight != null)
             defaultColor = hintLight.color;
 
+        if (lighting != null)
+            lighting.SetActive(false);
+
         eventHover.OnMouseOverEvent += ShowDescription;
         eventHover.OnMouseExitEvent += HideDescription;
 
@@ -44,6 +48,9 @@ public class Slot : MonoBehaviour
     {
         if (hintLight != null)
             hintLight.color = defaultColor;
+
+        if (lighting != null)
+            lighting.SetActive(false);
 
         eventHover.OnMouseOverEvent -= ShowDescription;
         eventHover.OnMouseExitEvent -= HideDescription;
@@ -177,5 +184,15 @@ public class Slot : MonoBehaviour
     {
         if (indicator != null)
             indicator.enabled = _isActive;
+    }
+
+    /// <summary>
+    /// Sets the lighting for attached active or not.
+    /// </summary>
+    /// <param name="_isActive"></param>
+    public void SetLightingActive(bool _isActive)
+    {
+        if (lighting != null)
+            lighting.SetActive(_isActive);
     }
 }

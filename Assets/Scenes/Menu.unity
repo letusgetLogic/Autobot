@@ -614,7 +614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9fdfc6a6a73734589f9b086c656e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
-  IsModeDevelop: 1
+  IsModeDevelop: 0
   lives: 3
   timer: 90
   modeLocalDuelHeart: {fileID: 2004077453}
@@ -650,6 +650,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 88505269}
     m_Modifications:
+    - target: {fileID: 1024583237609379106, guid: 2cf8f3ab0dd697949b59397bc70bfdf0, type: 3}
+      propertyPath: isSetBackToScaleMin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2487115502397323053, guid: 2cf8f3ab0dd697949b59397bc70bfdf0, type: 3}
       propertyPath: m_Name
       value: Cover Panel Close
@@ -856,11 +860,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_InputField
---- !u!1 &2071702444 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4369311593811225886, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
-  m_PrefabInstance: {fileID: 2950256793419180337}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &318822150365478284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1124,6 +1123,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 88505269}
     m_Modifications:
     - target: {fileID: 232111911575220123, guid: d10d20891cc7cb54483c17710d712359, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254024029810042373, guid: d10d20891cc7cb54483c17710d712359, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -1669,6 +1672,26 @@ PrefabInstance:
       propertyPath: m_Text
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 806143118823535268, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Drehschrauber
+      objectReference: {fileID: 0}
+    - target: {fileID: 806143118823535268, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: 453536509
+      objectReference: {fileID: 0}
+    - target: {fileID: 806143118823535268, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1260144311
+      objectReference: {fileID: 0}
+    - target: {fileID: 806143118823535268, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 361494417
+      objectReference: {fileID: 0}
+    - target: {fileID: 806143118823535268, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -887067045
+      objectReference: {fileID: 0}
     - target: {fileID: 1342074875322277152, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1788,7 +1811,7 @@ PrefabInstance:
     - target: {fileID: 7806035113914063719, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 2071702444}
+      objectReference: {fileID: 0}
     - target: {fileID: 7806035113914063719, guid: dd14d973a7666174b9c107553c8257c0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2

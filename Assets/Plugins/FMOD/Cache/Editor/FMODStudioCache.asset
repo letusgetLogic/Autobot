@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7461358923309250313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Drehschrauber
+  m_EditorClassIdentifier: 
+  Path: event:/Drehschrauber
+  Guid:
+    Data1: 453536509
+    Data2: 1260144311
+    Data3: 361494417
+    Data4: -887067045
+  Banks:
+  - {fileID: 5097814110452783591}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-7445469100385221498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,12 +329,14 @@ MonoBehaviour:
   - {fileID: -4384344928072570233}
   - {fileID: -2924741506971948809}
   - {fileID: -1463035021732393385}
+  - {fileID: -7461358923309250313}
+  - {fileID: 2082745559230139581}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5097814110452783591}
   StringsBanks:
   - {fileID: 2343683163441996289}
-  cacheTime: 639059119456047427
+  cacheTime: 639060921801225916
   cacheVersion: 131633
 --- !u!114 &221943234352003243
 MonoBehaviour:
@@ -354,6 +383,33 @@ MonoBehaviour:
     Data2: 1316113577
     Data3: 1751501470
     Data4: -1629825499
+  Banks:
+  - {fileID: 5097814110452783591}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &2082745559230139581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Swap
+  m_EditorClassIdentifier: 
+  Path: event:/Swap
+  Guid:
+    Data1: -1504500963
+    Data2: 1119053780
+    Data3: 576710809
+    Data4: 1285228094
   Banks:
   - {fileID: 5097814110452783591}
   IsStream: 0
@@ -432,10 +488,10 @@ MonoBehaviour:
   Path: Assets/Audio/Sound effect/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639059119456047427
+  lastModified: 639060921801225916
   FileSizes:
   - Name: Desktop
-    Value: 1406
+    Value: 1494
   Exists: 1
 --- !u!114 &3246974252144468787
 MonoBehaviour:
@@ -506,8 +562,8 @@ MonoBehaviour:
   Path: Assets/Audio/Sound effect/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639059119456012283
+  lastModified: 639060921801190723
   FileSizes:
   - Name: Desktop
-    Value: 829184
+    Value: 811040
   Exists: 1

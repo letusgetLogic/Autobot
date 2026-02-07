@@ -73,3 +73,37 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore FMOD Studio cache and logs
+/[Aa]ssets/Plugins/FMOD/Cache/*
+/[Aa]ssets/Plugins/FMOD/Cache/*.*
+/[Aa]ssets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset
+/[Aa]ssets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset.meta
+fmod_editor.log
+fmod.log   
+Assets/Audio/Sound effect/.cache/buildrecords/Desktop/Master.br
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/0911CBDF.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/1EAC16F9.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/2983C9B5.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/2E3FFDF7.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/356B05BB.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/36426E62.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/3CCB0436.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/575FDAD0.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/6158EEEE.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/644427EB.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/65A312B2.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/66C5CC25.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/74F32EF6.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/79FA601C.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/94D3ECA3.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/992FBF45.fobj
+Assets/Audio/Sound effect/.cache/fsbcache/Desktop/FB79E619.fobj
+Assets/Audio/Sound effect/.cache/{4cbb8807-b776-47e6-89ee-f226ba3669ec}.pdc
+Assets/Audio/Sound effect/.cache/{54e1b343-6db7-4247-b394-9b9e1b7d8cee}.pdc
+Assets/Audio/Sound effect/.cache/{7287fc70-0796-4a47-a7a6-8ad9fd26d752}.pdc
+Assets/Audio/Sound effect/.cache/{76d2524b-24e8-426a-8d51-9e488c40401d}.pdc
+Assets/Audio/Sound effect/.cache/{a9569793-61a2-4ea3-a21e-f28bbbecd785}.pdc
+Assets/Audio/Sound effect/.cache/{b4c39abb-dd34-4254-87a1-f5cc7625ee16}.pdc
+Assets/Audio/Sound effect/.cache/{e06377a3-5e9d-43a0-aa95-c723e40452c9}.pdc
+Assets/Audio/Sound effect/.cache/{effda5f6-5c8c-4c06-8928-d855ef991917}.pdc

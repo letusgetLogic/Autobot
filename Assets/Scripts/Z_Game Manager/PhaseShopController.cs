@@ -479,6 +479,8 @@ public class PhaseShopController : MonoBehaviour
             _unit1View.SetSpriteOverOther();
             delay1 = _unitTarget.MoveToParent(_slotDragged.position, _slotDragged);
         }
+        EventManager.Instance.OnSwap?.Invoke();
+
         yield return new WaitUntil(() => _unitTarget.transform.parent != null);
 
         Transport(_unitTarget, _slotDragged, false);
@@ -491,6 +493,8 @@ public class PhaseShopController : MonoBehaviour
             _unitDragged.BeginSwap();
             delay2 = _unitDragged.MoveToParent(_slotTarget.position, _slotTarget);
         }
+        EventManager.Instance.OnSwap?.Invoke();
+
         yield return new WaitUntil(() => _unitDragged.transform.parent != null);
 
         Transport(_unitDragged, _slotTarget, true);
@@ -658,7 +662,6 @@ public class PhaseShopController : MonoBehaviour
                     itemRandomnessDropSlot.gameObject.SetActive(false);
                     Debug.Log("Set drop hint false");
                 }
-
             }
         }
 
@@ -675,10 +678,18 @@ public class PhaseShopController : MonoBehaviour
                 continue;
             }
 
+            slot.SetLightingActive(false);
+
             slot.SetHintLight(ColorIndex(slot));
 
             slot.LightenUpDown.enabled = ColorIndex(slot) == 0 ? false : _value;
             slot.LightenScale.enabled = ColorIndex(slot) == 0 ? false : _value;
+
+
+            if (AttachedController == slot.UnitController())
+            {
+                slot.SetLightingActive(_value);
+            }
         }
 
         // Not hint charging station
@@ -696,10 +707,18 @@ public class PhaseShopController : MonoBehaviour
             return;
         }
 
+        chargeSlot.SetLightingActive(false);
+
         chargeSlot.SetHintLight(ColorIndex(chargeSlot));
 
         chargeSlot.LightenUpDown.enabled = ColorIndex(chargeSlot) == 0 ? false : _value;
         chargeSlot.LightenScale.enabled = ColorIndex(chargeSlot) == 0 ? false : _value;
+
+
+        if (AttachedController == chargeSlot.UnitController())
+        {
+            chargeSlot.SetLightingActive(_value);
+        }
 
         //Debug.Log("isDroppable " + isDroppable);
         //Debug.Log("slot " + slot);
@@ -712,7 +731,7 @@ public class PhaseShopController : MonoBehaviour
     /// <returns></returns>
     private int ColorIndex(Slot _slot)
     {
-        if (AttachedController == null)
+        if (AttachedController == null || AttachedController == _slot.UnitController())
             return 0;
 
         bool slotEmpty = _slot.Unit() == null;

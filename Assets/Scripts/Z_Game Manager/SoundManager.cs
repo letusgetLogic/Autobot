@@ -36,6 +36,8 @@ public class SoundManager : MonoBehaviour
         EventManager.Instance.OnFusion += PlayFusionSound;
         EventManager.Instance.OnLevelUp += PlayLevelUp;
 
+        EventManager.Instance.OnSwap += PlaySwapSound;
+
         EventManager.Instance.OnAttack += PlayCollideSound;
         EventManager.Instance.OnBuff += PlayBuffSound;
         EventManager.Instance.OnSummon += PlaySummonSound;
@@ -59,6 +61,8 @@ public class SoundManager : MonoBehaviour
 
         EventManager.Instance.OnFusion -= PlayFusionSound;
         EventManager.Instance.OnLevelUp -= PlayLevelUp;
+
+        EventManager.Instance.OnSwap -= PlaySwapSound;
 
         EventManager.Instance.OnAttack -= PlayCollideSound;
         EventManager.Instance.OnBuff -= PlayBuffSound;
@@ -127,6 +131,11 @@ public class SoundManager : MonoBehaviour
     public void PlayLevelUp()
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/Level_Up");
+    }
+
+    public void PlaySwapSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Swap");
     }
 
     public void PlayCollideSound()

@@ -8,17 +8,16 @@ public class ScaleUpDown : MonoBehaviour
         Automatic,
         Up,
         Down,
-        Validate,
-        ValidateBackToScaleMin
+        Manually,
     }
 
     [Tooltip("Automatic - Scale up and down when component is enabled\n" +
         "Up - Scale up when component is enabled\n" +
         "Down - Scale down when component is enabled\n" +
-        "Validate - Scale when a method is called to scale up or down\n" +
-        "ValidateBackToScaleMin - Set Transform back to scaleMin")]
+        "Manually - Scale up or down from a external call\n")]
     [SerializeField] private RunState runState = RunState.None;
     [SerializeField] private bool isDisableAtAwake = false;
+    [SerializeField] private bool isSetBackToScaleMin = false;
 
     [SerializeField] private float animTime = 1f;
     [SerializeField] private Vector3 scaleMax = new(1f, 1f);
@@ -69,14 +68,16 @@ public class ScaleUpDown : MonoBehaviour
                 scaleState = Scale.Down;
                 break;
 
-            case RunState.Validate:
-                scaleState = Scale.None;
-                break;
-
-            case RunState.ValidateBackToScaleMin:
+            case RunState.Manually:
                 scaleState = Scale.None;
                 break;
         }
+    }
+
+    private void OnDisable()
+    {
+        if (isSetBackToScaleMin)
+          SetDefault();
     }
 
     private void FixedUpdate()
@@ -111,11 +112,30 @@ public class ScaleUpDown : MonoBehaviour
         {
             if (currentValue == 1f)
             {
-                scaleState = runState == RunState.Automatic ? Scale.Down : Scale.None;
+                switch (runState)
+                {
+                    case RunState.None:
+                        scaleState = Scale.None;
+                        break;
 
-                if (runState == RunState.ValidateBackToScaleMin)
-                    SetDefault();
-                return;
+                    case RunState.Automatic:
+                        scaleState = Scale.Down;
+                        break;
+
+                    case RunState.Up:
+                        scaleState = Scale.None;
+                        break;
+
+                    case RunState.Down:
+                        scaleState = Scale.None;
+                        break;
+
+                    case RunState.Manually:
+                        scaleState = Scale.None;
+                        if (isSetBackToScaleMin)
+                            SetDefault();
+                        break;
+                }
             }
 
             Interpolate(1f);
@@ -132,8 +152,30 @@ public class ScaleUpDown : MonoBehaviour
         {
             if (currentValue == 0f)
             {
-                scaleState = runState == RunState.Automatic ? Scale.Up : Scale.None;
-                return;
+                switch (runState)
+                {
+                    case RunState.None:
+                        scaleState = Scale.None;
+                        break;
+
+                    case RunState.Automatic:
+                        scaleState = Scale.Up;
+                        break;
+
+                    case RunState.Up:
+                        scaleState = Scale.None;
+                        break;
+
+                    case RunState.Down:
+                        scaleState = Scale.None;
+                        break;
+
+                    case RunState.Manually:
+                        scaleState = Scale.None;
+                        if (isSetBackToScaleMin)
+                            SetDefault();
+                        break;
+                }
             }
 
             Interpolate(0f);
@@ -177,7 +219,7 @@ public class ScaleUpDown : MonoBehaviour
         if (rect != null)
         {
             defaultValue = rect.localScale;
-            if (runState == RunState.ValidateBackToScaleMin)
+            if (isSetBackToScaleMin)
             {
                 defaultValue = scaleMin;
                 rect.localScale = defaultValue;
@@ -186,7 +228,7 @@ public class ScaleUpDown : MonoBehaviour
         }
 
         defaultValue = transform.localScale;
-        if (runState == RunState.ValidateBackToScaleMin)
+        if (isSetBackToScaleMin)
         {
             defaultValue = scaleMin;
             transform.localScale = defaultValue;

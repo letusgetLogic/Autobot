@@ -42,6 +42,7 @@ public class EventManager
     public Action OnFusion { get; set; }
     public Action OnLevelUp { get; set; }
 
+    public Action OnSwap { get; set; }
 
     public Action OnNotEnoughCurrency { get; set; }
 
