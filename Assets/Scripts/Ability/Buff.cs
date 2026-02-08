@@ -40,6 +40,7 @@ public class Buff : AbilityBase
                 BuffAll();
                 break;
         }
+        EventManager.Instance.OnBuff?.Invoke();
     }
 
     private void BuffAll()

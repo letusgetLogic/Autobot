@@ -1,38 +1,26 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SetRectLocalScaleClick : MonoBehaviour,
     IPointerDownHandler, IPointerUpHandler
 {
     [Header("References")]
-    [SerializeField] private RectTransform rotatedSprite;
-    [SerializeField] private RectTransform rotatedSprite2;
+    [SerializeField] private Button button;
 
     [Header("Settings")]
     [SerializeField] private float scaleFactor;
-    [SerializeField] private float rotateSpeed;
 
     private bool isHeld = false;
     private Vector3 originalScale;
-    private Quaternion originalRotation;
 
     /// <summary>
     /// Start method.
     /// </summary>
-    private void Start()
+    private void OnEnable()
     {
         originalScale = GetComponent<RectTransform>().localScale;
-
-        if (rotatedSprite != null)
-        {
-            rotatedSprite.gameObject.SetActive(false);
-            originalRotation = rotatedSprite.localRotation;
-        }
-
-        if (rotatedSprite2 != null)
-        {
-            rotatedSprite2.gameObject.SetActive(false);
-        }
+        GameManager.Instance.IsBlockingInput = false;
     }
 
     /// <summary>
@@ -42,16 +30,11 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     public void OnPointerDown(PointerEventData eventData)
     {
         isHeld = true;
+
+        if(button != null && button.interactable == false)
+            return;
+
         GetComponent<RectTransform>().localScale = originalScale * scaleFactor;
-
-        if (rotatedSprite != null)
-            rotatedSprite.gameObject.SetActive(true);
-
-        if (rotatedSprite2 != null)
-        {
-            rotatedSprite2.gameObject.SetActive(true);
-            rotatedSprite2.localRotation = originalRotation;
-        }
     }
 
     /// <summary>
@@ -62,34 +45,13 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     {
         isHeld = false;
         GetComponent<RectTransform>().localScale = originalScale;
-
-        if (rotatedSprite != null)
-            rotatedSprite.localRotation = originalRotation;
-
-        if (rotatedSprite2 != null)
-        {
-            rotatedSprite2.localRotation = originalRotation;
-        }
     }
 
     private void Update()
     {
         if (isHeld)
         {
-            if (rotatedSprite != null)
-            {
-                Quaternion rotate = new Quaternion(
-              rotatedSprite.localRotation.x,
-              rotatedSprite.localRotation.y,
-              rotatedSprite.localRotation.z - rotateSpeed * Time.deltaTime,
-              rotatedSprite.localRotation.w
-              );
-                rotatedSprite.localRotation = rotate;
-
-                if (rotatedSprite2 != null)
-                    rotatedSprite2.localRotation = rotate;
-            }
-
+            // Do something while the button is held.
         }
     }
 }

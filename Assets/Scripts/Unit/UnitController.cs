@@ -135,7 +135,7 @@ public class UnitController : MonoBehaviour
     #region PhaseShop
 
     /// <summary>
-    /// Triggers the ability if it is existent and destroys the unit.
+    /// Triggers the ability if it is existent.
     /// </summary>
     public void TriggerCraft()
     {
@@ -176,7 +176,7 @@ public class UnitController : MonoBehaviour
             _draggingModel.Data.Cur.HP == _draggingModel.Data.FullHP);
 
         model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
-        model.UpdateLevelXP(_isPhaseShop);
+        model.UpdateLevelXP(_isPhaseShop, true);
         model.Repair?.SetDurability(false);
 
         EventManager.Instance.OnFusion?.Invoke();
@@ -212,7 +212,6 @@ public class UnitController : MonoBehaviour
 
         if (model.Data.Cur.HP <= 0)
         {
-            EventManager.Instance.OnShutdown?.Invoke(this);
             view.SetShutdown();
             TriggerShutdown();
         }
@@ -232,14 +231,10 @@ public class UnitController : MonoBehaviour
         {
             EventManager.Instance.OnTriggerAbility?.Invoke(ability, true);
         }
-        // Destroy already in the ability handler but with a delay.
-        //else
-        //{
-        //    if (PhaseShopController.Instance != null)
-        //    {
-        //        Destroy(gameObject);
-        //    }
-        //}
+        else
+        {
+            EventManager.Instance.OnShutdown?.Invoke(this);
+        }
     }
 
     /// <summary>
@@ -304,8 +299,6 @@ public class UnitController : MonoBehaviour
 
         view.ShowBuff(_attribute);
         model.Repair?.SetDurability(false);
-
-        EventManager.Instance.OnBuff?.Invoke();
     }
 
     /// <summary>

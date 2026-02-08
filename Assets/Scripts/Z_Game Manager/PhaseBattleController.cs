@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -55,6 +56,25 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public bool IsStopped { get; set; } = false;
     public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
 
+    private UnityAction<AbilityBase, bool> onEnqueueAbility => (ability, isDestroyingUnit) =>
+    {
+        UnitAbilities.Enqueue(ability);
+
+        if (isDestroyingUnit)
+        {
+            EventManager.Instance.OnShutdown?.Invoke(ability.Controller);
+        }
+        Debug.Log($"{ability.ToString()} enqueue");
+        Debug.Log($"{unitAbilities.Count} UnitAbilities");
+    };
+
+    private UnityAction<UnitController> onEnqueueShutdown => unit =>
+    {
+        ShutdownUnits.Enqueue(unit);
+        Debug.Log($"{unit.gameObject.name} enqueue");
+        Debug.Log($"{shutdownUnits.Count} ShutdownUnits");
+    };
+
     private void Awake()
     {
         if (Instance != null)
@@ -77,29 +97,14 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     private void OnEnable()
     {
-        EventManager.Instance.OnTriggerAbility += (ability, isDestroyingUnit) =>
-        {
-            UnitAbilities.Enqueue(ability);
-            Debug.Log($"{ability.ToString()} enqueue");
-            Debug.Log($"{unitAbilities.Count} UnitAbilities");
-        };
-
-        EventManager.Instance.OnShutdown += unit =>
-        {
-            ShutdownUnits.Enqueue(unit);
-            Debug.Log($"{unit.gameObject.name} enqueue");
-            Debug.Log($"{shutdownUnits.Count} ShutdownUnits");
-        };
+        EventManager.Instance.OnTriggerAbility += onEnqueueAbility;
+        EventManager.Instance.OnShutdown += onEnqueueShutdown;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.OnTriggerAbility -= (ability, isDestroyingUnit) =>
-        {
-            UnitAbilities.Enqueue(ability);
-        };
-
-        EventManager.Instance.OnShutdown -= unit => ShutdownUnits.Enqueue(unit);
+        EventManager.Instance.OnTriggerAbility -= onEnqueueAbility;
+        EventManager.Instance.OnShutdown -= onEnqueueShutdown;
     }
 
     /// <summary>

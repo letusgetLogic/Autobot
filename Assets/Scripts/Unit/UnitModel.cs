@@ -142,7 +142,7 @@ public class UnitModel
         if (Application.isPlaying == false)
             return;
 
-        UpdateLevelXP(IsPhaseShop(Data.UnitState));
+        UpdateLevelXP(IsPhaseShop(Data.UnitState), false);
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ public class UnitModel
     /// Updates the level and xp.
     /// </summary>
     /// <param name="xp"></param>
-    public void UpdateLevelXP(bool _isPhaseShop)
+    public void UpdateLevelXP(bool _isPhaseShop, bool _isMakingSound)
     {
         switch (Data.XP)
         {//                        level  box1   box2  step1  step2  box3  step3  step4  step5  
@@ -254,7 +254,7 @@ public class UnitModel
             case 3:
                 view.SetXpStepActive("1", false, true, true, true, false, false, false, false);
                 SetCurrentLevel(0);
-                view.StartCoroutine(DelayLevel2(_isPhaseShop));
+                view.StartCoroutine(DelayLevel2(_isPhaseShop, _isMakingSound));
                 break;
             case 4:
                 view.SetXpStepActive("2", false, false, false, false, true, true, false, false);
@@ -267,7 +267,7 @@ public class UnitModel
             case 6:
                 view.SetXpStepActive("2", false, false, false, false, true, true, true, true);
                 SetCurrentLevel(1);
-                view.StartCoroutine(DelayLevel3(_isPhaseShop));
+                view.StartCoroutine(DelayLevel3(_isPhaseShop, _isMakingSound));
                 break;
         }
     }
@@ -276,7 +276,7 @@ public class UnitModel
     /// Delays level 2.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayLevel2(bool _isPhaseShop)
+    private IEnumerator DelayLevel2(bool _isPhaseShop, bool _isMakingSound)
     {
         yield return new WaitForSeconds(_isPhaseShop ?
             view.DelayUpdateLevel :
@@ -285,14 +285,15 @@ public class UnitModel
         view.SetXpStepActive("2", false, false, false, false, true, false, false, false);
         SetCurrentLevel(1);
 
-        EventManager.Instance.OnLevelUp?.Invoke();
+        if (_isMakingSound)
+            EventManager.Instance.OnLevelUp?.Invoke();
     }
 
     /// <summary>
     /// Delays level 3.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayLevel3(bool _isPhaseShop)
+    private IEnumerator DelayLevel3(bool _isPhaseShop, bool _isMakingSound)
     {
         yield return new WaitForSeconds(_isPhaseShop ?
             view.DelayUpdateLevel :
@@ -301,7 +302,8 @@ public class UnitModel
         view.SetXpStepActive("3", true, false, false, false, false, false, false, false);
         SetCurrentLevel(2);
 
-        EventManager.Instance.OnLevelUp?.Invoke();
+        if (_isMakingSound)
+            EventManager.Instance.OnLevelUp?.Invoke();
     }
 
     /// <summary>

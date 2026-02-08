@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSettings : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private TMP_InputField inputName1;
     [SerializeField] private TMP_InputField inputName2;
     [SerializeField] private TextMeshProUGUI hint;
+    [SerializeField] private Button startButton;
 
     [Header("Game Settings")]
     [SerializeField] private int minLives = 3;
@@ -65,22 +67,24 @@ public class GameSettings : MonoBehaviour
         GameManager.Instance.Mode = GameMode.Local1v1;
     }
 
-    /// <summary>
-    /// Unchecks all packs.
-    /// </summary>
-    public void UnCheckAllPacks()
-    {
-        for (int i = 0; i < packs.Length; i++)
-        {
-            packs[i].UnCheck();
-        }
-    }
+    ///// <summary>
+    ///// Unchecks all packs.
+    ///// </summary>
+    //public void UnCheckAllPacks()
+    //{
+    //    for (int i = 0; i < packs.Length; i++)
+    //    {
+    //        packs[i].UnCheck();
+    //    }
+    //}
 
     /// <summary>
     /// Start game with selected settings.  
     /// </summary>
     public void StartGame()
     {
+        startButton.interactable = true;
+
         switch (GameManager.Instance.Mode)
         {
             case GameMode.Local1v1:
@@ -90,6 +94,7 @@ public class GameSettings : MonoBehaviour
                     hint.text = "Select a pack!";
                     hint.enabled = true;
                     StartCoroutine(Hide(hint, durationHintDefault));
+                    EventManager.Instance.OnInvalidInput?.Invoke();
                     return;
                 }
 
@@ -107,14 +112,17 @@ public class GameSettings : MonoBehaviour
                     hint.text = "Enter a number of lives!";
                     hint.enabled = true;
                     StartCoroutine(Hide(hint, durationHintDefault));
+                    EventManager.Instance.OnInvalidInput?.Invoke();
                     return;
                 }
                 if (b < minLives || b > maxLives)
                 {
                     HintInvalid(modeLocalDuelHeart);
+                    EventManager.Instance.OnInvalidInput?.Invoke();
                     return;
                 }
 
+                startButton.interactable = false;
                 GameManager.Instance.PlayerLives = b;
                 GameManager.Instance.LoadGame();
 

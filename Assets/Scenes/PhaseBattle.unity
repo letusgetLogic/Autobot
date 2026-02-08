@@ -4356,6 +4356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runState: 5
   isDisableAtAwake: 0
+  isSetBackToScaleMin: 0
   animTime: 0.1
   scaleMax: {x: 2, y: 2, z: 0}
   scaleMin: {x: 0, y: 0, z: 0}
@@ -6335,7 +6336,6 @@ MonoBehaviour:
   play: {fileID: 853368490}
   stop: {fileID: 378951886}
   collideVisual: {fileID: 1367017135}
-  durationCollider: 0
 --- !u!224 &4968167037444876173
 RectTransform:
   m_ObjectHideFlags: 0

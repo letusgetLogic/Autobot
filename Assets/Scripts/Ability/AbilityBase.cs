@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class AbilityBase
 {
-    protected UnitController Controller { get; private set; }
+    public UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
     protected Slot[] TeamSlots { get; private set; }
     protected UnitController TargetedByItem { get; private set; }
@@ -43,7 +43,7 @@ public abstract class AbilityBase
                 Controller.View.SetDescriptionActive(false);
 
             if (_isDestroying)
-                Controller.DestroyObject();
+                EventManager.Instance.OnShutdown?.Invoke(Controller);
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class AbilityBase
         switch (type)
         {
             case DoType.Buff:
-                if (CheckOutcomeState.IsAnyoneIn(_teamSlots, _slot) == false)
+                if (CheckOutcomeState.IsAnyoneIn(_teamSlots, _slot) == 0)
                     return null;
 
                 return new Buff(_controller, _level, _teamSlots, _targetedByItem);

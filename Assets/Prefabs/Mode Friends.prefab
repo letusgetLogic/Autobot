@@ -3643,10 +3643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb12bc86082f7546be721d132edeaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
-  rotatedSprite: {fileID: 8436847236532690639}
-  rotatedSprite2: {fileID: 5112744626661487930}
   scaleFactor: 1.1
-  rotateSpeed: 10
 --- !u!114 &5048998311557076844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3662,8 +3659,6 @@ MonoBehaviour:
   button: {fileID: 952289773396628285}
   DeactivatedParent: {fileID: 0}
   background: {fileID: 0}
-  rotatedSprite: {fileID: 7282451465695534628}
-  rotatedSprite2: {fileID: 30548635454133830}
   hexColorHover: 
 --- !u!114 &3696084388933800811
 MonoBehaviour:
@@ -4496,11 +4491,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
     - target: {fileID: 6998188967520665777, guid: 07b5c5ae53a98db4896294966ec5906f, type: 3}
       propertyPath: m_text
-      value: Starter Pack
+      value: First Generation
       objectReference: {fileID: 0}
     - target: {fileID: 9144253869376757503, guid: 07b5c5ae53a98db4896294966ec5906f, type: 3}
       propertyPath: m_Name
-      value: Starter Pack
+      value: First Generation
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

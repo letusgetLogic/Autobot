@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 6858848452297211503}
   - component: {fileID: 4084741183727267903}
   m_Layer: 5
-  m_Name: Animation Helding
+  m_Name: Nut Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 4955245965258256465}
   - component: {fileID: 4753201858445774294}
   m_Layer: 5
-  m_Name: Animation Helding (1)
+  m_Name: Nut Sprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -461,6 +461,7 @@ GameObject:
   - component: {fileID: 1719619736143670338}
   - component: {fileID: 4219831094659610246}
   - component: {fileID: 8815050637889595023}
+  - component: {fileID: 3723931608326872497}
   - component: {fileID: 8198378250993042768}
   - component: {fileID: 3340465354332419925}
   - component: {fileID: 5269443544937094806}
@@ -515,10 +516,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb12bc86082f7546be721d132edeaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
-  rotatedSprite: {fileID: 2260571403455841557}
-  rotatedSprite2: {fileID: 587922983616308288}
+  button: {fileID: 3340465354332419925}
   scaleFactor: 1.1
-  rotateSpeed: 10
 --- !u!114 &8815050637889595023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,9 +533,28 @@ MonoBehaviour:
   button: {fileID: 3340465354332419925}
   DeactivatedParent: {fileID: 0}
   background: {fileID: 0}
-  rotatedSprite: {fileID: 3657222281903279600}
-  rotatedSprite2: {fileID: 6193620771632432117}
   hexColorHover: 
+--- !u!114 &3723931608326872497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9128169344263799084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4f6fff9517aee41ab523ed869bcaf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotatedSprite: {fileID: 2260571403455841557}
+  rotatedSprite2: {fileID: 587922983616308288}
+  layoutToDeactivate: {fileID: 0}
+  layoutToActivate: {fileID: 0}
+  doSomethingAfterClick:
+    m_PersistentCalls:
+      m_Calls: []
+  degreesPerSecond: 540
+  rotateTime: 1
 --- !u!114 &8198378250993042768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,7 +607,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.5613208, g: 0.8087244, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -611,9 +629,33 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameSettings, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 3340465354332419925}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3723931608326872497}
+        m_TargetAssemblyTypeName: ButtonInteractedAnimation, Assembly-CSharp
+        m_MethodName: OnSwitchLayout
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5269443544937094806}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -644,7 +686,7 @@ MonoBehaviour:
       Data4: -310500793
     Path: event:/Button
   Event: 
-  EventPlayTrigger: 19
+  EventPlayTrigger: 0
   EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0

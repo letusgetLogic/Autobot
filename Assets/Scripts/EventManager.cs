@@ -1,4 +1,4 @@
-﻿using System;
+﻿using UnityEngine.Events;
 
 public class EventManager
 {
@@ -23,31 +23,39 @@ public class EventManager
     #endregion
 
 
+
+    public UnityAction OnInvalidInput { get; set; }
+    public UnityAction OnCloseScene { get; set; }
+    public UnityAction OnMoveHintClick { get; set; }
+    public UnityAction OnOpenScene { get; set; }
+
+
+
     #region Phase Shop
 
-    public Action<UnitController> OnAttachedUnit { get; set; }
-    public Action OnDropUnit { get; set; }
+    public UnityAction<UnitController> OnAttachedUnit { get; set; }
+    public UnityAction OnDropUnit { get; set; }
 
-    public Action OnRoll {  get; set; }
-    public Action OnEndTurn {  get; set; }
+    public UnityAction OnRoll {  get; set; }
+    public UnityAction OnEndTurn {  get; set; }
 
-    public Action OnCraft {  get; set; }
-    public Action OnRecycle { get; set; }
+    public UnityAction OnCraft {  get; set; }
+    public UnityAction OnRecycle { get; set; }
 
-    public Action OnRepair {  get; set; }
+    public UnityAction OnRepair {  get; set; }
 
-    public Action OnLock {  get; set; }
-    public Action OnUnlock {  get; set; }
+    public UnityAction OnLock {  get; set; }
+    public UnityAction OnUnlock {  get; set; }
 
-    public Action OnFusion { get; set; }
-    public Action OnLevelUp { get; set; }
+    public UnityAction OnFusion { get; set; }
+    public UnityAction OnLevelUp { get; set; }
 
-    public Action OnSwap { get; set; }
+    public UnityAction OnSwap { get; set; }
 
-    public Action OnNotEnoughCurrency { get; set; }
+    public UnityAction OnNotEnoughCurrency { get; set; }
 
 
-    public Action<AbilityBase, bool> OnTriggerAbility { get; set; }
+    public UnityAction<AbilityBase, bool> OnTriggerAbility { get; set; }
 
 
     #endregion
@@ -56,16 +64,16 @@ public class EventManager
 
     #region Unit Actions
 
-    public Action OnAttack { get; set; }
-    public Action<UnitController> OnShutdown { get; set; }
-    public Action OnBuff { get; set; }
-    public Action OnSummon { get; set; }
+    public UnityAction OnAttack { get; set; }
+    public UnityAction<UnitController> OnShutdown { get; set; }
+    public UnityAction OnBuff { get; set; }
+    public UnityAction OnSummon { get; set; }
 
 
     #endregion
 
 
 
-    public Action OnMatchOver { get; set; }
-    public Action OnGameOver { get; set; }
+    public UnityAction OnMatchOver { get; set; }
+    public UnityAction OnGameOver { get; set; }
 }

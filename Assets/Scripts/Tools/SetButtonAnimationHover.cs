@@ -9,30 +9,21 @@ public class SetButtonAnimationHover : MonoBehaviour,
     [SerializeField] private Button button;
     [SerializeField] private GameObject DeactivatedParent;
     [SerializeField] private Image background;
-    [SerializeField] private GameObject rotatedSprite;
-    [SerializeField] private GameObject rotatedSprite2;
 
     [Header("Settings")]
     [SerializeField] private string hexColorHover;
 
     private Color originalBackgroundColor;
 
-    /// <summary>
-    /// Start method.
-    /// </summary>        
-    private void Start()
+    private void OnEnable()
     {
         if (background != null)
             originalBackgroundColor = background.color;
-
-        SetAnimationActive(false);
 
         if (button != null)
         {
             button.onClick.AddListener(() =>
             {
-                SetAnimationActive(false);
-
                 if (gameObject.activeSelf == false)
                 {
                     if (background != null)
@@ -59,8 +50,6 @@ public class SetButtonAnimationHover : MonoBehaviour,
             if (ColorUtility.TryParseHtmlString(hexColorHover, out color))
                 background.color = color;
         }
-
-        SetAnimationActive(true);
     }
 
     /// <summary>
@@ -71,16 +60,5 @@ public class SetButtonAnimationHover : MonoBehaviour,
     {
         if (background != null)
             background.color = originalBackgroundColor;
-
-        SetAnimationActive(false);
-    }
-
-    private void SetAnimationActive(bool value)
-    {
-        if (rotatedSprite != null)
-            rotatedSprite.SetActive(value);
-
-        if (rotatedSprite2 != null)
-            rotatedSprite2.SetActive(value);
     }
 }

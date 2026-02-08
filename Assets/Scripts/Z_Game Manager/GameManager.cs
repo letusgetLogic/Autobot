@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     public bool IsBlockingInput { get; set; } = false;
 
     public int PhaseShopIndex { get; set; } = 0;
+    private SoundManager soundManager;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        soundManager = SoundManager.Instance;
     }
 
     /// <summary>

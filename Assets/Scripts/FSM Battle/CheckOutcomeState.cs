@@ -4,6 +4,8 @@ public class CheckOutcomeState : StateBase
 {
     private bool startOfBattle;
     private bool hasOutcomeOfBattle;
+    private int amountOfActiveUnits1;
+    private int amountOfActiveUnits2;
 
     /// <summary>
     /// Constructor of CheckOutcomeState
@@ -40,11 +42,21 @@ public class CheckOutcomeState : StateBase
             }
             else
             {
-                if (startOfBattle)
-                    _ctx.SetState(new StartOfBattleState(0));
-                else
+                //if (startOfBattle)
+                //    _ctx.SetState(new StartOfBattleState(0));
+                //else
+
+                if (MustInsert(PhaseBattleController.Instance.Slots1(), amountOfActiveUnits1) ||
+                    MustInsert(PhaseBattleController.Instance.Slots2(), amountOfActiveUnits2))
+                {
                     _ctx.SetState(new InsertState(
                         PhaseBattleController.Instance.Process.DurationInsert));
+                }
+                else
+                {
+                    _ctx.SetState(new AttackState(
+                         PhaseBattleController.Instance.Process.DurationAttack));
+                }
             }
         }
     }
@@ -57,9 +69,13 @@ public class CheckOutcomeState : StateBase
     {
         var slots1 = PhaseBattleController.Instance.Slots1();
         var slots2 = PhaseBattleController.Instance.Slots2();
-        if (IsAnyoneIn(slots1, null))
+
+        amountOfActiveUnits1 = IsAnyoneIn(slots1, null);
+        amountOfActiveUnits2 = IsAnyoneIn(slots2, null);
+
+        if (amountOfActiveUnits1 > 0)
         {
-            if (IsAnyoneIn(slots2, null))
+            if (amountOfActiveUnits2 > 0)
             {
                 return false; // Continue battle
             }
@@ -78,7 +94,7 @@ public class CheckOutcomeState : StateBase
         }
         else
         {
-            if (IsAnyoneIn(slots2, null))
+            if (amountOfActiveUnits2 > 0)
             {
                 GameManager.Instance.UpdatePlayerStats(1); // Right wins
 
@@ -103,22 +119,41 @@ public class CheckOutcomeState : StateBase
     /// <summary>
     /// Checks if any unit is in slots.
     /// </summary>
-    /// <param name="slots"></param>
+    /// <param name="_slots"></param>
     /// <param name="_exclusiveSlot"> The reference of Slot, which shouldn't be checked.</param>
     /// <returns></returns>
-    public static bool IsAnyoneIn(Slot[] slots, Slot _exclusiveSlot)
+    public static int IsAnyoneIn(Slot[] _slots, Slot _exclusiveSlot)
     {
-        for (int i = 0; i < slots.Length; i++)
+        int count = 0;
+
+        for (int i = 0; i < _slots.Length; i++)
         {
-            if (slots[i].Unit() != null)
+            if (_slots[i].Unit() != null)
             {
-                if (_exclusiveSlot != null && _exclusiveSlot == slots[i])
+                if (_exclusiveSlot != null && _exclusiveSlot == _slots[i])
                     continue;
 
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /// <summary>
+    /// If all active units are at the front, then skip insert, otherwise insert unit.
+    /// </summary>
+    /// <param name="_slots"></param>
+    /// <param name="_amountOfActive"></param>
+    /// <returns></returns>
+    private bool MustInsert(Slot[] _slots, int _amountOfActive)
+    {
+        for (int i = 0; i < _amountOfActive; i++)
+        {
+            if (_slots[i].Unit() == null)
+            {
                 return true;
             }
         }
         return false;
     }
-
 }

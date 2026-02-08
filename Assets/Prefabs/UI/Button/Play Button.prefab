@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3858181440921764691}
   - component: {fileID: 191291133246434477}
   - component: {fileID: 1682770564449433139}
+  - component: {fileID: 9020251040374922489}
   - component: {fileID: 6627261870955251635}
   - component: {fileID: 9132580950475491939}
   - component: {fileID: 361966178820669357}
@@ -65,10 +66,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb12bc86082f7546be721d132edeaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
-  rotatedSprite: {fileID: 2555827486814992338}
-  rotatedSprite2: {fileID: 1065099675832114165}
+  button: {fileID: 9132580950475491939}
   scaleFactor: 1.1
-  rotateSpeed: 10
 --- !u!114 &1682770564449433139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,9 +83,28 @@ MonoBehaviour:
   button: {fileID: 9132580950475491939}
   DeactivatedParent: {fileID: 0}
   background: {fileID: 0}
-  rotatedSprite: {fileID: 2574301439102984440}
-  rotatedSprite2: {fileID: 3674160305602302953}
   hexColorHover: 
+--- !u!114 &9020251040374922489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2548454221267903682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4f6fff9517aee41ab523ed869bcaf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotatedSprite: {fileID: 2555827486814992338}
+  rotatedSprite2: {fileID: 1065099675832114165}
+  layoutToDeactivate: {fileID: 0}
+  layoutToActivate: {fileID: 0}
+  doSomethingAfterClick:
+    m_PersistentCalls:
+      m_Calls: []
+  degreesPerSecond: 540
+  rotateTime: 1
 --- !u!114 &6627261870955251635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +178,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6627261870955251635}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 361966178820669357}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 361966178820669357}
+        m_TargetAssemblyTypeName: GameSettings, Assembly-CSharp
+        m_MethodName: OnModeSingle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &361966178820669357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +236,7 @@ MonoBehaviour:
       Data4: -887067045
     Path: event:/Drehschrauber
   Event: 
-  EventPlayTrigger: 19
+  EventPlayTrigger: 0
   EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
@@ -204,7 +258,7 @@ GameObject:
   - component: {fileID: 4544468370095326109}
   - component: {fileID: 5755668411192353829}
   m_Layer: 5
-  m_Name: Animation Helding
+  m_Name: Nut Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,7 +333,7 @@ GameObject:
   - component: {fileID: 5735285434363890423}
   - component: {fileID: 700758917385547444}
   m_Layer: 5
-  m_Name: Animation Helding (1)
+  m_Name: Nut Sprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

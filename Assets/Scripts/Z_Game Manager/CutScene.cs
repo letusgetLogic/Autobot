@@ -32,6 +32,7 @@ public class CutScene : MonoBehaviour
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
+                EventManager.Instance.OnMoveHintClick?.Invoke();
             }
 
             coverPanelOpen.gameObject.SetActive(true);
@@ -49,6 +50,7 @@ public class CutScene : MonoBehaviour
         yield return new WaitForSeconds(delayOpen);
 
         OpenPanel.ScaleUp(false);
+        EventManager.Instance.OnOpenScene?.Invoke();
     }
 
     /// <summary>
@@ -67,6 +69,8 @@ public class CutScene : MonoBehaviour
         GameManager.Instance.SceneToLoad = _scene;
         ClosePanel.ScaleUp(true);
 
+        EventManager.Instance.OnCloseScene?.Invoke();
+
         yield return new WaitForSeconds(ClosePanel.AnimTime);
 
         //SceneManager.LoadScene(GameManager.Instance.SceneToLoad);
@@ -74,7 +78,10 @@ public class CutScene : MonoBehaviour
         GameManager.Instance.Switch(GameState.WaitingSwitchScene);
 
         if (hintClick != null)
+        {
             hintClick.Trigger();
+            EventManager.Instance.OnMoveHintClick?.Invoke();
+        }
     }
 
 }

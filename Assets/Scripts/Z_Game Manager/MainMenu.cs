@@ -4,6 +4,7 @@ public class MainMenu : MonoBehaviour
 {
     public static MainMenu Instance { get; private set; }
 
+
     private void Awake()
     {
         if (Instance != null)
@@ -14,4 +15,5 @@ public class MainMenu : MonoBehaviour
 
         Time.timeScale = 1.0f;
     }
+
 }

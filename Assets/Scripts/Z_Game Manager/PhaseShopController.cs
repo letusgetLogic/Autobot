@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PhaseShopController : MonoBehaviour
 {
@@ -39,11 +40,13 @@ public class PhaseShopController : MonoBehaviour
 
     private StartTurnState startTurn = StartTurnState.None;
 
-    private Action<AbilityBase, bool> OnAbility => (_ability, _isDestroyingUnit) =>
-   {
+    private UnityAction<AbilityBase, bool> OnAbility => (_ability, _isDestroyingUnit) =>
+    {
        StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
        Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
-   };
+    };
+
+    private UnityAction<UnitController> onDestroyUnit => unit => Destroy(unit);
 
     private void Awake()
     {
@@ -70,11 +73,13 @@ public class PhaseShopController : MonoBehaviour
             itemRandomnessDropSlot.gameObject.SetActive(false);
 
         EventManager.Instance.OnTriggerAbility += OnAbility;
+        EventManager.Instance.OnShutdown += onDestroyUnit;
     }
 
     private void OnDisable()
     {
         EventManager.Instance.OnTriggerAbility -= OnAbility;
+        EventManager.Instance.OnShutdown -= onDestroyUnit;
     }
 
     /// <summary>
@@ -307,6 +312,8 @@ public class PhaseShopController : MonoBehaviour
     /// <returns></returns>
     public void ChargeTeamBots()
     {
+        bool isSomeoneThere = false;
+
         foreach (var slot in teamSlots)
         {
             if (slot.gameObject.activeSelf)
@@ -315,8 +322,14 @@ public class PhaseShopController : MonoBehaviour
                 if (unitController != null)
                 {
                     unitController.SetEnergy(PackManager.Instance.MyPack.ChargingEnergyTeam.Value);
+                    isSomeoneThere = false;
                 }
             }
+        }
+
+        if (isSomeoneThere)
+        {
+            EventManager.Instance.OnBuff?.Invoke();
         }
     }
 
@@ -817,5 +830,10 @@ public class PhaseShopController : MonoBehaviour
     public void SetItemRandomnessInactive()
     {
         itemRandomnessDropSlot.gameObject.SetActive(false);
+    }
+
+    public void Destroy(UnitController _unit)
+    {
+        _unit.DestroyObject();
     }
 }
