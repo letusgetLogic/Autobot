@@ -1,7 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-public class Craft : AbilityBase
+public class ShootOut : AbilityBase
 {
     private readonly UnitModel model;
     private readonly SoUnit[] craftedUnits;
@@ -14,7 +13,7 @@ public class Craft : AbilityBase
     /// <param name="_model"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public Craft(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem) 
+    public ShootOut(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem) 
         : base(_controller, _currentLevel, _teamSlots, _targetedByItem)
     {
         this.model = _model;
@@ -22,16 +21,7 @@ public class Craft : AbilityBase
         this.slotIndex = _controller.Slot.Index;
     }
 
-    public override void Activate()
-    {
-        SpawnManager.Instance.StartCoroutine(SpawnUnit());
-    }
-
-    /// <summary>
-    /// Delay the instantiating of the crafted unit and sets the unit, which has triggered, invisible.
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator SpawnUnit()
+    protected override IEnumerator Activate()
     {
         float duration = 0f;
 
@@ -52,7 +42,7 @@ public class Craft : AbilityBase
                    TeamSlots[slotIndex].transform,
                    PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
 
-        EventManager.Instance.OnSummon?.Invoke();   
+        EventManager.Instance.OnShootOut?.Invoke();
 
         //int teamlength = TeamSlots.Length;
         //int leftCrafted = craftedUnits.Length;
@@ -89,10 +79,7 @@ public class Craft : AbilityBase
         //        slot.transform.SetParent(TeamSlots[i].transform, false);
         //    }
         //}
-
-        slotIndex = -1;
     }
-
 }
     
 

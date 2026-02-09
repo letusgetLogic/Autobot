@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Buff : AbilityBase
 {
@@ -13,12 +15,13 @@ public class Buff : AbilityBase
     {
     }
 
-    public override void Activate()
+    protected override IEnumerator Activate()
     {
         switch(CurrentLevel.ToWho)
         {
             case ToWho.None:
-                return;
+                UnityEngine.Debug.LogWarning($"{Controller.name} has ToWho.None!");
+                break;
 
             case ToWho.RandomMate:
                 BuffRandom();
@@ -40,7 +43,11 @@ public class Buff : AbilityBase
                 BuffAll();
                 break;
         }
-        EventManager.Instance.OnBuff?.Invoke();
+
+        if (CurrentLevel.ToWho != ToWho.None)
+            EventManager.Instance.OnBuff?.Invoke();
+
+        yield return null;
     }
 
     private void BuffAll()

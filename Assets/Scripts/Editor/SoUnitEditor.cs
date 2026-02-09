@@ -222,7 +222,7 @@ class SoUnitEditor : Editor
             case DoType.Buff:
                 DrawBuffAttributes(ref _level);
                 break;
-            case DoType.Craft:
+            case DoType.ShootOut:
                 DrawSummonAttributes(ref _level);
                 break;
             case DoType.Deal:

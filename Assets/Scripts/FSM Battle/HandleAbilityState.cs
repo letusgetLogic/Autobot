@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 public class HandleAbilityState : StateBase
 {
     private bool isDone = false;
-    private float hideTimeCountdowm = 0f;
 
     /// <summary>
     /// Consturctor of HandleAbilityState.
@@ -21,14 +21,14 @@ public class HandleAbilityState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        if (TimeCount < 0f)
-        {
-            TimeCount += _speed;
-        }
-        else
-        {
-            HandleAbility();
-        }
+        //if (TimeCount < 0f)
+        //{
+        //    TimeCount += _speed;
+        //}
+        //else
+        //{
+        //    HandleAbility();
+        //}
 
         if (isDone)
         {
@@ -44,12 +44,10 @@ public class HandleAbilityState : StateBase
     /// <summary>
     /// Handles all registered abilities.
     /// </summary>
-    private void HandleAbility()
+    private IEnumerator HandleAbility()
     {
-        if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
+        while (PhaseBattleController.Instance.UnitAbilities.Count > 0)
         {
-            TimeCount -= PhaseBattleController.Instance.Process.DurationHandleEachAbility;
-
             var ability = PhaseBattleController.Instance.UnitAbilities.Dequeue();
 
             Debug.Log($"{ability.ToString()} dequeue/activate");
@@ -57,8 +55,28 @@ public class HandleAbilityState : StateBase
 
             PhaseBattleController.Instance.StartCoroutine(ability.Handle(
                 PhaseBattleController.Instance.Process.DurationShowDescription, false));
+
+            yield return new WaitForSeconds(PhaseBattleController.Instance.Process.DurationHandleEachAbility);
+
+            yield return new WaitUntil(() => ability.IsDone);
         }
-        else
-            isDone = true;
+
+        isDone = true;
+
+
+        //if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
+        //{
+        //    TimeCount -= PhaseBattleController.Instance.Process.DurationHandleEachAbility;
+
+        //    var ability = PhaseBattleController.Instance.UnitAbilities.Dequeue();
+
+        //    Debug.Log($"{ability.ToString()} dequeue/activate");
+        //    Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities left");
+
+        //    PhaseBattleController.Instance.StartCoroutine(ability.Handle(
+        //        PhaseBattleController.Instance.Process.DurationShowDescription, false));
+        //}
+        //else
+        //    isDone = true;
     }
 }

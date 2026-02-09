@@ -64,13 +64,17 @@ public class EventManager
 
     #region Unit Actions
 
+    public UnityAction OnAbilityDone { get; set; }
+
     public UnityAction OnAttack { get; set; }
     public UnityAction<UnitController> OnShutdown { get; set; }
     public UnityAction OnBuff { get; set; }
-    public UnityAction OnSummon { get; set; }
+    public UnityAction OnShootOut { get; set; }
 
 
     #endregion
+
+
 
 
 

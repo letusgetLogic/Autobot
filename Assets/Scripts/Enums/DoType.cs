@@ -4,7 +4,7 @@
 
     Buff,
 
-    Craft,
+    ShootOut,
 
     ShutDown,
 

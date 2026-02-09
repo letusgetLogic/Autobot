@@ -52,7 +52,7 @@ public class SoundManager
 
         EventManager.Instance.OnAttack += () => PlayOneShot("Collide");
         EventManager.Instance.OnBuff += () => PlayOneShot("Buff");
-        EventManager.Instance.OnSummon += () => PlayOneShot("Summon");
+        EventManager.Instance.OnShootOut += () => PlayOneShot("Summon");
     }
 
     #endregion

@@ -9,6 +9,8 @@ public abstract class AbilityBase
     protected Slot[] TeamSlots { get; private set; }
     protected UnitController TargetedByItem { get; private set; }
 
+    public bool IsDone { get; private set; } = false;
+
     /// <summary>
     /// Base constructor with the given parameters. 
     /// </summary>
@@ -35,7 +37,7 @@ public abstract class AbilityBase
         if (CurrentLevel.ConsumedEnergy != null)
              Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
 
-        Activate();
+        var coroutine = GameManager.Instance.StartCoroutine(Activate());
 
         yield return new WaitForSeconds(_delayHideDescription);
         {
@@ -45,12 +47,21 @@ public abstract class AbilityBase
             if (_isDestroying)
                 EventManager.Instance.OnShutdown?.Invoke(Controller);
         }
+
+        yield return new WaitUntil(() => coroutine == null);
+
+        IsDone = true;
     }
 
     /// <summary>
     /// The behaviour of the ability is executed.
     /// </summary>
-    public abstract void Activate();
+    protected abstract IEnumerator Activate();
+
+    ///// <summary>
+    ///// Make sure that the ability need to be returned the done state.
+    ///// </summary>
+    //protected abstract void SetIsDoneTrue(); // IsDone = true
 
     /// <summary>
     /// Returns the instance of an inheritanced class based on the ability type, or null, when it has no ability.
@@ -76,8 +87,8 @@ public abstract class AbilityBase
 
                 return new Buff(_controller, _level, _teamSlots, _targetedByItem);
 
-            case DoType.Craft:
-                return new Craft(_controller, _controller.Model, _level, _teamSlots, _targetedByItem);
+            case DoType.ShootOut:
+                return new ShootOut(_controller, _controller.Model, _level, _teamSlots, _targetedByItem);
 
             case DoType.ShutDown:
                 return new Shutdown(_controller, _level, _teamSlots, _targetedByItem);
