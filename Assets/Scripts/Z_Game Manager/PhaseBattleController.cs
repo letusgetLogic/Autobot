@@ -24,6 +24,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [SerializeField] private GameObject detectClickEnviroment;
 
     private StateBase state { get; set; }
+    public StateBase SubState { get; set; }
 
     public Player Player1 { get; private set; }
     public Player Player2 { get; private set; }
@@ -125,8 +126,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             return;
 
         float speed = IsRunning * Time.deltaTime/* * GameManager.Instance.CurrentSpeedMultiplier*/;
-
         state.OnUpdate(this, speed);
+
+        if (SubState != null)
+            SubState.OnUpdate(this, speed);
     }
 
     public void SetState(StateBase _state)
@@ -140,6 +143,19 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             return;
 
         state.OnEnter(this);
+    }
+
+    public void SetSubState(StateBase _state)
+    {
+        if (SubState != null)
+            SubState.OnExit(this);
+
+        SubState = _state;
+
+        if (_state == null)
+            return;
+
+        SubState.OnEnter(this);
     }
 
     #endregion

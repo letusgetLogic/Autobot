@@ -5,5 +5,6 @@
     MostHealthyFriend,
     NearestFriendAhead,
     FaintedFriend,
+    AttackingEnemy,
 }
 

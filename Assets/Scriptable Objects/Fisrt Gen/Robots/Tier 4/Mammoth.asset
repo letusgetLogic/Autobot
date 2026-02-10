@@ -40,10 +40,13 @@ MonoBehaviour:
       HP: 2
       ATK: 2
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 1
     Description: "Shutdown \u2192 Give all mates +4 attack and +4 health."
@@ -61,10 +64,13 @@ MonoBehaviour:
       HP: 4
       ATK: 4
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 2
     Description: "Shutdown \u2192 Give all mates +6 attack and +6 health."
@@ -82,8 +88,11 @@ MonoBehaviour:
       HP: 6
       ATK: 6
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0

@@ -100,8 +100,10 @@ public class UnitModel
         if (PhaseShopController.Instance != null)
         {
             int hp = _data.Cur.HP - _data.TempBuff.HP;
+            int atk = _data.Cur.ATK - _data.TempBuff.ATK;
             Data.SetHP(hp < 0 ? 0 : hp, null);
-            Data.SetATK(_data.Cur.ATK - _data.TempBuff.ATK);
+            Data.SetATK(atk < 0 ? 0 : atk);
+            Data.SetEnergy(_data.Cur.ENG < 0 ? 0 : _data.Cur.ENG);
             Data.SetTempBuffHP(0);
             Data.SetTempBuffATK(0);
         }

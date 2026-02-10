@@ -23,4 +23,6 @@ public class SoBattleProcess : ScriptableObject
     [Range(0f, 2f)] public float DurationShowDescription = 1.5f;
 
     [Range(0f, 2f)] public float DurationShowCollide = 1.5f;
+
+    [Range(0f, 2f)] public float DelaySteal = 0.3f;
 }

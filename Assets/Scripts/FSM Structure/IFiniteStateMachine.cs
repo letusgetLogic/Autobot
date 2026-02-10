@@ -10,5 +10,11 @@ public interface IFiniteStateMachine
     /// </summary>
     /// <param name="_state"></param>
     public abstract void SetState(StateBase _state);
+
+    /// <summary>
+    /// SetSubState is used to change the current state of the sub state machine.
+    /// </summary>
+    /// <param name="_state"></param>
+    public abstract void SetSubState(StateBase _state);
 }
 

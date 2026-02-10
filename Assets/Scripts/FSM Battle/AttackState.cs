@@ -1,9 +1,11 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
 
 public class AttackState : StateBase
 {
+    private bool isDone = false;
+    private bool setSubState = false;
+
     /// <summary>
     /// Constructor of AttackState.
     /// </summary>
@@ -16,16 +18,18 @@ public class AttackState : StateBase
     {
         System.Diagnostics.Debug.WriteLine("--- AttackState");
 
-        AttackEachOther();
+        PhaseBattleController.Instance.StartCoroutine(AttackEachOther());
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        if (TimeCount < MaxTimeCount)
+        if (setSubState)
         {
-            TimeCount += _speed;
+            _ctx.SetSubState(new HandleAbilityState(0));
+            setSubState = false;
         }
-        else
+
+        if (isDone)
         {
             _ctx.SetState(new HandleAbilityState(0));
         }
@@ -34,13 +38,26 @@ public class AttackState : StateBase
     /// <summary>
     /// Lets the 2 units attacking each other.
     /// </summary>
-    private void AttackEachOther()
+    private IEnumerator AttackEachOther()
     {
         UnitController unit1 = PhaseBattleController.Instance.AttackingUnit1;
         UnitController unit2 = PhaseBattleController.Instance.AttackingUnit2;
 
         if (unit1 == null || unit2 == null)
-            return;
+            yield break;
+
+        int countTrigger = 0;
+        countTrigger += unit1.TriggerBeforeAttack(unit2) ? 1 : 0;
+        countTrigger += unit2.TriggerBeforeAttack(unit1) ? 1 : 0;
+
+        if (countTrigger > 0)
+        {
+            setSubState = true;
+
+            yield return null;
+
+            yield return new WaitUntil(() => PhaseBattleController.Instance.SubState == null);
+        }
 
         unit1.MoveWhileAttacking();
         float animDelay = unit2.MoveWhileAttacking();
@@ -49,6 +66,10 @@ public class AttackState : StateBase
         unit2.TakeDamage(unit1.TriggerAttack());
 
         PhaseBattleController.Instance.StartCoroutine(ShowCollider(animDelay));
+
+        yield return new WaitForSeconds(MaxTimeCount);
+
+        isDone = true;
     }
 
     private IEnumerator ShowCollider(float _delay)

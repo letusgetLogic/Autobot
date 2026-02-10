@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// Only items trigger Shutdown.
@@ -11,8 +12,8 @@ public class Shutdown : AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teanSlots"></param>
-    public Shutdown(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem) 
-        : base(_controller, _currentLevel, _teamSlots, _targetedByItem)
+    public Shutdown(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, Queue<UnitController> _targets) 
+        : base(_controller, _currentLevel, _teamSlots, _targets)
     {
     }
 
@@ -21,7 +22,11 @@ public class Shutdown : AbilityBase
         switch(CurrentLevel.ToWho)
         {
             case ToWho.TargetBot:
-                TargetedByItem.TriggerShutdown();
+                if (Targets.Count > 0)
+                {
+                    var unit = Targets.Dequeue();
+                    unit.TriggerShutdown();
+                }
                 break;
         }
 

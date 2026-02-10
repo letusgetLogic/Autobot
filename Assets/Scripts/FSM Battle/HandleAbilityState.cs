@@ -23,6 +23,12 @@ public class HandleAbilityState : StateBase
     {
         if (isDone)
         {
+            if (PhaseBattleController.Instance.SubState != null)
+            {
+                _ctx.SetSubState(null);
+                return;
+            }
+
             if (PhaseBattleController.Instance.ShutdownUnits.Count > 0)
                 _ctx.SetState(new ShutdownState(
                      PhaseBattleController.Instance.Process.DurationShutdown));

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
-  m_Name: Bubble 3
+  m_Name: Mini Copper 1
   m_EditorClassIdentifier: 
-  UnitType: 1
-  Sprite: {fileID: -1711782600793773735, guid: c0d58c23788053440b2b4b152ab4ed99, type: 3}
-  ID: 0
-  Name: Bubble B3
-  Health: 6
-  Attack: 6
+  UnitType: 2
+  Sprite: {fileID: -1547974232, guid: d6eb047f9a0561c45a89eb64f9758ab9, type: 3}
+  ID: 1
+  Name: Copper Prototype CP1
+  Health: 1
+  Attack: 1
   Energy: {fileID: 0}
   HasUniqueCost: 0
   UniqueCostNuts: {fileID: 0}
@@ -25,7 +25,7 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: 
+    Description: No Ability.
     HasAbility: 0
     ConsumedEnergy: {fileID: 0}
     TriggerType: 0
@@ -40,13 +40,16 @@ MonoBehaviour:
       HP: 0
       ATK: 0
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 1
-    Description: 
+    Description: No Ability.
     HasAbility: 0
     ConsumedEnergy: {fileID: 0}
     TriggerType: 0
@@ -61,13 +64,16 @@ MonoBehaviour:
       HP: 0
       ATK: 0
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 2
-    Description: 
+    Description: No Ability.
     HasAbility: 0
     ConsumedEnergy: {fileID: 0}
     TriggerType: 0
@@ -82,8 +88,11 @@ MonoBehaviour:
       HP: 0
       ATK: 0
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0

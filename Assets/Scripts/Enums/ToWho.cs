@@ -16,6 +16,8 @@
 
     RandomEnemy,
 
-    TargetBot
+    TargetBot,
+
+    AttackingEnemy
 }
 

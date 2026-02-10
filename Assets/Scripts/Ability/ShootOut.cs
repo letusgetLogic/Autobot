@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 public class ShootOut : AbilityBase
 {
@@ -25,8 +26,8 @@ public class ShootOut : AbilityBase
     /// <param name="_model"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public ShootOut(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem)
-        : base(_controller, _currentLevel, _teamSlots, _targetedByItem)
+    public ShootOut(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, Queue<UnitController> _targets)
+        : base(_controller, _currentLevel, _teamSlots, _targets)
     {
         this.model = _model;
         craftedUnits = CurrentLevel.SummonUnits;

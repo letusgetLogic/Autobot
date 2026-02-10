@@ -322,7 +322,7 @@ public class PhaseShopController : MonoBehaviour
                 if (unitController != null)
                 {
                     unitController.SetEnergy(PackManager.Instance.MyPack.ChargingEnergyTeam.Value, false);
-                    isSomeoneThere = false;
+                    isSomeoneThere = true;
                 }
             }
         }
@@ -393,7 +393,7 @@ public class PhaseShopController : MonoBehaviour
             // case: buy & destroy item
             if (_purchased.Model.Data.UnitType == UnitType.Item)
             {
-                _purchased.TargetedByItem = _target;
+                _purchased.Targets.Enqueue(_target);
                 _purchased.TriggerCraft();
 
                 PhaseShopUI.Instance.UpdateCurrency(

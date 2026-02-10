@@ -72,11 +72,6 @@ public struct SaveUnitData
     /// <param name="_atk"></param>
     public void SetATK(int _atk)
     {
-        if (_atk < 0)
-        {
-            current.ATK = 0;
-            return;
-        }
         if (_atk > Max.ATK)
             current.ATK = Max.ATK;
         else
@@ -89,11 +84,6 @@ public struct SaveUnitData
     /// <param name="_energy"></param>
     public void SetEnergy(int _energy)
     {
-         if (_energy < 0)
-        {
-            current.ENG = 0;
-            return;
-        }
         if (_energy > Max.ENG)
             current.ENG = Max.ENG;
         else

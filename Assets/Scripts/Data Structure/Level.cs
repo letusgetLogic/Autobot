@@ -17,16 +17,14 @@ public struct Level
     public int ToWhoCount;
     public AbilityDuration AbilityDuration;
 
-    // Buff
+    // Manage Attributes
     public Attribute Buff;
+    public Attribute Debuff;
 
     // Summon
     public int UnitLimit;
     public SoUnit[] SummonUnits;
     public bool SummonForOpponent;
-
-    // Deal
-    public int DealDamage;
 
     // Gain
     public int GainCoin;

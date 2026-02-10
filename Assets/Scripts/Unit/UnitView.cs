@@ -99,10 +99,11 @@ public class UnitView : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private Canvas canvasStats;
-    [SerializeField] private SoUnitSettings unitSettings;
+    [SerializeField] private SoUnitSettings settings;
+    public SoUnitSettings Settings => settings;
 
-    public float DelayUpdateLevel => unitSettings.DelayUpdateLevel;
-    public Vector3 OffsetMoveOverOther => unitSettings.OffsetMoveOverOther;
+    public float DelayUpdateLevel => settings.DelayUpdateLevel;
+    public Vector3 OffsetMoveOverOther => settings.OffsetMoveOverOther;
     public Vector2 DragSpritePosition => dragSpriteRenderer.transform.position;
     private Vector3 originalScale;
 
@@ -240,7 +241,7 @@ public class UnitView : MonoBehaviour
     /// <param name="eventData"></param>
     public void BeingAttached(PointerEventData eventData)
     {
-        dragSpriteRenderer.gameObject.transform.localScale *= unitSettings.DraggingScale;
+        dragSpriteRenderer.gameObject.transform.localScale *= settings.DraggingScale;
 
         dragSpriteRenderer.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
         canvasStats.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
@@ -255,8 +256,8 @@ public class UnitView : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
-        dragSpriteRenderer.gameObject.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
-        canvasStats.transform.position = worldPosition + unitSettings.OffsetDragOverOther;
+        dragSpriteRenderer.gameObject.transform.position = worldPosition + settings.OffsetDragOverOther;
+        canvasStats.transform.position = worldPosition + settings.OffsetDragOverOther;
     }
 
     /// <summary>
@@ -297,8 +298,8 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void SetSpriteOverOther()
     {
-        dragSpriteRenderer.gameObject.transform.position += unitSettings.OffsetMoveOverOther;
-        canvasStats.transform.position += unitSettings.OffsetMoveOverOther;
+        dragSpriteRenderer.gameObject.transform.position += settings.OffsetMoveOverOther;
+        canvasStats.transform.position += settings.OffsetMoveOverOther;
     }
 
     /// <summary>
@@ -400,7 +401,7 @@ public class UnitView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator HideDamage()
     {
-        yield return new WaitForSeconds(unitSettings.DurationShowDamage);
+        yield return new WaitForSeconds(settings.DurationShowDamage);
 
         damage.enabled = false;
     }
@@ -411,7 +412,7 @@ public class UnitView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator HideDamageVisual()
     {
-        yield return new WaitForSeconds(unitSettings.DurationShowDamageVisual);
+        yield return new WaitForSeconds(settings.DurationShowDamageVisual);
 
         damageSpriteRenderer.enabled = false;
     }
@@ -442,7 +443,7 @@ public class UnitView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator HideBuff()
     {
-        yield return new WaitForSeconds(unitSettings.DurationShowTemporaryValue);
+        yield return new WaitForSeconds(settings.DurationShowTemporaryValue);
         buffHealth.enabled = false;
         buffAttack.enabled = false;
         addEnergy.enabled = false;
@@ -466,7 +467,7 @@ public class UnitView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator HideConsum()
     {
-        yield return new WaitForSeconds(unitSettings.DurationShowTemporaryValue);
+        yield return new WaitForSeconds(settings.DurationShowTemporaryValue);
         consumEnergy.enabled = false;
     }
 

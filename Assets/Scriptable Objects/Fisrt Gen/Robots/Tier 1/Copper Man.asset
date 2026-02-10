@@ -40,11 +40,14 @@ MonoBehaviour:
       HP: 0
       ATK: 0
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 1
     SummonUnits:
     - {fileID: 11400000, guid: c4297eaaf3a7c0648a31305d15da2670, type: 2}
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 1
     Description: "Shutdown \u2192 Shoot out one 2/2 Copper Prototype"
@@ -62,11 +65,14 @@ MonoBehaviour:
       HP: 0
       ATK: 0
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 1
     SummonUnits:
     - {fileID: 11400000, guid: d03fc87eda19ce144813632a381b6047, type: 2}
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 2
     Description: "Shutdown \u2192 Shoot out one 3/3 Copper Prototype."
@@ -84,9 +90,12 @@ MonoBehaviour:
       HP: 0
       ATK: 0
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 1
     SummonUnits:
     - {fileID: 11400000, guid: 0a0ab765b3a94b24abab83dc478a252b, type: 2}
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0

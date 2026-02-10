@@ -169,9 +169,8 @@ class SoUnitEditor : Editor
             _level.ToWhoCount = 0;
             _level.AbilityDuration = AbilityDuration.None;
             // Buff attributes
-            _level.Buff.HP = 0;
-            _level.Buff.ATK = 0;
-            _level.Buff.ENG = 0;
+            _level.Buff = default;
+            _level.Debuff = default;
             // Summon attributes
             _level.UnitLimit = 0;
             _level.SummonUnits = null;
@@ -224,11 +223,14 @@ class SoUnitEditor : Editor
             case DoType.Buff:
                 DrawBuffAttributes(ref _level);
                 break;
+            case DoType.Debuff:
+                DrawDebuffAttributes(ref _level);
+                break;
             case DoType.ShootOut:
                 DrawSummonAttributes(ref _level);
                 break;
-            case DoType.Deal:
-                DrawDealAttributes(ref _level);
+            case DoType.Steal:
+                DrawDebuffAttributes(ref _level);
                 break;
             case DoType.GainCoin:
                 DrawGainCoinAttributes(ref _level);
@@ -275,6 +277,26 @@ class SoUnitEditor : Editor
         EditorGUI.indentLevel--;
     }
 
+    /// <summary>
+    /// Draw the deal attributes.
+    /// </summary>
+    /// <param name="_level"></param>
+    private void DrawDebuffAttributes(ref Level _level)
+    {
+        EditorGUI.indentLevel++;
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("+ AP", GUILayout.Width(80));
+        _level.Debuff.ATK = EditorGUILayout.IntField(_level.Debuff.ATK, GUILayout.Width(80));
+        EditorGUILayout.LabelField("+ HP", GUILayout.Width(80));
+        _level.Debuff.HP = EditorGUILayout.IntField(_level.Debuff.HP, GUILayout.Width(80));
+        EditorGUILayout.LabelField("+ ENG", GUILayout.Width(90));
+        _level.Debuff.ENG = EditorGUILayout.IntField(_level.Debuff.ENG, GUILayout.Width(80));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUI.indentLevel--;
+    }
+
     /// <summary> 
     /// Draw the summon attribute 
     /// </summary> /
@@ -303,17 +325,6 @@ class SoUnitEditor : Editor
         }
         _level.SummonForOpponent = EditorGUILayout.Toggle("Summon for Opponent", _level.SummonForOpponent);
 
-        EditorGUI.indentLevel--;
-    }
-
-    /// <summary>
-    /// Draw the deal attributes.
-    /// </summary>
-    /// <param name="_level"></param>
-    private void DrawDealAttributes(ref Level _level)
-    {
-        EditorGUI.indentLevel++;
-        _level.DealDamage = EditorGUILayout.IntField("Deal Damage", _level.DealDamage);
         EditorGUI.indentLevel--;
     }
 

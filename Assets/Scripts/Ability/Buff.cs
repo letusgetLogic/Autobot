@@ -10,8 +10,8 @@ public class Buff : AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public Buff(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem)
-        : base(_controller, _currentLevel, _teamSlots, _targetedByItem)
+    public Buff(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, Queue<UnitController> _targets)
+        : base(_controller, _currentLevel, _teamSlots, _targets)
     {
     }
 
@@ -77,7 +77,11 @@ public class Buff : AbilityBase
 
     private void BuffTargetByItem()
     {
-        TargetedByItem.Buff(true, CurrentLevel.Buff);
+        if (Targets.Count <= 0)
+            return;
+
+        var unit = Targets.Dequeue();
+        unit.Buff(true, CurrentLevel.Buff);
     }
 
     private void BuffNearest(List<UnitController> _units)

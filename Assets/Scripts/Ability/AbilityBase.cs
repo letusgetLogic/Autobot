@@ -7,7 +7,7 @@ public abstract class AbilityBase
     public UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
     protected Slot[] TeamSlots { get; private set; }
-    protected UnitController TargetedByItem { get; private set; }
+    protected Queue<UnitController> Targets { get; private set; }
 
     protected Coroutine Coroutine { get; set; }
     public bool IsDone { get; private set; } = false;
@@ -18,12 +18,12 @@ public abstract class AbilityBase
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
-    public AbilityBase(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem)
+    public AbilityBase(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, Queue<UnitController> _targets)
     {
         Controller = _controller;
         CurrentLevel = _currentLevel;
         TeamSlots = _teamSlots;
-        TargetedByItem = _targetedByItem;
+        Targets = _targets;
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public abstract class AbilityBase
         Level _level,
         Slot[] _teamSlots,
         Slot _slot,
-        UnitController _targetedByItem)
+        Queue<UnitController> _targets)
     {
         var type = _level.DoType;
         switch (type)
@@ -88,13 +88,16 @@ public abstract class AbilityBase
                 if (CheckOutcomeState.IsAnyoneIn(_teamSlots, _slot) == 0)
                     return null;
 
-                return new Buff(_controller, _level, _teamSlots, _targetedByItem);
+                return new Buff(_controller, _level, _teamSlots, _targets);
 
             case DoType.ShootOut:
-                return new ShootOut(_controller, _controller.Model, _level, _teamSlots, _targetedByItem);
+                return new ShootOut(_controller, _controller.Model, _level, _teamSlots, _targets);
 
             case DoType.ShutDown:
-                return new Shutdown(_controller, _level, _teamSlots, _targetedByItem);
+                return new Shutdown(_controller, _level, _teamSlots, _targets);
+
+            case DoType.Steal:
+                return new Steal(_controller, _level, _teamSlots, _targets);
         }
 
         return null;

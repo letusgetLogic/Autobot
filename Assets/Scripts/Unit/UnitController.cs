@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
@@ -25,8 +26,18 @@ public class UnitController : MonoBehaviour
     public UnitModel Model => model;
     private UnitModel model;
 
-    public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel, TeamSlots, Slot, TargetedByItem);
-    public UnitController TargetedByItem { get; set; } = null;
+    public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel, TeamSlots, Slot, Targets);
+    public Queue<UnitController> Targets
+    {
+        get
+        {
+            if (targets == null)
+                targets = new Queue<UnitController>();
+            return targets;
+        }
+    }
+    private Queue<UnitController> targets;
+
 
     public SoPack Pack
     {
@@ -73,7 +84,7 @@ public class UnitController : MonoBehaviour
             if (editorRename)
                 gameObject.name = editorSoUnit.Name;
 
-             Initialize(editorSoUnit, 0, default, editorUnitState, !editorIsOnRightSide);
+            Initialize(editorSoUnit, 0, default, editorUnitState, !editorIsOnRightSide);
         }
     }
 
@@ -133,7 +144,48 @@ public class UnitController : MonoBehaviour
     }
 
 
-    #region PhaseShop
+    /// <summary>
+    /// Returns the ability if the energy isn't smaller as the value of energy to consume.
+    /// </summary>
+    /// <param name="_triggerType"></param>
+    /// <returns></returns>
+    public AbilityBase TriggerAbility(TriggerType _triggerType)
+    {
+        int consumedEnergy = 0;
+        if (model.CurrentLevel.ConsumedEnergy != null)
+        {
+            consumedEnergy = Mathf.Abs(model.CurrentLevel.ConsumedEnergy.Value);
+        }
+
+        if (model.Data.Cur.ENG < consumedEnergy)
+            return null;
+
+        if (_triggerType == model.CurrentLevel.TriggerType)
+            return Ability;
+
+        return null;
+    }
+
+    #region Triggers
+
+    /// <summary>
+    /// Triggers the ability while bot is shuting down.
+    /// </summary>
+    public void TriggerShutdown()
+    {
+        Debug.Log($"{name} shut down");
+
+        var ability = TriggerAbility(TriggerType.Shutdown);
+        if (ability != null)
+        {
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, true);
+        }
+        else
+        {
+            EventManager.Instance.OnShutdown?.Invoke(this);
+        }
+    }
+
 
     /// <summary>
     /// Triggers the ability if it is existent.
@@ -164,6 +216,40 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public bool TriggerBeforeAttack(UnitController _enemy)
+    {
+        var ability = TriggerAbility(TriggerType.BeforeAttack);
+        if (ability != null)
+        {
+            if (model.CurrentLevel.FromWho == FromWho.AttackingEnemy)
+                Targets.Enqueue(_enemy);
+
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, default);
+        }
+        return ability != null;
+    }
+
+    /// <summary>
+    /// Triggers the ability while attacking.
+    /// </summary>
+    /// <returns></returns>
+    public Damage TriggerAttack()
+    {
+        EventManager.Instance.OnAttack?.Invoke();
+
+        var ability = TriggerAbility(TriggerType.AfterAttack);
+        if (ability != null)
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, default);
+
+        return new Damage(model.Data.Cur.ATK);
+    }
+
+    #endregion
+
+
+
+    #region PhaseShop
+
     /// <summary>
     /// Updates stats while fusioning.
     /// </summary>
@@ -183,128 +269,6 @@ public class UnitController : MonoBehaviour
         EventManager.Instance.OnFusion?.Invoke();
     }
 
-    #endregion
-
-
-    #region Phase Battle
-
-    /// <summary>
-    /// Triggers the ability while attacking.
-    /// </summary>
-    /// <returns></returns>
-    public Damage TriggerAttack()
-    {
-        EventManager.Instance.OnAttack?.Invoke();
-
-        var ability = TriggerAbility(TriggerType.AfterAttack);
-        if (ability != null)
-            EventManager.Instance.OnTriggerAbility?.Invoke(ability, default);
-
-        return new Damage(model.Data.Cur.ATK);
-    }
-
-    /// <summary> 
-    /// Takes damage.
-    /// </summary>
-    /// <param name="_damage"></param>
-    public void TakeDamage(Damage _damage)
-    {
-        model.ReduceHp(_damage);
-
-        if (model.Data.Cur.HP <= 0)
-        {
-            view.SetShutdown();
-            TriggerShutdown();
-        }
-    }
-
-    #endregion
-
-    /// <summary>
-    /// Triggers the ability while bot is shuting down.
-    /// </summary>
-    public void TriggerShutdown()
-    {
-        Debug.Log($"{name} shut down");
-
-        var ability = TriggerAbility(TriggerType.Shutdown);
-        if (ability != null)
-        {
-            EventManager.Instance.OnTriggerAbility?.Invoke(ability, true);
-        }
-        else
-        {
-            EventManager.Instance.OnShutdown?.Invoke(this);
-        }
-    }
-
-    /// <summary>
-    /// Sets and updates the view of the energy.
-    /// </summary>
-    /// <param name="_energy"></param>
-    /// <param name="_makeSound"></param>
-    public void SetEnergy(int _energy, bool _makeSound)
-    {
-        int value = model.Data.Cur.ENG + _energy;
-
-        model.Data.SetEnergy(value);
-
-        if (_energy > 0)
-        {
-            view.ShowBuff(new Attribute(0, 0, _energy));
-
-            if (_makeSound)
-                EventManager.Instance.OnBuff?.Invoke();
-        }
-        else
-        {
-            view.ShowConsume(_energy);
-        }
-
-        view.SetData(
-            model.Data.FullHP, model.Data.FullATK,
-            model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
-    }
-
-    /// <summary>
-    /// Returns the ability if the energy isn't smaller as the value of energy to consume.
-    /// </summary>
-    /// <param name="_triggerType"></param>
-    /// <returns></returns>
-    public AbilityBase TriggerAbility(TriggerType _triggerType)
-    {
-        int consumedEnergy = 0;
-        if (model.CurrentLevel.ConsumedEnergy != null)
-        {
-            consumedEnergy = Mathf.Abs(model.CurrentLevel.ConsumedEnergy.Value);
-        }
-
-        if (model.Data.Cur.ENG < consumedEnergy)
-            return null;
-
-        if (_triggerType == model.CurrentLevel.TriggerType)
-            return Ability;
-
-        return null;
-    }
-
-    /// <summary>
-    /// Add buff to the model data and updates the view.
-    /// </summary>
-    /// <param name="_isPernament"></param>
-    /// <param name="_addHealth"></param>
-    /// <param name="_addAttack"></param>
-    public void Buff(bool _isPernament, Attribute _attribute)
-    {
-        if (_isPernament)
-            model.AddBuff(_attribute, new Attribute(0, 0, 0));
-        else
-            model.AddBuff(new Attribute(0, 0, 0), _attribute);
-
-        view.ShowBuff(_attribute);
-        model.Repair?.SetDurability(false);
-    }
-
     /// <summary>
     /// Begins swap.
     /// </summary>
@@ -320,14 +284,24 @@ public class UnitController : MonoBehaviour
         view.SetSpriteOverOther();
     }
 
-    /// <summary>
-    /// Moves the objects to the target.
+    #endregion
+
+
+    #region Phase Battle
+
+    /// <summary> 
+    /// Takes damage.
     /// </summary>
-    /// <param name="_target"></param>
-    public void MoveTo(Vector3 _target)
+    /// <param name="_damage"></param>
+    public void TakeDamage(Damage _damage)
     {
-        toNextSlotMover.MoveTo(_target, null);
-        //transform.DoMove();
+        model.ReduceHp(_damage);
+
+        if (model.Data.Cur.HP <= 0)
+        {
+            view.SetShutdown();
+            TriggerShutdown();
+        }
     }
 
     /// <summary>
@@ -347,6 +321,60 @@ public class UnitController : MonoBehaviour
 
         return animDelay;
     }
+
+    #endregion
+
+
+    #region Manage Attributes
+
+    /// <summary>
+    /// Sets and updates the view of the energy.
+    /// </summary>
+    /// <param name="_addEnergy"></param>
+    /// <param name="_onBuff"></param>
+    public void SetEnergy(int _addEnergy, bool _onBuff)
+    {
+        int value = model.Data.Cur.ENG + _addEnergy;
+
+        model.Data.SetEnergy(value);
+
+        if (_addEnergy > 0)
+        {
+            view.ShowBuff(new Attribute(0, 0, _addEnergy));
+
+            if (_onBuff)
+                EventManager.Instance.OnBuff?.Invoke();
+        }
+        else
+        {
+            view.ShowConsume(_addEnergy);
+        }
+
+        view.SetData(
+            model.Data.FullHP, model.Data.FullATK,
+            model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
+    }
+
+    /// <summary>
+    /// Add buff to the model data and updates the view.
+    /// </summary>
+    /// <param name="_isPernament"></param>
+    /// <param name="_addHealth"></param>
+    /// <param name="_addAttack"></param>
+    public void Buff(bool _isPernament, Attribute _attribute)
+    {
+        if (_isPernament)
+            model.AddBuff(_attribute, new Attribute(0, 0, 0));
+        else
+            model.AddBuff(new Attribute(0, 0, 0), _attribute);
+
+        view.ShowBuff(_attribute);
+        model.Repair?.SetDurability(false);
+    }
+
+    #endregion
+
+
 
     /// <summary>
     /// Moves the objects to the target and set it to the parent.
@@ -384,7 +412,7 @@ public class UnitController : MonoBehaviour
     /// <returns></returns>
     public bool CanItemBeDropped()
     {
-        if (Slot == null) 
+        if (Slot == null)
             return false;
 
         if (model.SoUnit.UnitType == UnitType.Item && Slot.CompareTag("Slot Team"))

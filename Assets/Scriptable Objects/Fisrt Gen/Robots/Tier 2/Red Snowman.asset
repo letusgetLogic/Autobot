@@ -41,10 +41,13 @@ MonoBehaviour:
       HP: 1
       ATK: 1
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 1
     Description: "Shutdown \u2192 Give the two nearest mates behind +2 attack and
@@ -63,10 +66,13 @@ MonoBehaviour:
       HP: 2
       ATK: 2
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0
   - Index: 2
     Description: "Shutdown \u2192 Give the two nearest mates behind +3 attack and
@@ -85,8 +91,11 @@ MonoBehaviour:
       HP: 3
       ATK: 3
       ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
     UnitLimit: 0
     SummonUnits: []
     SummonForOpponent: 0
-    DealDamage: 0
     GainCoin: 0

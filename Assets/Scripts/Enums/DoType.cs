@@ -1,12 +1,15 @@
 ﻿public enum DoType
 {
-    None,
+    None = 0,
 
-    Buff,
+    Buff = 1,
 
-    ShootOut,
+    ShootOut = 2,
 
-    ShutDown,
+    ShutDown = 3,
+
+    Steal = 4,
+    Debuff,
 
     CopyHealth,
     BuffSelfIfAFriendLv3,
@@ -24,7 +27,6 @@
 
     CopyAbility,
 
-    Debuff,
 
     Discount,
 
