@@ -15,21 +15,12 @@ public class HandleAbilityState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- HandleAbilityState");
-        TimeCount = 0f;
-        HandleAbility();
+        
+        PhaseBattleController.Instance.StartCoroutine(HandleAbility());
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        //if (TimeCount < 0f)
-        //{
-        //    TimeCount += _speed;
-        //}
-        //else
-        //{
-        //    HandleAbility();
-        //}
-
         if (isDone)
         {
             if (PhaseBattleController.Instance.ShutdownUnits.Count > 0)
@@ -62,21 +53,5 @@ public class HandleAbilityState : StateBase
         }
 
         isDone = true;
-
-
-        //if (PhaseBattleController.Instance.UnitAbilities.Count > 0)
-        //{
-        //    TimeCount -= PhaseBattleController.Instance.Process.DurationHandleEachAbility;
-
-        //    var ability = PhaseBattleController.Instance.UnitAbilities.Dequeue();
-
-        //    Debug.Log($"{ability.ToString()} dequeue/activate");
-        //    Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities left");
-
-        //    PhaseBattleController.Instance.StartCoroutine(ability.Handle(
-        //        PhaseBattleController.Instance.Process.DurationShowDescription, false));
-        //}
-        //else
-        //    isDone = true;
     }
 }

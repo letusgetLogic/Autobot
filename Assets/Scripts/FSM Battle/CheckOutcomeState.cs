@@ -46,8 +46,8 @@ public class CheckOutcomeState : StateBase
                 //    _ctx.SetState(new StartOfBattleState(0));
                 //else
 
-                if (MustInsert(PhaseBattleController.Instance.Slots1(), amountOfActiveUnits1) ||
-                    MustInsert(PhaseBattleController.Instance.Slots2(), amountOfActiveUnits2))
+                if (NeedInsert(PhaseBattleController.Instance.Slots1(), amountOfActiveUnits1) ||
+                    NeedInsert(PhaseBattleController.Instance.Slots2(), amountOfActiveUnits2))
                 {
                     _ctx.SetState(new InsertState(
                         PhaseBattleController.Instance.Process.DurationInsert));
@@ -145,7 +145,7 @@ public class CheckOutcomeState : StateBase
     /// <param name="_slots"></param>
     /// <param name="_amountOfActive"></param>
     /// <returns></returns>
-    private bool MustInsert(Slot[] _slots, int _amountOfActive)
+    private bool NeedInsert(Slot[] _slots, int _amountOfActive)
     {
         for (int i = 0; i < _amountOfActive; i++)
         {

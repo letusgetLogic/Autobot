@@ -9,7 +9,9 @@ public abstract class AbilityBase
     protected Slot[] TeamSlots { get; private set; }
     protected UnitController TargetedByItem { get; private set; }
 
+    protected Coroutine Coroutine { get; set; }
     public bool IsDone { get; private set; } = false;
+    protected float DurationDescription { get; private set; }
 
     /// <summary>
     /// Base constructor with the given parameters. 
@@ -32,23 +34,24 @@ public abstract class AbilityBase
     /// <returns></returns>
     public IEnumerator Handle(float _delayHideDescription, bool _isDestroying)
     {
+        DurationDescription = _delayHideDescription;
         Controller.View.SetDescriptionActive(true);
 
         if (CurrentLevel.ConsumedEnergy != null)
-             Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value);
+            Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value, true);
 
-        var coroutine = GameManager.Instance.StartCoroutine(Activate());
+        Coroutine = GameManager.Instance.StartCoroutine(Activate());
 
         yield return new WaitForSeconds(_delayHideDescription);
-        {
-            if (Controller != null)
-                Controller.View.SetDescriptionActive(false);
 
-            if (_isDestroying)
-                EventManager.Instance.OnShutdown?.Invoke(Controller);
-        }
+        if (Controller != null)
+            Controller.View.SetDescriptionActive(false);
 
-        yield return new WaitUntil(() => coroutine == null);
+        if (_isDestroying)
+            EventManager.Instance.OnShutdown?.Invoke(Controller);
+
+
+        yield return new WaitUntil(() => Coroutine == null);
 
         IsDone = true;
     }

@@ -27,7 +27,7 @@ public class SoShopProcess : ScriptableObject
     [Tooltip("Delay hiding description after activating ability")]
     [Range(0f, 2f)] public float DelayHideDescription = 1.5f;
 
-    [Tooltip("Delay summon")]
-    [Range(0f, 2f)] public float DurationDelayCraft = 0.1f;
+    [Tooltip("Duration instantiate an unit")]
+    [Range(0f, 2f)] public float DurationShootOut = 0.1f;
 
 }

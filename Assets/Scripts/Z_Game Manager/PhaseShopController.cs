@@ -298,7 +298,7 @@ public class PhaseShopController : MonoBehaviour
 
         var unit = ChargeSlot.UnitController();
         if (unit != null)
-            unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value);
+            unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value, true);
 
         //if (Player.Data.Turn > 1)
         //    ChargeTeamBots();
@@ -321,7 +321,7 @@ public class PhaseShopController : MonoBehaviour
                 var unitController = slot.UnitController();
                 if (unitController != null)
                 {
-                    unitController.SetEnergy(PackManager.Instance.MyPack.ChargingEnergyTeam.Value);
+                    unitController.SetEnergy(PackManager.Instance.MyPack.ChargingEnergyTeam.Value, false);
                     isSomeoneThere = false;
                 }
             }
@@ -692,17 +692,7 @@ public class PhaseShopController : MonoBehaviour
             }
 
             slot.SetLightingActive(false);
-
-            slot.SetHintLight(ColorIndex(slot));
-
-            slot.LightenUpDown.enabled = ColorIndex(slot) == 0 ? false : _value;
-            slot.LightenScale.enabled = ColorIndex(slot) == 0 ? false : _value;
-
-
-            if (AttachedController == slot.UnitController())
-            {
-                slot.SetLightingActive(_value);
-            }
+            slot.SetHintLight(AttachedController, _value);
         }
 
         // Not hint charging station
@@ -721,43 +711,7 @@ public class PhaseShopController : MonoBehaviour
         }
 
         chargeSlot.SetLightingActive(false);
-
-        chargeSlot.SetHintLight(ColorIndex(chargeSlot));
-
-        chargeSlot.LightenUpDown.enabled = ColorIndex(chargeSlot) == 0 ? false : _value;
-        chargeSlot.LightenScale.enabled = ColorIndex(chargeSlot) == 0 ? false : _value;
-
-
-        if (AttachedController == chargeSlot.UnitController())
-        {
-            chargeSlot.SetLightingActive(_value);
-        }
-
-        //Debug.Log("isDroppable " + isDroppable);
-        //Debug.Log("slot " + slot);
-    }
-
-    /// <summary>
-    /// Returns the color index.
-    /// </summary>
-    /// <param name="_slot"></param>
-    /// <returns></returns>
-    private int ColorIndex(Slot _slot)
-    {
-        if (AttachedController == null || AttachedController == _slot.UnitController())
-            return 0;
-
-        bool slotEmpty = _slot.Unit() == null;
-
-        bool isFusible = slotEmpty ? false : IsFusible(_slot.UnitController(), AttachedController);
-
-        bool isAttachedItem = AttachedController.Model.Data.UnitType == UnitType.Item;
-        bool isAttachedBotInShop = AttachedController.Model.IsRobotInShop();
-
-        // is attached item? and slot empty? yes / no ->
-        return isAttachedItem ? (slotEmpty ? 0 : 2) :
-            // is slot empty?   no -> is fusible between both units?   no -> is attached robot in shop?
-            (slotEmpty ? 1 : (isFusible ? 3 : isAttachedBotInShop ? 0 : 4));
+        chargeSlot.SetHintLight(AttachedController, _value);
     }
 
     /// <summary>

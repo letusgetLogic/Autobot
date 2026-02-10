@@ -5,6 +5,18 @@ public class ShootOut : AbilityBase
     private readonly UnitModel model;
     private readonly SoUnit[] craftedUnits;
     private int slotIndex;
+    private float duration
+    {
+        get
+        {
+            if (PhaseShopController.Instance != null)
+                return PhaseShopController.Instance.Process.DurationShootOut;
+            if (PhaseBattleController.Instance != null)
+                return PhaseBattleController.Instance.Process.DurationShootOut;
+
+            return 0f;
+        }
+    }
 
     /// <summary>
     ///  Constructor of Craft.
@@ -13,7 +25,7 @@ public class ShootOut : AbilityBase
     /// <param name="_model"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public ShootOut(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem) 
+    public ShootOut(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, UnitController _targetedByItem)
         : base(_controller, _currentLevel, _teamSlots, _targetedByItem)
     {
         this.model = _model;
@@ -23,26 +35,45 @@ public class ShootOut : AbilityBase
 
     protected override IEnumerator Activate()
     {
-        float duration = 0f;
+        if (CurrentLevel.TriggerType == TriggerType.Shutdown)
+        {
+            Controller.StartCoroutine(Controller.Deactivate(DurationDescription));
 
-        if (PhaseShopController.Instance != null)
-            duration = PhaseShopController.Instance.Process.DurationDelayCraft;
-        if (PhaseBattleController.Instance != null)
-            duration = PhaseBattleController.Instance.Process.DelayCraft;
+            yield return new WaitUntil(() => TeamSlots[slotIndex].Unit() == null);
 
-        yield return new WaitForSeconds(duration);
+            for (int i = 0; i < CurrentLevel.SummonUnits.Length; i++)
+            {
+                if (TeamSlots[0].Unit() != null)
+                {
+                    var makeSpace = InsertState.MakeSpaceAtMostFront(TeamSlots);
+                    if (makeSpace.CanMove == false)
+                        break;
 
-        Controller.Deactivate();
+                    yield return new WaitForSeconds(makeSpace.AnimTime);
+                }
+                
+                SpawnManager.Instance.Spawn(
+                     craftedUnits[i],
+                     craftedUnits[i].ID,
+                     new(),
+                     model.Data.UnitState,
+                     TeamSlots[0].transform,
+                     PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
+            }
+        }
 
-        SpawnManager.Instance.Spawn(
-                   craftedUnits[0],
-                   craftedUnits[0].ID,
-                   new(),
-                   model.Data.UnitState,
-                   TeamSlots[slotIndex].transform,
-                   PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
+        yield return null;
 
-        EventManager.Instance.OnShootOut?.Invoke();
+        Coroutine = null;
+
+
+
+
+
+
+
+
+        //EventManager.Instance.OnShootOut?.Invoke();
 
         //int teamlength = TeamSlots.Length;
         //int leftCrafted = craftedUnits.Length;
@@ -50,7 +81,7 @@ public class ShootOut : AbilityBase
         //Stack<Slot> occupiedSlotsBehind = new Stack<Slot>();
 
         //// count occupied ahead slot index
-        //for (int i = slotIndex -1; i >= 0; i--)
+        //for (int i = slotIndex - 1; i >= 0; i--)
         //{
         //    if (i < 0)
         //        break;
@@ -61,7 +92,7 @@ public class ShootOut : AbilityBase
         //}
 
         //// count occupied behind slot index
-        //for (int i = slotIndex +1; i < teamlength; i++)
+        //for (int i = slotIndex + 1; i < teamlength; i++)
         //{
         //    if (i >= teamlength)
         //        break;
@@ -80,6 +111,11 @@ public class ShootOut : AbilityBase
         //    }
         //}
     }
+
+    //private Slot EmptySlot()
+    //{
+    //    for (int i = 0; )
+    //}
 }
-    
+
 

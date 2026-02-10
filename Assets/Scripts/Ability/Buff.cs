@@ -48,6 +48,8 @@ public class Buff : AbilityBase
             EventManager.Instance.OnBuff?.Invoke();
 
         yield return null;
+
+        Coroutine = null;
     }
 
     private void BuffAll()

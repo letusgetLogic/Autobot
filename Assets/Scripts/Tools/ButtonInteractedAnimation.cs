@@ -92,7 +92,6 @@ public class ButtonInteractedAnimation : MonoBehaviour, IPointerClickHandler, IP
     {
         if (isRunning)
         {
-            Debug.Log("Running: " + countdown);
             if (countdown <= 0f)
             {
                 countdown = 0f;

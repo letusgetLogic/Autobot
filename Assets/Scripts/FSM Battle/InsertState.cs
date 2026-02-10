@@ -53,10 +53,9 @@ public class InsertState : StateBase
                 {
                     PhaseBattleController.Instance.HideDescriptionByTransport();
 
-                    var controller = movedUnit;
                     var slot = _slots[mostFrontEmpty];
 
-                    controller.MoveToParent(slot.transform.position, slot.transform);
+                    movedUnit.MoveToParent(slot.transform.position, slot.transform);
 
                     mostFrontEmpty++;
                     continue;
@@ -67,12 +66,42 @@ public class InsertState : StateBase
         }
     }
 
+
+
+    public static (float AnimTime, bool CanMove) MakeSpaceAtMostFront(Slot[] _slots)
+    {
+        float animTime = 0f;
+        bool canMove = false;
+        int searchEmpty = 1;
+
+        while (searchEmpty > 0 && searchEmpty < _slots.Length)
+        {
+            if (canMove == false && _slots[searchEmpty].Unit())
+            {
+                searchEmpty++;
+                continue;
+            }
+
+            // It has found empty slot, move the front unit to it.
+            animTime = _slots[searchEmpty - 1].UnitController().MoveToParent(
+                _slots[searchEmpty].transform.position, _slots[searchEmpty].transform);
+
+            canMove = true;
+
+            searchEmpty--;
+        }
+        
+        return (animTime, canMove);
+    }
+
     /// <summary>
     /// Moves the units back from center.
     /// </summary>
     /// <param name="_slots"></param>
-    public static void MoveBackFromCenter(Slot[] _slots)
+    public static float MoveBackFromCenter(Slot[] _slots)
     {
+        float countTime = 0f;
+
         bool[] isOccupied = new bool[_slots.Length];
         int mostBehindEmpty = _slots.Length - 1;
 
@@ -80,7 +109,7 @@ public class InsertState : StateBase
         {
             isOccupied[i] = false;
 
-            var movedUnit = _slots[i].Unit();
+            var movedUnit = _slots[i].UnitController();
 
             if (movedUnit != null)
             {
@@ -89,7 +118,12 @@ public class InsertState : StateBase
                 if (i < _slots.Length) // skip the last slot
                 {
                     PhaseBattleController.Instance.HideDescriptionByTransport();
-                    movedUnit.transform.SetParent(_slots[mostBehindEmpty].transform, false);
+
+                    var slot = _slots[mostBehindEmpty];
+
+                    countTime += movedUnit.MoveToParent(slot.transform.position, slot.transform);
+                    //movedUnit.transform.SetParent(_slots[mostBehindEmpty].transform, false);
+
                     mostBehindEmpty--;
                     continue;
                 }
@@ -97,5 +131,8 @@ public class InsertState : StateBase
                 mostBehindEmpty--;
             }
         }
+
+        return countTime;
     }
+
 }

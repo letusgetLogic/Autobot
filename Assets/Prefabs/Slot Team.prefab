@@ -636,12 +636,10 @@ MonoBehaviour:
   eventHover: {fileID: 5523288145169055422}
   eventDrag: {fileID: 5719285484096049178}
   lighting: {fileID: 6990908741980539185}
+  settings: {fileID: 11400000, guid: 22befe0412944fe47b177f0edc3921ba, type: 2}
   hintLight: {fileID: 2213838051074973382}
   lightenUpDown: {fileID: 595244970458298620}
   lightenScale: {fileID: 8879341769714474662}
-  itemColor: {r: 0.2901961, g: 0.9372549, b: 0.3019608, a: 1}
-  fusionColor: {r: 0.9372549, g: 0.5137255, b: 0.2901961, a: 1}
-  swapColor: {r: 0.49581385, g: 0.45759168, b: 0.8584906, a: 1}
 --- !u!1 &6990908741980539185
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +717,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.8156863, g: 0.83137256, b: 0.4117647, a: 1}
+  m_Color: {r: 0.29019606, g: 0.38218838, b: 0.9372549, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

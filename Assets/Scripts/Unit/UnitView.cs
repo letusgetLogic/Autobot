@@ -13,7 +13,8 @@ public class UnitView : MonoBehaviour
     private GameObject[]
         hideObjectsDuringBattle,
         hideFullAttributes,
-        hideObjectsByNoAbility;
+        hideObjectsByNoAbility,
+        hideVisual;
 
     [Header("Sprites")]
     [Tooltip(("The shadow is showing, when sprite is being dragged out of the slot shop."))]
@@ -503,5 +504,14 @@ public class UnitView : MonoBehaviour
     public void SetShutdown()
     {
         shutdownSpriteRenderer.enabled = true;
+    }
+
+    /// <summary>
+    /// Hides only the visuals of unit.
+    /// </summary>
+    public void HideVisual()
+    {
+        foreach (var item in hideVisual)
+            item.SetActive(false);
     }
 }

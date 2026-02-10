@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
@@ -241,7 +242,8 @@ public class UnitController : MonoBehaviour
     /// Sets and updates the view of the energy.
     /// </summary>
     /// <param name="_energy"></param>
-    public void SetEnergy(int _energy)
+    /// <param name="_makeSound"></param>
+    public void SetEnergy(int _energy, bool _makeSound)
     {
         int value = model.Data.Cur.ENG + _energy;
 
@@ -250,7 +252,9 @@ public class UnitController : MonoBehaviour
         if (_energy > 0)
         {
             view.ShowBuff(new Attribute(0, 0, _energy));
-            EventManager.Instance.OnBuff?.Invoke();
+
+            if (_makeSound)
+                EventManager.Instance.OnBuff?.Invoke();
         }
         else
         {
@@ -375,11 +379,29 @@ public class UnitController : MonoBehaviour
     }
 
     /// <summary>
+    /// Check if item can be dropped.
+    /// </summary>
+    /// <returns></returns>
+    public bool CanItemBeDropped()
+    {
+        if (Slot == null) 
+            return false;
+
+        if (model.SoUnit.UnitType == UnitType.Item && Slot.CompareTag("Slot Team"))
+            return true;
+
+        return false;
+    }
+
+    /// <summary>
     /// Sets parent null and game object active false.
     /// </summary>
-    public void Deactivate()
+    public IEnumerator Deactivate(float _delay)
     {
         transform.parent = null;
+        view.HideVisual();
+
+        yield return new WaitForSeconds(_delay);
         gameObject.SetActive(false);
     }
 

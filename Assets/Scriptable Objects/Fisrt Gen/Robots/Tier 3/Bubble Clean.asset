@@ -25,7 +25,7 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Shutdown \u2192 Craft one 2/2 Bubble."
+    Description: "Shutdown \u2192 Craft two 2/2 Bubble."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 3
@@ -43,12 +43,12 @@ MonoBehaviour:
     UnitLimit: 2
     SummonUnits:
     - {fileID: 11400000, guid: 8fe4b1493edca6b478c12fedc5a98556, type: 2}
-    - {fileID: 11400000, guid: 23805f239cd92234bb07adbc750d80b5, type: 2}
+    - {fileID: 11400000, guid: 8fe4b1493edca6b478c12fedc5a98556, type: 2}
     SummonForOpponent: 0
     DealDamage: 0
     GainCoin: 0
   - Index: 1
-    Description: "Shutdown \u2192 Craft one 4/4 Bubble."
+    Description: "Shutdown \u2192 Craft two 4/4 Bubble."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 3
@@ -71,7 +71,7 @@ MonoBehaviour:
     DealDamage: 0
     GainCoin: 0
   - Index: 2
-    Description: "Shutdown \u2192 Craft one 6/6 Bubble."
+    Description: "Shutdown \u2192 Craft two 6/6 Bubble."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 3

@@ -5708,6 +5708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runState: 1
   isDisableAtAwake: 0
+  isSetBackToScaleMin: 0
   animTime: 1
   scaleMax: {x: 0.45, y: 0.45, z: 0}
   scaleMin: {x: 0, y: 0, z: 0}
@@ -7255,12 +7256,11 @@ MonoBehaviour:
   indicator: {fileID: 0}
   eventHover: {fileID: 2425711100583932335}
   eventDrag: {fileID: 0}
+  lighting: {fileID: 0}
+  settings: {fileID: 0}
   hintLight: {fileID: 0}
   lightenUpDown: {fileID: 0}
   lightenScale: {fileID: 0}
-  itemColor: {r: 0, g: 0, b: 0, a: 0}
-  fusionColor: {r: 0, g: 0, b: 0, a: 0}
-  swapColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &4218155108117915018
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7360,12 +7360,11 @@ MonoBehaviour:
   indicator: {fileID: 6622486014957257529}
   eventHover: {fileID: 4587378537089399513}
   eventDrag: {fileID: 0}
+  lighting: {fileID: 0}
+  settings: {fileID: 0}
   hintLight: {fileID: 0}
   lightenUpDown: {fileID: 0}
   lightenScale: {fileID: 0}
-  itemColor: {r: 0.2901961, g: 0.9372549, b: 0.3019608, a: 1}
-  fusionColor: {r: 0.9372549, g: 0.5137255, b: 0.2901961, a: 1}
-  swapColor: {r: 0.49581385, g: 0.45759168, b: 0.8584906, a: 1}
 --- !u!114 &4587378537089399513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7552,7 +7551,7 @@ GameObject:
   - component: {fileID: 4428029041244602400}
   m_Layer: 0
   m_Name: Drop Item for randomness
-  m_TagString: Slot Team
+  m_TagString: Slot Random
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

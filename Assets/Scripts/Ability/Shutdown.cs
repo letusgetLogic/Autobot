@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using System.Collections;
+
+/// <summary>
 /// Only items trigger Shutdown.
 /// </summary>
 public class Shutdown : AbilityBase
@@ -14,20 +16,17 @@ public class Shutdown : AbilityBase
     {
     }
 
-    public override void Activate()
+    protected override IEnumerator Activate()
     {
         switch(CurrentLevel.ToWho)
         {
-            case ToWho.None:
-                return;
-
             case ToWho.TargetBot:
                 TargetedByItem.TriggerShutdown();
                 break;
-
-
-
         }
 
+        yield return null;
+
+        Coroutine = null;
     }
 }

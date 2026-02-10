@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [CustomEditor(typeof(SoUnit))]
 class SoUnitEditor : Editor
@@ -52,16 +53,17 @@ class SoUnitEditor : Editor
 
         // Energy
         EditorGUILayout.BeginHorizontal();
-        data.Energy = (SoIntVariable)EditorGUILayout.ObjectField("Energy", data.Energy, typeof(SoIntVariable), false);
+        EditorGUILayout.LabelField("Energy", GUILayout.Width(50));
+        data.Energy = (SoIntVariable)EditorGUILayout.ObjectField(data.Energy, typeof(SoIntVariable), false);
         EditorGUILayout.EndHorizontal();
 
         // If it has a unique cost, assign the cost
         EditorGUILayout.BeginHorizontal();
-        data.HasUniqueCost = EditorGUILayout.Toggle($"Has a unique cost", data.HasUniqueCost);
+        EditorGUILayout.LabelField("Has a unique cost", GUILayout.Width(120));
+        data.HasUniqueCost = EditorGUILayout.Toggle(data.HasUniqueCost, GUILayout.Width(50));
         if (data.HasUniqueCost)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Unique Cost", GUILayout.Width(120));
             // Nuts
             data.UniqueCostNuts = (SoIntVariable)EditorGUILayout.ObjectField(data.UniqueCostNuts, typeof(SoIntVariable), false);
             EditorGUILayout.LabelField("Nuts", GUILayout.Width(50));
