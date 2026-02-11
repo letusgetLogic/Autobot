@@ -7,7 +7,7 @@
     RandomMate,
     NearestMateBehind,
 
-    AllFriends,
+    AllMates,
     All,
 
     ShopBots,

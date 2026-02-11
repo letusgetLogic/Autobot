@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FMODUnity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,6 @@ public abstract class AbilityBase
 {
     public UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
-    protected Slot[] TeamSlots { get; private set; }
     protected Queue<UnitController> Targets { get; private set; }
 
     protected Coroutine Coroutine { get; set; }
@@ -18,11 +18,10 @@ public abstract class AbilityBase
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
-    public AbilityBase(UnitController _controller, Level _currentLevel, Slot[] _teamSlots, Queue<UnitController> _targets)
+    public AbilityBase(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets)
     {
         Controller = _controller;
         CurrentLevel = _currentLevel;
-        TeamSlots = _teamSlots;
         Targets = _targets;
     }
 
@@ -61,11 +60,6 @@ public abstract class AbilityBase
     /// </summary>
     protected abstract IEnumerator Activate();
 
-    ///// <summary>
-    ///// Make sure that the ability need to be returned the done state.
-    ///// </summary>
-    //protected abstract void SetIsDoneTrue(); // IsDone = true
-
     /// <summary>
     /// Returns the instance of an inheritanced class based on the ability type, or null, when it has no ability.
     /// </summary>
@@ -77,27 +71,31 @@ public abstract class AbilityBase
     public static AbilityBase GetAbility(
         UnitController _controller,
         Level _level,
-        Slot[] _teamSlots,
-        Slot _slot,
         Queue<UnitController> _targets)
     {
-        var type = _level.DoType;
-        switch (type)
+        switch (_level.DoType)
         {
             case DoType.Buff:
-                if (CheckOutcomeState.IsAnyoneIn(_teamSlots, _slot) == 0)
+                if ((_level.ToWho == ToWho.NearestMateAhead ||
+                    _level.ToWho == ToWho.RandomMate ||
+                    _level.ToWho == ToWho.NearestMateBehind ||
+                    _level.ToWho == ToWho.AllMates)
+                    && CheckOutcomeState.IsAnyoneIn(_controller.TeamSlots, _controller.Slot) == 0)
                     return null;
 
-                return new Buff(_controller, _level, _teamSlots, _targets);
+                return new Buff(_controller, _level, _targets);
 
             case DoType.ShootOut:
-                return new ShootOut(_controller, _controller.Model, _level, _teamSlots, _targets);
+                return new ShootOut(_controller, _level, _targets);
 
             case DoType.ShutDown:
-                return new Shutdown(_controller, _level, _teamSlots, _targets);
+                return new Shutdown(_controller, _level, _targets);
 
             case DoType.Steal:
-                return new Steal(_controller, _level, _teamSlots, _targets);
+                return new Steal(_controller, _level, _targets);
+
+            case DoType.Debuff:
+                return new Debuff(_controller, _level, _targets);
         }
 
         return null;
@@ -126,13 +124,13 @@ public abstract class AbilityBase
     }
 
 
-    protected virtual List<UnitController> GetAllMates()
+    protected virtual List<UnitController> AllBotsIn(Slot[] _slots)
     {
         List<UnitController> teamUnitControllers = new List<UnitController>();
 
-        for (int i = 0; i < TeamSlots.Length; i++)
+        for (int i = 0; i < _slots.Length; i++)
         {
-            var teamUnitController = TeamSlots[i].UnitController();
+            var teamUnitController = _slots[i].UnitController();
             if (teamUnitController != null && teamUnitController != Controller)
             {
                 teamUnitControllers.Add(teamUnitController);
@@ -142,7 +140,7 @@ public abstract class AbilityBase
         return teamUnitControllers;
     }
 
-    protected virtual UnitController GetRandomIn(ref List<UnitController> _units)
+    protected virtual UnitController GetRandomIn(List<UnitController> _units)
     {
         if (_units.Count <= 0)
             return null;
@@ -165,10 +163,10 @@ public abstract class AbilityBase
         var index = Controller.Slot.Index;
         int target = index + dir;
 
-        if (target < 0 && target >= TeamSlots.Length && target != index)
+        if (target < 0 && target >= Controller.TeamSlots.Length && target != index)
             return null;
         else
-            return TeamSlots[target].UnitController();
+            return Controller.TeamSlots[target].UnitController();
     }
 
     protected virtual List<UnitController> GetNearest(ToWho _toWho, int _amount)
@@ -189,13 +187,13 @@ public abstract class AbilityBase
         {
             target += dir;
 
-            if (target < 0 && target >= TeamSlots.Length)
+            if (target < 0 && target >= Controller.TeamSlots.Length)
                 continue;
             else
             {
                 if (target != index)
                 {
-                    units.Add(TeamSlots[target].UnitController());
+                    units.Add(Controller.TeamSlots[target].UnitController());
                 }
             }
         }

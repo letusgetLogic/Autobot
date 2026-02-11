@@ -326,7 +326,7 @@ public class UnitModel
     /// </summary>
     /// <param name="_buff"></param>
     /// <param name="_buffTemp"></param>
-    public void AddBuff(Attribute _buff, Attribute _buffTemp)
+    public void Add(Attribute _buff, Attribute _buffTemp)
     {
         int maxHP =  Controller.Pack.MaxHP.Value;
         int maxATK = Controller.Pack.MaxATK.Value;

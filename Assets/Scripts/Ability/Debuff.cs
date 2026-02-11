@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Buff : AbilityBase
+public class Debuff : AbilityBase
 {
     private readonly Slot[] teamSlots;
 
@@ -12,7 +12,7 @@ public class Buff : AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public Buff(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets)
+    public Debuff(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets)
         : base(_controller, _currentLevel, _targets)
     {
         teamSlots = _controller.TeamSlots;
@@ -20,18 +20,14 @@ public class Buff : AbilityBase
 
     protected override IEnumerator Activate()
     {
-        switch (CurrentLevel.ToWho)
+        switch(CurrentLevel.ToWho)
         {
             case ToWho.None:
                 UnityEngine.Debug.LogWarning($"{Controller.name} has ToWho.None!");
                 break;
 
-            case ToWho.RandomMate:
-                BuffRandomMate();
-                break;
-
-            case ToWho.TargetBot:
-                BuffTargetByItem();
+            case ToWho.RandomEnemy:
+                DebuffRandomEnemy();
                 break;
 
             case var a when a == ToWho.NearestMateAhead:
@@ -61,11 +57,16 @@ public class Buff : AbilityBase
 
         for (int i = 0; i < teams.Count; i++)
         {
-            BuffUnit(teams[i]);
+            if (teams[i] == null) 
+                return;
+
+            teams[i].Buff(
+                IsPernament(CurrentLevel.AbilityDuration),
+                CurrentLevel.Buff);
         }
     }
 
-    private void BuffRandomMate()
+    private void DebuffRandomEnemy()
     {
         List<UnitController> teams = AllBotsIn(teamSlots);
 
@@ -76,8 +77,12 @@ public class Buff : AbilityBase
 
             var unit = teams[new Random().Next(0, teams.Count)];
 
-            if (BuffUnit(unit))
-                teams.Remove(unit);
+            if (unit == null)
+                continue;
+
+            BuffUnit(unit);
+
+            teams.Remove(unit);
         }
     }
 
@@ -92,7 +97,7 @@ public class Buff : AbilityBase
 
     private void BuffNearest(List<UnitController> _units)
     {
-        if (_units.Count == 0)
+        if (_units.Count == 0) 
             return;
 
         for (int i = 0; i < _units.Count; i++)
@@ -101,15 +106,13 @@ public class Buff : AbilityBase
         }
     }
 
-    private bool BuffUnit(UnitController _unit)
+    private void BuffUnit(UnitController _unit)
     {
         if (_unit == null)
-            return false;
+            return;
 
         _unit.Buff(
             IsPernament(CurrentLevel.AbilityDuration),
             CurrentLevel.Buff);
-
-        return true;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class ShootOut : AbilityBase
 {
     private readonly UnitModel model;
+    private readonly Slot[] teamSlots;
     private readonly SoUnit[] craftedUnits;
     private int slotIndex;
     private float duration
@@ -26,12 +27,13 @@ public class ShootOut : AbilityBase
     /// <param name="_model"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public ShootOut(UnitController _controller, UnitModel _model, Level _currentLevel, Slot[] _teamSlots, Queue<UnitController> _targets)
-        : base(_controller, _currentLevel, _teamSlots, _targets)
+    public ShootOut(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets)
+        : base(_controller, _currentLevel, _targets)
     {
-        this.model = _model;
+        model = _controller.Model;
+        teamSlots = _controller.TeamSlots;
         craftedUnits = CurrentLevel.SummonUnits;
-        this.slotIndex = _controller.Slot.Index;
+        slotIndex = _controller.Slot.Index;
     }
 
     protected override IEnumerator Activate()
@@ -40,13 +42,13 @@ public class ShootOut : AbilityBase
         {
             Controller.StartCoroutine(Controller.Deactivate(DurationDescription));
 
-            yield return new WaitUntil(() => TeamSlots[slotIndex].Unit() == null);
+            yield return new WaitUntil(() => teamSlots[slotIndex].Unit() == null);
 
             for (int i = 0; i < CurrentLevel.SummonUnits.Length; i++)
             {
-                if (TeamSlots[0].Unit() != null)
+                if (teamSlots[0].Unit() != null)
                 {
-                    var makeSpace = InsertState.MakeSpaceAtMostFront(TeamSlots);
+                    var makeSpace = InsertState.MakeSpaceAtMostFront(teamSlots);
                     if (makeSpace.CanMove == false)
                         break;
 
@@ -58,7 +60,7 @@ public class ShootOut : AbilityBase
                      craftedUnits[i].ID,
                      new(),
                      model.Data.UnitState,
-                     TeamSlots[0].transform,
+                     teamSlots[0].transform,
                      PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
             }
         }
@@ -66,12 +68,6 @@ public class ShootOut : AbilityBase
         yield return null;
 
         Coroutine = null;
-
-
-
-
-
-
 
 
         //EventManager.Instance.OnShootOut?.Invoke();
@@ -112,11 +108,6 @@ public class ShootOut : AbilityBase
         //    }
         //}
     }
-
-    //private Slot EmptySlot()
-    //{
-    //    for (int i = 0; )
-    //}
 }
 
 

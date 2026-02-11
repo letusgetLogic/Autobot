@@ -26,7 +26,15 @@ public class UnitController : MonoBehaviour
     public UnitModel Model => model;
     private UnitModel model;
 
-    public AbilityBase Ability => AbilityBase.GetAbility(this, model.CurrentLevel, TeamSlots, Slot, Targets);
+    public AbilityBase Ability => AbilityBase.GetAbility(
+        this, 
+        model.CurrentLevel, 
+        TeamSlots, 
+        EnemySlots, 
+        Slot, 
+        Targets
+        );
+
     public Queue<UnitController> Targets
     {
         get
@@ -63,6 +71,21 @@ public class UnitController : MonoBehaviour
             else return PhaseShopController.Instance.TeamSlots();
         }
     }
+
+    public Slot[] EnemySlots
+    {
+        get
+        {
+            if (PhaseBattleController.Instance != null)
+            {
+                return model.Data.IsTeamLeft ?
+                    PhaseBattleController.Instance.Slots2() :
+                    PhaseBattleController.Instance.Slots1();
+            }
+            else return null;
+        }
+    }
+
     public Slot Slot
     {
         get
@@ -364,13 +387,30 @@ public class UnitController : MonoBehaviour
     public void Buff(bool _isPernament, Attribute _attribute)
     {
         if (_isPernament)
-            model.AddBuff(_attribute, new Attribute(0, 0, 0));
+            model.Add(_attribute, new Attribute(0, 0, 0));
         else
-            model.AddBuff(new Attribute(0, 0, 0), _attribute);
+            model.Add(new Attribute(0, 0, 0), _attribute);
 
         view.ShowBuff(_attribute);
         model.Repair?.SetDurability(false);
     }
+
+    ///// <summary>
+    ///// Add buff to the model data and updates the view.
+    ///// </summary>
+    ///// <param name="_isPernament"></param>
+    ///// <param name="_addHealth"></param>
+    ///// <param name="_addAttack"></param>
+    //public void Debuff(bool _isPernament, Attribute _attribute)
+    //{
+    //    if (_isPernament)
+    //        model.Add(_attribute, new Attribute(0, 0, 0));
+    //    else
+    //        model.Add(new Attribute(0, 0, 0), _attribute);
+
+    //    view.ShowBuff(_attribute);
+    //    model.Repair?.SetDurability(false);
+    //}
 
     #endregion
 
