@@ -74,9 +74,8 @@ public class AttackState : StateBase
         // --------------------------------------------------------------------
         timeCount = 0f;
 
-        int countTrigger = 0;
-        countTrigger += unit1.TriggerBeforeAttack(unit2) ? 1 : 0;
-        countTrigger += unit2.TriggerBeforeAttack(unit1) ? 1 : 0;
+        // Triggers before attack
+        int countTrigger = TriggerAbilityManager.Instance.TriggerBeforeAttack(unit1, unit2);
 
         if (countTrigger > 0)
         {

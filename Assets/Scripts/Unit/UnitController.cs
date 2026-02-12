@@ -227,17 +227,22 @@ public class UnitController : MonoBehaviour
         return ability != null;
     }
 
-    public bool TriggerBeforeAttack(UnitController _enemy)
+    public AbilityBase TriggerBeforeAttack(UnitController _enemy)
     {
         var ability = TriggerAbility(TriggerType.BeforeAttack);
         if (ability != null)
         {
+            if (model.CurrentLevel.DoType == DoType.Steal)
+            {
+                if (_enemy.Model.Data.Cur.ENG <= 0)
+                    return null;
+            }
+
             if (model.CurrentLevel.FromWho == FromWho.AttackingEnemy)
                 Targets.Enqueue(_enemy);
-
-            EventManager.Instance.OnTriggerAbility?.Invoke(ability, default);
         }
-        return ability != null;
+
+        return ability;
     }
 
     /// <summary>

@@ -63,8 +63,6 @@ public class PhaseShopController : MonoBehaviour
 
 
         GameManager.Instance.Switch(GameState.StartOfTurn);
-        GameManager.Instance.PhaseShopIndex++;
-        Debug.Log("PhaseShop " + GameManager.Instance.PhaseShopIndex);
     }
 
     private void OnEnable()

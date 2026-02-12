@@ -8,7 +8,7 @@
 
     ShutDown = 3,
 
-    Steal = 4,
+    Steal = 400, // The great value represent the higher priority to execute before other abilities.
 
     Debuff = 5,
 

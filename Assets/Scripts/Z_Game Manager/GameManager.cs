@@ -183,10 +183,15 @@ public class GameManager : MonoBehaviour
         if (CurrentGame.CurrentPlayerIndex < players.Length)
         {
             CutScene.Instance.SwitchScene("PhaseShop");
+
+            Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
+            PhaseShopIndex++;
         }
         else
         {
             CutScene.Instance.SwitchScene("PhaseBattle");
+
+            Debug.Log("--------------- Phase Battle ----------------");
         }
     }
 

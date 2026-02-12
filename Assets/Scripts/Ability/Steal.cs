@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Steal : AbilityBase
 {
@@ -26,11 +27,12 @@ public class Steal : AbilityBase
                 {
                     yield return new WaitForSeconds(Controller.View.Settings.DurationShowTemporaryValue);
 
-                    var unit = Targets.Dequeue();
-                    unit.SetEnergy(CurrentLevel.Debuff.ENG, default);
+                    var target = Targets.Dequeue();
 
-                    Controller.SetEnergy(
-                        Math.Abs(CurrentLevel.Debuff.ENG), true);
+                    int stolen = StolenEnergy(target, Controller);
+
+                    target.SetEnergy(stolen, default);
+                    Controller.SetEnergy(Math.Abs(stolen), true);
 
                     yield return new WaitForSeconds(Controller.View.Settings.DurationShowTemporaryValue);
                 }
@@ -40,6 +42,14 @@ public class Steal : AbilityBase
         yield return null;
 
         Coroutine = null;
+    }
+
+    public static int StolenEnergy(UnitController _target, UnitController _causer)
+    {
+        int targetENG = _target.Model.Data.Cur.ENG;
+        int debuffENG = _causer.Model.CurrentLevel.Debuff.ENG;
+
+        return targetENG < Math.Abs(debuffENG) ? -targetENG : debuffENG;
     }
 }
 

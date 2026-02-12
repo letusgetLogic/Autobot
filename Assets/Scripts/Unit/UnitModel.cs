@@ -36,7 +36,7 @@ public class UnitModel
     public Currency RepairCost => Controller.Pack.CurrencyData.RepairCost[CurrentLevel.Index];
 
     /// <summary>
-    /// The index is calculated from 2D to 1D array.
+    /// The index fro sell is calculated from 2D to 1D array.
     /// </summary>
     public int SellIndex
     {
@@ -203,18 +203,18 @@ public class UnitModel
                 
             case UnitState.InSlotTeam:
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true, false, Data.TempBuff.IsDefault());
+                view.SetShopView(false, true, false, !Data.TempBuff.IsDefault());
                 break;
 
             case UnitState.InSlotCharge:
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true, false, Data.TempBuff.IsDefault());
+                view.SetShopView(false, true, false, !Data.TempBuff.IsDefault());
                 break;
 
             case UnitState.InPhaseBattle:
                 view.HideObjectsDuringBattle();
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, false, false, Data.TempBuff.IsDefault());
+                view.SetShopView(false, false, false, !Data.TempBuff.IsDefault());
                 break;
         }
 
@@ -327,7 +327,6 @@ public class UnitModel
     {
         CurrentLevel = SoUnit.Levels[_index];
         view.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy != null ? CurrentLevel.ConsumedEnergy.Value : 0);
-        view.SetBuyOrSell(Sell, false, Data.UnitType);
     }
 
     #endregion

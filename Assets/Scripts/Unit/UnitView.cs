@@ -186,7 +186,7 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void SetBuyOrSell(Currency _cur, bool _isForBuying, UnitType _type)
     {
-        craftText.text = _isForBuying ? "Craft" : (_type == UnitType.Item ? "Install" : "Recycle");
+        craftText.text = _isForBuying ? (_type == UnitType.Item ? "Install" : "Craft") : "Recycle";
 
         if (_cur.Nut != 0)
         {
