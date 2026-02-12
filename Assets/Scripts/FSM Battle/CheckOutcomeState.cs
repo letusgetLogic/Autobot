@@ -2,7 +2,6 @@
 
 public class CheckOutcomeState : StateBase
 {
-    private bool startOfBattle;
     private bool hasOutcomeOfBattle;
     private int amountOfActiveUnits1;
     private int amountOfActiveUnits2;
@@ -12,9 +11,8 @@ public class CheckOutcomeState : StateBase
     /// </summary>
     /// <param name="_maxTimeCount"></param>
     /// <param name="_startOfBattle"></param>
-    public CheckOutcomeState(float _maxTimeCount, bool _startOfBattle) : base(_maxTimeCount)
+    public CheckOutcomeState(float _maxTimeCount) : base(_maxTimeCount)
     {
-        this.startOfBattle = _startOfBattle;
     }
 
     public override void OnEnter(IFiniteStateMachine _ctx)
@@ -42,10 +40,6 @@ public class CheckOutcomeState : StateBase
             }
             else
             {
-                //if (startOfBattle)
-                //    _ctx.SetState(new StartOfBattleState(0));
-                //else
-
                 if (NeedInsert(PhaseBattleController.Instance.Slots1(), amountOfActiveUnits1) ||
                     NeedInsert(PhaseBattleController.Instance.Slots2(), amountOfActiveUnits2))
                 {
@@ -54,8 +48,15 @@ public class CheckOutcomeState : StateBase
                 }
                 else
                 {
-                    _ctx.SetState(new AttackState(
-                         PhaseBattleController.Instance.Process.DurationAttack));
+                    if (GameManager.Instance.CurrentGame.State == GameState.StartOfBattle)
+                    {
+                        _ctx.SetState(new StartOfBattleState(0));
+                    }
+                    else
+                    {
+                        _ctx.SetState(new AttackState(
+                             PhaseBattleController.Instance.Process.DurationAttack));
+                    }
                 }
             }
         }

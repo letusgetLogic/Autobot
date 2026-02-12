@@ -322,7 +322,7 @@ public class UnitModel
     #endregion
 
     /// <summary>
-    /// Adds the given values to the unit by buff.
+    /// Adds the given values to the unit.
     /// </summary>
     /// <param name="_buff"></param>
     /// <param name="_buffTemp"></param>

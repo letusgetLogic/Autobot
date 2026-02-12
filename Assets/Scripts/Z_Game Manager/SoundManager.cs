@@ -50,7 +50,7 @@ public class SoundManager
 
         EventManager.Instance.OnNotEnoughCurrency += () => PlayOneShot("Invalid");
 
-        EventManager.Instance.OnAttack += () => PlayOneShot("Collide");
+        EventManager.Instance.OnHurt += () => PlayOneShot("Collide");
         EventManager.Instance.OnBuff += () => PlayOneShot("Buff");
         EventManager.Instance.OnShootOut += () => PlayOneShot("Summon");
     }

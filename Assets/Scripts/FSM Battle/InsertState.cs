@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class InsertState : StateBase
 {
@@ -13,20 +14,23 @@ public class InsertState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- InsertState");
-        MoveCloserToCenter(PhaseBattleController.Instance.Slots1());
-        MoveCloserToCenter(PhaseBattleController.Instance.Slots2());
+        PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots1()));
+        PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots2()));
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        if (TimeCount < MaxTimeCount)
+        if (IsDone)
         {
-            TimeCount += _speed;
-        }
-        else
-        {
-            _ctx.SetState(new AttackState(
-                PhaseBattleController.Instance.Process.DurationAttack));
+            if (GameManager.Instance.CurrentGame.State == GameState.StartOfBattle)
+            {
+                _ctx.SetState(new StartOfBattleState(0));
+            }
+            else
+            {
+                _ctx.SetState(new AttackState(
+                     PhaseBattleController.Instance.Process.DurationAttack));
+            }
         }
     }
 
@@ -34,21 +38,16 @@ public class InsertState : StateBase
     /// Moves the units to the center.
     /// </summary>
     /// <param name="_slots"></param>
-    private void MoveCloserToCenter(Slot[] _slots)
+    private IEnumerator MoveCloserToCenter(Slot[] _slots)
     {
-        bool[] isOccupied = new bool[_slots.Length];
         int mostFrontEmpty = 0;
 
         for (int i = 0; i < _slots.Length; i++)
         {
-            isOccupied[i] = false;
-
             var movedUnit = _slots[i].UnitController();
 
             if (movedUnit != null)
             {
-                isOccupied[i] = true;
-
                 if (i > 0) // skip the first slot
                 {
                     PhaseBattleController.Instance.HideDescriptionByTransport();
@@ -64,6 +63,10 @@ public class InsertState : StateBase
                 mostFrontEmpty++;
             }
         }
+
+        yield return new WaitForSeconds(MaxTimeCount);
+
+        IsDone = true;
     }
 
 

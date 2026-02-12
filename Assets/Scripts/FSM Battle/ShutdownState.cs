@@ -29,7 +29,7 @@ public class ShutdownState : StateBase
                 _ctx.SetState(new HandleAbilityState(0));
             else
                 _ctx.SetState(new CheckOutcomeState(
-                    PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
+                    PhaseBattleController.Instance.Process.DurationCheckOutcome));
         }
     }
 

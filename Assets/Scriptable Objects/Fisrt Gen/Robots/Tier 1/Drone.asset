@@ -12,15 +12,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Drone
   m_EditorClassIdentifier: 
-  UnitType: 0
-  Sprite: {fileID: 0}
+  UnitType: 1
+  Sprite: {fileID: -2689309518319501010, guid: c0d58c23788053440b2b4b152ab4ed99, type: 3}
   ID: 0
-  Name: 
-  Health: 0
-  Attack: 0
+  Name: Drone
+  Health: 2
+  Attack: 2
   Energy: {fileID: 0}
   HasUniqueCost: 0
   UniqueCostNuts: {fileID: 0}
   UniqueCostTools: {fileID: 0}
-  LevelLimit: {fileID: 0}
-  Levels: []
+  LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
+  Levels:
+  - Index: 0
+    Description: "Start of battle \u2192 Deal 1 damage to one random enemy."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 21
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 5
+    FromWho: 1
+    ToWho: 9
+    ToWhoCount: 1
+    AbilityDuration: 2
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    Debuff:
+      HP: -1
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    GainCoin: 0
+  - Index: 1
+    Description: "Start of battle \u2192 Deal 1 damage to two random enemy."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 21
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 5
+    FromWho: 1
+    ToWho: 9
+    ToWhoCount: 2
+    AbilityDuration: 2
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    Debuff:
+      HP: -1
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    GainCoin: 0
+  - Index: 2
+    Description: "Start of battle \u2192 Deal 1 damage to three random enemy."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 21
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 5
+    FromWho: 1
+    ToWho: 9
+    ToWhoCount: 3
+    AbilityDuration: 2
+    Buff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    Debuff:
+      HP: -1
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    GainCoin: 0

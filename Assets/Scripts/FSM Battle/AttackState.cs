@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class AttackState : StateBase
 {
-    private bool isDone = false;
     private bool setSubState = false;
+
+    private bool setRefresh = false;
+    private float timeCount = 0f;
 
     /// <summary>
     /// Constructor of AttackState.
@@ -16,22 +18,38 @@ public class AttackState : StateBase
 
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
-        System.Diagnostics.Debug.WriteLine("--- AttackState");
+        Debug.Log("--- AttackState");
 
         PhaseBattleController.Instance.StartCoroutine(AttackEachOther());
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
+        timeCount += _speed;
+
+        if (setRefresh)
+        {
+            _ctx.SetState(new CheckOutcomeState(PhaseBattleController.Instance.Process.DurationCheckOutcome));
+            setRefresh = false;
+        }
+
         if (setSubState)
         {
             _ctx.SetSubState(new HandleAbilityState(0));
             setSubState = false;
         }
 
-        if (isDone)
+        if (IsDone)
         {
             _ctx.SetState(new HandleAbilityState(0));
+        }
+    }
+
+    public override void OnExit(IFiniteStateMachine _ctx)
+    {
+        if (PhaseBattleController.Instance.SubState != null)
+        {
+            _ctx.SetSubState(null);
         }
     }
 
@@ -43,8 +61,18 @@ public class AttackState : StateBase
         UnitController unit1 = PhaseBattleController.Instance.AttackingUnit1;
         UnitController unit2 = PhaseBattleController.Instance.AttackingUnit2;
 
-        if (unit1 == null || unit2 == null)
-            yield break;
+        yield return new WaitUntil(() =>
+        {
+            // If the time count was exceeded, check the outcome.
+            if (timeCount > PhaseBattleController.Instance.Process.RefreshRate)
+            {
+                setRefresh = true;
+            }
+
+            return unit1 != null && unit2 != null;
+        });
+        // --------------------------------------------------------------------
+        timeCount = 0f;
 
         int countTrigger = 0;
         countTrigger += unit1.TriggerBeforeAttack(unit2) ? 1 : 0;
@@ -56,11 +84,24 @@ public class AttackState : StateBase
 
             yield return null;
 
-            yield return new WaitUntil(() => PhaseBattleController.Instance.SubState == null);
+            yield return new WaitUntil(() =>
+            {
+                // If the time count was exceeded, check the outcome.
+                if (timeCount > PhaseBattleController.Instance.Process.RefreshRate)
+                {
+                    setRefresh = true;
+                }
+
+                return PhaseBattleController.Instance.SubState == null;
+            });
         }
+        // ---------------------------------------------------------------------
+        timeCount = 0f;
 
         unit1.MoveWhileAttacking();
         float animDelay = unit2.MoveWhileAttacking();
+
+        Debug.Log($"Attack each other: {unit1} & {unit2} ");
 
         unit1.TakeDamage(unit2.TriggerAttack());
         unit2.TakeDamage(unit1.TriggerAttack());
@@ -69,7 +110,7 @@ public class AttackState : StateBase
 
         yield return new WaitForSeconds(MaxTimeCount);
 
-        isDone = true;
+        IsDone = true;
     }
 
     private IEnumerator ShowCollider(float _delay)

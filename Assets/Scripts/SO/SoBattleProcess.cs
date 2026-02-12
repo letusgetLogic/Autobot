@@ -3,6 +3,8 @@
 [CreateAssetMenu(fileName = "BattleProcess", menuName = "ScriptableObject/BattleProcess")]
 public class SoBattleProcess : ScriptableObject
 {
+    public float RefreshRate = 3.0f;
+
     [Range(0f, 2f)] public float DurationInit = 0.1f;
 
     [Range(0f, 2f)] public float DurationCheckOutcome = 1.0f;

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using static UnityEngine.GraphicsBuffer;
 
 public class UnitController : MonoBehaviour
 {
@@ -29,9 +26,6 @@ public class UnitController : MonoBehaviour
     public AbilityBase Ability => AbilityBase.GetAbility(
         this, 
         model.CurrentLevel, 
-        TeamSlots, 
-        EnemySlots, 
-        Slot, 
         Targets
         );
 
@@ -239,6 +233,16 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public bool TriggerStartOfBattle()
+    {
+        var ability = TriggerAbility(TriggerType.StartOfBattle);
+        if (ability != null)
+        {
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, false);
+        }
+        return ability != null;
+    }
+
     public bool TriggerBeforeAttack(UnitController _enemy)
     {
         var ability = TriggerAbility(TriggerType.BeforeAttack);
@@ -320,6 +324,8 @@ public class UnitController : MonoBehaviour
     {
         model.ReduceHp(_damage);
 
+        EventManager.Instance.OnHurt?.Invoke();
+
         if (model.Data.Cur.HP <= 0)
         {
             view.SetShutdown();
@@ -395,23 +401,6 @@ public class UnitController : MonoBehaviour
         model.Repair?.SetDurability(false);
     }
 
-    ///// <summary>
-    ///// Add buff to the model data and updates the view.
-    ///// </summary>
-    ///// <param name="_isPernament"></param>
-    ///// <param name="_addHealth"></param>
-    ///// <param name="_addAttack"></param>
-    //public void Debuff(bool _isPernament, Attribute _attribute)
-    //{
-    //    if (_isPernament)
-    //        model.Add(_attribute, new Attribute(0, 0, 0));
-    //    else
-    //        model.Add(new Attribute(0, 0, 0), _attribute);
-
-    //    view.ShowBuff(_attribute);
-    //    model.Repair?.SetDurability(false);
-    //}
-
     #endregion
 
 
@@ -427,6 +416,10 @@ public class UnitController : MonoBehaviour
         return animDelay;
     }
 
+    /// <summary>
+    /// Sets slot as parent.
+    /// </summary>
+    /// <param name="_parent"></param>
     private void SetParent(Transform _parent)
     {
         if (_parent != null)

@@ -22,7 +22,7 @@ MonoBehaviour:
   HasUniqueCost: 1
   UniqueCostNuts: {fileID: 11400000, guid: 92865d3bf48ca98478f214004d4caa68, type: 2}
   UniqueCostTools: {fileID: 0}
-  LevelLimit: {fileID: 11400000, guid: 200bed77f7a26a741b938dea8d606183, type: 2}
+  LevelLimit: {fileID: 11400000, guid: 06ffd89a1c9b4d943a71e38c14009b51, type: 2}
   Levels:
   - Index: 0
     Description: Give one robot +1 energy.
@@ -35,7 +35,7 @@ MonoBehaviour:
     FromWho: 0
     ToWho: 10
     ToWhoCount: 0
-    AbilityDuration: 0
+    AbilityDuration: 2
     Buff:
       HP: 0
       ATK: 0

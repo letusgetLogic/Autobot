@@ -1,5 +1,6 @@
 ﻿public abstract class StateBase
 {
+    protected bool IsDone {  get; set; } = false;
     protected float TimeCount {  get; set; }
     protected float MaxTimeCount {  get; set; }
 

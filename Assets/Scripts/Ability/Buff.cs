@@ -26,6 +26,10 @@ public class Buff : AbilityBase
                 UnityEngine.Debug.LogWarning($"{Controller.name} has ToWho.None!");
                 break;
 
+            case ToWho.Self:
+                BuffUnit(Controller);
+                break;
+
             case ToWho.RandomMate:
                 BuffRandomMate();
                 break;
@@ -55,16 +59,6 @@ public class Buff : AbilityBase
         Coroutine = null;
     }
 
-    private void BuffAllMates()
-    {
-        List<UnitController> teams = AllBotsIn(teamSlots);
-
-        for (int i = 0; i < teams.Count; i++)
-        {
-            BuffUnit(teams[i]);
-        }
-    }
-
     private void BuffRandomMate()
     {
         List<UnitController> teams = AllBotsIn(teamSlots);
@@ -87,7 +81,7 @@ public class Buff : AbilityBase
             return;
 
         var unit = Targets.Dequeue();
-        unit.Buff(true, CurrentLevel.Buff);
+        BuffUnit(unit);
     }
 
     private void BuffNearest(List<UnitController> _units)
@@ -98,6 +92,16 @@ public class Buff : AbilityBase
         for (int i = 0; i < _units.Count; i++)
         {
             BuffUnit(_units[i]);
+        }
+    }
+
+    private void BuffAllMates()
+    {
+        List<UnitController> teams = AllBotsIn(teamSlots);
+
+        for (int i = 0; i < teams.Count; i++)
+        {
+            BuffUnit(teams[i]);
         }
     }
 

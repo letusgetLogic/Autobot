@@ -7,8 +7,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 {
     public static PhaseBattleController Instance { get; private set; }
 
-    public UnityAction StartBattle { get; private set; }
-
     [Header("Duration of each state")]
     [SerializeField]
     private SoBattleProcess process;
@@ -150,11 +148,15 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         if (SubState != null)
             SubState.OnExit(this);
 
+        Debug.Log("--- Sub State ---");
         SubState = _state;
 
         if (_state == null)
+        {
+            Debug.Log("--- Sub State End ---");
             return;
-
+        }
+           
         SubState.OnEnter(this);
     }
 
@@ -171,7 +173,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         Player1 = _player1;
         Player2 = _player2;
 
-        StartBattle?.Invoke();
         //PhaseBattleView.Instance.SetSpeedButton(true);
 
         Player1.StartBattle();

@@ -377,6 +377,7 @@ public class UnitView : MonoBehaviour
     public void SetRightSide()
     {
         dragSpriteRenderer.flipX = true;
+        damageSpriteRenderer.flipX = true;
 
         var pos = levelDisplay.transform.localPosition;
         levelDisplay.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);

@@ -26,9 +26,8 @@ public class InitializeState : StateBase
         }
         else
         {
-            GameManager.Instance.CurrentGame.State = GameState.BattlePhase;
             _ctx.SetState(new CheckOutcomeState(
-                PhaseBattleController.Instance.Process.DurationCheckOutcome, true));
+                PhaseBattleController.Instance.Process.DurationCheckOutcome));
         }
     }
 

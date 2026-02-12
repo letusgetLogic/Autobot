@@ -2,8 +2,6 @@
 using UnityEngine;
 public class HandleAbilityState : StateBase
 {
-    private bool isDone = false;
-
     /// <summary>
     /// Consturctor of HandleAbilityState.
     /// </summary>
@@ -21,7 +19,7 @@ public class HandleAbilityState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        if (isDone)
+        if (IsDone)
         {
             if (PhaseBattleController.Instance.SubState != null)
             {
@@ -34,7 +32,7 @@ public class HandleAbilityState : StateBase
                      PhaseBattleController.Instance.Process.DurationShutdown));
             else
                 _ctx.SetState(new CheckOutcomeState(
-                    PhaseBattleController.Instance.Process.DurationCheckOutcome, false));
+                    PhaseBattleController.Instance.Process.DurationCheckOutcome));
         }
     }
 
@@ -58,6 +56,6 @@ public class HandleAbilityState : StateBase
             yield return new WaitUntil(() => ability.IsDone);
         }
 
-        isDone = true;
+        IsDone = true;
     }
 }

@@ -12,15 +12,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
   m_Name: Boar
   m_EditorClassIdentifier: 
-  UnitType: 0
-  Sprite: {fileID: 0}
+  UnitType: 1
+  Sprite: {fileID: 1238112216, guid: dd244268320532244a838177bf3ba0b6, type: 3}
   ID: 0
-  Name: 
-  Health: 0
-  Attack: 0
+  Name: Boar BA-BU-S
+  Health: 3
+  Attack: 5
   Energy: {fileID: 0}
   HasUniqueCost: 0
   UniqueCostNuts: {fileID: 0}
   UniqueCostTools: {fileID: 0}
-  LevelLimit: {fileID: 0}
-  Levels: []
+  LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
+  Levels:
+  - Index: 0
+    Description: "Before attack \u2192 Gain +4 attack and +2 health."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 5
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 1
+    ToWhoCount: 0
+    AbilityDuration: 1
+    Buff:
+      HP: 2
+      ATK: 4
+      ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    GainCoin: 0
+  - Index: 1
+    Description: "Before attack \u2192 Gain +8 attack and +4 health."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 5
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 1
+    ToWhoCount: 0
+    AbilityDuration: 1
+    Buff:
+      HP: 4
+      ATK: 8
+      ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    GainCoin: 0
+  - Index: 2
+    Description: "Before attack \u2192 Gain +12 attack and +6 health."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 5
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 1
+    ToWhoCount: 0
+    AbilityDuration: 1
+    Buff:
+      HP: 6
+      ATK: 12
+      ENG: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    GainCoin: 0

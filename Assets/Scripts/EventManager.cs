@@ -54,7 +54,9 @@ public class EventManager
 
     public UnityAction OnNotEnoughCurrency { get; set; }
 
-
+    /// <summary>
+    /// bool isDestroyingUnit
+    /// </summary>
     public UnityAction<AbilityBase, bool> OnTriggerAbility { get; set; }
 
 
@@ -67,6 +69,7 @@ public class EventManager
     public UnityAction OnAbilityDone { get; set; }
 
     public UnityAction OnAttack { get; set; }
+    public UnityAction OnHurt { get; set; }
     public UnityAction<UnitController> OnShutdown { get; set; }
     public UnityAction OnBuff { get; set; }
     public UnityAction OnShootOut { get; set; }
