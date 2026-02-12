@@ -51,6 +51,9 @@ public struct SaveUnitData
 
     public bool IsTeamLeft { get; set; }
 
+
+
+
     /// <summary>
     /// Sets the current hit points and update the repair panel, if needed.
     /// </summary>

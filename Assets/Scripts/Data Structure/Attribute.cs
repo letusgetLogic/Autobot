@@ -1,9 +1,23 @@
-﻿[System.Serializable]
+﻿using System.Runtime.CompilerServices;
+
+[System.Serializable]
 public struct Attribute
 {
-    public int HP; // hit point
-    public int ATK; // attack point
-    public int ENG; // energy point
+    //
+    // Summary:
+    //     Representation of hit point.
+    public int HP;
+
+    //
+    // Summary:
+    //    Representation of attack point.
+    public int ATK;
+
+    //
+    // Summary:
+    //     Represents energy point.
+    public int ENG;
+
 
     /// <summary>
     /// Constructor of Attribute with given parameter and 0 energy.
@@ -28,6 +42,15 @@ public struct Attribute
         HP = _hp;
         ATK = _atk;
         ENG = _energy;
+    }
+
+    /// <summary>
+    /// Is the struct default
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDefault()
+    {
+        return HP == default && ATK == default && ENG == default;
     }
 }
 

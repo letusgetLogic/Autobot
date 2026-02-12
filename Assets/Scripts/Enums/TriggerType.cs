@@ -2,12 +2,12 @@
 {
     None,
 
-    Craft,
-    Recycle,
-    Shutdown,
+    Craft = 1,
+    Recycle = 2,
+    Shutdown = 3,
 
     LevelUp,
-    BeforeAttack,
+    BeforeAttack = 5,
     AfterAttack,
     Hurt,
     EatsFood,
@@ -28,7 +28,7 @@
 
     StartOfTurn,
     EndTurn,
-    StartOfBattle,
+    StartOfBattle = 21,
     EndOfBattle,
 }
 

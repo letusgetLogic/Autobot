@@ -24,7 +24,8 @@ public class UnitView : MonoBehaviour
         shadowSpriteRenderer,
         iceCubeSpriteRenderer,
         damageSpriteRenderer,
-        shutdownSpriteRenderer;
+        shutdownSpriteRenderer,
+        temporaryItemSpriteRenderer;
 
     [Header("Description")]
     [SerializeField] private GameObject description;
@@ -148,13 +149,14 @@ public class UnitView : MonoBehaviour
     /// Sets the components view in slot shop.
     /// </summary>
     /// <param name="_value"></param>
-    public void SetShopView(bool _value, bool _showLevel, bool _isFreezed)
+    public void SetShopView(bool _value, bool _showLevel, bool _isFreezed, bool _isTemporaryBuff)
     {
         levelDisplay.SetActive(_showLevel);
         ShowFullAttributes(!_value);
         energyIcon.SetActive(!_value);
         shadowSpriteRenderer.enabled = _value;
         iceCubeSpriteRenderer.enabled = _isFreezed;
+        temporaryItemSpriteRenderer.enabled = _isTemporaryBuff;
     }
 
     /// <summary>
@@ -378,6 +380,7 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.flipX = true;
         damageSpriteRenderer.flipX = true;
+        temporaryItemSpriteRenderer.flipX = true;
 
         var pos = levelDisplay.transform.localPosition;
         levelDisplay.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);

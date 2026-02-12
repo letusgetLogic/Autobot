@@ -175,6 +175,14 @@ public class PackManager : MonoBehaviour
                     return (bot, _data.Index);
             }
         }
+        if (_data.UnitType == UnitType.Item)
+        {
+            foreach (var item in MyPack.TemporaryItems)
+            {
+                if (item.ID == _data.Index)
+                    return (item, _data.Index);
+            }
+        }
 
         return (Bots[_data.Index], _data.Index);
     }

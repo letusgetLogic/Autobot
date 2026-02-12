@@ -45,5 +45,8 @@ public class SoPack : ScriptableObject
 
     [Header("Summoned Robots")]
     public SoUnit[] SummonedBots;
+
+    [Header("Temporary Objects")]
+    public SoUnit[] TemporaryItems;
 }
 

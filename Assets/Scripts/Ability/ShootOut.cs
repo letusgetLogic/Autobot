@@ -58,7 +58,7 @@ public class ShootOut : AbilityBase
                 SpawnManager.Instance.Spawn(
                      craftedUnits[i],
                      craftedUnits[i].ID,
-                     new(),
+                     default,
                      model.Data.UnitState,
                      teamSlots[0].transform,
                      PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);

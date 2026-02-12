@@ -9,7 +9,8 @@
     ShutDown = 3,
 
     Steal = 4,
-    Debuff,
+
+    Debuff = 5,
 
     CopyHealth,
     BuffSelfIfAFriendLv3,

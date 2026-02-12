@@ -1,40 +1,55 @@
 fileFormatVersion: 2
-guid: ae0fadf3f2a647748a489363e221f880
+guid: a5b4cb6bfb3562e479764a3c81b84cbb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7415499286368921704
-    second: Robot_Set_2_0
+      213: 593526207060839900
+    second: Roboter_Sets_4_0
   - first:
-      213: -6916909220099948736
-    second: Robot_Set_2_1
+      213: -153853439309877710
+    second: Roboter_Sets_4_1
   - first:
-      213: -3984716387061090091
-    second: Robot_Set_2_2
+      213: -1644444157353140991
+    second: Roboter_Sets_4_2
   - first:
-      213: -8917526353446229570
-    second: Robot_Set_2_3
+      213: -8643719904407086866
+    second: Roboter_Sets_4_3
   - first:
-      213: -1213279285636079525
-    second: Robot_Set_2_4
+      213: -5819601219053149524
+    second: Roboter_Sets_4_4
   - first:
-      213: -6201578152564048725
-    second: Robot_Set_2_5
+      213: 1210786977603363305
+    second: Roboter_Sets_4_5
   - first:
-      213: -3408018213175576890
-    second: Robot_Set_2_6
+      213: 7927770405637343757
+    second: Roboter_Sets_4_6
   - first:
-      213: 7041901503140252895
-    second: Robot_Set_2_7
+      213: -7138161513944716913
+    second: Roboter_Sets_4_7
   - first:
-      213: -1440370834358574757
-    second: Robot_Set_2_8
+      213: 7222793694735127898
+    second: Roboter_Sets_4_8
   - first:
-      213: 5245165984408742894
-    second: Robot_Set_2_9
+      213: 8747695504801521804
+    second: Roboter_Sets_4_9
   - first:
-      213: 5651251685009756354
-    second: Robot_Set_2_10
+      213: 6406187948425296266
+    second: Roboter_Sets_4_10
+  - first:
+      213: -4671101268753491581
+    second: Roboter_Sets_4_11
+  - first:
+      213: 7137683693867641677
+    second: Roboter_Sets_4_12
+  - first:
+      213: 7053415001713395130
+    second: Roboter_Sets_4_13
+  - first:
+      213: 5099895115071595516
+    second: Roboter_Sets_4_14
+  - first:
+      213: 7937901086941640766
+    second: Roboter_Sets_4_15
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -143,57 +158,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Robot_Set_2_0
+      name: Roboter_Sets_4_0
       rect:
         serializedVersion: 2
-        x: 110
-        y: 530
-        width: 242
-        height: 397
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 89751d320bad61990800000000000000
-      internalID: -7415499286368921704
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_1
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 916
-        width: 7
-        height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 04f715036b33200a0800000000000000
-      internalID: -6916909220099948736
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_2
-      rect:
-        serializedVersion: 2
-        x: 375
-        y: 532
+        x: 27
+        y: 997
         width: 284
-        height: 369
+        height: 210
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,20 +173,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d8bb82de8173b8c0800000000000000
-      internalID: -3984716387061090091
+      spriteID: cdd0fb0d0f0ac3800800000000000000
+      internalID: 593526207060839900
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Robot_Set_2_3
+      name: Roboter_Sets_4_1
       rect:
         serializedVersion: 2
-        x: 944
-        y: 530
-        width: 222
-        height: 366
+        x: 329
+        y: 1009
+        width: 217
+        height: 180
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,20 +195,284 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eb927a357059e3480800000000000000
-      internalID: -8917526353446229570
+      spriteID: 23e6672bc176dddf0800000000000000
+      internalID: -153853439309877710
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Robot_Set_2_4
+      name: Roboter_Sets_4_2
       rect:
         serializedVersion: 2
-        x: 679
-        y: 538
+        x: 579
+        y: 1016
+        width: 187
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10ddff360c2cd29e0800000000000000
+      internalID: -1644444157353140991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_3
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 736
+        width: 218
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee897d71b865b0880800000000000000
+      internalID: -8643719904407086866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_4
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 736
+        width: 128
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca228eb568f9c3fa0800000000000000
+      internalID: -5819601219053149524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_5
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 736
+        width: 153
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e1a7b257549dc010800000000000000
+      internalID: 1210786977603363305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_6
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 736
+        width: 197
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0a4ed84e29150e60800000000000000
+      internalID: 7927770405637343757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_7
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 461
+        width: 226
+        height: 198
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f89e5f33ce720fc90800000000000000
+      internalID: -7138161513944716913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_8
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 458
+        width: 128
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a555e9ce8948c3460800000000000000
+      internalID: 7222793694735127898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_9
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 461
+        width: 146
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c80e9fed6be066970800000000000000
+      internalID: 8747695504801521804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_10
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 461
+        width: 196
+        height: 187
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8937466ff957e850800000000000000
+      internalID: 6406187948425296266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_11
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 182
+        width: 212
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3895216052aec2fb0800000000000000
+      internalID: -4671101268753491581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_12
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 182
+        width: 139
+        height: 212
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4b2414a0852e0360800000000000000
+      internalID: 7137683693867641677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_13
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 182
+        width: 147
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab5c98ec293c2e160800000000000000
+      internalID: 7053415001713395130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roboter_Sets_4_14
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 182
         width: 207
-        height: 358
+        height: 208
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,20 +481,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b50625efae0992fe0800000000000000
-      internalID: -1213279285636079525
+      spriteID: cf3a795369776c640800000000000000
+      internalID: 5099895115071595516
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Robot_Set_2_5
+      name: Roboter_Sets_4_15
       rect:
         serializedVersion: 2
-        x: 852
-        y: 536
-        width: 4
-        height: 4
+        x: 751
+        y: 31
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,206 +503,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bacb89117819fe9a0800000000000000
-      internalID: -6201578152564048725
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_6
-      rect:
-        serializedVersion: 2
-        x: 1223
-        y: 536
-        width: 214
-        height: 354
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6c6bb97dd7944b0d0800000000000000
-      internalID: -3408018213175576890
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_7
-      rect:
-        serializedVersion: 2
-        x: 132
-        y: 113
-        width: 201
-        height: 358
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fdcc6f58b1cd9b160800000000000000
-      internalID: 7041901503140252895
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_8
-      rect:
-        serializedVersion: 2
-        x: 399
-        y: 2
-        width: 214
-        height: 473
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b5169398b56c20ce0800000000000000
-      internalID: -1440370834358574757
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_9
-      rect:
-        serializedVersion: 2
-        x: 632
-        y: 14
-        width: 249
-        height: 454
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: eeb25a83ca29ac840800000000000000
-      internalID: 5245165984408742894
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_10
-      rect:
-        serializedVersion: 2
-        x: 1040
-        y: 468
-        width: 12
-        height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2c0955547774d6e40800000000000000
-      internalID: 5651251685009756354
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_11
-      rect:
-        serializedVersion: 2
-        x: 1065
-        y: 468
-        width: 8
-        height: 4
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7b6f4279212f2c84297823eeec56e803
-      internalID: 319823461
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_12
-      rect:
-        serializedVersion: 2
-        x: 1187
-        y: 2
-        width: 317
-        height: 496
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c9e119ff779f1c043963724c52280d80
-      internalID: 601329273
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_13
-      rect:
-        serializedVersion: 2
-        x: 688
-        y: 281
-        width: 4
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b4b331bca229bf6479690e017a7b8528
-      internalID: 84562201
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Robot_Set_2_14
-      rect:
-        serializedVersion: 2
-        x: 923
-        y: 1
-        width: 223
-        height: 466
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 37dbc14e4a5f8bc47b0cca936e1f03a5
-      internalID: -602625274
+      spriteID: e38f7555bf6192e60800000000000000
+      internalID: 7937901086941640766
       vertices: []
       indices: 
       edges: []
@@ -476,7 +513,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f85097f1b4f9cb74b91e731be3f24218
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -486,21 +523,22 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Robot_Set_2_0: -7415499286368921704
-      Robot_Set_2_1: -6916909220099948736
-      Robot_Set_2_10: 5651251685009756354
-      Robot_Set_2_11: 319823461
-      Robot_Set_2_12: 601329273
-      Robot_Set_2_13: 84562201
-      Robot_Set_2_14: -602625274
-      Robot_Set_2_2: -3984716387061090091
-      Robot_Set_2_3: -8917526353446229570
-      Robot_Set_2_4: -1213279285636079525
-      Robot_Set_2_5: -6201578152564048725
-      Robot_Set_2_6: -3408018213175576890
-      Robot_Set_2_7: 7041901503140252895
-      Robot_Set_2_8: -1440370834358574757
-      Robot_Set_2_9: 5245165984408742894
+      Roboter_Sets_4_0: 593526207060839900
+      Roboter_Sets_4_1: -153853439309877710
+      Roboter_Sets_4_10: 6406187948425296266
+      Roboter_Sets_4_11: -4671101268753491581
+      Roboter_Sets_4_12: 7137683693867641677
+      Roboter_Sets_4_13: 7053415001713395130
+      Roboter_Sets_4_14: 5099895115071595516
+      Roboter_Sets_4_15: 7937901086941640766
+      Roboter_Sets_4_2: -1644444157353140991
+      Roboter_Sets_4_3: -8643719904407086866
+      Roboter_Sets_4_4: -5819601219053149524
+      Roboter_Sets_4_5: 1210786977603363305
+      Roboter_Sets_4_6: 7927770405637343757
+      Roboter_Sets_4_7: -7138161513944716913
+      Roboter_Sets_4_8: 7222793694735127898
+      Roboter_Sets_4_9: 8747695504801521804
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

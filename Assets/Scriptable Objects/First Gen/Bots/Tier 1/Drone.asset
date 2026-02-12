@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Drone
   m_EditorClassIdentifier: 
   UnitType: 1
-  Sprite: {fileID: -2689309518319501010, guid: c0d58c23788053440b2b4b152ab4ed99, type: 3}
+  Sprite: {fileID: -153853439309877710, guid: a5b4cb6bfb3562e479764a3c81b84cbb, type: 3}
   ID: 0
   Name: Drone
   Health: 2
@@ -49,7 +49,7 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 1
-    Description: "Start of battle \u2192 Deal 1 damage to two random enemy."
+    Description: "Start of battle \u2192 Deal 1 damage to two random enemies."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 21
@@ -73,7 +73,7 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 2
-    Description: "Start of battle \u2192 Deal 1 damage to three random enemy."
+    Description: "Start of battle \u2192 Deal 1 damage to three random enemies."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 21

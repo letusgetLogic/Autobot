@@ -97,7 +97,8 @@ public class UnitModel
         Repair = _repair;
         SoUnit = _soUnit;
         Data = _data;
-        if (PhaseShopController.Instance != null)
+
+        if (PhaseShopController.Instance != null) // Reset
         {
             int hp = _data.Cur.HP - _data.TempBuff.HP;
             int atk = _data.Cur.ATK - _data.TempBuff.ATK;
@@ -114,9 +115,19 @@ public class UnitModel
     /// Initializes the view and the repair system.
     /// </summary>
     /// <param name="_view"></param>
-    public void InitView(UnitView _view)
+    public void InitView(UnitView _view, bool _isTeamLeft)
     {
         view = _view;
+
+        if (_isTeamLeft)
+        {
+            Data.IsTeamLeft = true;
+        }
+        else
+        {
+            view.SetRightSide();
+            Data.IsTeamLeft = false;
+        }
 
         if (IsRobot())
         {
@@ -182,28 +193,28 @@ public class UnitModel
         {
             case UnitState.InSlotShop:
                 view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
-                view.SetShopView(true, false, false);
+                view.SetShopView(true, false, false, false);
                 break;
 
             case UnitState.Freezed:
                 view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
-                view.SetShopView(true, false, true);
+                view.SetShopView(true, false, true, false);
                 break;
-
+                
             case UnitState.InSlotTeam:
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true, false);
+                view.SetShopView(false, true, false, Data.TempBuff.IsDefault());
                 break;
 
             case UnitState.InSlotCharge:
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true, false);
+                view.SetShopView(false, true, false, Data.TempBuff.IsDefault());
                 break;
 
             case UnitState.InPhaseBattle:
                 view.HideObjectsDuringBattle();
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, false, false);
+                view.SetShopView(false, false, false, Data.TempBuff.IsDefault());
                 break;
         }
 

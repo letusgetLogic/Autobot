@@ -139,26 +139,10 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(this, _soUnit, _data, isRepairActive ? new RepairSystem() : null);
         }
 
-        SetSprite(_isTeamLeft);
-        model.InitView(view);
+        model.InitView(view, _isTeamLeft);
         model.SetData(_unitState);
     }
 
-    /// <summary>
-    /// Flips the sprite when the unit is on the right team.
-    /// </summary>
-    public void SetSprite(bool _isTeamLeft)
-    {
-        if (_isTeamLeft)
-        {
-            model.Data.IsTeamLeft = true;
-        }
-        else
-        {
-            view.SetRightSide();
-            model.Data.IsTeamLeft = false;
-        }
-    }
 
 
     /// <summary>
