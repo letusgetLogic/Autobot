@@ -42,8 +42,8 @@ public class PhaseShopController : MonoBehaviour
 
     private UnityAction<AbilityBase, bool> OnAbility => (_ability, _isDestroyingUnit) =>
     {
-       StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
-       Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
+        StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
+        Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
     };
 
     private UnityAction<UnitController> onDestroyUnit => unit => Destroy(unit);
@@ -414,7 +414,6 @@ public class PhaseShopController : MonoBehaviour
 
                 Destroy(_purchased.gameObject);
             }
-
         }
         else // case: buy and place dragging bot on empty slot.
         {
@@ -475,6 +474,14 @@ public class PhaseShopController : MonoBehaviour
         Player.UpdateUnitData();
     }
 
+    /// <summary>
+    /// Move the targeted unit to the be dragged slot and the dragging unit to target slot.
+    /// </summary>
+    /// <param name="_unitTarget"></param>
+    /// <param name="_slotDragged"></param>
+    /// <param name="_unitDragged"></param>
+    /// <param name="_slotTarget"></param>
+    /// <returns></returns>
     public IEnumerator Swap(UnitController _unitTarget, Transform _slotDragged, UnitController _unitDragged, Transform _slotTarget)
     {
         HideDescriptionByTransport();

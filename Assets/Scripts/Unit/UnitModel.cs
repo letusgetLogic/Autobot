@@ -134,7 +134,7 @@ public class UnitModel
 
             view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
             //Debug.Log(view.gameObject + " has  " + Data.TempBuff.HP + " / " + Data.TempBuff.ATK);
-            view.SetTemporaryItem(Data.TempBuff.HasValue()); 
+            view.SetTemporaryItem(Data.TempBuff.HasValue());
         }
 
         if (Data.UnitType == UnitType.Item)
@@ -147,7 +147,7 @@ public class UnitModel
         if (Application.isPlaying == false)
             return;
 
-        UpdateLevelXP(IsPhaseShop(Data.UnitState), false);
+        Controller.StartCoroutine(UpdateLevelXP(IsPhaseShop(Data.UnitState), false));
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public class UnitModel
                 view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
                 view.SetShopView(true, false, true);
                 break;
-                
+
             case UnitState.InSlotTeam:
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
                 view.SetShopView(false, true, false);
@@ -244,7 +244,7 @@ public class UnitModel
     /// Updates the level and xp.
     /// </summary>
     /// <param name="xp"></param>
-    public void UpdateLevelXP(bool _isPhaseShop, bool _isMakingSound)
+    public IEnumerator UpdateLevelXP(bool _isPhaseShop, bool _isMakingSound)
     {
         switch (Data.XP)
         {//                        level  box1   box2  step1  step2  box3  step3  step4  step5  
@@ -258,8 +258,10 @@ public class UnitModel
                 break;
             case 3:
                 view.SetXpStepActive("1", false, true, true, true, false, false, false, false);
-                SetCurrentLevel(0);
-                view.StartCoroutine(DelayLevel2(_isPhaseShop, _isMakingSound));
+                SetCurrentLevel(1);
+
+                yield return new WaitForSeconds(_isPhaseShop ? view.DelayUpdateLevel : 0f);
+                view.SetXpStepActive("2", false, false, false, false, true, false, false, false);
                 break;
             case 4:
                 view.SetXpStepActive("2", false, false, false, false, true, true, false, false);
@@ -271,44 +273,28 @@ public class UnitModel
                 break;
             case 6:
                 view.SetXpStepActive("2", false, false, false, false, true, true, true, true);
-                SetCurrentLevel(1);
-                view.StartCoroutine(DelayLevel3(_isPhaseShop, _isMakingSound));
+                SetCurrentLevel(2);
+
+                yield return new WaitForSeconds(_isPhaseShop ? view.DelayUpdateLevel : 0f);
+                view.SetXpStepActive("3", true, false, false, false, false, false, false, false);
                 break;
         }
-    }
-
-    /// <summary>
-    /// Delays level 2.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator DelayLevel2(bool _isPhaseShop, bool _isMakingSound)
-    {
-        yield return new WaitForSeconds(_isPhaseShop ?
-            view.DelayUpdateLevel :
-            0f);
-        //                  level  box1   box2  step1  step2  box3  step3  step4  step5  
-        view.SetXpStepActive("2", false, false, false, false, true, false, false, false);
-        SetCurrentLevel(1);
-
-        if (_isMakingSound)
+        if (IsLevelUp() && _isMakingSound)
             EventManager.Instance.OnLevelUp?.Invoke();
     }
 
     /// <summary>
-    /// Delays level 3.
+    /// Return boolean IsLevelUp.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayLevel3(bool _isPhaseShop, bool _isMakingSound)
+    private bool IsLevelUp()
     {
-        yield return new WaitForSeconds(_isPhaseShop ?
-            view.DelayUpdateLevel :
-            0f);
-        //                 level  box1   box2  step1  step2  box3  step3  step4  step5  
-        view.SetXpStepActive("3", true, false, false, false, false, false, false, false);
-        SetCurrentLevel(2);
-
-        if (_isMakingSound)
-            EventManager.Instance.OnLevelUp?.Invoke();
+        return Data.XP switch
+        {
+            3 => true,
+            6 => true,
+            _ => false
+        };
     }
 
     /// <summary>
@@ -330,7 +316,7 @@ public class UnitModel
     /// <param name="_buffTemp"></param>
     public void Add(Attribute _buff, Attribute _buffTemp)
     {
-        int maxHP =  Controller.Pack.MaxHP.Value;
+        int maxHP = Controller.Pack.MaxHP.Value;
         int maxATK = Controller.Pack.MaxATK.Value;
 
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
@@ -360,7 +346,7 @@ public class UnitModel
     public void AddFusion(Attribute _basis, Attribute _buff, Attribute _buffTemp, Attribute _otherCurrent, bool _hasOtherFullHP)
     {
         bool hasFullHP = Data.Cur.HP == Data.FullHP;
-        int maxHP =  Controller.Pack.MaxHP.Value;
+        int maxHP = Controller.Pack.MaxHP.Value;
         int maxATK = Controller.Pack.MaxATK.Value;
 
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;

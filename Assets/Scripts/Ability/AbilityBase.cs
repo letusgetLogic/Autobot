@@ -96,6 +96,11 @@ public abstract class AbilityBase
 
             case DoType.Debuff:
                 return new Debuff(_controller, _level, _targets);
+
+            case DoType.ConvertEnergy:
+                if (_controller.Model.Data.Cur.ENG > 0)
+                    return new ConvertEnergy(_controller, _level, _targets);
+                return null;
         }
 
         return null;
@@ -138,17 +143,6 @@ public abstract class AbilityBase
         }
 
         return teamUnitControllers;
-    }
-
-    protected virtual UnitController GetRandomIn(List<UnitController> _units)
-    {
-        if (_units.Count <= 0)
-            return null;
-
-        var rnd = new System.Random();
-        int index = rnd.Next(0, _units.Count);
-
-        return _units[index];
     }
 
     protected virtual UnitController GetOneNearest(ToWho _toWho)

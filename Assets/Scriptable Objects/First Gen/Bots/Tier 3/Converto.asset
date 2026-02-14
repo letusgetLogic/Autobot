@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
-  m_Name: Mammoth
+  m_Name: Converto
   m_EditorClassIdentifier: 
   UnitType: 1
-  Sprite: {fileID: 1238112216, guid: dd244268320532244a838177bf3ba0b6, type: 3}
+  Sprite: {fileID: -1141726529612304283, guid: c0d58c23788053440b2b4b152ab4ed99, type: 3}
   ID: 0
-  Name: Mammoth SD-BA
-  Health: 6
-  Attack: 4
+  Name: Converto
+  Health: 4
+  Attack: 1
   Energy: {fileID: 0}
   HasUniqueCost: 0
   UniqueCostNuts: {fileID: 0}
@@ -25,20 +25,21 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Shutdown \u2192 Give all mates +2 attack and +2 health."
+    Description: "Start of battle \u2192 Convert all energy to attack until end of
+      battle."
     HasAbility: 1
-    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
-    TriggerType: 3
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 21
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
+    DoType: 6
     FromWho: 1
-    ToWho: 5
+    ToWho: 1
     ToWhoCount: 0
-    AbilityDuration: 3
+    AbilityDuration: 1
     Buff:
-      HP: 2
-      ATK: 2
+      HP: 0
+      ATK: 1
       ENG: 0
     Debuff:
       HP: 0
@@ -49,20 +50,21 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 1
-    Description: "Shutdown \u2192 Give all mates +4 attack and +4 health."
+    Description: "Start of battle \u2192 Convert all energy to attack until end of
+      battle."
     HasAbility: 1
-    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
-    TriggerType: 3
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 21
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
+    DoType: 6
     FromWho: 1
-    ToWho: 5
+    ToWho: 1
     ToWhoCount: 0
-    AbilityDuration: 3
+    AbilityDuration: 1
     Buff:
-      HP: 4
-      ATK: 4
+      HP: 0
+      ATK: 1
       ENG: 0
     Debuff:
       HP: 0
@@ -73,20 +75,21 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 2
-    Description: "Shutdown \u2192 Give all mates +6 attack and +6 health."
+    Description: "Start of battle \u2192 Convert all energy to attack until end of
+      battle."
     HasAbility: 1
-    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
-    TriggerType: 3
+    ConsumedEnergy: {fileID: 0}
+    TriggerType: 21
     TriggerTimes: 0
     TriggerTimesLimit: 0
-    DoType: 1
+    DoType: 6
     FromWho: 1
-    ToWho: 5
+    ToWho: 1
     ToWhoCount: 0
-    AbilityDuration: 3
+    AbilityDuration: 1
     Buff:
-      HP: 6
-      ATK: 6
+      HP: 0
+      ATK: 1
       ENG: 0
     Debuff:
       HP: 0

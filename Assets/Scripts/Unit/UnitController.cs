@@ -279,7 +279,7 @@ public class UnitController : MonoBehaviour
             _draggingModel.Data.Cur.HP == _draggingModel.Data.FullHP);
 
         model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
-        model.UpdateLevelXP(_isPhaseShop, true);
+        StartCoroutine(model.UpdateLevelXP(_isPhaseShop, true));
         model.Repair?.SetDurability(false);
 
         EventManager.Instance.OnFusion?.Invoke();

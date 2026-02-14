@@ -38,6 +38,12 @@ public class SetButtonAnimationHover : MonoBehaviour,
         }
     }
 
+    private void OnDisable()
+    {
+        if (background != null)
+            background.color = originalBackgroundColor;
+    }
+
     /// <summary>
     /// OnPointerEnter method to handle pointer enter events.
     /// </summary>

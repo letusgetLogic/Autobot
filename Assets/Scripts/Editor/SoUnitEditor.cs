@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using log4net.Core;
+using System;
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -235,7 +237,27 @@ class SoUnitEditor : Editor
             case DoType.GainCoin:
                 DrawGainCoinAttributes(ref _level);
                 break;
+            case DoType.ConvertEnergy:
+                DrawConvertEnergyAttibutes(ref _level);
+                break;
         }
+    }
+
+    private void DrawConvertEnergyAttibutes(ref Level _level)
+    {
+        EditorGUI.indentLevel++;
+        EditorGUILayout.LabelField("Write 1 for the attribute, where the energy will be converted to.");
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("+ AP", GUILayout.Width(80));
+        _level.Buff.ATK = EditorGUILayout.IntField(_level.Buff.ATK, GUILayout.Width(80));
+        EditorGUILayout.LabelField("+ HP", GUILayout.Width(80));
+        _level.Buff.HP = EditorGUILayout.IntField(_level.Buff.HP, GUILayout.Width(80));
+        EditorGUILayout.LabelField("+ ENG", GUILayout.Width(90));
+        _level.Buff.ENG = EditorGUILayout.IntField(_level.Buff.ENG, GUILayout.Width(80));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUI.indentLevel--;
     }
 
     /// <summary>

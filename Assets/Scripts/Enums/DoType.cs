@@ -12,6 +12,8 @@
 
     Debuff = 5,
 
+    ConvertEnergy = 6,
+
     CopyHealth,
     BuffSelfIfAFriendLv3,
 

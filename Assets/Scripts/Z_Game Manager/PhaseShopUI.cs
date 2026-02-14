@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -49,6 +50,9 @@ public class PhaseShopUI : MonoBehaviour
 
     private Currency rollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
 
+    private ColorBlock defaultColorBlock;
+
+
     private void Awake()
     {
         if (Instance != null)
@@ -70,6 +74,7 @@ public class PhaseShopUI : MonoBehaviour
             toolLabel.transform.parent.parent.gameObject.SetActive(false);
         }
 
+        defaultColorBlock = new ColorBlock();
         detectClickEnviroment.SetActive(false);
         SetButtonActive(null);
     }

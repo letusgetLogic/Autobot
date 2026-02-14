@@ -119,23 +119,23 @@ public class PackManager : MonoBehaviour
         {
             AddUnits(MyPack.BotsTier1, MyPack.ItemsTier1);
         }
-        else if (_turns == b)
+        if (_turns == b)
         {
             AddUnits(MyPack.BotsTier2, MyPack.ItemsTier2);
         }
-        else if (_turns == c)
+        if (_turns == c)
         {
             AddUnits(MyPack.BotsTier3, MyPack.ItemsTier3);
         }
-        else if (_turns == d)
+        if (_turns == d)
         {
             AddUnits(MyPack.BotsTier4, MyPack.ItemsTier4);
         }
-        else if (_turns == e)
+        if (_turns == e)
         {
             AddUnits(MyPack.BotsTier5, MyPack.ItemsTier5);
         }
-        else if (_turns == f)
+        if (_turns == f)
         {
             AddUnits(MyPack.BotsTier6, MyPack.ItemsTier6);
         }
