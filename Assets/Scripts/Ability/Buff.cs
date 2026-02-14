@@ -114,6 +114,12 @@ public class Buff : AbilityBase
             IsPernament(CurrentLevel.AbilityDuration),
             CurrentLevel.Buff);
 
+        if (Controller.Model.Data.UnitType == UnitType.Item &&
+            IsPernament(CurrentLevel.AbilityDuration) == false)
+            {
+            _unit.View.SetTemporaryItem(true);
+        }
+
         return true;
     }
 }

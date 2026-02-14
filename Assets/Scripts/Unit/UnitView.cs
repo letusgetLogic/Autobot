@@ -124,6 +124,7 @@ public class UnitView : MonoBehaviour
         iceCubeSpriteRenderer.enabled = false;
         damageSpriteRenderer.enabled = false;
         shutdownSpriteRenderer.enabled = false;
+        temporaryItemSpriteRenderer.enabled = false;
         SetRepairDisplayActive(false);
     }
 
@@ -149,14 +150,22 @@ public class UnitView : MonoBehaviour
     /// Sets the components view in slot shop.
     /// </summary>
     /// <param name="_value"></param>
-    public void SetShopView(bool _value, bool _showLevel, bool _isFreezed, bool _isTemporaryBuff)
+    public void SetShopView(bool _value, bool _showLevel, bool _isFreezed)
     {
         levelDisplay.SetActive(_showLevel);
         ShowFullAttributes(!_value);
         energyIcon.SetActive(!_value);
         shadowSpriteRenderer.enabled = _value;
         iceCubeSpriteRenderer.enabled = _isFreezed;
-        temporaryItemSpriteRenderer.enabled = _isTemporaryBuff;
+    }
+
+    /// <summary>
+    /// Set temporary buff sprite.
+    /// </summary>
+    /// <param name="_tempAttrib"></param>
+    public void SetTemporaryItem(bool _enabled)
+    {
+        temporaryItemSpriteRenderer.enabled = _enabled;
     }
 
     /// <summary>

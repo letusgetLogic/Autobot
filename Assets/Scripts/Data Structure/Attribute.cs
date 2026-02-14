@@ -48,9 +48,9 @@ public struct Attribute
     /// Is the struct default
     /// </summary>
     /// <returns></returns>
-    public bool IsDefault()
+    public bool HasValue()
     {
-        return HP == default && ATK == default && ENG == default;
+        return HP > 0 || ATK > 0 || ENG > 0;
     }
 }
 

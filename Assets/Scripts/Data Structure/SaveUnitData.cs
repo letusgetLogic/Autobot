@@ -37,9 +37,10 @@ public struct SaveUnitData
     /// </summary>
     public readonly Attribute TempBuff => temporaryBuff;
     private Attribute temporaryBuff;
+    public bool HasTemporaryItem { get; set; }
 
-    public readonly int FullHP => Basis.HP + Buff.HP;
-    public readonly int FullATK => Basis.ATK + Buff.ATK;
+    public readonly int FullHP => Basis.HP + Buff.HP + TempBuff.HP;
+    public readonly int FullATK => Basis.ATK + Buff.ATK + TempBuff.ATK;
 
     public readonly int XP => xp;
     private int xp;
@@ -157,6 +158,7 @@ public struct SaveUnitData
     /// Sets the temporary buff hit points.
     /// </summary>
     /// <param name="_hp"></param>
+    /// <param name="_updateView"></param>
     public void SetTempBuffHP(int _hp)
     {
         if (_hp < 0)

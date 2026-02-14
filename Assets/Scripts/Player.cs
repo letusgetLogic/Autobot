@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Creates new datas and saves the data of units.
+    /// Creates new datas and saves the data of units from phase shop.
     /// </summary>
     public void UpdateUnitData()
     {
@@ -109,9 +109,7 @@ public class Player : MonoBehaviour
         {
             var unit = shopBotSlots[i].UnitController();
             if (unit == null)
-            {
                 continue;
-            }
 
             Data.ShopBotDatas[i] = unit.Model.Data;
         }
@@ -122,9 +120,7 @@ public class Player : MonoBehaviour
         {
             var unit = shopItemSlots[i].UnitController();
             if (unit == null)
-            {
                 continue;
-            }
 
             Data.ShopItemDatas[i] = unit.Model.Data;
         }
@@ -135,9 +131,7 @@ public class Player : MonoBehaviour
         {
             var unit = teamSlots[i].UnitController();
             if (unit == null)
-            {
                 continue;
-            }
 
             Data.TeamUnitDatas[i] = unit.Model.Data;
         }
@@ -160,31 +154,32 @@ public class Player : MonoBehaviour
         for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
             if (BattleUnits[i] == null)
-            {
                 continue;
-            }
 
             Data.TeamUnitDatas[i] = BattleUnits[i].Model.Data;
             Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
 
             // Temporary buff ends at the end of battle.
 
-            int hp = Data.TeamUnitDatas[i].Cur.HP - Data.TeamUnitDatas[i].TempBuff.HP;
-            int atk = Data.TeamUnitDatas[i].Cur.ATK - Data.TeamUnitDatas[i].TempBuff.ATK;
-
-            Data.TeamUnitDatas[i].SetTempBuffHP(0);
-            Data.TeamUnitDatas[i].SetTempBuffATK(0);
-
             if (GameManager.Instance.IsRepairSystemActive)
             {
+                int hp = Data.TeamUnitDatas[i].Cur.HP - Data.TeamUnitDatas[i].TempBuff.HP;
+                int atk = Data.TeamUnitDatas[i].Cur.ATK - Data.TeamUnitDatas[i].TempBuff.ATK;
+
                 Data.TeamUnitDatas[i].SetHP(hp < 0 ? 0 : hp, null);
                 Data.TeamUnitDatas[i].SetATK(atk < 0 ? 0 : atk);
             }
             else
             {
-                Data.TeamUnitDatas[i].SetHP(Data.TeamUnitDatas[i].FullHP, null);
-                Data.TeamUnitDatas[i].SetATK(Data.TeamUnitDatas[i].FullATK);
+                int hp = Data.TeamUnitDatas[i].FullHP - Data.TeamUnitDatas[i].TempBuff.HP;
+                int atk = Data.TeamUnitDatas[i].FullATK - Data.TeamUnitDatas[i].TempBuff.ATK;
+
+                Data.TeamUnitDatas[i].SetHP(hp < 0 ? 0 : hp, null);
+                Data.TeamUnitDatas[i].SetATK(atk < 0 ? 0 : atk);
             }
+
+            Data.TeamUnitDatas[i].SetTempBuffHP(0);
+            Data.TeamUnitDatas[i].SetTempBuffATK(0);
         }
 
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
