@@ -8,12 +8,6 @@ public class PlayerData
     public int Tools { get; set; }
 
     /// <summary>
-    /// WinCondition defines how many wins are needed to win the game,
-    /// ONLY used in arena mode, where the number of players is not defined.
-    /// </summary>
-    public int WinCondition { get; set; }
-    
-    /// <summary>
     /// Wins saves the number of wins the player has achieved so far, ONLY used in arena mode.
     /// </summary>
     public int Wins { get; set; }
@@ -40,7 +34,7 @@ public class PlayerData
     public SaveUnitData[] ShopBotDatas {  get; set; }
 
     /// <summary>
-    /// - save the d- load them in the next shop phaseata of shop items from the shop phase
+    /// - save the data load them in the next shop phaseata of shop items from the shop phase
     /// 
     /// </summary>
     public SaveUnitData[] ShopItemDatas {  get; set; }
@@ -55,6 +49,15 @@ public class PlayerData
     {
         Name = _name;
         Lives = _lives;
-        WinCondition = _wins;
+        Wins = _wins;
+
+        Turn = default;
+        Nuts = default;
+        Tools = default;
+
+        TeamUnitDatas = default;
+        ChargeUnitData = default;
+        ShopBotDatas = default;
+        ShopItemDatas = default;
     }
 }

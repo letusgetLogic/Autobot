@@ -1,5 +1,7 @@
-﻿[System.Serializable]
-public class Game
+﻿using System.Collections.Generic;
+
+[System.Serializable]
+public partial class Game
 {
     public GameMode Mode { get; set; }
     public int PlayerAmount { get; set; }
@@ -7,9 +9,8 @@ public class Game
     public int Lives { get; set; }
     public int WinCondition { get; set; }
     public GameState State { get; set; }
-    public PlayerData PlayerData1 { get; set; }
-    public PlayerData PlayerData2 { get; set; }
     public int CurrentPlayerIndex { get; set; }
+    public List<SavedRoundData> Rounds { get; set; }
 
     /// <summary>
     /// Constructor of Game. Hold the data of game for saving and loading.
@@ -23,7 +24,7 @@ public class Game
     /// <param name="_playerData1"></param>
     /// <param name="_playerData2"></param>
     public Game(GameMode _mode, int _playerAmount, float _timer, int _lives, int _winCondition, 
-        GameState _state, PlayerData _playerData1, PlayerData _playerData2)
+        GameState _state)
     {
         Mode = _mode;
         PlayerAmount = _playerAmount;
@@ -31,8 +32,7 @@ public class Game
         Lives = _lives;
         WinCondition = _winCondition;
         State = _state;
-        PlayerData1 = _playerData1;
-        PlayerData2 = _playerData2;
         CurrentPlayerIndex = 0;
+        Rounds = new List<SavedRoundData>();
     }
 }

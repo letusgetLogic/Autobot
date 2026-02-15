@@ -34,6 +34,9 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                 }
                 break;
             case "PhaseBattle":
+                if (game.State == GameState.EndOfBattle)
+                    GameManager.Instance.Switch(GameState.PlayCutScene);
+
                 //PhaseBattleView.Instance.OnRunningButtonClick();
                 break;
 

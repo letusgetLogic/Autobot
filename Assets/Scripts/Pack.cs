@@ -43,15 +43,15 @@ public class Pack : MonoBehaviour
     //        Check.SetActive(false);
     //}
 
-    /// <summary>
-    /// Select the pack.
-    /// </summary>
-    public void SelectPack()
-    {
-        //GameSettings.Instance.UnCheckAllPacks();
+    ///// <summary>
+    ///// Select the pack.
+    ///// </summary>
+    //public void SelectPack()
+    //{
+    //    //GameSettings.Instance.UnCheckAllPacks();
 
-        //if (Check)
-        //    Check.SetActive(true);
-        PackManager.Instance.InitPack(soPack);
-    }
+    //    //if (Check)
+    //    //    Check.SetActive(true);
+    //    PackManager.Instance.InitPack(soPack);
+    //}
 }

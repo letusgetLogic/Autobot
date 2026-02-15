@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     public bool IsBlockingInput { get; set; } = false;
 
     public int PhaseShopIndex { get; set; } = 0;
+
+
     private SoundManager soundManager;
 
     private void Awake()
@@ -88,15 +90,15 @@ public class GameManager : MonoBehaviour
         players[0] = gameObject.AddComponent<Player>();
         players[1] = gameObject.AddComponent<Player>();
 
-       //// Load saved game.
-       //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
-       // if (savedGame != null)
-       // {
-       //     players[0].Data = savedGame.PlayerData1;
-       //     players[1].Data = savedGame.PlayerData2;
-       //     CurrentGame = savedGame;
-       //     return;
-       // }
+        //// Load saved game.
+        //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
+        // if (savedGame != null)
+        // {
+        //     players[0].Data = savedGame.PlayerData1;
+        //     players[1].Data = savedGame.PlayerData2;
+        //     CurrentGame = savedGame;
+        //     return;
+        // }
 
         // Create a new game.
         players[0].Data = new PlayerData(Name1, PlayerLives, 0);
@@ -108,9 +110,7 @@ public class GameManager : MonoBehaviour
                 Timer,
                 PlayerLives,
                 0,
-                GameState.PlayCutScene,
-                players[0].Data,
-                players[1].Data
+                GameState.PlayCutScene
                 );
 
         // Set default speed multiplier for phase battle
@@ -121,6 +121,11 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentGame != null)
             CurrentGame.State = _state;
+        else
+        {
+            Debug.LogError("GameManager doesn't contain any instance of the current game.");
+            return;
+        }
 
         switch (_state)
         {
@@ -166,11 +171,14 @@ public class GameManager : MonoBehaviour
 
             case GameState.EndOfBattle:
                 CurrentGame.CurrentPlayerIndex = 0;
+                SceneToLoad = "PhaseShop";
                 SaveSystem.SaveGame(CurrentGame);
-                Switch(GameState.PlayCutScene);
                 break;
 
             case GameState.EndOfGame:
+                SceneToLoad = "Menu";
+                SaveSystem.SaveGame(CurrentGame);
+                Switch(GameState.WaitingSwitchScene);
                 break;
         }
     }
