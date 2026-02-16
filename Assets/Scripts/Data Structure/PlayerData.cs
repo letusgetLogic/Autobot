@@ -1,5 +1,5 @@
 ﻿[System.Serializable]
-public class PlayerData
+public struct PlayerData
 {
     public string Name { get; private set; }
     public int Lives { get; set; }

@@ -12,14 +12,16 @@ public class Buff : AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public Buff(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets)
-        : base(_controller, _currentLevel, _targets)
+    public Buff(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed)
+        : base(_controller, _currentLevel, _targets, _seed)
     {
         teamSlots = _controller.TeamSlots;
     }
 
     protected override IEnumerator Activate()
     {
+        Random rand = new Random(RandomSeed); 
+
         switch (CurrentLevel.ToWho)
         {
             case ToWho.None:
@@ -31,7 +33,7 @@ public class Buff : AbilityBase
                 break;
 
             case ToWho.RandomMate:
-                BuffRandomMate();
+                BuffRandomMate(rand);
                 break;
 
             case ToWho.TargetBot:
@@ -59,7 +61,7 @@ public class Buff : AbilityBase
         Coroutine = null;
     }
 
-    private void BuffRandomMate()
+    private void BuffRandomMate(Random _rnd)
     {
         List<UnitController> teams = AllBotsIn(teamSlots);
 
@@ -68,7 +70,7 @@ public class Buff : AbilityBase
             if (teams.Count == 0)
                 return;
 
-            var unit = teams[new Random().Next(0, teams.Count)];
+            var unit = teams[_rnd.Next(0, teams.Count)];
 
             if (BuffUnit(unit))
                 teams.Remove(unit);

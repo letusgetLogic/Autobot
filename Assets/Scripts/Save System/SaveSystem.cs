@@ -86,5 +86,25 @@ public static class SaveSystem
         }
     }
 
+    /// <summary>
+    /// Saves the data of a round.
+    /// </summary>
+    /// <param name="_game"></param>
+    /// <param name="_player1"></param>
+    /// <param name="_player2"></param>
+    /// <param name="_seed"></param>
+    public static SavedRoundData SaveRoundData(
+         Game _game, PlayerData _player1, PlayerData _player2, int _seed)
+    {
+        if (_game != null)
+        {
+            var round = new SavedRoundData(  _player1, _player2, _seed);
+            _game.SavedRounds.Add(round);
+
+            return round;
+        }
+
+        return default;
+    }
 }
 

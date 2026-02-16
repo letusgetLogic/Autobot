@@ -13,7 +13,7 @@ public class HandleAbilityState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- HandleAbilityState");
-        
+
         PhaseBattleController.Instance.StartCoroutine(HandleAbility());
     }
 
@@ -28,11 +28,15 @@ public class HandleAbilityState : StateBase
             }
 
             if (PhaseBattleController.Instance.ShutdownUnits.Count > 0)
+            {
                 _ctx.SetState(new ShutdownState(
                      PhaseBattleController.Instance.Process.DurationShutdown));
+            }
             else
+            {
                 _ctx.SetState(new CheckOutcomeState(
                     PhaseBattleController.Instance.Process.DurationCheckOutcome));
+            }
         }
     }
 

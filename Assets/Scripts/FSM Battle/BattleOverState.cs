@@ -12,8 +12,17 @@ public class BattleOverState : StateBase
 
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
-        var player1 = PhaseBattleController.Instance.Player1;
-        var player2 = PhaseBattleController.Instance.Player2;
+        Debug.Log("--- BattleOverState ---");
+
+        if (GameManager.Instance.Players.Count < 2)
+        {
+            Debug.LogWarning("Players.Count = " + GameManager.Instance.Players.Count);
+            _ctx.SetState(null);
+            return;
+        }
+
+        var player1 = GameManager.Instance.Players[0];
+        var player2 = GameManager.Instance.Players[1];
 
         player1.EndBattle();
         player2.EndBattle();
@@ -36,6 +45,8 @@ public class BattleOverState : StateBase
         {
             PhaseBattleView.Instance.ShowWinner(player1.Data.Name, true);
         }
+
+        EventManager.Instance.OnGameOver?.Invoke();
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)

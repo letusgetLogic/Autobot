@@ -13,8 +13,8 @@ public class Steal : AbilityBase
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
     /// <param name="_targets"></param>
-    public Steal(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets) : 
-        base(_controller, _currentLevel, _targets)
+    public Steal(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed) : 
+        base(_controller, _currentLevel, _targets, _seed)
     {
     }
 

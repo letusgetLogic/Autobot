@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class InitializeState : StateBase
 {
+    private Player player1;
+    private Player player2;
+
     /// <summary>
     /// Constructor of InitializeState.
     /// </summary>
@@ -13,8 +16,19 @@ public class InitializeState : StateBase
 
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
-        Debug.Log(PhaseBattleController.Instance.Player1.Data.Turn);
-        Debug.Log("--- InitState");
+        Debug.Log("--- InitState - Battle Phase " + GameManager.Instance.CurrentGame.SavedRounds.Count);
+
+
+        if (GameManager.Instance.Players.Count < 2)
+        {
+            Debug.LogWarning("Players.Count = " + GameManager.Instance.Players.Count);
+            _ctx.SetState(null);
+            return;
+        }
+
+        player1 = GameManager.Instance.Players[0];
+        player2 = GameManager.Instance.Players[1];
+
         PhaseBattleController.Instance.StartCoroutine(Initialize());
     }
 
@@ -38,17 +52,10 @@ public class InitializeState : StateBase
     {
         yield return new WaitUntil(() => PhaseBattleView.Instance != null);
 
-        PhaseBattleView.Instance.Initialize(
-            PhaseBattleController.Instance.Player1.Data,
-            PhaseBattleController.Instance.Player2.Data);
+        PhaseBattleView.Instance.Initialize(player1.Data, player2.Data);
 
-        SpawnUnits(
-            PhaseBattleController.Instance.Player1,
-            PhaseBattleController.Instance.Slots1(), true);
-
-        SpawnUnits(
-            PhaseBattleController.Instance.Player2,
-            PhaseBattleController.Instance.Slots2(), false);
+        SpawnUnits(player1, PhaseBattleController.Instance.Slots1(), true);
+        SpawnUnits(player2, PhaseBattleController.Instance.Slots2(), false);
     }
 
     /// <summary>

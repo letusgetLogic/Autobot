@@ -43,6 +43,7 @@ public class ShutdownState : StateBase
             var unit = PhaseBattleController.Instance.ShutdownUnits.Dequeue();
             if (unit.gameObject.activeSelf) 
                 unit.StartCoroutine(unit.Deactivate(0f));
+
             Debug.Log($"Shutdowned unit {unit.name} is hided");
         }
     }

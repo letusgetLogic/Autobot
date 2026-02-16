@@ -23,6 +23,10 @@ public class EventManager
     #endregion
 
 
+    public UnityAction OnIncreaseLives { get; set; }
+    public UnityAction OnDecreaseLives { get; set; }
+
+
 
     public UnityAction OnInvalidInput { get; set; }
     public UnityAction OnCloseScene { get; set; }

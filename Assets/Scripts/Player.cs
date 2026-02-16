@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+[System.Serializable]
+public class Player
 {
-    public PlayerData Data { get; set; }
+    public PlayerData Data;
 
-    public UnitController[] BattleUnits;
+    public UnitController[] BattleUnits { get; set; }
 
 
     /// <summary>
@@ -42,17 +43,6 @@ public class Player : MonoBehaviour
         phaseShop.SetAttachedGameObject(null);
 
         float delay = 0f;
-
-        //// from turn 2 charge energy at start of shop.
-        //if (Data.Turn == 1)
-        //{
-        //    delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
-        //    phaseShop.ChargeTeamBots();
-        //}
-        //else
-        //{
-        //    delay = phaseShop.Process.DelayStartBattleAfterEndTurn;
-        //}
 
         delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
         phaseShop.ChargeTeamBots();

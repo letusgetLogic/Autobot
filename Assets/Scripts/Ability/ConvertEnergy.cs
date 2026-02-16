@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 public class ConvertEnergy : AbilityBase
 {
-    public ConvertEnergy(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets) : base(_controller, _currentLevel, _targets)
+    public ConvertEnergy(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed) 
+        : base(_controller, _currentLevel, _targets, _seed)
     {
     }
 

@@ -12,17 +12,20 @@ public abstract class AbilityBase
     protected Coroutine Coroutine { get; set; }
     public bool IsDone { get; private set; } = false;
     protected float DurationDescription { get; private set; }
+    protected int RandomSeed { get; private set; }
 
     /// <summary>
     /// Base constructor with the given parameters. 
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
-    public AbilityBase(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets)
+    public AbilityBase(
+        UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed)
     {
         Controller = _controller;
         CurrentLevel = _currentLevel;
         Targets = _targets;
+        RandomSeed = _seed;
     }
 
     /// <summary>
@@ -71,7 +74,7 @@ public abstract class AbilityBase
     public static AbilityBase GetAbility(
         UnitController _controller,
         Level _level,
-        Queue<UnitController> _targets)
+        Queue<UnitController> _targets, int _seed)
     {
         switch (_level.DoType)
         {
@@ -83,23 +86,23 @@ public abstract class AbilityBase
                     && CheckOutcomeState.IsAnyoneIn(_controller.TeamSlots, _controller.Slot) == 0)
                     return null;
 
-                return new Buff(_controller, _level, _targets);
+                return new Buff(_controller, _level, _targets, _seed);
 
             case DoType.ShootOut:
-                return new ShootOut(_controller, _level, _targets);
+                return new ShootOut(_controller, _level, _targets, _seed);
 
             case DoType.ShutDown:
-                return new Shutdown(_controller, _level, _targets);
+                return new Shutdown(_controller, _level, _targets, _seed);
 
             case DoType.Steal:
-                return new Steal(_controller, _level, _targets);
+                return new Steal(_controller, _level, _targets, _seed);
 
             case DoType.Debuff:
-                return new Debuff(_controller, _level, _targets);
+                return new Debuff(_controller, _level, _targets, _seed);
 
             case DoType.ConvertEnergy:
                 if (_controller.Model.Data.Cur.ENG > 0)
-                    return new ConvertEnergy(_controller, _level, _targets);
+                    return new ConvertEnergy(_controller, _level, _targets, _seed);
                 return null;
         }
 

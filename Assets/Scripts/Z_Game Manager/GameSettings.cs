@@ -79,6 +79,9 @@ public class GameSettings : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Increases the play coins.
+    /// </summary>
     public void OnLivesUp()
     {
         int choice = GameManager.Instance.PlayerLives + 1;
@@ -94,8 +97,13 @@ public class GameSettings : MonoBehaviour
 
         GameManager.Instance.PlayerLives = choice;
         showLives.text = choice.ToString();
+
+        EventManager.Instance.OnIncreaseLives?.Invoke();
     }
 
+    /// <summary>
+    /// Decreases the play coins.
+    /// </summary>
     public void OnLivesDown()
     {
         int choice = GameManager.Instance.PlayerLives - 1;
@@ -111,6 +119,8 @@ public class GameSettings : MonoBehaviour
         
         GameManager.Instance.PlayerLives = choice;
         showLives.text = choice.ToString();
+
+        EventManager.Instance.OnDecreaseLives?.Invoke();
     }
 
     ///// <summary>

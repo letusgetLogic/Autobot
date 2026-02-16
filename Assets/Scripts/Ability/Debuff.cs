@@ -13,8 +13,8 @@ public class Debuff : AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public Debuff(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets)
-        : base(_controller, _currentLevel, _targets)
+    public Debuff(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed)
+        : base(_controller, _currentLevel, _targets, _seed)
     {
         teamSlots = _controller.TeamSlots;
         enemySlots = _controller.EnemySlots;
@@ -22,6 +22,8 @@ public class Debuff : AbilityBase
 
     protected override IEnumerator Activate()
     {
+        var rand = new Random(RandomSeed);
+
         switch (CurrentLevel.ToWho)
         {
             case ToWho.None:
@@ -29,7 +31,7 @@ public class Debuff : AbilityBase
                 break;
 
             case ToWho.RandomEnemy:
-                DebuffRandomEnemy();
+                DebuffRandomEnemy(rand);
                 break;
 
             //case var a when a == ToWho.NearestMateAhead:
@@ -53,7 +55,7 @@ public class Debuff : AbilityBase
         Coroutine = null;
     }
 
-    private void DebuffRandomEnemy()
+    private void DebuffRandomEnemy(Random _rnd)
     {
         List<UnitController> teams = AllBotsIn(enemySlots);
 
@@ -62,7 +64,7 @@ public class Debuff : AbilityBase
             if (teams.Count == 0)
                 return;
 
-            var unit = teams[new Random().Next(0, teams.Count)];
+            var unit = teams[_rnd.Next(0, teams.Count)];
 
             if (DebuffUnit(unit))
                 teams.Remove(unit);

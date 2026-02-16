@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,18 +17,75 @@ public class GameManager : MonoBehaviour
     //public float CurrentSpeedMultiplier { get; set; }
     //public bool IsDefaultMult { get; set; } = true;
     //
-    // This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
+    // This code block or the time scaling feature is disabled, because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
 
+
+    // GameSettings set those variables, to initialize in the next scene.
     public GameMode Mode { get; set; }
-
     public string Name1 { get; set; }
     public string Name2 { get; set; }
-
     public int PlayerLives { get; set; }
     public int Timer { get; set; } = 0;
+    //
 
-    public Game CurrentGame { get; set; }
-    private Player[] players { get; set; }
+    #region Reference Datas
+    /// <summary>
+    /// Contains the game datas.
+    /// </summary>
+    public Game CurrentGame 
+    { 
+        get
+        {
+            if (currentGame == null)
+            {
+                Debug.LogWarning("currentGame is " + currentGame);
+                return null;
+            }
+            return currentGame;
+        }
+    }
+    private Game currentGame;
+
+    /// <summary>
+    /// References the current round.
+    /// </summary>
+    public SavedRoundData CurrentRound
+    {
+        get
+        {
+            if (currentRound.HasValue == false)
+            {
+                Debug.LogWarning("currentRound is " + currentRound);
+                return default;
+            }
+            return currentRound;
+        }
+    }
+    private SavedRoundData currentRound;
+
+    /// <summary>
+    /// References the current players.
+    /// </summary>
+    public List<Player> Players
+    {
+        get
+        {
+            if (players == null)
+            {
+                Debug.LogWarning("The list of players is " + players);
+                return null;
+            }
+            return players;
+        }
+    }
+    private List<Player> players = new List<Player>();
+
+    // SoundManager Lazy Loading is initialized once to create and hold an instance.
+    private SoundManager soundManager; 
+
+    #endregion
+
+
     public string SceneName => SceneManager.GetActiveScene().name;
     public string SceneToLoad { get; set; }
 
@@ -38,10 +94,28 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public bool IsBlockingInput { get; set; } = false;
 
+    public int RandomSeed
+    {
+        get
+        {
+            if (PhaseShopController.Instance != null)
+                return new System.Random().Next(0, 100);
+
+            if (PhaseShopController.Instance != null)
+                return randomSeed;
+
+            return 0;
+        }
+    }
+    private int randomSeed = 0;
+
+
+    #region Debug Variables
     public int PhaseShopIndex { get; set; } = 0;
 
+    #endregion
 
-    private SoundManager soundManager;
+
 
     private void Awake()
     {
@@ -85,10 +159,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void InitSingle()
     {
-        // Initialize player monobehaviours.
-        players = new Player[2];
-        players[0] = gameObject.AddComponent<Player>();
-        players[1] = gameObject.AddComponent<Player>();
+        // Initialize player instances.
+        players.Add(new Player());
+        players.Add(new Player());
 
         //// Load saved game.
         //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
@@ -104,7 +177,7 @@ public class GameManager : MonoBehaviour
         players[0].Data = new PlayerData(Name1, PlayerLives, 0);
         players[1].Data = new PlayerData(Name2, PlayerLives, 0);
 
-        CurrentGame = new Game(
+        currentGame = new Game(
                 Mode,
                 2,
                 Timer,
@@ -163,6 +236,10 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.StartOfBattle:
+                randomSeed++;
+                var round = SaveSystem.SaveRoundData(
+                    CurrentGame, players[0].Data, players[1].Data, randomSeed);
+                currentRound = round;
                 PhaseBattleController.Instance.Run(players[0], players[1]);
                 break;
 
@@ -188,7 +265,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void RunModeSingle()
     {
-        if (CurrentGame.CurrentPlayerIndex < players.Length)
+        if (CurrentGame == null)
+            return; 
+
+        if (CurrentGame.CurrentPlayerIndex < players.Count)
         {
             CutScene.Instance.SwitchScene("PhaseShop");
 

@@ -26,7 +26,8 @@ public class UnitController : MonoBehaviour
     public AbilityBase Ability => AbilityBase.GetAbility(
         this, 
         model.CurrentLevel, 
-        Targets
+        Targets,
+        GameManager.Instance.RandomSeed
         );
 
     public Queue<UnitController> Targets

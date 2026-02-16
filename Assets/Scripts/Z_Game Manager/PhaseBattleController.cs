@@ -22,10 +22,14 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [SerializeField] private GameObject detectClickEnviroment;
 
     private StateBase state { get; set; }
+
+    /// <summary>
+    /// This sub state is used to run another states without breaking the current base state.
+    /// </summary>
     public StateBase SubState { get; set; }
 
-    public Player Player1 { get; private set; }
-    public Player Player2 { get; private set; }
+    //public Player Player1 { get; private set; }
+    //public Player Player2 { get; private set; }
 
     public UnitController AttackingUnit1 => slots1[0].UnitController();
     public UnitController AttackingUnit2 => slots2[0].UnitController();
@@ -130,6 +134,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             SubState.OnUpdate(this, speed);
     }
 
+    /// <summary>
+    /// Set the state of the battle.
+    /// </summary>
+    /// <param name="_state"></param>
     public void SetState(StateBase _state)
     {
         if (state != null)
@@ -143,6 +151,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         state.OnEnter(this);
     }
 
+    /// <summary>
+    /// T
+    /// </summary>
+    /// <param name="_state"></param>
     public void SetSubState(StateBase _state)
     {
         if (SubState != null)
@@ -170,13 +182,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     /// <param name="_player2"></param>
     public void Run(Player _player1, Player _player2)
     {
-        Player1 = _player1;
-        Player2 = _player2;
-
         //PhaseBattleView.Instance.SetSpeedButton(true);
 
-        Player1.StartBattle();
-        Player2.StartBattle();
+        _player1.StartBattle();
+        _player2.StartBattle();
         SetState(new InitializeState(Process.DurationInit));
     }
 

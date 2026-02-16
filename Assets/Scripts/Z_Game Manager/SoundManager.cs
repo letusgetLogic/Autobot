@@ -20,6 +20,9 @@ public class SoundManager
 
     private SoundManager() 
     {
+        EventManager.Instance.OnIncreaseLives += () => PlayOneShot("Button");
+        EventManager.Instance.OnDecreaseLives += () => PlayOneShot("Button");
+
         EventManager.Instance.OnInvalidInput += () => PlayOneShot("Invalid");
         EventManager.Instance.OnCloseScene += () => PlayOneShot("Swap");
         EventManager.Instance.OnMoveHintClick += () => PlayOneShot("Swap");
@@ -53,6 +56,8 @@ public class SoundManager
         EventManager.Instance.OnHurt += () => PlayOneShot("Collide");
         EventManager.Instance.OnBuff += () => PlayOneShot("Buff");
         EventManager.Instance.OnShootOut += () => PlayOneShot("Summon");
+
+        EventManager.Instance.OnGameOver += () => PlayOneShot("Game_Over");
     }
 
     #endregion

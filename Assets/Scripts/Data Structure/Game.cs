@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 [System.Serializable]
-public partial class Game
+public class Game
 {
     public GameMode Mode { get; set; }
     public int PlayerAmount { get; set; }
@@ -10,7 +10,7 @@ public partial class Game
     public int WinCondition { get; set; }
     public GameState State { get; set; }
     public int CurrentPlayerIndex { get; set; }
-    public List<SavedRoundData> Rounds { get; set; }
+    public List<SavedRoundData> SavedRounds { get; set; }
 
     /// <summary>
     /// Constructor of Game. Hold the data of game for saving and loading.
@@ -33,6 +33,6 @@ public partial class Game
         WinCondition = _winCondition;
         State = _state;
         CurrentPlayerIndex = 0;
-        Rounds = new List<SavedRoundData>();
+        SavedRounds = new List<SavedRoundData>();
     }
 }

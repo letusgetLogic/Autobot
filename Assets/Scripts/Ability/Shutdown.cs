@@ -12,8 +12,8 @@ public class Shutdown : AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teanSlots"></param>
-    public Shutdown(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets) 
-        : base(_controller, _currentLevel, _targets)
+    public Shutdown(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed) 
+        : base(_controller, _currentLevel, _targets, _seed)
     {
     }
 

@@ -18,7 +18,18 @@ public class CheckOutcomeState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- CheckOutcomeState");
-        hasOutcomeOfBattle = CheckOutcome();
+
+        if (GameManager.Instance.Players.Count < 2)
+        {
+            Debug.LogWarning("Players.Count = " + GameManager.Instance.Players.Count);
+            _ctx.SetState(null);
+            return;
+        }
+
+        var player1 = GameManager.Instance.Players[0];
+        var player2 = GameManager.Instance.Players[1];
+
+        hasOutcomeOfBattle = CheckOutcome(player1, player2);
         if (hasOutcomeOfBattle)
         {
             MaxTimeCount += MaxTimeCount; // Extend time for showing winner
@@ -66,7 +77,7 @@ public class CheckOutcomeState : StateBase
     /// Checks the outcome of battle.
     /// </summary>
     /// <returns></returns>
-    private bool CheckOutcome()
+    private bool CheckOutcome(Player _player1, Player _player2)
     {
         var slots1 = PhaseBattleController.Instance.Slots1();
         var slots2 = PhaseBattleController.Instance.Slots2();
@@ -84,10 +95,8 @@ public class CheckOutcomeState : StateBase
             {
                 GameManager.Instance.UpdatePlayerStats(-1); // Left Wins
 
-                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player1.Data.Name, false);
-                PhaseBattleView.Instance.UpdateLives(
-                    PhaseBattleController.Instance.Player1.Data,
-                    PhaseBattleController.Instance.Player2.Data);
+                PhaseBattleView.Instance.ShowWinner(_player1.Data.Name, false);
+                PhaseBattleView.Instance.UpdateLives(_player1.Data, _player2.Data);
             }
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
@@ -99,7 +108,7 @@ public class CheckOutcomeState : StateBase
             {
                 GameManager.Instance.UpdatePlayerStats(1); // Right wins
 
-                PhaseBattleView.Instance.ShowWinner(PhaseBattleController.Instance.Player2.Data.Name, false);
+                PhaseBattleView.Instance.ShowWinner(_player2.Data.Name, false);
             }
             else
             {
@@ -108,9 +117,7 @@ public class CheckOutcomeState : StateBase
                 PhaseBattleView.Instance.ShowWinner("Nobody", false);
             }
 
-            PhaseBattleView.Instance.UpdateLives(
-              PhaseBattleController.Instance.Player1.Data,
-              PhaseBattleController.Instance.Player2.Data);
+            PhaseBattleView.Instance.UpdateLives(_player1.Data, _player2.Data);
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;

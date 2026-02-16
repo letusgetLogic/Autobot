@@ -19,7 +19,6 @@ public class AttackState : StateBase
     public override void OnEnter(IFiniteStateMachine _ctx)
     {
         Debug.Log("--- AttackState");
-
         PhaseBattleController.Instance.StartCoroutine(AttackEachOther());
     }
 
