@@ -38,13 +38,14 @@ public class PhaseShopUI : MonoBehaviour
         recycleTool,
         recycleNut;
 
+    [Header("Replay Button")]
+    [SerializeField] private GameObject replayButton;
+
     [Header("Charging Station")]
     [SerializeField] private GameObject chargingStation;
     [SerializeField] private TextMeshProUGUI energyText;
     [SerializeField] private int turnToEnable = 1;
 
-    [Header("Detect Click Enviroment")]
-    [SerializeField] private GameObject detectClickEnviroment;
 
     public Player Player { get; private set; }
 
@@ -74,8 +75,9 @@ public class PhaseShopUI : MonoBehaviour
             toolLabel.transform.parent.parent.gameObject.SetActive(false);
         }
 
+        replayButton.SetActive(GameManager.Instance.CurrentRound.HasValue);
+
         defaultColorBlock = new ColorBlock();
-        detectClickEnviroment.SetActive(false);
         SetButtonActive(null);
     }
 
@@ -163,7 +165,6 @@ public class PhaseShopUI : MonoBehaviour
             return;
 
         GameManager.Instance.IsBlockingInput = true;
-        detectClickEnviroment.SetActive(true);
         Player.EndShop();
 
         EventManager.Instance.OnEndTurn?.Invoke();

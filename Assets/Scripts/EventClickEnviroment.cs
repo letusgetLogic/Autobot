@@ -11,7 +11,7 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         var game = GameManager.Instance.CurrentGame;
-        if (game != null && game.State == GameState.WaitingSwitchScene)
+        if (game != null && game.State == GameState.WaitingCutScene)
         {
             GameManager.Instance.Switch(GameState.LoadScene);
             return;
@@ -34,7 +34,7 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                 }
                 break;
             case "PhaseBattle":
-                if (game.State == GameState.EndOfBattle)
+                if (game.State == GameState.WaitingEndOfBattle)
                     GameManager.Instance.Switch(GameState.PlayCutScene);
 
                 //PhaseBattleView.Instance.OnRunningButtonClick();

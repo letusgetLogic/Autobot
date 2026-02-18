@@ -771,9 +771,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1977145190}
     - target: {fileID: 2047354168017212951, guid: b02f67cc8c608824ca72f57200bdda9d, type: 3}
+      propertyPath: hintClickText
+      value: 
+      objectReference: {fileID: 1977145192}
+    - target: {fileID: 2047354168017212951, guid: b02f67cc8c608824ca72f57200bdda9d, type: 3}
       propertyPath: coverPanelClose
       value: 
       objectReference: {fileID: 1508818515}
+    - target: {fileID: 2047354168017212951, guid: b02f67cc8c608824ca72f57200bdda9d, type: 3}
+      propertyPath: hintClickCloseText
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2292827385428894404, guid: b02f67cc8c608824ca72f57200bdda9d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1630,8 +1638,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9fdfc6a6a73734589f9b086c656e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
-  IsModeDevelop: 0
-  lives: 10
+  IsModeDevelop: 1
+  lives: 3
   timer: 90
   showLives: {fileID: 739353367}
   packs:
@@ -2372,6 +2380,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
   m_PrefabInstance: {fileID: 6184473176175574896}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1977145192 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6560274599453844516, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
+  m_PrefabInstance: {fileID: 6184473176175574896}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2110403964 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4178065572505202731, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}

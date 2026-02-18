@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class SettingsButton : MonoBehaviour
@@ -6,6 +7,8 @@ public class SettingsButton : MonoBehaviour
     public UnityAction OnChangedTimeScale { get; set; }
 
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject rewatchButton;
+    [SerializeField] private List<GameObject> deactivateButtons;
 
     private bool isSettingsOpen = false;
 
@@ -16,6 +19,19 @@ public class SettingsButton : MonoBehaviour
     {
         isSettingsOpen = !isSettingsOpen;
         settingsPanel.SetActive(isSettingsOpen);
+
+        if (GameManager.Instance.CurrentRound.HasValue)
+        {
+            rewatchButton.SetActive(!isSettingsOpen);
+        }
+
+        if (deactivateButtons != null && deactivateButtons.Count > 0 )
+        {
+            foreach( GameObject button in deactivateButtons )
+            {
+                button.SetActive(!isSettingsOpen);
+            }
+        }
 
         Time.timeScale = isSettingsOpen ? 0 : 1;
 

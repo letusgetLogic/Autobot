@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class CutScene : MonoBehaviour
@@ -11,6 +12,8 @@ public class CutScene : MonoBehaviour
     [SerializeField] private float delayClose = 1f;
     [SerializeField] private LerpMovement hintClickClose;
     [SerializeField] private LerpMovement hintClick;
+    [SerializeField] private TextMeshProUGUI hintClickCloseText;
+    [SerializeField] private TextMeshProUGUI hintClickText;
 
     public ScaleUpDown OpenPanel => coverPanelOpen.GetComponent<ScaleUpDown>();
     public ScaleUpDown ClosePanel => coverPanelClose.GetComponent<ScaleUpDown>();
@@ -26,9 +29,11 @@ public class CutScene : MonoBehaviour
         }
         Instance = this;
 
+        bool isReplay = GameManager.Instance.IsReplay;
+
         if (coverPanelOpen != null)
         {
-            if (hintClickClose)
+            if (hintClickClose && isReplay == false)
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
@@ -36,7 +41,7 @@ public class CutScene : MonoBehaviour
             }
 
             coverPanelOpen.gameObject.SetActive(true);
-            StartCoroutine(OpenScene());
+            StartCoroutine(OpenScene(isReplay ? 0f : delayOpen));
         }
 
         if (coverPanelClose != null)
@@ -45,9 +50,13 @@ public class CutScene : MonoBehaviour
         }
     }
 
-    private IEnumerator OpenScene()
+    /// <summary>
+    /// Runs the animation of disappearing hint click and then runs the open scene animation.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator OpenScene(float _delay)
     {
-        yield return new WaitForSeconds(delayOpen);
+        yield return new WaitForSeconds(_delay);
 
         OpenPanel.ScaleUp(false);
         EventManager.Instance.OnOpenScene?.Invoke();
@@ -59,7 +68,10 @@ public class CutScene : MonoBehaviour
     /// <param name="_scene"></param>
     public void SwitchScene(string _scene)
     {
-        StartCoroutine(LoadScene(_scene));
+        if (GameManager.Instance.IsReplay == false)
+            StartCoroutine(LoadScene(_scene));
+        else
+            StartCoroutine(LoadSceneByReplay(_scene));
     }
 
     private IEnumerator LoadScene(string _scene)
@@ -75,7 +87,7 @@ public class CutScene : MonoBehaviour
 
         //SceneManager.LoadScene(GameManager.Instance.SceneToLoad);
 
-        GameManager.Instance.Switch(GameState.WaitingSwitchScene);
+        GameManager.Instance.Switch(GameState.WaitingCutScene);
 
         if (hintClick != null)
         {
@@ -84,4 +96,55 @@ public class CutScene : MonoBehaviour
         }
     }
 
+    private IEnumerator LoadSceneByReplay(string _scene)
+    {
+        yield return new WaitForSeconds(delayClose);
+
+        GameManager.Instance.SceneToLoad = _scene;
+        ClosePanel.ScaleUp(true);
+
+        EventManager.Instance.OnCloseScene?.Invoke();
+
+        yield return new WaitForSeconds(ClosePanel.AnimTime);
+
+        GameManager.Instance.Switch(GameState.LoadScene);
+    }
+
+    /// <summary>
+    /// Sets the name of current player.
+    /// </summary>
+    /// <param name="_lookAwayPlayer"></param>
+    /// <param name="_playerIsTurn"></param>
+    public void SetHintClickClose(string _playerIsTurn, bool _shouldBothWatch)
+    {
+        if (hintClickCloseText)
+        {
+            if (_shouldBothWatch)
+            {
+                hintClickCloseText.text = "Both players should watch. Click to continue!";
+                return;
+            }
+            hintClickCloseText.text = $"{_playerIsTurn} should click to continue and" +
+                $"\r\nthe other player should look away!";
+        }
+    }
+
+    /// <summary>
+    /// Sets the name of current player.
+    /// </summary>
+    /// <param name="_lookAwayPlayer"></param>
+    /// <param name="_playerIsTurn"></param>
+    public void SetHintClick(string _playerIsTurn, bool _shouldBothWatch)
+    {
+        if (hintClickText)
+        {
+            if (_shouldBothWatch)
+            {
+                hintClickText.text = "Both players should watch. Click to continue!";
+                return;
+            }
+            hintClickText.text = $"{_playerIsTurn} should click to continue and" +
+              $"\r\nthe other player should look away!";
+        }
+    }
 }

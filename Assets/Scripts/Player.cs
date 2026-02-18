@@ -63,6 +63,31 @@ public class Player
         GameManager.Instance.Switch(GameState.EndOfTurn);
     }
 
+    public void SaveDataByReplay()
+    {
+        var phaseShop = PhaseShopController.Instance;
+        if (phaseShop == null)
+        {
+            Debug.LogError("PhaseShop is null");
+            return;
+        }
+
+        phaseShop.SetAttachedGameObject(null);
+        UpdateUnitData();
+    }
+
+    public void LoadDataByReplay()
+    {
+        var phaseShop = PhaseShopController.Instance;
+        if (phaseShop == null)
+        {
+            Debug.LogError("PhaseShop is null");
+            return;
+        }
+
+        phaseShop.Initialize(this);
+    }
+
     /// <summary>
     /// Start of the battle executes.
     /// </summary>
@@ -89,7 +114,7 @@ public class Player
     }
 
     /// <summary>
-    /// Creates new datas and saves the data of units from phase shop.
+    /// Creates new datas and saves the data of units from shop phase.
     /// </summary>
     public void UpdateUnitData()
     {
@@ -132,12 +157,13 @@ public class Player
         {
             Data.ChargeUnitData = chargeUnit.Model.Data;
         }
-
+        if (GameManager.Instance.CurrentRound.HasValue)
+        Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + GameManager.Instance.CurrentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 
     /// <summary>
-    /// Updates the data of team units for saving data.
+    /// Updates the data of team units for saving data from battle phase.
     /// </summary>
     public void UpdateTeamUnitData()
     {
@@ -171,7 +197,8 @@ public class Player
             Data.TeamUnitDatas[i].SetTempBuffHP(0);
             Data.TeamUnitDatas[i].SetTempBuffATK(0);
         }
-
+        if (GameManager.Instance.CurrentRound.HasValue)
+            Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + GameManager.Instance.CurrentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 }

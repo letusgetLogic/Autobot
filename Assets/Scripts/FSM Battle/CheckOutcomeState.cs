@@ -29,8 +29,15 @@ public class CheckOutcomeState : StateBase
         var player1 = GameManager.Instance.Players[0];
         var player2 = GameManager.Instance.Players[1];
 
-        hasOutcomeOfBattle = CheckOutcome(player1, player2);
-        if (hasOutcomeOfBattle)
+        var data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
+        var data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
+
+        hasOutcomeOfBattle = GameManager.Instance.IsReplay
+            ? CheckOutcomeReplay(data1, data2)
+            : CheckOutcome(player1, player2);
+
+        // Necessary for jumping directly on next state, which isn't BattleOverState
+        if (hasOutcomeOfBattle) 
         {
             MaxTimeCount += MaxTimeCount; // Extend time for showing winner
         }
@@ -118,6 +125,51 @@ public class CheckOutcomeState : StateBase
             }
 
             PhaseBattleView.Instance.UpdateLives(_player1.Data, _player2.Data);
+
+            //PhaseBattleView.Instance.SetSpeedButton(false);
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// Checks the outcome of battle.
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckOutcomeReplay(PlayerData _data1, PlayerData _data2)
+    {
+        var slots1 = PhaseBattleController.Instance.Slots1();
+        var slots2 = PhaseBattleController.Instance.Slots2();
+
+        amountOfActiveUnits1 = IsAnyoneIn(slots1, null);
+        amountOfActiveUnits2 = IsAnyoneIn(slots2, null);
+
+        if (amountOfActiveUnits1 > 0)
+        {
+            if (amountOfActiveUnits2 > 0)
+            {
+                return false; // Continue battle
+            }
+            else
+            {
+                PhaseBattleView.Instance.ShowWinner(_data1.Name, false);
+                PhaseBattleView.Instance.UpdateLives(_data1, _data2);
+            }
+
+            //PhaseBattleView.Instance.SetSpeedButton(false);
+            return true;
+        }
+        else
+        {
+            if (amountOfActiveUnits2 > 0)
+            {
+                PhaseBattleView.Instance.ShowWinner(_data2.Name, false);
+            }
+            else
+            {
+                PhaseBattleView.Instance.ShowWinner("Nobody", false);
+            }
+
+            PhaseBattleView.Instance.UpdateLives(_data1, _data2);
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;

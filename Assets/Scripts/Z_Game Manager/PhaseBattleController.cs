@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,8 +19,8 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [SerializeField]
     private Slot[] slots2;
 
-    [Header("Detect Click Enviroment")]
-    [SerializeField] private GameObject detectClickEnviroment;
+    //[Header("Detect Click Enviroment")]
+    //[SerializeField] private GameObject ;
 
     private StateBase state { get; set; }
 
@@ -87,8 +88,20 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         Instance = this;
 
         Time.timeScale = 1f;
-        detectClickEnviroment.SetActive(false);
+        //detectClickEnviroment.SetActive(false);
         GameManager.Instance.Switch(GameState.StartOfBattle);
+        StartCoroutine(SetHintClick());
+    }
+
+    /// <summary>
+    /// Set the player name to the hint click.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SetHintClick()
+    {
+        yield return new WaitUntil(() => CutScene.Instance != null);
+
+        CutScene.Instance.SetHintClickClose("", true);
     }
 
     private void Start()
@@ -168,7 +181,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
             Debug.Log("--- Sub State End ---");
             return;
         }
-           
+
         SubState.OnEnter(this);
     }
 
@@ -184,8 +197,11 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     {
         //PhaseBattleView.Instance.SetSpeedButton(true);
 
-        _player1.StartBattle();
-        _player2.StartBattle();
+        if (GameManager.Instance.IsReplay == false)
+        {
+            _player1.StartBattle();
+            _player2.StartBattle();
+        }
         SetState(new InitializeState(Process.DurationInit));
     }
 
@@ -219,7 +235,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     /// <param name="_value"></param>
     public void SetDetectClickActive(bool _value)
     {
-        detectClickEnviroment.SetActive(_value);
+        //detectClickEnviroment.SetActive(_value);
     }
 
     /// <summary>

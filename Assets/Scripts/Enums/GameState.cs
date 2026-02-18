@@ -3,7 +3,8 @@
     None,
 
     PlayCutScene,
-    WaitingSwitchScene,
+    WaitingEndOfBattle,
+    WaitingCutScene,
     LoadScene,
 
     StartOfTurn,

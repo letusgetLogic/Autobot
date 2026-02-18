@@ -52,8 +52,19 @@ public class InitializeState : StateBase
     {
         yield return new WaitUntil(() => PhaseBattleView.Instance != null);
 
-        PhaseBattleView.Instance.Initialize(player1.Data, player2.Data);
+        if (GameManager.Instance.IsReplay)
+        {
+            var data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
+            var data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
 
+            PhaseBattleView.Instance.Initialize(data1, data2);
+            SpawnUnitsByReplay(data1, PhaseBattleController.Instance.Slots1(), true);
+            SpawnUnitsByReplay(data2, PhaseBattleController.Instance.Slots2(), true);
+
+            yield break;
+        }
+
+        PhaseBattleView.Instance.Initialize(player1.Data, player2.Data);
         SpawnUnits(player1, PhaseBattleController.Instance.Slots1(), true);
         SpawnUnits(player2, PhaseBattleController.Instance.Slots2(), false);
     }
@@ -77,6 +88,30 @@ public class InitializeState : StateBase
                     _isLeft);
 
                 _player.BattleUnits[i] = unitController;
+            }
+        }
+    }
+
+    /// <summary>
+    ///  Instantiates and initializes the units by replay.
+    /// </summary>
+    /// <param name="_data"></param>
+    /// <param name="_slots"></param>
+    /// <param name="_isLeft"></param>
+    private void SpawnUnitsByReplay(PlayerData _data, Slot[] _slots, bool _isLeft)
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            var unitData = _data.TeamUnitDatas[i];
+            if (unitData.HasReference && unitData.Cur.HP > 0)
+            {
+                var unitController = SpawnManager.Instance.Spawn(
+                    PackManager.Instance.GetSoUnit(unitData).soUnit,
+                    PackManager.Instance.GetSoUnit(unitData).index,
+                    unitData,
+                    UnitState.InPhaseBattle,
+                    _slots[i].transform,
+                    _isLeft);
             }
         }
     }

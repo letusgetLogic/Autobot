@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Contains the game datas.
     /// </summary>
-    public Game CurrentGame 
-    { 
+    public Game CurrentGame
+    {
         get
         {
             if (currentGame == null)
@@ -80,8 +80,10 @@ public class GameManager : MonoBehaviour
     }
     private List<Player> players = new List<Player>();
 
+    public Player CurrentPlayer { get; set; }
+
     // SoundManager Lazy Loading is initialized once to create and hold an instance.
-    private SoundManager soundManager; 
+    private SoundManager soundManager;
 
     #endregion
 
@@ -93,18 +95,16 @@ public class GameManager : MonoBehaviour
     /// To block player's input while animation is running.
     /// </summary>
     public bool IsBlockingInput { get; set; } = false;
+    public bool IsReplay { get; set; } = false;
 
     public int RandomSeed
     {
         get
         {
-            if (PhaseShopController.Instance != null)
-                return new System.Random().Next(0, 100);
-
-            if (PhaseShopController.Instance != null)
+            if (PhaseBattleController.Instance != null)
                 return randomSeed;
 
-            return 0;
+            return new System.Random().Next(0, 100);
         }
     }
     private int randomSeed = 0;
@@ -206,11 +206,23 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.PlayCutScene:
-                IsBlockingInput = true;
-                RunModeSingle();
+                if (IsReplay == false)
+                {
+                    IsBlockingInput = true;
+                    RunModeSingle();
+                }
+                else
+                {
+                    CutScene.Instance.SwitchScene("PhaseShop");
+                    IsReplay = false;
+                }
                 break;
 
-            case GameState.WaitingSwitchScene:
+            case GameState.WaitingEndOfBattle:
+                // Waiting for player input
+                break;
+
+            case GameState.WaitingCutScene:
                 // Waiting for player input
                 break;
 
@@ -220,7 +232,10 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.StartOfTurn:
-                players[CurrentGame.CurrentPlayerIndex].StartShop();
+                if (IsReplay == false)
+                    CurrentPlayer.StartShop();
+                else
+                    CurrentPlayer.LoadDataByReplay();
                 break;
 
             case GameState.ShopPhase:
@@ -230,16 +245,20 @@ public class GameManager : MonoBehaviour
             case GameState.EndOfTurn:
                 CurrentGame.CurrentPlayerIndex++;
                 SaveSystem.SaveGame(CurrentGame);
-                Destroy(PhaseShopUI.Instance.gameObject);
-                Destroy(PhaseShopController.Instance.gameObject);
+                //Destroy(PhaseShopUI.Instance.gameObject);
+                //Destroy(PhaseShopController.Instance.gameObject);
                 Switch(GameState.PlayCutScene);
                 break;
 
             case GameState.StartOfBattle:
-                randomSeed++;
-                var round = SaveSystem.SaveRoundData(
-                    CurrentGame, players[0].Data, players[1].Data, randomSeed);
-                currentRound = round;
+                if (IsReplay == false)
+                {
+                    randomSeed++;
+                    var round = SaveSystem.SaveRoundData(
+                        CurrentGame, players[0].Data, players[1].Data, randomSeed);
+                    currentRound = round;
+                    Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + currentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
+                }
                 PhaseBattleController.Instance.Run(players[0], players[1]);
                 break;
 
@@ -247,15 +266,19 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.EndOfBattle:
-                CurrentGame.CurrentPlayerIndex = 0;
+                if (IsReplay == false)
+                {
+                    CurrentGame.CurrentPlayerIndex = 0;
+                    SaveSystem.SaveGame(CurrentGame);
+                }
                 SceneToLoad = "PhaseShop";
-                SaveSystem.SaveGame(CurrentGame);
+                Switch(GameState.WaitingEndOfBattle);
                 break;
 
             case GameState.EndOfGame:
-                SceneToLoad = "Menu";
+                //SceneToLoad = "Menu";
                 SaveSystem.SaveGame(CurrentGame);
-                Switch(GameState.WaitingSwitchScene);
+                //Switch(GameState.WaitingCutScene);
                 break;
         }
     }
@@ -266,10 +289,12 @@ public class GameManager : MonoBehaviour
     private void RunModeSingle()
     {
         if (CurrentGame == null)
-            return; 
+            return;
 
         if (CurrentGame.CurrentPlayerIndex < players.Count)
         {
+            CurrentPlayer = players[CurrentGame.CurrentPlayerIndex];
+            CutScene.Instance.SetHintClick(CurrentPlayer.Data.Name, false);
             CutScene.Instance.SwitchScene("PhaseShop");
 
             Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
@@ -277,6 +302,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            CutScene.Instance.SetHintClick("", true);
             CutScene.Instance.SwitchScene("PhaseBattle");
 
             Debug.Log("--------------- Phase Battle ----------------");

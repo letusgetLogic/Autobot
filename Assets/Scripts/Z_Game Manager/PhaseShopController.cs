@@ -15,6 +15,7 @@ public class PhaseShopController : MonoBehaviour
     [SerializeField] private Slot[] shopBotSlots;
     [SerializeField] private Slot[] shopItemSlots;
     [SerializeField] private Slot itemRandomnessDropSlot;
+
     public Slot ChargeSlot => chargeSlot;
 
     [Header("Settings")]
@@ -97,6 +98,18 @@ public class PhaseShopController : MonoBehaviour
     {
         Player = _player;
         SetStartTurn(StartTurnState.Init);
+        StartCoroutine(SetHintClick());
+    }
+
+    /// <summary>
+    /// Set the player name to the hint click.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SetHintClick()
+    {
+        yield return new WaitUntil(() => CutScene.Instance != null);
+
+        CutScene.Instance.SetHintClickClose(Player.Data.Name, false);
     }
 
     /// <summary>
@@ -112,13 +125,23 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.Init:
-                PackManager.Instance.AssignList(Player.Data.Turn);
+
                 PhaseShopUI.Instance.UpdateUI(Player);
-                SpawnSavedUnits();
-                SpawnShopUnits();
-                Player.UpdateUnitData();
                 PhaseShopUI.Instance.SetChargingStationAt(Player.Data.Turn);
-                SetStartTurn(StartTurnState.ChargeBot);
+                SpawnSavedUnits();
+
+                if (GameManager.Instance.IsReplay == false)
+                {
+                    PackManager.Instance.AssignList(Player.Data.Turn);
+                    SpawnShopUnits();
+                    SetStartTurn(StartTurnState.ChargeBot);
+                }
+                else
+                {
+                    SetStartTurn(StartTurnState.Done);
+                }
+
+                Player.UpdateUnitData();
                 break;
 
             case StartTurnState.ShowingTurn:
@@ -140,7 +163,7 @@ public class PhaseShopController : MonoBehaviour
     #region Spawn objects
 
     /// <summary>
-    /// Instantiate prefab and initialize it with data.
+    /// Instantiate prefab and initialize it with data in team/charging/shop bots & shop items.
     /// </summary>
     public void SpawnSavedUnits()
     {
@@ -292,7 +315,12 @@ public class PhaseShopController : MonoBehaviour
     {
         float delayOpenScene = CutScene.Instance ? CutScene.Instance.DelayOpen : 0f;
 
-        yield return new WaitForSeconds(delayOpenScene + process.DelayChargingAtStart);
+        yield return new WaitForSeconds(delayOpenScene);
+
+        if (ChargeSlot == null)
+            yield break;
+
+        yield return new WaitForSeconds(process.DelayChargingAtStart);
 
         var unit = ChargeSlot.UnitController();
         if (unit != null)
