@@ -9,7 +9,7 @@ public class UnitModel
     private UnitView view { get; set; }
     public RepairSystem Repair { get; set; }
 
-    public SaveUnitData Data;
+    public SaveUnitData Data { get; set; } = new SaveUnitData();
 
     public SoUnit SoUnit { get; private set; }
     public Level CurrentLevel { get; set; }
@@ -63,7 +63,6 @@ public class UnitModel
         Controller = _controller;
         Repair = _repair;
         SoUnit = _soUnit;
-        Data.HasReference = true;
         Data.Index = _index;
         Data.UnitType = _soUnit.UnitType;
         Data.Max.HP = Controller.Pack.MaxHP.Value;
@@ -133,8 +132,7 @@ public class UnitModel
             }
 
             view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
-            //Debug.Log(view.gameObject + " has  " + Data.TempBuff.HP + " / " + Data.TempBuff.ATK);
-            view.SetTemporaryItem(Data.TempBuff.HasValue());
+            view.SetTemporaryItem(Data.TempBuff.HasValue);
         }
 
         if (Data.UnitType == UnitType.Item)

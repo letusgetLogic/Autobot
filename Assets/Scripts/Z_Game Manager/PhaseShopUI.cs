@@ -75,7 +75,7 @@ public class PhaseShopUI : MonoBehaviour
             toolLabel.transform.parent.parent.gameObject.SetActive(false);
         }
 
-        replayButton.SetActive(GameManager.Instance.CurrentRound.HasValue);
+        replayButton.SetActive(GameManager.Instance.CurrentRound != null);
 
         defaultColorBlock = new ColorBlock();
         SetButtonActive(null);

@@ -123,7 +123,7 @@ public class UnitController : MonoBehaviour
     public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState, bool _isTeamLeft)
     {
         // If the saved data has no reference, 
-        if (_data.HasReference == false)
+        if (_data == null)
         {
             // ... create a new model with SO reference and the given index,
 

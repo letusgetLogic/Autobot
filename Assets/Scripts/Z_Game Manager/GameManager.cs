@@ -53,10 +53,10 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (currentRound.HasValue == false)
+            if (currentRound == null)
             {
                 Debug.LogWarning("currentRound is " + currentRound);
-                return default;
+                return null;
             }
             return currentRound;
         }
@@ -211,11 +211,7 @@ public class GameManager : MonoBehaviour
                     IsBlockingInput = true;
                     RunModeSingle();
                 }
-                else
-                {
-                    CutScene.Instance.SwitchScene("PhaseShop");
-                    IsReplay = false;
-                }
+                else CutScene.Instance.SwitchScene("PhaseShop");
                 break;
 
             case GameState.WaitingEndOfBattle:
@@ -257,7 +253,8 @@ public class GameManager : MonoBehaviour
                     var round = SaveSystem.SaveRoundData(
                         CurrentGame, players[0].Data, players[1].Data, randomSeed);
                     currentRound = round;
-                    Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + currentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
+                    //if (GameManager.Instance.CurrentRound != null)
+                    //    Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + currentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
                 }
                 PhaseBattleController.Instance.Run(players[0], players[1]);
                 break;

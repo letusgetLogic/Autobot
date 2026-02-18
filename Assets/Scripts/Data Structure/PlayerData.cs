@@ -1,5 +1,8 @@
-﻿[System.Serializable]
-public struct PlayerData
+﻿using System;
+using System.Linq;
+
+[System.Serializable]
+public class PlayerData
 {
     public string Name { get; private set; }
     public int Lives { get; set; }
@@ -50,14 +53,51 @@ public struct PlayerData
         Name = _name;
         Lives = _lives;
         Wins = _wins;
+    }
 
-        Turn = default;
-        Nuts = default;
-        Tools = default;
+    /// <summary>
+    /// Makes a copy of the reference.
+    /// </summary>
+    /// <param name="_other"></param>
+    public PlayerData(PlayerData _other)
+    {
+        Name = _other.Name;
+        Lives = _other.Lives;
+        Turn = _other.Turn;
+        Nuts = _other.Nuts;
+        Tools = _other.Tools;
+        Wins = _other.Wins;
 
-        TeamUnitDatas = default;
-        ChargeUnitData = default;
-        ShopBotDatas = default;
-        ShopItemDatas = default;
+        TeamUnitDatas = new SaveUnitData[_other.TeamUnitDatas.Length];
+        for (int i = 0; i < _other.TeamUnitDatas.Length; i++)
+        {
+            var unit = _other.TeamUnitDatas[i];
+            if (unit != null)
+            {
+                TeamUnitDatas[i] = new SaveUnitData(unit);
+            }
+        }
+        ChargeUnitData = _other.ChargeUnitData != null 
+            ? new SaveUnitData(_other.ChargeUnitData) : null;
+
+        ShopBotDatas = new SaveUnitData[_other.ShopBotDatas.Length];
+        for (int i = 0; i < _other.ShopBotDatas.Length; i++)
+        {
+            var unit = _other.ShopBotDatas[i];
+            if (unit != null)
+            {
+                ShopBotDatas[i] = new SaveUnitData(unit);
+            }
+        }
+
+        ShopItemDatas = new SaveUnitData [_other.ShopItemDatas.Length];
+        for (int i = 0; i < _other.ShopItemDatas.Length; i++)
+        {
+            var unit = _other.ShopItemDatas[i];
+            if (unit != null)
+            {
+                ShopItemDatas[i] = new SaveUnitData(unit);
+            }
+        }
     }
 }

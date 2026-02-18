@@ -4,45 +4,44 @@
 /// Data structure to save unit data between phases and sessions.
 /// </summary>
 [Serializable]
-public struct SaveUnitData
+public class SaveUnitData
 {
-    public bool HasReference { get; set; }
     public string ID { get; set; }
     public int Index { get; set; }
     public UnitType UnitType { get; set; }
+
     public Attribute Max;
     public int MaxXP { get; set; }
 
     /// <summary>
     /// The current attributes, which are displayed.
     /// </summary>
-    public readonly Attribute Cur => current;
+    public Attribute Cur => current;
     private Attribute current;
 
     /// <summary>
     /// The basis attributres, which scale up from merging.
     /// </summary>
-    public readonly Attribute Basis => basis;
+    public Attribute Basis => basis;
     private Attribute basis;
 
     /// <summary>
     /// The buff attributes, which scale up from abilities only during shop phase, are pernament.
     /// </summary>
-    public readonly Attribute Buff => buff;
+    public Attribute Buff => buff;
     private Attribute buff;
 
     /// <summary>
     /// The temporary buff attributes, which scale up from abilities, 
     /// was setted to 0 at the end of battle phase.
     /// </summary>
-    public readonly Attribute TempBuff => temporaryBuff;
+    public Attribute TempBuff => temporaryBuff;
     private Attribute temporaryBuff;
-    public bool HasTemporaryItem { get; set; }
 
-    public readonly int FullHP => Basis.HP + Buff.HP + TempBuff.HP;
-    public readonly int FullATK => Basis.ATK + Buff.ATK + TempBuff.ATK;
+    public int FullHP => Basis.HP + Buff.HP + TempBuff.HP;
+    public int FullATK => Basis.ATK + Buff.ATK + TempBuff.ATK;
 
-    public readonly int XP => xp;
+    public int XP => xp;
     private int xp;
 
     public int Durability { get; set; }
@@ -52,7 +51,35 @@ public struct SaveUnitData
 
     public bool IsTeamLeft { get; set; }
 
+    
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    public SaveUnitData()
+    {
+    }
 
+    /// <summary>
+    /// Makes a copy of the reference.
+    /// </summary>
+    /// <param name="_other"></param>
+    public SaveUnitData(SaveUnitData _other)
+    {
+        ID = _other.ID;
+        Index = _other.Index;
+        UnitType = _other.UnitType;
+        Max = _other.Max;
+        MaxXP = _other.MaxXP;
+        current = _other.current;
+        basis = _other.basis;
+        buff = _other.buff;
+        temporaryBuff = _other.temporaryBuff;
+        xp = _other.xp;
+        Durability = _other.Durability;
+        DurabilityRatio = _other.DurabilityRatio;
+        UnitState = _other.UnitState;
+        IsTeamLeft = _other.IsTeamLeft;
+    }
 
 
     /// <summary>

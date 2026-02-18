@@ -173,7 +173,7 @@ public class PhaseShopController : MonoBehaviour
             for (int i = 0; i < Player.Data.TeamUnitDatas.Length; i++)
             {
                 var unitData = Player.Data.TeamUnitDatas[i];
-                if (unitData.HasReference != true)
+                if (unitData == null)
                     continue;
                 Debug.Log("unitData.Index" + unitData.Index);
                 SpawnManager.Instance.Spawn(
@@ -187,7 +187,7 @@ public class PhaseShopController : MonoBehaviour
 
         // charging station bot
         var chargeUnitData = Player.Data.ChargeUnitData;
-        if (chargeUnitData.HasReference)
+        if (chargeUnitData != null)
         {
             SpawnManager.Instance.Spawn(
                 PackManager.Instance.Bots[chargeUnitData.Index],
@@ -203,7 +203,7 @@ public class PhaseShopController : MonoBehaviour
             for (int i = 0; i < Player.Data.ShopBotDatas.Length; i++)
             {
                 var unitData = Player.Data.ShopBotDatas[i];
-                if (unitData.HasReference != true)
+                if (unitData == null)
                     continue;
 
                 SpawnManager.Instance.Spawn(
@@ -221,7 +221,7 @@ public class PhaseShopController : MonoBehaviour
             for (int i = 0; i < Player.Data.ShopItemDatas.Length; i++)
             {
                 var unitData = Player.Data.ShopItemDatas[i];
-                if (unitData.HasReference != true)
+                if (unitData == null)
                     continue;
 
                 SpawnManager.Instance.Spawn(
@@ -265,7 +265,7 @@ public class PhaseShopController : MonoBehaviour
             SpawnManager.Instance.Spawn(
                 data,
                 rand,
-                new(),
+                null,
                 UnitState.InSlotShop,
                 shopBotSlots[i].transform);
         }
@@ -296,7 +296,7 @@ public class PhaseShopController : MonoBehaviour
             SpawnManager.Instance.Spawn(
                 data,
                 rand,
-                new(),
+                null,
                 UnitState.InSlotShop,
                 shopItemSlots[i].transform);
         }
@@ -513,8 +513,8 @@ public class PhaseShopController : MonoBehaviour
     public IEnumerator Swap(UnitController _unitTarget, Transform _slotDragged, UnitController _unitDragged, Transform _slotTarget)
     {
         HideDescriptionByTransport();
-        bool a = GameManager.Instance.IsBlockingInput;
-        var _unit1View = _unitTarget.GetComponent<UnitView>();
+
+        var _unitTargetView = _unitTarget.GetComponent<UnitView>();
 
         float delay1 = default;
         float delay2 = default;
@@ -522,7 +522,7 @@ public class PhaseShopController : MonoBehaviour
         if (_unitTarget != null && _slotDragged != null)
         {
             _unitTarget.transform.SetParent(null, true);
-            _unit1View.SetSpriteOverOther();
+            _unitTargetView.SetSpriteOverOther();
             delay1 = _unitTarget.MoveToParent(_slotDragged.position, _slotDragged);
         }
         EventManager.Instance.OnSwap?.Invoke();
@@ -532,7 +532,7 @@ public class PhaseShopController : MonoBehaviour
         Transport(_unitTarget, _slotDragged, false);
 
         if (_unitTarget != null)
-            _unit1View.SetLocalPositionDefault();
+            _unitTargetView.SetLocalPositionDefault();
 
         if (_unitDragged != null && _slotTarget != null)
         {

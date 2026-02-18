@@ -20,7 +20,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a unit with given parameters in the shop slots.
+    /// Spawns a unit with given parameters in the shop phase.
     /// </summary>
     /// <param name="_soUnit"></param>
     /// <param name="_index"></param>
@@ -40,7 +40,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a unit with given parameters.
+    /// Spawns a unit with given parameters in battle phase.
     /// </summary>
     /// <param name="_soUnit"></param>
     /// <param name="_index"></param>

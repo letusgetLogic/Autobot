@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class ScaleUpDown : MonoBehaviour
 {
+    public UnityAction OnRunningDone {  get; set; }
+
     private enum RunState
     {
         None,
@@ -124,14 +127,17 @@ public class ScaleUpDown : MonoBehaviour
 
                     case RunState.Up:
                         scaleState = Scale.None;
+                        OnRunningDone?.Invoke();
                         break;
 
                     case RunState.Down:
                         scaleState = Scale.None;
+                        OnRunningDone?.Invoke();
                         break;
 
                     case RunState.Manually:
                         scaleState = Scale.None;
+                        OnRunningDone?.Invoke();
                         if (isSetBackToScaleMin)
                             SetDefault();
                         break;
@@ -164,14 +170,17 @@ public class ScaleUpDown : MonoBehaviour
 
                     case RunState.Up:
                         scaleState = Scale.None;
+                        OnRunningDone?.Invoke();
                         break;
 
                     case RunState.Down:
                         scaleState = Scale.None;
+                        OnRunningDone?.Invoke();
                         break;
 
                     case RunState.Manually:
                         scaleState = Scale.None;
+                        OnRunningDone?.Invoke();
                         if (isSetBackToScaleMin)
                             SetDefault();
                         break;

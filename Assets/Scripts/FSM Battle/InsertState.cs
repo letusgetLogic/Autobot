@@ -79,6 +79,7 @@ public class InsertState : StateBase
 
         while (searchEmpty > 0 && searchEmpty < _slots.Length)
         {
+            Debug.Log("searchEmpty " + searchEmpty);
             if (canMove == false && _slots[searchEmpty].Unit())
             {
                 searchEmpty++;

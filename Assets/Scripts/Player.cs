@@ -6,7 +6,6 @@ public class Player
 {
     public PlayerData Data;
 
-    public UnitController[] BattleUnits { get; set; }
 
 
     /// <summary>
@@ -93,7 +92,7 @@ public class Player
     /// </summary>
     public void StartBattle()
     {
-        BattleUnits = new UnitController[PhaseBattleController.Instance.Slots1().Length];
+        
     }
 
     /// <summary>
@@ -157,8 +156,8 @@ public class Player
         {
             Data.ChargeUnitData = chargeUnit.Model.Data;
         }
-        if (GameManager.Instance.CurrentRound.HasValue)
-        Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + GameManager.Instance.CurrentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
+        //if (GameManager.Instance.CurrentRound != null)
+        //Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + GameManager.Instance.CurrentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 
@@ -169,10 +168,9 @@ public class Player
     {
         for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
-            if (BattleUnits[i] == null)
+            if (Data.TeamUnitDatas[i] == null)
                 continue;
 
-            Data.TeamUnitDatas[i] = BattleUnits[i].Model.Data;
             Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
 
             // Temporary buff ends at the end of battle.
@@ -197,8 +195,8 @@ public class Player
             Data.TeamUnitDatas[i].SetTempBuffHP(0);
             Data.TeamUnitDatas[i].SetTempBuffATK(0);
         }
-        if (GameManager.Instance.CurrentRound.HasValue)
-            Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + GameManager.Instance.CurrentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
+        //if (GameManager.Instance.CurrentRound != null)
+        //    Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + GameManager.Instance.CurrentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 }
