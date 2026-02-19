@@ -95,12 +95,8 @@ public class PhaseShopUI : MonoBehaviour
         heartLabel.text = Player.Data.Lives.ToString();
         turnLabel.text = Player.Data.Turn.ToString();
 
-        clockPointer.rotation = new Quaternion(
-            clockPointer.rotation.x,
-            clockPointer.rotation.y,
-            Degrees(Player.Data.Turn),
-            clockPointer.rotation.w
-            );
+        float z = Degrees(Player.Data.Turn);
+        clockPointer.rotation = Quaternion.Euler(0, 0, z);
 
         SetButtonData(rollCostTool, rollCostNut, rollCost);
     }

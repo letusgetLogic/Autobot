@@ -88,7 +88,7 @@ public class GameSettings : MonoBehaviour
 
         if (choice > maxLives)
         {
-            hint.text = "Highest play coins reached!";
+            hint.text = "Highest play energy reached!";
             hint.enabled = true;
             StartCoroutine(Hide(hint, durationHintDefault));
             EventManager.Instance.OnInvalidInput?.Invoke();
@@ -110,7 +110,7 @@ public class GameSettings : MonoBehaviour
 
         if (choice < minLives)
         {
-            hint.text = "Lowest play coins reached!";
+            hint.text = "Lowest play energy reached!";
             hint.enabled = true;
             StartCoroutine(Hide(hint, durationHintDefault));
             EventManager.Instance.OnInvalidInput?.Invoke();

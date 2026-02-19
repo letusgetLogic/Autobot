@@ -10,6 +10,11 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (GameManager.Instance.IsBlockingInput)
+            return;
+
+        GameManager.Instance.IsBlockingInput = true;
+
         var game = GameManager.Instance.CurrentGame;
         if (game != null && game.State == GameState.WaitingCutScene)
         {

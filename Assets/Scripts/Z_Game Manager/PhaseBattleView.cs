@@ -69,12 +69,12 @@ public class PhaseBattleView : MonoBehaviour
     /// <summary>
     /// Updates lives of both players.
     /// </summary>
-    /// <param name="player1"></param>
+    /// <param name="_player1"></param>
     /// <param name="_player2"></param>
-    public void UpdateLives(PlayerData player1, PlayerData _player2)
+    public void UpdateLives(int _player1, int _player2)
     {
-        if (lives1) lives1.text = player1.Lives.ToString();
-        if (lives2) lives2.text = _player2.Lives.ToString();
+        if (lives1) lives1.text = _player1.ToString();
+        if (lives2) lives2.text = _player2.ToString();
     }
 
     /// <summary>

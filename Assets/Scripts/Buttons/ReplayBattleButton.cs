@@ -15,6 +15,9 @@ public class ReplayBattleButton : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
+        if (GameManager.Instance.IsReplay)
+            return;
+
         GameManager.Instance.IsBlockingInput = true;
         GameManager.Instance.IsReplay = true;
 

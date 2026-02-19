@@ -103,7 +103,7 @@ public class CheckOutcomeState : StateBase
                 GameManager.Instance.UpdatePlayerStats(-1); // Left Wins
 
                 PhaseBattleView.Instance.ShowWinner(_player1.Data.Name, false);
-                PhaseBattleView.Instance.UpdateLives(_player1.Data, _player2.Data);
+                PhaseBattleView.Instance.UpdateLives(_player1.Data.Lives, _player2.Data.Lives);
             }
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
@@ -124,7 +124,7 @@ public class CheckOutcomeState : StateBase
                 PhaseBattleView.Instance.ShowWinner("Nobody", false);
             }
 
-            PhaseBattleView.Instance.UpdateLives(_player1.Data, _player2.Data);
+            PhaseBattleView.Instance.UpdateLives(_player1.Data.Lives, _player2.Data.Lives);
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
@@ -152,7 +152,7 @@ public class CheckOutcomeState : StateBase
             else
             {
                 PhaseBattleView.Instance.ShowWinner(_data1.Name, false);
-                PhaseBattleView.Instance.UpdateLives(_data1, _data2);
+                PhaseBattleView.Instance.UpdateLives(_data1.Lives, _data2.Lives - 1);
             }
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
@@ -163,13 +163,15 @@ public class CheckOutcomeState : StateBase
             if (amountOfActiveUnits2 > 0)
             {
                 PhaseBattleView.Instance.ShowWinner(_data2.Name, false);
+                PhaseBattleView.Instance.UpdateLives(_data1.Lives - 1, _data2.Lives);
+                return true;
             }
             else
             {
                 PhaseBattleView.Instance.ShowWinner("Nobody", false);
             }
 
-            PhaseBattleView.Instance.UpdateLives(_data1, _data2);
+            PhaseBattleView.Instance.UpdateLives(_data1.Lives, _data2.Lives);
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
