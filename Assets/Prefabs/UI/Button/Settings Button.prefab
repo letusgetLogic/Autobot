@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.48406905, g: 0.7955049, b: 0.9245283, a: 1}
+  m_Color: {r: 0.3803922, g: 0.7803922, b: 0.9921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -275,10 +275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb12bc86082f7546be721d132edeaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
-  rotatedSprite: {fileID: 0}
-  rotatedSprite2: {fileID: 0}
+  button: {fileID: 0}
   scaleFactor: 1.1
-  rotateSpeed: 0
 --- !u!114 &346414467383106589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,8 +292,6 @@ MonoBehaviour:
   button: {fileID: 5594820714228919558}
   DeactivatedParent: {fileID: 0}
   background: {fileID: 2412445283150973881}
-  rotatedSprite: {fileID: 0}
-  rotatedSprite2: {fileID: 0}
   hexColorHover: '#65ABC8'
 --- !u!114 &7994565953370112610
 MonoBehaviour:
@@ -396,6 +392,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 0}
+  rewatchButton: {fileID: 0}
+  deactivateButtons: []
 --- !u!114 &9187487761148959067
 MonoBehaviour:
   m_ObjectHideFlags: 0

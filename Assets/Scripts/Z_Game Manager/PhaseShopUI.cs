@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
@@ -9,7 +10,7 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField]
     private float durationCoinsRedDefault = 0.2f;
 
-    [Header("Label Components")]
+    [Header("Player Infos Components")]
     [SerializeField] private TextMeshProUGUI nameLabel;
     [SerializeField]
     private TextMeshProUGUI
@@ -18,6 +19,7 @@ public class PhaseShopUI : MonoBehaviour
         nutLabel,
         toolLabel;
     [SerializeField] private GameObject energyBonusLabel;
+    [SerializeField] private RectTransform clockPointer;
 
     [Header("Roll Button")]
     [SerializeField] private TextMeshProUGUI rollCostNut;
@@ -92,6 +94,13 @@ public class PhaseShopUI : MonoBehaviour
         toolLabel.text = Player.Data.Tools.ToString();
         heartLabel.text = Player.Data.Lives.ToString();
         turnLabel.text = Player.Data.Turn.ToString();
+
+        clockPointer.rotation = new Quaternion(
+            clockPointer.rotation.x,
+            clockPointer.rotation.y,
+            Degrees(Player.Data.Turn),
+            clockPointer.rotation.w
+            );
 
         SetButtonData(rollCostTool, rollCostNut, rollCost);
     }
@@ -421,4 +430,31 @@ public class PhaseShopUI : MonoBehaviour
         markColorRed.SetComponent(toolLabel, durationCoinsRedDefault);
     }
 
+    /// <summary>
+    /// Returns the degree based on the number of turn.
+    /// </summary>
+    /// <param name="_turn"></param>
+    /// <returns></returns>
+    private float Degrees(int _turn)
+    {
+        int size = 8;
+        int index = _turn;
+
+        while (index > size)
+        {
+            index -= size;
+        }
+
+        return index switch
+        {
+            1 => 0f,
+            2 => -45f,
+            3 => -90f,
+            4 => -135f,
+            5 => -180f,
+            6 => -225f,
+            7 => -270f,
+            8 => -315f
+        };
+    }
 }
