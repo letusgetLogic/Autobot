@@ -2,10 +2,10 @@
 
 public class BattleOverState : StateBase
 {
+    private bool isSettedGameOver = false;
+
     private Player player1;
     private Player player2;
-    private PlayerData data1;
-    private PlayerData data2;
 
     /// <summary>
     /// Constructor of BattleOverState
@@ -29,10 +29,7 @@ public class BattleOverState : StateBase
         player1 = GameManager.Instance.Players[0];
         player2 = GameManager.Instance.Players[1];
 
-        data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
-        data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
-
-        if (GameManager.Instance.IsReplay == false)
+        if (GameManager.Instance.Replay == null)
         {
             player1.EndBattle();
             player2.EndBattle();
@@ -47,7 +44,7 @@ public class BattleOverState : StateBase
         }
         else // go out of the replay, waiting of input click to load the current play scene 
         {
-            GameManager.Instance.Switch(GameState.EndOfBattle);
+            GameManager.Instance.Replay.Switch(GameState.EndOfBattle);
             _ctx.SetState(null);
             return;
         }
@@ -59,8 +56,10 @@ public class BattleOverState : StateBase
         {
             TimeCount += _speed;
         }
-        else
+        else if (isSettedGameOver == false) // Sets game over.
         {
+            isSettedGameOver = true;
+
             if (player1.Data.Lives == 0)
             {
                 PhaseBattleView.Instance.ShowWinner(player2.Data.Name, true);
@@ -73,6 +72,8 @@ public class BattleOverState : StateBase
             EventManager.Instance.OnGameOver?.Invoke();
 
             GameManager.Instance.Switch(GameState.EndOfGame);
+
+            _ctx.SetState(null);
         }
     }
 }

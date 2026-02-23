@@ -32,7 +32,7 @@ public class CheckOutcomeState : StateBase
         var data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
         var data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
 
-        hasOutcomeOfBattle = GameManager.Instance.IsReplay
+        hasOutcomeOfBattle = GameManager.Instance.Replay != null
             ? CheckOutcomeReplay(data1, data2)
             : CheckOutcome(player1, player2);
 
@@ -66,7 +66,9 @@ public class CheckOutcomeState : StateBase
                 }
                 else
                 {
-                    if (GameManager.Instance.CurrentGame.State == GameState.StartOfBattle)
+                    var gameManager = GameManager.Instance;
+                    if (gameManager.CurrentGame.State == GameState.StartOfBattle ||
+                        gameManager.Replay != null && gameManager.Replay.State == GameState.StartOfBattle)
                     {
                         _ctx.SetState(new StartOfBattleState(0));
                     }

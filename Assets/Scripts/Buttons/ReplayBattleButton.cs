@@ -15,23 +15,11 @@ public class ReplayBattleButton : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        if (GameManager.Instance.IsReplay)
+        if (GameManager.Instance.Replay != null)
             return;
 
         GameManager.Instance.IsBlockingInput = true;
-        GameManager.Instance.IsReplay = true;
 
-        if (PhaseShopController.Instance != null)
-        {
-            var player = PhaseShopController.Instance.Player;
-
-            player.SaveDataByReplay();
-
-            CutScene.Instance.SwitchScene("PhaseBattle");
-        }
-        else if (PhaseBattleController.Instance != null)
-        {
-            CutScene.Instance.SwitchScene("PhaseBattle");
-        }
+        GameManager.Instance.PlayReplay();
     }
 }

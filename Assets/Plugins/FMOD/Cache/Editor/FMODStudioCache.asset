@@ -189,6 +189,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3430003558425465845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Background_Shop
+  m_EditorClassIdentifier: 
+  Path: event:/Background_Shop
+  Guid:
+    Data1: 857194920
+    Data2: 1231546731
+    Data3: 1097725113
+    Data4: -1556921486
+  Banks:
+  - {fileID: 5097814110452783591}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 368561
 --- !u!114 &-3282922222712540033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,7 +395,6 @@ MonoBehaviour:
   - {fileID: 5097814110452783591}
   EditorEvents:
   - {fileID: -452012110385663334}
-  - {fileID: 2252363071186635769}
   - {fileID: -5192032710009370346}
   - {fileID: -4017644017669975811}
   - {fileID: 4989900383785344130}
@@ -387,12 +413,13 @@ MonoBehaviour:
   - {fileID: 2082745559230139581}
   - {fileID: -9037368051777302732}
   - {fileID: -3282922222712540033}
+  - {fileID: -3430003558425465845}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5097814110452783591}
   StringsBanks:
   - {fileID: 2343683163441996289}
-  cacheTime: 639068784031708390
+  cacheTime: 639074643440079845
   cacheVersion: 131633
 --- !u!114 &221943234352003243
 MonoBehaviour:
@@ -502,33 +529,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &2252363071186635769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Acoustic_Dreamy_Happy_Hopeful
-  m_EditorClassIdentifier: 
-  Path: event:/Acoustic_Dreamy_Happy_Hopeful
-  Guid:
-    Data1: 857194920
-    Data2: 1231546731
-    Data3: 1097725113
-    Data4: -1556921486
-  Banks:
-  - {fileID: 5097814110452783591}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 58880
 --- !u!114 &2343683163441996289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,10 +544,10 @@ MonoBehaviour:
   Path: Assets/Audio/Sound effect/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639068784031708390
+  lastModified: 639074643440079845
   FileSizes:
   - Name: Desktop
-    Value: 1572
+    Value: 1558
   Exists: 1
 --- !u!114 &3246974252144468787
 MonoBehaviour:
@@ -618,8 +618,8 @@ MonoBehaviour:
   Path: Assets/Audio/Sound effect/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639068784031673252
+  lastModified: 639074643440034613
   FileSizes:
   - Name: Desktop
-    Value: 825728
+    Value: 5505984
   Exists: 1

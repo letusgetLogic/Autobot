@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{3317c1a8-e96b-4967-b9f4-6d41724333a3}">
 		<property name="name">
-			<value>Acoustic_Dreamy_Happy_Hopeful</value>
+			<value>Background_Shop</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -60,7 +60,7 @@
 	<object class="MarkerTrack" id="{0dd11b29-10ed-4f5e-9540-e95a612bc3e1}" />
 	<object class="GroupTrack" id="{b2e917ff-6d9f-4512-b26a-3348b2b7684a}">
 		<relationship name="modules">
-			<destination>{1cd2f5c5-577f-4823-9a63-e2c9e30124d3}</destination>
+			<destination>{7d506472-699a-4120-a76c-03a45ae08e54}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{c3abb21f-1d66-4241-aee8-9930a90d2e04}</destination>
@@ -68,7 +68,7 @@
 	</object>
 	<object class="Timeline" id="{aeeeed94-2bb5-473d-a492-70541ed7501a}">
 		<relationship name="modules">
-			<destination>{1cd2f5c5-577f-4823-9a63-e2c9e30124d3}</destination>
+			<destination>{7d506472-699a-4120-a76c-03a45ae08e54}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{1edf52a7-7ef7-4e1c-a345-f110593dc4ae}">
@@ -88,12 +88,12 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{5a31a12b-02ae-44ea-a23a-681dd70f13d5}" />
-	<object class="SingleSound" id="{1cd2f5c5-577f-4823-9a63-e2c9e30124d3}">
+	<object class="SingleSound" id="{7d506472-699a-4120-a76c-03a45ae08e54}">
 		<property name="length">
-			<value>58.880000000000003</value>
+			<value>368.56163265306122</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{cf690ddd-ccad-4d53-8b5e-54aeea4c6ea2}</destination>
+			<destination>{03733317-62d5-4454-8ba2-d4af107007c8}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{c3abb21f-1d66-4241-aee8-9930a90d2e04}">

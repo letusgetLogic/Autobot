@@ -13,12 +13,11 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        GameManager.Instance.IsBlockingInput = true;
-
         var game = GameManager.Instance.CurrentGame;
         if (game != null && game.State == GameState.WaitingCutScene)
         {
             GameManager.Instance.Switch(GameState.LoadScene);
+            GameManager.Instance.IsBlockingInput = true;
             return;
         }
 
@@ -40,7 +39,16 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                 break;
             case "PhaseBattle":
                 if (game.State == GameState.WaitingEndOfBattle)
+                {
+                    GameManager.Instance.IsBlockingInput = true;
                     GameManager.Instance.Switch(GameState.PlayCutScene);
+                }
+                var replay = GameManager.Instance.Replay;
+                if (replay != null && replay.State == GameState.WaitingEndOfBattle)
+                {
+                    GameManager.Instance.IsBlockingInput = true;
+                    replay.Switch(GameState.PlayCutScene);
+                }
 
                 //PhaseBattleView.Instance.OnRunningButtonClick();
                 break;

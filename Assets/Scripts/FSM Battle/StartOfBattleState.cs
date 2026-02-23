@@ -28,12 +28,15 @@ public class StartOfBattleState : StateBase
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
-        
+
     }
 
     public override void OnExit(IFiniteStateMachine _ctx)
     {
-        GameManager.Instance.CurrentGame.State = GameState.BattlePhase;
+        if (GameManager.Instance.Replay != null)
+            GameManager.Instance.Replay.Switch(GameState.BattlePhase);
+        else
+            GameManager.Instance.Switch(GameState.BattlePhase);
     }
 
     /// <summary>

@@ -16,13 +16,15 @@ public class InsertState : StateBase
         Debug.Log("--- InsertState");
         PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots1()));
         PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots2()));
+        EventManager.Instance.OnSwap?.Invoke();
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
     {
         if (IsDone)
         {
-            if (GameManager.Instance.CurrentGame.State == GameState.StartOfBattle)
+            if (GameManager.Instance.CurrentGame.State == GameState.StartOfBattle ||
+                GameManager.Instance.Replay != null && GameManager.Instance.Replay.State == GameState.StartOfBattle)
             {
                 _ctx.SetState(new StartOfBattleState(0));
             }

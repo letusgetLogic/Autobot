@@ -21,21 +21,24 @@ public class SettingsButton : MonoBehaviour
     /// </summary>
     public void OnButtonClick()
     {
-        if (isEnabled)
-        {
-            isEnabled = false;
-            cooldown = 0.3f;
-            isSetted = false;
-        }
-        else
-            return;
+        // Not working because of time scale 0.
+
+        //if (isEnabled)
+        //{
+        //    isEnabled = false;
+        //    cooldown = 0.3f;
+        //    isSetted = false;
+        //}
+        //else
+        //    return;
 
         isSettingsOpen = !isSettingsOpen;
         settingsPanel.SetActive(isSettingsOpen);
 
         if (GameManager.Instance.CurrentRound != null)
         {
-            rewatchButton.SetActive(!isSettingsOpen);
+            if (rewatchButton != null)
+               rewatchButton.SetActive(!isSettingsOpen);
         }
 
         if (deactivateButtons != null && deactivateButtons.Count > 0)
@@ -53,14 +56,16 @@ public class SettingsButton : MonoBehaviour
 
     private void Update()
     {
-        if (cooldown > 0f)
-        {
-            cooldown -= Time.deltaTime;
-        }
-        else if (isSetted == false)
-        {
-            isEnabled = true;
-            isSetted = true;
-        }
+        // Not working because of time scale 0.
+
+        //if (cooldown > 0f)
+        //{
+        //    cooldown -= Time.deltaTime;
+        //}
+        //else if (isSetted == false)
+        //{
+        //    isEnabled = true;
+        //    isSetted = true;
+        //}
     }
 }

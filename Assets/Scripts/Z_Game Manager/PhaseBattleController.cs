@@ -19,18 +19,12 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [SerializeField]
     private Slot[] slots2;
 
-    //[Header("Detect Click Enviroment")]
-    //[SerializeField] private GameObject ;
-
     private StateBase state { get; set; }
 
     /// <summary>
     /// This sub state is used to run another states without breaking the current base state.
     /// </summary>
     public StateBase SubState { get; set; }
-
-    //public Player Player1 { get; private set; }
-    //public Player Player2 { get; private set; }
 
     public UnitController AttackingUnit1 => slots1[0].UnitController();
     public UnitController AttackingUnit2 => slots2[0].UnitController();
@@ -88,8 +82,12 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         Instance = this;
 
         Time.timeScale = 1f;
-        //detectClickEnviroment.SetActive(false);
-        GameManager.Instance.Switch(GameState.StartOfBattle);
+
+        if (GameManager.Instance.Replay != null)
+            GameManager.Instance.Replay.Switch(GameState.StartOfBattle);
+        else
+            GameManager.Instance.Switch(GameState.StartOfBattle);
+
         StartCoroutine(SetHintClick());
     }
 
@@ -197,11 +195,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     {
         //PhaseBattleView.Instance.SetSpeedButton(true);
 
-        if (GameManager.Instance.IsReplay == false)
-        {
-            _player1.StartBattle();
-            _player2.StartBattle();
-        }
         SetState(new InitializeState(Process.DurationInit));
     }
 

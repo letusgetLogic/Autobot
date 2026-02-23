@@ -24,7 +24,7 @@
     #endregion
 
     /// <summary>
-    /// Check and trigger abilities in the right order.
+    /// Triggers abilities in the right order. Steal has the greatest priority.
     /// </summary>
     /// <param name="_unit1"></param>
     /// <param name="_unit2"></param>

@@ -52,7 +52,7 @@ public class InitializeState : StateBase
     {
         yield return new WaitUntil(() => PhaseBattleView.Instance != null);
 
-        if (GameManager.Instance.IsReplay)
+        if (GameManager.Instance.Replay != null)
         {
             var data1 = new PlayerData(GameManager.Instance.CurrentRound.SavedPlayerData1);
             var data2 = new PlayerData(GameManager.Instance.CurrentRound.SavedPlayerData2);

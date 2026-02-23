@@ -29,11 +29,9 @@ public class CutScene : MonoBehaviour
         }
         Instance = this;
 
-        bool isReplay = GameManager.Instance.IsReplay;
-
         if (coverPanelOpen != null)
         {
-            if (hintClickClose && isReplay == false)
+            if (hintClickClose && GameManager.Instance.Replay == null)
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
@@ -41,7 +39,7 @@ public class CutScene : MonoBehaviour
             }
 
             coverPanelOpen.gameObject.SetActive(true);
-            StartCoroutine(OpenScene(isReplay ? 0f : delayOpen));
+            StartCoroutine(OpenScene(GameManager.Instance.Replay != null ? 0f : delayOpen));
         }
 
         if (coverPanelClose != null)
@@ -61,8 +59,8 @@ public class CutScene : MonoBehaviour
         OpenPanel.ScaleUp(false);
         EventManager.Instance.OnOpenScene?.Invoke();
 
-        if (GameManager.Instance.SceneName == "PhaseShop")
-            OpenPanel.OnRunningDone += () => GameManager.Instance.IsReplay = false;
+        //if (GameManager.Instance.SceneName == "PhaseShop")
+        //    OpenPanel.OnRunningDone += () => GameManager.Instance.Replay = null;
     }
 
     /// <summary>
@@ -71,7 +69,7 @@ public class CutScene : MonoBehaviour
     /// <param name="_scene"></param>
     public void SwitchScene(string _scene)
     {
-        if (GameManager.Instance.IsReplay == false)
+        if (GameManager.Instance.Replay == null)
             StartCoroutine(LoadScene(_scene));
         else
             StartCoroutine(LoadSceneByReplay(_scene));

@@ -130,7 +130,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.SetChargingStationAt(Player.Data.Turn);
                 SpawnSavedUnits();
 
-                if (GameManager.Instance.IsReplay == false)
+                if (GameManager.Instance.Replay == null)
                 {
                     PackManager.Instance.AssignList(Player.Data.Turn);
                     SpawnShopUnits();
