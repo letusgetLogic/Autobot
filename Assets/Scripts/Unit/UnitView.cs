@@ -24,7 +24,7 @@ public class UnitView : MonoBehaviour
         shadowSpriteRenderer,
         doAbilitySpriteRenderer,
         getAbilitySpriteRenderer,
-        iceCubeSpriteRenderer,
+        lockSpriteRenderer,
         damageSpriteRenderer,
         shutdownSpriteRenderer,
         temporaryItemSpriteRenderer;
@@ -123,7 +123,7 @@ public class UnitView : MonoBehaviour
     private void Awake()
     {
         description.SetActive(false);
-        iceCubeSpriteRenderer.enabled = false;
+        lockSpriteRenderer.enabled = false;
         damageSpriteRenderer.enabled = false;
         shutdownSpriteRenderer.enabled = false;
         temporaryItemSpriteRenderer.enabled = false;
@@ -156,13 +156,13 @@ public class UnitView : MonoBehaviour
     /// Sets the components view in slot shop.
     /// </summary>
     /// <param name="_value"></param>
-    public void SetShopView(bool _value, bool _showLevel, bool _isFreezed)
+    public void SetShopView(bool _value, bool _showLevel, bool _isLocked)
     {
         levelDisplay.SetActive(_showLevel);
         ShowFullAttributes(!_value);
         energyIcon.SetActive(!_value);
         shadowSpriteRenderer.enabled = _value;
-        iceCubeSpriteRenderer.enabled = _isFreezed;
+        lockSpriteRenderer.enabled = _isLocked;
     }
 
     /// <summary>
@@ -260,8 +260,8 @@ public class UnitView : MonoBehaviour
     {
         dragSpriteRenderer.gameObject.transform.localScale *= settings.DraggingScale;
 
-        dragSpriteRenderer.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
-        canvasStats.sortingOrder = iceCubeSpriteRenderer.sortingOrder + 10;
+        dragSpriteRenderer.sortingOrder = lockSpriteRenderer.sortingOrder + 10;
+        canvasStats.sortingOrder = lockSpriteRenderer.sortingOrder + 10;
     }
 
     /// <summary>
@@ -396,6 +396,8 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.flipX = true;
         damageSpriteRenderer.flipX = true;
         temporaryItemSpriteRenderer.flipX = true;
+        doAbilitySpriteRenderer.flipX = true;
+        getAbilitySpriteRenderer.flipX = true;
 
         var pos = levelDisplay.transform.localPosition;
         levelDisplay.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);
