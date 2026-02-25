@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
 
 public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 {
@@ -53,6 +55,10 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     public bool IsStopped { get; set; } = false;
     public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
+
+    public bool IsWaitingForClick { get; set; } = false;
+    private bool isShowingClick = false;
+    private float countAFK;
 
     private UnityAction<AbilityBase, bool> onEnqueueAbility => (ability, isDestroyingUnit) =>
     {
@@ -113,12 +119,14 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     {
         EventManager.Instance.OnTriggerAbility += onEnqueueAbility;
         EventManager.Instance.OnShutdown += onEnqueueShutdown;
+        EventManager.Instance.OnWaitingForClick += DelayHintClick;
     }
 
     private void OnDisable()
     {
         EventManager.Instance.OnTriggerAbility -= onEnqueueAbility;
         EventManager.Instance.OnShutdown -= onEnqueueShutdown;
+        EventManager.Instance.OnWaitingForClick -= DelayHintClick;
     }
 
     /// <summary>
@@ -143,6 +151,16 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
         if (SubState != null)
             SubState.OnUpdate(this, speed);
+
+        //if (IsWaitingForClick)
+        //    countAFK += Time.deltaTime;
+
+        //if (isShowingClick != true && countAFK > Process.WaitForClickShow)
+        //{
+        //    PhaseBattleView.Instance.ShowClick();
+        //    isShowingClick = true;
+        //}
+
     }
 
     /// <summary>
@@ -260,4 +278,14 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         }
         return activeSlots.ToArray();
     }
+
+    /// <summary>
+    /// Delays show hint to click.
+    /// </summary>
+    /// <param name="_duration"></param>
+    public void DelayHintClick()
+    {
+        StartCoroutine(PhaseBattleView.Instance.ShowClick(Process.WaitForClickShow));
+    }
+
 }

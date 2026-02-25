@@ -15,8 +15,9 @@ public class PhaseBattleView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI name2;
     [SerializeField] private TextMeshProUGUI turn2, wins2, lives2;
 
-    [Header("Info Label")]
+    [Header("Labels")]
     [SerializeField] private TextMeshProUGUI label;
+    [SerializeField] private TextMeshProUGUI clickText;
 
     // This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
     //[Header("Speed Controller")]
@@ -163,5 +164,15 @@ public class PhaseBattleView : MonoBehaviour
         yield return new WaitForSeconds(_duration);
 
         collideVisual.enabled = false;
+    }
+
+    /// <summary>
+    /// Shows the hint to click.
+    /// </summary>
+    public IEnumerator ShowClick(float _duration)
+    {
+        yield return new WaitForSeconds(_duration);
+
+        clickText.gameObject.SetActive(true);
     }
 }

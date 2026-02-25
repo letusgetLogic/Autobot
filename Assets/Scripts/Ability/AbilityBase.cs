@@ -38,6 +38,7 @@ public abstract class AbilityBase
     {
         DurationDescription = _delayHideDescription;
         Controller.View.SetDescriptionActive(true);
+        Controller.View.ShowAbility(true);
 
         if (CurrentLevel.ConsumedEnergy != null)
             Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value, true);
@@ -47,7 +48,10 @@ public abstract class AbilityBase
         yield return new WaitForSeconds(_delayHideDescription);
 
         if (Controller != null)
+        {
             Controller.View.SetDescriptionActive(false);
+            Controller.View.ShowAbility(false);
+        }
 
         if (_isDestroying)
             EventManager.Instance.OnShutdown?.Invoke(Controller);

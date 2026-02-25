@@ -219,6 +219,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.WaitingEndOfBattle:
                 IsBlockingInput = false;
+                EventManager.Instance.OnWaitingForClick?.Invoke();
                 // Waiting for player input
                 break;
 

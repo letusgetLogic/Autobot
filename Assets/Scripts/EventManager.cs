@@ -76,7 +76,7 @@ public class EventManager
     public UnityAction OnHurt { get; set; }
     public UnityAction<UnitController> OnShutdown { get; set; }
     public UnityAction OnBuff { get; set; }
-    public UnityAction OnShootOut { get; set; }
+    public UnityAction<UnitController> OnShootOut { get; set; }
 
 
     #endregion
@@ -86,5 +86,6 @@ public class EventManager
 
 
     public UnityAction OnMatchOver { get; set; }
+    public UnityAction OnWaitingForClick { get; set; }
     public UnityAction OnGameOver { get; set; }
 }

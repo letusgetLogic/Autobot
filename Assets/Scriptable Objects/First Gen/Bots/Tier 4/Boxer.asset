@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4d03a5ce58c4184486a36cb1a9ed662, type: 3}
-  m_Name: Craft
+  m_Name: Boxer
   m_EditorClassIdentifier: 
   UnitType: 1
-  Sprite: {fileID: 2056112284, guid: 865adb7721a8a8847adc946162e05ace, type: 3}
+  Sprite: {fileID: -1141726529612304283, guid: c0d58c23788053440b2b4b152ab4ed99, type: 3}
   ID: 0
-  Name: Craft
-  Health: 4
-  Attack: 1
+  Name: Boxer BA-BF-S
+  Health: 3
+  Attack: 5
   Energy: {fileID: 0}
   HasUniqueCost: 0
   UniqueCostNuts: {fileID: 0}
@@ -25,20 +25,20 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Craft \u2192 Give 1 random mate +1 health."
+    Description: "Before attack \u2192 Gain +4 attack and +2 health."
     HasAbility: 1
-    ConsumedEnergy: {fileID: 11400000, guid: 39d50cc786e8c5d439b37d8b51a4bc2e, type: 2}
-    TriggerType: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 5
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 2
+    ToWho: 1
+    ToWhoCount: 0
+    AbilityDuration: 1
     Buff:
-      HP: 1
-      ATK: 0
+      HP: 2
+      ATK: 4
       ENG: 0
       HasValue: 0
     Debuff:
@@ -51,20 +51,20 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 1
-    Description: "Craft \u2192 Give 1 random mate +2 health."
+    Description: "Before attack \u2192 Gain +8 attack and +4 health."
     HasAbility: 1
-    ConsumedEnergy: {fileID: 11400000, guid: 39d50cc786e8c5d439b37d8b51a4bc2e, type: 2}
-    TriggerType: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 5
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 2
+    ToWho: 1
+    ToWhoCount: 0
+    AbilityDuration: 1
     Buff:
-      HP: 2
-      ATK: 0
+      HP: 4
+      ATK: 8
       ENG: 0
       HasValue: 0
     Debuff:
@@ -77,20 +77,20 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 2
-    Description: "Craft \u2192 Give 1 random mate +3 health."
+    Description: "Before attack \u2192 Gain +12 attack and +6 health."
     HasAbility: 1
-    ConsumedEnergy: {fileID: 11400000, guid: 39d50cc786e8c5d439b37d8b51a4bc2e, type: 2}
-    TriggerType: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 5
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 1
     FromWho: 1
-    ToWho: 3
-    ToWhoCount: 1
-    AbilityDuration: 2
+    ToWho: 1
+    ToWhoCount: 0
+    AbilityDuration: 1
     Buff:
-      HP: 3
-      ATK: 0
+      HP: 6
+      ATK: 12
       ENG: 0
       HasValue: 0
     Debuff:

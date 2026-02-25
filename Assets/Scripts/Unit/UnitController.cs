@@ -388,6 +388,7 @@ public class UnitController : MonoBehaviour
             model.Add(new Attribute(0, 0, 0), _attribute);
 
         view.ShowBuff(_attribute);
+        view.GetTargetedByAbility();
         model.Repair?.SetDurability(false);
     }
 

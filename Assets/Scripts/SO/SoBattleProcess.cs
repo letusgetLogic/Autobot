@@ -19,6 +19,8 @@ public class SoBattleProcess : ScriptableObject
 
     [Range(0f, 2f)] public float DurationBattleOver = 1.0f;
 
+    [Range(0f, 2f)] public float WaitForClickShow = 5.0f;
+
     [Tooltip("Duration instantiate an unit")]
     [Range(0f, 2f)] public float DurationShootOut = 0.1f;
 

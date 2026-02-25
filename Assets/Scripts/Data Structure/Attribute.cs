@@ -46,5 +46,14 @@ public struct Attribute
         ENG = _energy;
         HasValue = true;
     }
+
+    /// <summary>
+    /// Is one of the attributes greater than 0?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsGreaterThan0()
+    {
+        return HP > 0 || ATK > 0 || ENG > 0;
+    }
 }
 

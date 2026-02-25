@@ -55,7 +55,7 @@ public class SoundManager
 
         EventManager.Instance.OnHurt += () => PlayOneShot("Collide");
         EventManager.Instance.OnBuff += () => PlayOneShot("Buff");
-        EventManager.Instance.OnShootOut += () => PlayOneShot("Summon");
+        EventManager.Instance.OnShootOut += (unit) => PlayOneShot("Summon");
 
         EventManager.Instance.OnGameOver += () => PlayOneShot("Game_Over");
     }

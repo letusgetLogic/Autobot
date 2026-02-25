@@ -317,14 +317,15 @@ public class UnitModel
         int maxHP = Controller.Pack.MaxHP.Value;
         int maxATK = Controller.Pack.MaxATK.Value;
 
+        // Remaining values to be filled are used to prevent the sum to exceed the maximum.
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
         int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;
 
-        Data.SetBuffHP(Data.Buff.HP + GetAddValue(ref remainFill_HP, _buff.HP));
-        Data.SetBuffATK(Data.Buff.ATK + GetAddValue(ref remainFill_ATK, _buff.ATK));
+        Data.SetBuffHP(Data.Buff.HP + GetAddedValue(ref remainFill_HP, _buff.HP));
+        Data.SetBuffATK(Data.Buff.ATK + GetAddedValue(ref remainFill_ATK, _buff.ATK));
 
-        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddValue(ref remainFill_HP, _buffTemp.HP));
-        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTemp.ATK));
+        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddedValue(ref remainFill_HP, _buffTemp.HP));
+        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddedValue(ref remainFill_ATK, _buffTemp.ATK));
 
         Data.SetHP(Data.Cur.HP + _buff.HP + _buffTemp.HP, Repair == null ? null : Repair.SetRepairPanel);
         Data.SetATK(Data.Cur.ATK + _buff.ATK + _buffTemp.ATK);
@@ -347,17 +348,18 @@ public class UnitModel
         int maxHP = Controller.Pack.MaxHP.Value;
         int maxATK = Controller.Pack.MaxATK.Value;
 
+        // Remaining values to be filled are used to prevent the sum to exceed the maximum.
         int remainFill_HP = maxHP - Data.Basis.HP - Data.Buff.HP - Data.TempBuff.HP;
         int remainFill_ATK = maxATK - Data.Basis.ATK - Data.Buff.ATK - Data.TempBuff.ATK;
 
-        Data.SetBasisHP(Data.Basis.HP + GetAddValue(ref remainFill_HP, _basis.HP));
-        Data.SetBasisATK(Data.Basis.ATK + GetAddValue(ref remainFill_ATK, _basis.ATK));
+        Data.SetBasisHP(Data.Basis.HP + GetAddedValue(ref remainFill_HP, _basis.HP));
+        Data.SetBasisATK(Data.Basis.ATK + GetAddedValue(ref remainFill_ATK, _basis.ATK));
 
-        Data.SetBuffHP(Data.Buff.HP + GetAddValue(ref remainFill_HP, _buff.HP));
-        Data.SetBuffATK(Data.Buff.ATK + GetAddValue(ref remainFill_ATK, _buff.ATK));
+        Data.SetBuffHP(Data.Buff.HP + GetAddedValue(ref remainFill_HP, _buff.HP));
+        Data.SetBuffATK(Data.Buff.ATK + GetAddedValue(ref remainFill_ATK, _buff.ATK));
 
-        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddValue(ref remainFill_HP, _buffTemp.HP));
-        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddValue(ref remainFill_ATK, _buffTemp.ATK));
+        Data.SetTempBuffHP(Data.TempBuff.HP + GetAddedValue(ref remainFill_HP, _buffTemp.HP));
+        Data.SetTempBuffATK(Data.TempBuff.ATK + GetAddedValue(ref remainFill_ATK, _buffTemp.ATK));
 
         int hp = Repair == null ? Data.Cur.HP : GetAverage(Data.Cur.HP, _otherCurrent.HP);
         int atk = Repair == null ? Data.Cur.ATK : GetAverage(Data.Cur.ATK, _otherCurrent.ATK);
@@ -399,7 +401,7 @@ public class UnitModel
     /// <param name="_remain"></param>
     /// <param name="_add"></param>
     /// <returns></returns>
-    private int GetAddValue(ref int _remain, int _add)
+    private int GetAddedValue(ref int _remain, int _add)
     {
         if (_add < 0 || _remain <= 0)
             return 0;

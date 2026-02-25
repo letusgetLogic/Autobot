@@ -22,6 +22,8 @@ public class UnitView : MonoBehaviour
     [SerializeField]
     private SpriteRenderer
         shadowSpriteRenderer,
+        doAbilitySpriteRenderer,
+        getAbilitySpriteRenderer,
         iceCubeSpriteRenderer,
         damageSpriteRenderer,
         shutdownSpriteRenderer,
@@ -125,6 +127,8 @@ public class UnitView : MonoBehaviour
         damageSpriteRenderer.enabled = false;
         shutdownSpriteRenderer.enabled = false;
         temporaryItemSpriteRenderer.enabled = false;
+        doAbilitySpriteRenderer.enabled = false;
+        getAbilitySpriteRenderer.enabled = false;
         SetRepairDisplayActive(false);
     }
 
@@ -142,6 +146,8 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.sprite = _sprite;
         damageSpriteRenderer.sprite = _sprite;
         shadowSpriteRenderer.sprite = _sprite;
+        doAbilitySpriteRenderer.sprite = _sprite;
+        getAbilitySpriteRenderer.sprite = _sprite;
         myName.text = _name;
         gameObject.name = _id;
     }
@@ -447,6 +453,9 @@ public class UnitView : MonoBehaviour
         addEnergy.text = _attribute.ENG.ToString();
         addEnergy.enabled = _attribute.ENG > 0;
 
+        if (_attribute.IsGreaterThan0() == false)
+            return;
+
         StartCoroutine(HideBuff());
     }
 
@@ -528,4 +537,36 @@ public class UnitView : MonoBehaviour
         foreach (var item in hideVisual)
             item.SetActive(false);
     }
+
+    /// <summary>
+    /// Shows or hides the execution of the ability.
+    /// </summary>
+    /// <param name="_enabled"></param>
+    public void ShowAbility(bool _enabled)
+    {
+        doAbilitySpriteRenderer.enabled = _enabled;
+    }
+
+    /// <summary>
+    /// Shows or hides the target of the ability.
+    /// </summary>
+    /// <param name="_enabled"></param>
+    public void GetTargetedByAbility()
+    {
+        getAbilitySpriteRenderer.enabled = true;
+
+        StartCoroutine(HideTarget());
+    }
+
+    /// <summary>
+    /// Hides the buff.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator HideTarget()
+    {
+        yield return new WaitForSeconds(settings.DurationShowTemporaryValue);
+
+        getAbilitySpriteRenderer.enabled = false;
+    }
+
 }

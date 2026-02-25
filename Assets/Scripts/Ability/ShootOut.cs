@@ -55,13 +55,15 @@ public class ShootOut : AbilityBase
                     yield return new WaitForSeconds(makeSpace.AnimTime);
                 }
                 
-                SpawnManager.Instance.Spawn(
+                var unit = SpawnManager.Instance.Spawn(
                      craftedUnits[i],
                      craftedUnits[i].ID,
                      null,
                      model.Data.UnitState,
                      teamSlots[0].transform,
                      PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
+
+                EventManager.Instance.OnShootOut?.Invoke(unit);
             }
         }
 
