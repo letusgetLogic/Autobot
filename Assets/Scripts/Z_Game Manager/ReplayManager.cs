@@ -16,9 +16,15 @@
 
     public void Switch(GameState _state)
     {
+        state = _state;
+
         switch (_state)
         {
             case GameState.None:
+                break;
+
+            case GameState.LoadScene:
+                GameManager.Instance.LoadScene(GameManager.Instance.SceneToLoad);
                 break;
 
             case GameState.PlayCutScene:
@@ -27,6 +33,7 @@
 
             case GameState.WaitingEndOfBattle:
                 GameManager.Instance.IsBlockingInput = false;
+                EventManager.Instance.OnWaitingForClick?.Invoke();
                 // Waiting for player input
                 break;
 

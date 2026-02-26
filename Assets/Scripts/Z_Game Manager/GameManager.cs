@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour
 
     #region Debug Variables
     public int PhaseShopIndex { get; set; } = 0;
+    public bool IsCatalog { get; internal set; }
 
     #endregion
 
@@ -229,8 +230,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.LoadScene:
-                Debug.Log("Loading Scene: " + SceneToLoad);
-                SceneManager.LoadScene(SceneToLoad);
+                LoadScene(SceneToLoad);
                 break;
 
             case GameState.StartOfTurn:
@@ -324,5 +324,11 @@ public class GameManager : MonoBehaviour
         Replay = new ReplayManager();
 
         CutScene.Instance.SwitchScene("PhaseBattle");
+    }
+
+    public void LoadScene(string _scene)
+    {
+        Debug.Log("Loading Scene: " + _scene);
+        SceneManager.LoadScene(_scene);
     }
 }

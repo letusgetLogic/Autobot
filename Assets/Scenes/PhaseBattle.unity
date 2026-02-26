@@ -541,14 +541,14 @@ MonoBehaviour:
   m_text: Click!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284703719
-  m_fontColor: {r: 0.9056604, g: 0.38875046, b: 0.38875046, a: 1}
+    rgba: 4282137660
+  m_fontColor: {r: 0.23529413, g: 0.23529413, b: 0.23529413, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -571,7 +571,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -3318,7 +3318,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1367017134
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4660,11 +4660,11 @@ RectTransform:
   - {fileID: 413183475}
   - {fileID: 502898022}
   - {fileID: 535392213}
-  - {fileID: 50252411}
-  - {fileID: 1098462801}
   - {fileID: 1522478723}
   - {fileID: 1367017134}
   - {fileID: 99878791}
+  - {fileID: 50252411}
+  - {fileID: 1098462801}
   - {fileID: 683256045}
   - {fileID: 1919644517}
   - {fileID: 34675329}

@@ -16,6 +16,7 @@ public class UnitController : MonoBehaviour
     [SerializeField] private UnitState editorUnitState;
     [SerializeField] private bool editorIsRepairOnValidateActive = true;
     [SerializeField] private SoPack editorDefinedPack;
+    public SoUnit DefinedUnit => editorSoUnit;
     public SoPack DefinedPack => editorDefinedPack;
 
     public UnitView View => view;

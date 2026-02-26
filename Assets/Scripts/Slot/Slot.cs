@@ -116,6 +116,13 @@ public class Slot : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
+        var unit = UnitController();
+        if (unit && GameManager.Instance.IsCatalog)
+        {
+            Catalog.Instance.SetData(unit.DefinedUnit);
+            return;
+        }
+
         if (UnitView() == null)
             return;
 
@@ -134,6 +141,12 @@ public class Slot : MonoBehaviour
     /// </summary>
     public void HideDescription()
     {
+        if (GameManager.Instance.IsCatalog)
+        {
+            Catalog.Instance.SetActive(false);
+            return;
+        }
+
         if (UnitView() != null)
             UnitView().SetDescriptionActive(false);
 

@@ -123,7 +123,9 @@ public class UnitModel
             if (Repair != null)
             {
                 Repair.Initialize(this, _view);
-                Repair.SetDurability(GameManager.Instance.Replay == null ? true : false);
+                Repair.SetDurability(GameManager.Instance != null 
+                    ? (GameManager.Instance.Replay != null ? false : true)
+                    : false);
                 Repair.SetRepairPanel();
             }
             else

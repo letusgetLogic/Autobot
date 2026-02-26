@@ -364,11 +364,11 @@ public class UnitView : MonoBehaviour
     /// <param name="_panel3"></param>
     public void SetRepairPanelActive(bool _panel2, bool _panel3)
     {
-        repairPanelHp2.SetActive(_panel2);
-        repairPanelHp3.SetActive(_panel3);
+        if (repairPanelHp2) repairPanelHp2.SetActive(_panel2);
+        if (repairPanelHp3) repairPanelHp3.SetActive(_panel3);
 
-        repairPanelAtk2.SetActive(_panel2);
-        repairPanelAtk3.SetActive(_panel3);
+        if (repairPanelAtk2) repairPanelAtk2.SetActive(_panel2);
+        if (repairPanelAtk3) repairPanelAtk3.SetActive(_panel3);
     }
 
     /// <summary>
@@ -379,13 +379,13 @@ public class UnitView : MonoBehaviour
     /// <param name="_fill3"></param>
     public void SetRepairStepFillActive(bool _fill1, bool _fill2, bool _fill3)
     {
-        repairStepFillHp1.SetActive(_fill1);
-        repairStepFillHp2.SetActive(_fill2);
-        repairStepFillHp3.SetActive(_fill3);
+        if (repairStepFillHp1) repairStepFillHp1.SetActive(_fill1);
+        if (repairStepFillHp2) repairStepFillHp2.SetActive(_fill2);
+        if (repairStepFillHp3) repairStepFillHp3.SetActive(_fill3);
 
-        repairStepFillAtk1.SetActive(_fill1);
-        repairStepFillAtk2.SetActive(_fill2);
-        repairStepFillAtk3.SetActive(_fill3);
+        if (repairStepFillAtk1) repairStepFillAtk1.SetActive(_fill1);
+        if (repairStepFillAtk2) repairStepFillAtk2.SetActive(_fill2);
+        if (repairStepFillAtk3) repairStepFillAtk3.SetActive(_fill3);
     }
 
     /// <summary>
