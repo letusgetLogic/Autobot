@@ -60,16 +60,12 @@ public class AttackState : StateBase
         UnitController unit1 = PhaseBattleController.Instance.AttackingUnit1;
         UnitController unit2 = PhaseBattleController.Instance.AttackingUnit2;
 
-        yield return new WaitUntil(() =>
+        if (unit1 == null || unit2 == null)
         {
-            // If the time count was exceeded, check the outcome.
-            if (timeCount > PhaseBattleController.Instance.Process.RefreshRate)
-            {
-                setRefresh = true;
-            }
-
-            return unit1 != null && unit2 != null;
-        });
+            Debug.LogError("One of the attacking units is null.");
+            IsDone = true;
+            yield break;
+        }
         // --------------------------------------------------------------------
         timeCount = 0f;
 
@@ -94,24 +90,22 @@ public class AttackState : StateBase
             });
         }
         // ---------------------------------------------------------------------
-        timeCount = 0f;
-
+       
+        // Animation
         unit1.MoveWhileAttacking();
         float animDelay = unit2.MoveWhileAttacking();
+        PhaseBattleController.Instance.StartCoroutine(ShowCollide(animDelay));
 
-        Debug.Log($"Attack each other: {unit1} & {unit2} ");
-
+        // Logic
         unit1.TakeDamage(unit2.TriggerAttack());
         unit2.TakeDamage(unit1.TriggerAttack());
-
-        PhaseBattleController.Instance.StartCoroutine(ShowCollider(animDelay));
 
         yield return new WaitForSeconds(MaxTimeCount);
 
         IsDone = true;
     }
 
-    private IEnumerator ShowCollider(float _delay)
+    private IEnumerator ShowCollide(float _delay)
     {
         yield return new WaitForSeconds(_delay);
 

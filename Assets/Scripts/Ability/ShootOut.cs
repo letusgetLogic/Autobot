@@ -27,8 +27,8 @@ public class ShootOut : AbilityBase
     /// <param name="_model"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public ShootOut(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed)
-        : base(_controller, _currentLevel, _targets, _seed)
+    public ShootOut(UnitController _controller, Level _currentLevel, int _seed)
+        : base(_controller, _currentLevel, _seed)
     {
         model = _controller.Model;
         teamSlots = _controller.TeamSlots;

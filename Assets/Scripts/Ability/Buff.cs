@@ -12,8 +12,8 @@ public class Buff : AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     /// <param name="_teamSlots"></param>
-    public Buff(UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed)
-        : base(_controller, _currentLevel, _targets, _seed)
+    public Buff(UnitController _controller, Level _currentLevel, int _seed)
+        : base(_controller, _currentLevel, _seed)
     {
         teamSlots = _controller.TeamSlots;
     }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbilityBase
+public abstract class AbilityBase : ScriptableObject
 {
     public UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
@@ -20,11 +20,11 @@ public abstract class AbilityBase
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
     public AbilityBase(
-        UnitController _controller, Level _currentLevel, Queue<UnitController> _targets, int _seed)
+        UnitController _controller, Level _currentLevel, int _seed)
     {
         Controller = _controller;
         CurrentLevel = _currentLevel;
-        Targets = _targets;
+        Targets = _controller.Targets;
         RandomSeed = _seed;
     }
 
@@ -90,23 +90,23 @@ public abstract class AbilityBase
                     && CheckOutcomeState.IsAnyoneIn(_controller.TeamSlots, _controller.Slot) == 0)
                     return null;
 
-                return new Buff(_controller, _level, _targets, _seed);
+                return new Buff(_controller, _level, _seed);
 
             case DoType.ShootOut:
-                return new ShootOut(_controller, _level, _targets, _seed);
+                return new ShootOut(_controller, _level, _seed);
 
             case DoType.ShutDown:
-                return new Shutdown(_controller, _level, _targets, _seed);
+                return new Shutdown(_controller, _level, _seed);
 
             case DoType.Steal:
-                return new Steal(_controller, _level, _targets, _seed);
+                return new Steal(_controller, _level, _seed);
 
             case DoType.Debuff:
-                return new Debuff(_controller, _level, _targets, _seed);
+                return new Debuff(_controller, _level, _seed);
 
             case DoType.ConvertEnergy:
                 if (_controller.Model.Data.Cur.ENG > 0)
-                    return new ConvertEnergy(_controller, _level, _targets, _seed);
+                    return new ConvertEnergy(_controller, _level, _seed);
                 return null;
         }
 

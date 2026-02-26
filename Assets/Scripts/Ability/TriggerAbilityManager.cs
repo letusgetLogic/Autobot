@@ -41,13 +41,15 @@
                 DoType doType1 = _unit1.Model.CurrentLevel.DoType;
                 DoType doType2 = _unit2.Model.CurrentLevel.DoType;
 
+                // Steal was triggered before other abilities.
                 if ((int)doType2 > (int)doType1)
                 {
-                    if (doType2 == DoType.Steal)
+                    if (doType2 == DoType.Steal) 
                     {
                         EventManager.Instance.OnTriggerAbility?.Invoke(ability2, false);
 
-                        // Check if the target unit has enough energy for trigger ability.
+                        // Check if the target unit has enough energy for trigger ability,
+                        // add to ability queue.
 
                         int targetENG = _unit1.Model.Data.Cur.ENG;
                         int consumENG = _unit1.Model.CurrentLevel.ConsumedEnergy.Value;
@@ -68,7 +70,8 @@
                     {
                         EventManager.Instance.OnTriggerAbility?.Invoke(ability1, false);
 
-                        // Check if the target unit has enough energy for trigger ability.
+                        // Check if the target unit has enough energy for trigger ability,
+                        // add to ability queue.
 
                         int targetENG = _unit2.Model.Data.Cur.ENG;
                         int consumENG = _unit2.Model.CurrentLevel.ConsumedEnergy.Value;
@@ -83,21 +86,22 @@
                         return 1;
                     }
                 }
-
+                // Default order
                 EventManager.Instance.OnTriggerAbility?.Invoke(ability1, false);
                 EventManager.Instance.OnTriggerAbility?.Invoke(ability2, false);
                 return 2;
             }
-
+            // Ability 1 is null, trigger only ability 2.
             EventManager.Instance.OnTriggerAbility?.Invoke(ability2, false);
             return 1;
         }
         else if (ability1 != null)
         {
+            // Ability 2 is null, trigger only ability 1.
             EventManager.Instance.OnTriggerAbility?.Invoke(ability1, default);
             return 1;
         }
-
+        // No abilities were triggered.
         return 0;
     }
 
