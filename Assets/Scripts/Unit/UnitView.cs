@@ -136,9 +136,6 @@ public class UnitView : MonoBehaviour
     {
         originalScale = dragSpriteRenderer.gameObject.transform.localScale;
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
-
-        if (GameManager.Instance.IsCatalogActive == false)
-            SetRepairDisplayActive(false);
     }
 
     /// <summary>
@@ -358,6 +355,7 @@ public class UnitView : MonoBehaviour
     {
         repairDisplayHp.SetActive(_value);
         repairDisplayAtk.SetActive(_value);
+        Debug.Log(gameObject.name + repairDisplayHp + " is " + repairDisplayHp.activeSelf);
     }
 
     /// <summary>

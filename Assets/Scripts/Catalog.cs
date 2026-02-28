@@ -8,12 +8,14 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
 
     [Header("References")]
     [SerializeField] private GameObject[] components;
+    [SerializeField] private GameObject[] hideByItems;
     [SerializeField]
     private TextMeshProUGUI
         myName,
         modelID,
         attack,
-        health;
+        health,
+        itemAbility;
 
     [SerializeField] private GameObject stats;
 
@@ -106,6 +108,20 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
         modelID.text = _data.ModelID == ""
             ? ""
             : "- Model " + _data.ModelID + " -";
+
+        if (_data.UnitType == UnitType.Item)
+        {
+            foreach (var hide in hideByItems)
+            {
+                hide.SetActive(false);
+            }
+
+            itemAbility.gameObject.SetActive(true);
+            itemAbility.text = _data.Levels.Length > 0 ? _data.Levels[0].Description : "";
+            return;
+        }
+
+        itemAbility.gameObject.SetActive(false);
 
         if (_data.Attack <= 0 && _data.Health <= 0)
         {
