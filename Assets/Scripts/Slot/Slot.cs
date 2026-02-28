@@ -1,12 +1,12 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("References")]
     [Tooltip("The hint of attached object.")]
     [SerializeField] private SpriteRenderer indicator;
 
-    [SerializeField] private EventHover eventHover;
     [SerializeField] private EventDragSlot eventDrag;
     [SerializeField] private GameObject lighting;
     [SerializeField] private SoSlotSettings settings;
@@ -41,10 +41,6 @@ public class Slot : MonoBehaviour
 
         if (lighting != null)
             lighting.SetActive(false);
-
-        eventHover.OnMouseOverEvent += ShowDescription;
-        eventHover.OnMouseExitEvent += HideDescription;
-
     }
 
     private void OnDisable()
@@ -54,9 +50,26 @@ public class Slot : MonoBehaviour
 
         if (lighting != null)
             lighting.SetActive(false);
+    }
 
-        eventHover.OnMouseOverEvent -= ShowDescription;
-        eventHover.OnMouseExitEvent -= HideDescription;
+    /// <summary>
+    /// Mouse entered the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (GameManager.Instance.IsCatalogActive == false)
+            ShowDescription();
+    }
+
+    /// <summary>
+    /// Mouse exited the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (GameManager.Instance.IsCatalogActive == false)
+            HideDescription();
     }
 
     #region Returns Unit Components
@@ -116,13 +129,6 @@ public class Slot : MonoBehaviour
         if (GameManager.Instance.IsBlockingInput)
             return;
 
-        var unit = UnitController();
-        if (unit && GameManager.Instance.IsCatalog)
-        {
-            Catalog.Instance.SetData(unit.DefinedUnit);
-            return;
-        }
-
         if (UnitView() == null)
             return;
 
@@ -141,12 +147,6 @@ public class Slot : MonoBehaviour
     /// </summary>
     public void HideDescription()
     {
-        if (GameManager.Instance.IsCatalog)
-        {
-            Catalog.Instance.SetActive(false);
-            return;
-        }
-
         if (UnitView() != null)
             UnitView().SetDescriptionActive(false);
 

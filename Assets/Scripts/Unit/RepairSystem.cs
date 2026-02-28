@@ -176,7 +176,6 @@ public class RepairSystem
             return;
 
         view.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
-        PhaseShopUI.Instance.SetButtonActive(model);
     }
 
 }

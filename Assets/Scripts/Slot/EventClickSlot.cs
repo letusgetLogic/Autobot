@@ -19,8 +19,10 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
         if (GameManager.Instance.IsBlockingInput)
             return;
 
+        var unit = slot.UnitController();
+
         // The slot is empty.
-        if (slot.Unit() == null)
+        if (unit == null)
         {
             var attached = PhaseShopController.Instance.AttachedController;
             if (attached == null)
@@ -35,7 +37,7 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
         }
         else // An unit is on the slot, switch attached to it.
         {
-            PhaseShopController.Instance.SetAttachedGameObject(slot.UnitController());
+            PhaseShopController.Instance.SetAttachedGameObject(unit);
         }
     }
 }

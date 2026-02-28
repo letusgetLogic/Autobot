@@ -67,6 +67,16 @@ public class PhaseShopUI : MonoBehaviour
         Settings();
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.OnAttachedUnit += SetButtonActive;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnAttachedUnit -= SetButtonActive;
+    }
+
     /// <summary>
     /// Setup the UI screen.
     /// </summary>
@@ -196,7 +206,7 @@ public class PhaseShopUI : MonoBehaviour
 
             unit.Model.Repair?.RiseDurability();
 
-            SetButtonActive(unit.Model);
+            SetButtonActive(unit);
 
             EventManager.Instance.OnRepair?.Invoke();
         }
@@ -216,7 +226,7 @@ public class PhaseShopUI : MonoBehaviour
 
             unit.Model.SetData(UnitState.Freezed);
 
-            SetButtonActive(unit.Model);
+            SetButtonActive(unit);
 
             EventManager.Instance.OnLock?.Invoke();
         }
@@ -236,7 +246,7 @@ public class PhaseShopUI : MonoBehaviour
 
             unit.Model.SetData(UnitState.InSlotShop);
 
-            SetButtonActive(unit.Model);
+            SetButtonActive(unit);
 
             EventManager.Instance.OnUnlock?.Invoke();
         }
@@ -276,14 +286,16 @@ public class PhaseShopUI : MonoBehaviour
     /// Deactivates all buttons or/and activates button, which manages units und items.
     /// </summary>
     /// <param name="_manage"></param>
-    public void SetButtonActive(UnitModel _unitModel)
+    public void SetButtonActive(UnitController _unit)
     {
         DeactivateManageButtons();
 
-        if (_unitModel == null)
+        if (_unit == null)
             return;
 
-        switch (_unitModel.Data.UnitState)
+        var unitModel = _unit.Model;
+        
+        switch (unitModel.Data.UnitState)
         {
             case UnitState.InSlotShop:
                 lockButton.SetActive(true);
@@ -298,7 +310,7 @@ public class PhaseShopUI : MonoBehaviour
                 SetButtonData(
                     recycleTool.GetComponentInChildren<TextMeshProUGUI>(),
                     recycleNut.GetComponentInChildren<TextMeshProUGUI>(),
-                    _unitModel.Sell);
+                    unitModel.Sell);
                 break;
 
             case UnitState.InSlotCharge:
@@ -306,20 +318,20 @@ public class PhaseShopUI : MonoBehaviour
                 SetButtonData(
                     recycleTool.GetComponentInChildren<TextMeshProUGUI>(),
                     recycleNut.GetComponentInChildren<TextMeshProUGUI>(),
-                    _unitModel.Sell);
+                    unitModel.Sell);
                 break;
         }
 
-        if (GameManager.Instance.IsRepairSystemActive && _unitModel.IsRobot())
+        if (GameManager.Instance.IsRepairSystemActive && unitModel.IsRobot())
         {
-            float durability = _unitModel.Data.DurabilityRatio;
+            float durability = unitModel.Data.DurabilityRatio;
             if (durability < 1f)
             {
                 repairButton.SetActive(true);
                 SetButtonData(
                     repairTool.GetComponentInChildren<TextMeshProUGUI>(),
                     repairNut.GetComponentInChildren<TextMeshProUGUI>(),
-                    _unitModel.RepairCost);
+                    unitModel.RepairCost);
             }
         }
     }
@@ -450,7 +462,8 @@ public class PhaseShopUI : MonoBehaviour
             5 => -180f,
             6 => -225f,
             7 => -270f,
-            8 => -315f
+            8 => -315f,
+            _ => -315f
         };
     }
 }

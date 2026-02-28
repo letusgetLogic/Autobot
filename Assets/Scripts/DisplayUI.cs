@@ -1,20 +1,18 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(EventHover))]
-public class DisplayUI : MonoBehaviour
+public class DisplayUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private GameObject _textDisplay;
 
-    private void OnEnable()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        GetComponent<EventHover>().OnMouseOverEvent += () => _textDisplay.SetActive(true);
-        GetComponent<EventHover>().OnMouseExitEvent += () => _textDisplay.SetActive(false);
+        _textDisplay.SetActive(true);
     }
 
-    private void OnDisable()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        GetComponent<EventHover>().OnMouseOverEvent -= () => _textDisplay.SetActive(true);
-        GetComponent<EventHover>().OnMouseExitEvent -= () => _textDisplay.SetActive(false);
+        _textDisplay.SetActive(false);
     }
 }
 

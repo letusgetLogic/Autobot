@@ -14,14 +14,15 @@ public class GameManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float delayHintClick = 5f;
 
+    // This code block or the time scaling feature is disabled,
+    // because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
+    //
     //[Header("Battle Speed Settings")] 
     //public float DefaultSpeedMultiplier = 1f;
     //public float MaxSpeedMultiplier = 2f;
     //public float CurrentSpeedMultiplier { get; set; }
     //public bool IsDefaultMult { get; set; } = true;
-    //
-    // This code block or the time scaling feature is disabled, because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
-
+    //---------------------------------------------------
 
     // GameSettings set those variables, to initialize in the next scene.
     public GameMode Mode { get; set; }
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
     private List<Player> players;
 
     public Player CurrentPlayer { get; set; }
+    //public bool IsCatalogActive { get; set; } = false;
 
     // SoundManager Lazy Loading is initialized once to create and hold an instance.
     private SoundManager soundManager;
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour
     /// To block player's input while animation is running.
     /// </summary>
     public bool IsBlockingInput { get; set; } = false;
+    public bool IsCatalogActive { get; set; } = false;
     public ReplayManager Replay { get; set; }
 
     public int RandomSeed
@@ -115,7 +118,6 @@ public class GameManager : MonoBehaviour
 
     #region Debug Variables
     public int PhaseShopIndex { get; set; } = 0;
-    public bool IsCatalog { get; internal set; }
 
     #endregion
 

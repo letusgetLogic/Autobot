@@ -13,6 +13,7 @@ public class SoUnit : ScriptableObject
 
     public int ID;
     public string Name;
+    public string ModelID;
 
     public int Health;
     public int Attack;

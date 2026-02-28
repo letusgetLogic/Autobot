@@ -37,25 +37,31 @@ class SoUnitEditor : Editor
         // Sprite
         data.Sprite = (Sprite)EditorGUILayout.ObjectField("Sprite", data.Sprite, typeof(Sprite), false);
 
-        // ID + Name
+        // ID + Name + Model ID
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("ID", GUILayout.Width(50));
-        data.ID = EditorGUILayout.IntField(data.ID, GUILayout.Width(NumberWidth));
-        EditorGUILayout.LabelField("Name", GUILayout.Width(50));
+        EditorGUILayout.LabelField("ID", GUILayout.Width(60));
+        data.ID = EditorGUILayout.IntField(data.ID);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Name", GUILayout.Width(60));
         data.Name = EditorGUILayout.TextField(data.Name);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Model ID", GUILayout.Width(60));
+        data.ModelID = EditorGUILayout.TextField(data.ModelID);
         EditorGUILayout.EndHorizontal();
 
         // Attack + Health
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Attack", GUILayout.Width(50));
+        EditorGUILayout.LabelField("Attack", GUILayout.Width(60));
         data.Attack = EditorGUILayout.IntField(data.Attack, GUILayout.Width(NumberWidth));
-        EditorGUILayout.LabelField("Health", GUILayout.Width(50));
+        EditorGUILayout.LabelField("Health", GUILayout.Width(60));
         data.Health = EditorGUILayout.IntField(data.Health, GUILayout.Width(NumberWidth));
         EditorGUILayout.EndHorizontal();
 
         // Energy
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Energy", GUILayout.Width(50));
+        EditorGUILayout.LabelField("Energy", GUILayout.Width(60));
         data.Energy = (SoIntVariable)EditorGUILayout.ObjectField(data.Energy, typeof(SoIntVariable), false);
         EditorGUILayout.EndHorizontal();
 

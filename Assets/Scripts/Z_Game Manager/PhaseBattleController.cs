@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 {
@@ -28,6 +27,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public UnitController AttackingUnit1 => slots1[0].UnitController();
     public UnitController AttackingUnit2 => slots2[0].UnitController();
 
+    /// <summary>
+    /// Enqueue the unit abilities, and this queue will be executed later.
+    /// </summary>
     public Queue<AbilityBase> UnitAbilities
     {
         get
@@ -39,6 +41,9 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     }
     private Queue<AbilityBase> unitAbilities;
 
+    /// <summary>
+    /// Enqueue the units that will be shutdown, and this queue will be executed later.
+    /// </summary>
     public Queue<UnitController> ShutdownUnits
     {
         get
@@ -53,28 +58,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     public bool IsStopped { get; set; } = false;
     public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
 
-    public bool IsWaitingForClick { get; set; } = false;
-    private bool isShowingClick = false;
-    private float countAFK;
-
-    private UnityAction<AbilityBase, bool> onEnqueueAbility => (ability, isDestroyingUnit) =>
-    {
-        UnitAbilities.Enqueue(ability);
-
-        if (isDestroyingUnit)
-        {
-            EventManager.Instance.OnShutdown?.Invoke(ability.Controller);
-        }
-        Debug.Log($"{ability.ToString()} enqueue");
-        Debug.Log($"{unitAbilities.Count} UnitAbilities");
-    };
-
-    private UnityAction<UnitController> onEnqueueShutdown => unit =>
-    {
-        ShutdownUnits.Enqueue(unit);
-        Debug.Log($"{unit.gameObject.name} enqueue");
-        Debug.Log($"{shutdownUnits.Count} ShutdownUnits");
-    };
 
     private void Awake()
     {
@@ -114,15 +97,15 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
     private void OnEnable()
     {
-        EventManager.Instance.OnTriggerAbility += onEnqueueAbility;
-        EventManager.Instance.OnShutdown += onEnqueueShutdown;
+        EventManager.Instance.OnTriggerAbility += EnqueueAbility;
+        EventManager.Instance.OnShutdown += EnqueueShutdown;
         EventManager.Instance.OnWaitingForClick += DelayHintClick;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.OnTriggerAbility -= onEnqueueAbility;
-        EventManager.Instance.OnShutdown -= onEnqueueShutdown;
+        EventManager.Instance.OnTriggerAbility -= EnqueueAbility;
+        EventManager.Instance.OnShutdown -= EnqueueShutdown;
         EventManager.Instance.OnWaitingForClick -= DelayHintClick;
     }
 
@@ -148,16 +131,6 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
         if (SubState != null)
             SubState.OnUpdate(this, speed);
-
-        //if (IsWaitingForClick)
-        //    countAFK += Time.deltaTime;
-
-        //if (isShowingClick != true && countAFK > Process.WaitForClickShow)
-        //{
-        //    PhaseBattleView.Instance.ShowClick();
-        //    isShowingClick = true;
-        //}
-
     }
 
     /// <summary>
@@ -178,7 +151,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     }
 
     /// <summary>
-    /// T
+    /// Set the sub state of the battle, and this sub state will run without breaking the current base state.
     /// </summary>
     /// <param name="_state"></param>
     public void SetSubState(StateBase _state)
@@ -235,6 +208,29 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         {
             slot.HideDescription();
         }
+    }
+
+    private void EnqueueAbility(AbilityBase ability, bool isDestroyingUnit)
+    {
+        UnitAbilities.Enqueue(ability);
+
+        if (isDestroyingUnit)
+        {
+            EventManager.Instance.OnShutdown?.Invoke(ability.Controller);
+        }
+        Debug.Log($"{ability.ToString()} enqueue");
+        Debug.Log($"{unitAbilities.Count} UnitAbilities");
+    }
+
+    /// <summary>
+    /// Enqueue the unit that will be shutdown, and this queue will be executed later.
+    /// </summary>
+    /// <param name="unit"></param>
+    private void EnqueueShutdown(UnitController unit)
+    {
+        ShutdownUnits.Enqueue(unit);
+        Debug.Log($"{unit.gameObject.name} enqueue");
+        Debug.Log($"{shutdownUnits.Count} ShutdownUnits");
     }
 
     /// <summary>

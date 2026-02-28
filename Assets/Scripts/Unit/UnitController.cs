@@ -11,11 +11,11 @@ public class UnitController : MonoBehaviour
 
     [Header("Editor Mode")]
     [SerializeField] private SoUnit editorSoUnit;
-    [SerializeField] private bool editorRename = false;
     [SerializeField] private bool editorIsOnRightSide = false;
     [SerializeField] private UnitState editorUnitState;
     [SerializeField] private bool editorIsRepairOnValidateActive = true;
     [SerializeField] private SoPack editorDefinedPack;
+
     public SoUnit DefinedUnit => editorSoUnit;
     public SoPack DefinedPack => editorDefinedPack;
 
@@ -31,6 +31,9 @@ public class UnitController : MonoBehaviour
         GameManager.Instance.RandomSeed
         );
 
+    /// <summary>
+    /// Targets of the ability.
+    /// </summary>
     public Queue<UnitController> Targets
     {
         get
@@ -47,7 +50,7 @@ public class UnitController : MonoBehaviour
     {
         get
         {
-            if (Application.isPlaying == false)
+            if (PackManager.Instance == null)
                 return DefinedPack;
 
             return PackManager.Instance.MyPack;
@@ -98,23 +101,20 @@ public class UnitController : MonoBehaviour
 
     private void OnValidate()
     {
-        if (editorSoUnit != null)
+        if (Application.isPlaying == false)
         {
-            if (editorRename)
-                gameObject.name = editorSoUnit.Name;
-
             Initialize(editorSoUnit, 0, default, editorUnitState, !editorIsOnRightSide);
         }
     }
 
     private void OnEnable()
     {
-        toNextSlotMover.OnPosition += SetParent;
+        if (toNextSlotMover) toNextSlotMover.OnPosition += SetParent;
     }
 
     private void OnDisable()
     {
-        toNextSlotMover.OnPosition -= SetParent;
+        if (toNextSlotMover) toNextSlotMover.OnPosition -= SetParent;
     }
 
     /// <summary>
@@ -142,9 +142,12 @@ public class UnitController : MonoBehaviour
         }
 
         model.InitView(view, _isTeamLeft);
+
+        if (GameManager.Instance == null || GameManager.Instance.IsCatalogActive)
+            return;
+
         model.SetData(_unitState);
     }
-
 
 
     /// <summary>

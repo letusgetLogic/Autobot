@@ -1,7 +1,8 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Catalog : MonoBehaviour
+public class Catalog : MonoBehaviour, IPointerClickHandler
 {
     public static Catalog Instance { get; private set; }
 
@@ -21,6 +22,7 @@ public class Catalog : MonoBehaviour
     [SerializeField] private GameObject energyIcon2;
     [SerializeField] private GameObject energyIcon3;
 
+    private UnitController attachedController;
 
     private void Awake()
     {
@@ -33,12 +35,54 @@ public class Catalog : MonoBehaviour
         SetActive(false);
     }
 
+    public void OnActivate()
+    {
+        GameManager.Instance.IsCatalogActive = true;
+    }
+
+    public void OnDeactivate()
+    {
+        GameManager.Instance.IsCatalogActive = false;
+    }
+
+    /// <summary>
+    /// Clicks on the catalog background to set the attached game object to null.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        SetAttachedGameObject(null);
+    }
+
+    /// <summary>
+    /// Sets attached game object being clicked and shows/hides the description.
+    /// </summary>
+    /// <param name="_target"></param>
+    public void SetAttachedGameObject(UnitController _target)
+    {
+        if (attachedController && attachedController.Slot)
+            attachedController.Slot.SetIndicatorActive(false);
+
+        if (_target && _target.enabled && _target.Slot)
+            _target.Slot.SetIndicatorActive(true);
+
+        attachedController = _target;
+
+        if (_target && _target.enabled && _target.DefinedUnit)
+        {
+            SetData(_target.DefinedUnit);
+        }
+        else
+        {
+            SetActive(false);
+        }
+    }
 
     /// <summary>
     /// Sets the active state of all contained components.
     /// </summary>
     /// <param name="_isActive">true to activate the components; false to deactivate them.</param>
-    public void SetActive(bool _isActive)
+    private void SetActive(bool _isActive)
     {
         foreach (var component in components)
         {
@@ -51,20 +95,20 @@ public class Catalog : MonoBehaviour
     /// Pass the data of the unit over.
     /// </summary>
     /// <param name="_data"></param>
-    public void SetData(SoUnit _data)
+    private void SetData(SoUnit _data)
     {
         SetActive(true);
 
-        myName.text = _data.name;
+        myName.text = _data.Name + " - Model " + _data.ModelID;
         attack.text = _data.Attack.ToString();
         health.text = _data.Health.ToString();
         ability1.text = _data.Levels[0].Description;
         ability2.text = _data.Levels[1].Description;
         ability3.text = _data.Levels[2].Description;
 
-        if (_data.Levels[0].ConsumedEnergy.Value > 0)
+        if (_data.Levels[0].ConsumedEnergy && _data.Levels[0].ConsumedEnergy.Value < 0)
         {
-            consumedEnergy1.text = _data.Levels[0].ConsumedEnergy.ToString();
+            consumedEnergy1.text = _data.Levels[0].ConsumedEnergy.Value.ToString();
             energyIcon1.SetActive(true);
         }
         else
@@ -72,24 +116,27 @@ public class Catalog : MonoBehaviour
             energyIcon1.SetActive(false);
         }
 
-        if (_data.Levels[1].ConsumedEnergy.Value > 0)
+        if (_data.Levels[1].ConsumedEnergy && _data.Levels[1].ConsumedEnergy.Value < 0)
         {
-            consumedEnergy1.text = _data.Levels[1].ConsumedEnergy.ToString();
-            energyIcon1.SetActive(true);
+            consumedEnergy2.text = _data.Levels[1].ConsumedEnergy.Value.ToString();
+            energyIcon2.SetActive(true);
         }
         else
         {
-            energyIcon1.SetActive(false);
+            energyIcon2.SetActive(false);
         }
 
-        if (_data.Levels[2].ConsumedEnergy.Value > 0)
+        if (_data.Levels[2].ConsumedEnergy && _data.Levels[2].ConsumedEnergy.Value < 0)
         {
-            consumedEnergy1.text = _data.Levels[2].ConsumedEnergy.ToString();
-            energyIcon1.SetActive(true);
+            consumedEnergy3.text = _data.Levels[2].ConsumedEnergy.Value.ToString();
+            energyIcon3.SetActive(true);
         }
         else
         {
-            energyIcon1.SetActive(false);
+            energyIcon3.SetActive(false);
         }
     }
+
+
+
 }

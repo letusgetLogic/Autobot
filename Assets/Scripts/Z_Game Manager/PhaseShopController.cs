@@ -41,14 +41,6 @@ public class PhaseShopController : MonoBehaviour
 
     private StartTurnState startTurn = StartTurnState.None;
 
-    private UnityAction<AbilityBase, bool> OnAbility => (_ability, _isDestroyingUnit) =>
-    {
-        StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
-        Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
-    };
-
-    private UnityAction<UnitController> onDestroyUnit => unit => Destroy(unit);
-
     private void Awake()
     {
         if (Instance != null)
@@ -71,14 +63,14 @@ public class PhaseShopController : MonoBehaviour
         if (itemRandomnessDropSlot != null)
             itemRandomnessDropSlot.gameObject.SetActive(false);
 
-        EventManager.Instance.OnTriggerAbility += OnAbility;
-        EventManager.Instance.OnShutdown += onDestroyUnit;
+        EventManager.Instance.OnTriggerAbility += TriggerAbility;
+        EventManager.Instance.OnShutdown += DestroyUnit;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.OnTriggerAbility -= OnAbility;
-        EventManager.Instance.OnShutdown -= onDestroyUnit;
+        EventManager.Instance.OnTriggerAbility -= TriggerAbility;
+        EventManager.Instance.OnShutdown -= DestroyUnit;
     }
 
     /// <summary>
@@ -290,12 +282,12 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Items.Count == 0)
                 return;
 
-            int rand = UnityEngine.Random.Range(0, PackManager.Instance.Items.Count);
-            var data = PackManager.Instance.Items[rand];
+            int random = UnityEngine.Random.Range(0, PackManager.Instance.Items.Count);
+            var soUnit = PackManager.Instance.Items[random];
 
             SpawnManager.Instance.Spawn(
-                data,
-                rand,
+                soUnit,
+                random,
                 null,
                 UnitState.InSlotShop,
                 shopItemSlots[i].transform);
@@ -647,13 +639,12 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_target"></param>
     public void SetAttachedGameObject(UnitController _target)
     {
-        if (AttachedController != null)
+        if (AttachedController && AttachedController.Slot)
             AttachedController.Slot.SetIndicatorActive(false);
 
-        if (_target != null)
+        if (_target && _target.Slot)
             _target.Slot.SetIndicatorActive(true);
 
-        PhaseShopUI.Instance.SetButtonActive(_target != null ? _target.Model : null);
         AttachedController = _target;
         SetDropHint(_target != null);
 
@@ -748,6 +739,17 @@ public class PhaseShopController : MonoBehaviour
     }
 
     /// <summary>
+    /// Starts the coroutine of handling the ability.
+    /// </summary>
+    /// <param name="_ability"></param>
+    /// <param name="_isDestroyingUnit"></param>
+    private void TriggerAbility(AbilityBase _ability, bool _isDestroyingUnit)
+    {
+        StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
+        Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
+    }
+
+    /// <summary>
     /// Returns only active shop bot slots.
     /// </summary>
     /// <returns></returns>
@@ -819,7 +821,7 @@ public class PhaseShopController : MonoBehaviour
         itemRandomnessDropSlot.gameObject.SetActive(false);
     }
 
-    public void Destroy(UnitController _unit)
+    public void DestroyUnit(UnitController _unit)
     {
         _unit.DestroyObject();
     }

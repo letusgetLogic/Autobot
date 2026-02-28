@@ -38,6 +38,7 @@ public class EventManager
     #region Phase Shop
 
     public UnityAction<UnitController> OnAttachedUnit { get; set; }
+    public UnityAction<UnitController> OnAttachedUnitCatalog { get; set; }
     public UnityAction OnDropUnit { get; set; }
 
     public UnityAction OnRoll {  get; set; }

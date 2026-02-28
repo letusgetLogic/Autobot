@@ -117,38 +117,41 @@ public class UnitView : MonoBehaviour
 
     private void OnValidate()
     {
-        description.SetActive(false);
+        if (description) description.SetActive(false);
     }
 
     private void Awake()
     {
-        description.SetActive(false);
-        lockSpriteRenderer.enabled = false;
-        damageSpriteRenderer.enabled = false;
-        shutdownSpriteRenderer.enabled = false;
-        temporaryItemSpriteRenderer.enabled = false;
-        doAbilitySpriteRenderer.enabled = false;
-        getAbilitySpriteRenderer.enabled = false;
-        SetRepairDisplayActive(false);
+        if (description) description.SetActive(false);
+        if (lockSpriteRenderer) lockSpriteRenderer.enabled = false;
+        if (damageSpriteRenderer) damageSpriteRenderer.enabled = false;
+        if (shutdownSpriteRenderer) shutdownSpriteRenderer.enabled = false;
+        if (temporaryItemSpriteRenderer) temporaryItemSpriteRenderer.enabled = false;
+        if (doAbilitySpriteRenderer) doAbilitySpriteRenderer.enabled = false;
+        if (getAbilitySpriteRenderer) getAbilitySpriteRenderer.enabled = false;
+
     }
 
     private void Start()
     {
         originalScale = dragSpriteRenderer.gameObject.transform.localScale;
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
+
+        if (GameManager.Instance.IsCatalogActive == false)
+            SetRepairDisplayActive(false);
     }
 
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetData(Sprite _sprite, string _name, string _id)
+    public void SetData(Sprite _sprite, string _name, string _modelID, string _id)
     {
-        dragSpriteRenderer.sprite = _sprite;
-        damageSpriteRenderer.sprite = _sprite;
-        shadowSpriteRenderer.sprite = _sprite;
-        doAbilitySpriteRenderer.sprite = _sprite;
-        getAbilitySpriteRenderer.sprite = _sprite;
-        myName.text = _name;
+        if (dragSpriteRenderer) dragSpriteRenderer.sprite = _sprite;
+        if (damageSpriteRenderer) damageSpriteRenderer.sprite = _sprite;
+        if (shadowSpriteRenderer) shadowSpriteRenderer.sprite = _sprite;
+        if (doAbilitySpriteRenderer) doAbilitySpriteRenderer.sprite = _sprite;
+        if (getAbilitySpriteRenderer)getAbilitySpriteRenderer.sprite = _sprite;
+        if (myName) myName.text = _name;
         gameObject.name = _id;
     }
 
@@ -233,11 +236,11 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void SetData(int _fullHp, int _fullAtk, int _hp, int _atk, int _energy)
     {
-        fullHealth.text = _fullHp.ToString();
-        fullAttack.text = _fullAtk.ToString();
-        health.text = _hp.ToString();
-        attack.text = _atk.ToString();
-        energy.text = _energy.ToString();
+        if (fullHealth) fullHealth.text = _fullHp.ToString();
+        if (fullAttack) fullAttack.text = _fullAtk.ToString();
+        if (health) health.text = _hp.ToString();
+        if (attack) attack.text = _atk.ToString();
+        if (energy) energy.text = _energy.ToString();
     }
 
     /// <summary>
@@ -246,7 +249,7 @@ public class UnitView : MonoBehaviour
     /// <param name="_value"></param>
     public void SetDescriptionActive(bool _value)
     {
-        description.SetActive(_value);
+        if (description) description.SetActive(_value);
     }
 
     // Drag Event

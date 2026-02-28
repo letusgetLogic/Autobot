@@ -33,6 +33,12 @@ public class SoundManager
             if (unit) 
                 PlayOneShot("Attach_Unit"); 
         };
+
+        EventManager.Instance.OnAttachedUnitCatalog += unit => 
+        { 
+            if (unit) 
+                PlayOneShot("Attach_Unit"); 
+        };
         EventManager.Instance.OnDropUnit += () => PlayOneShot("Drop_Unit"); 
 
         EventManager.Instance.OnRoll += () => PlayOneShot("Roll");

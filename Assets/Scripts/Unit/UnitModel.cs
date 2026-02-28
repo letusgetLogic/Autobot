@@ -64,23 +64,34 @@ public class UnitModel
         Repair = _repair;
         SoUnit = _soUnit;
         Data.Index = _index;
-        Data.UnitType = _soUnit.UnitType;
-        Data.Max.HP = Controller.Pack.MaxHP.Value;
-        Data.Max.ATK = Controller.Pack.MaxATK.Value;
-        Data.Max.ENG = Controller.Pack.MaxENG.Value;
-        Data.MaxXP = Controller.Pack.MaxXP.Value;
-        Data.SetBasisHP(_soUnit.Health);
-        Data.SetBasisATK(_soUnit.Attack);
 
-        Data.SetHP(_soUnit.Health, null);
-        Data.SetATK(_soUnit.Attack);
-        Data.SetEnergy(_soUnit.Energy == null ? 0 : _soUnit.Energy.Value);
-        Data.SetXP(1);
+        if (_soUnit)
+        {
+            Data.UnitType = _soUnit.UnitType;
+            Data.Max.HP = Controller.Pack.MaxHP.Value;
+            Data.Max.ATK = Controller.Pack.MaxATK.Value;
+            Data.Max.ENG = Controller.Pack.MaxENG.Value;
+            Data.MaxXP = Controller.Pack.MaxXP.Value;
+            Data.SetBasisHP(_soUnit.Health);
+            Data.SetBasisATK(_soUnit.Attack);
 
-        if (Application.isPlaying == false)
+            Data.SetHP(_soUnit.Health, null);
+            Data.SetATK(_soUnit.Attack);
+            Data.SetEnergy(_soUnit.Energy == null ? 0 : _soUnit.Energy.Value);
+            Data.SetXP(1);
+        }
+        else
+        {
+            Data = default;
             return;
+        }
 
-        Data.ID = PackManager.Instance.DebugID++.ToString() + "_" + SoUnit.Name;
+        string debug = "";
+        if (PackManager.Instance != null)
+        {
+            debug = PackManager.Instance.DebugID++.ToString() + "_";
+        }
+        Data.ID = debug + SoUnit.Name;
         Debug.Log(Data.ID + " new created.");
     }
 
@@ -108,43 +119,49 @@ public class UnitModel
     {
         view = _view;
 
-        if (_isTeamLeft)
+        if (GameManager.Instance && GameManager.Instance.IsCatalogActive == false)
         {
-            Data.IsTeamLeft = true;
-        }
-        else
-        {
-            view.SetRightSide();
-            Data.IsTeamLeft = false;
-        }
-
-        if (IsRobot())
-        {
-            if (Repair != null)
+            if (_isTeamLeft)
             {
-                Repair.Initialize(this, _view);
-                Repair.SetDurability(GameManager.Instance != null 
-                    ? (GameManager.Instance.Replay != null ? false : true)
-                    : false);
-                Repair.SetRepairPanel();
+                Data.IsTeamLeft = true;
             }
             else
             {
-                view.ShowFullAttributes(false);
+                view.SetRightSide();
+                Data.IsTeamLeft = false;
             }
 
-            view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
-            view.SetTemporaryItem(Data.TempBuff.HasValue);
+            if (IsRobot())
+            {
+                if (Repair != null)
+                {
+                    Repair.Initialize(this, _view);
+                    Repair.SetDurability(GameManager.Instance != null
+                        ? (GameManager.Instance.Replay != null ? false : true)
+                        : false);
+                    Repair.SetRepairPanel();
+                }
+                else
+                {
+                    view.ShowFullAttributes(false);
+                }
+
+                view.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
+                view.SetTemporaryItem(Data.TempBuff.HasValue);
+            }
+
+            if (Data.UnitType == UnitType.Item)
+            {
+                view.HideAttributes();
+            }
         }
 
-        if (Data.UnitType == UnitType.Item)
-        {
-            view.HideAttributes();
-        }
+        if (SoUnit)
+            view.SetData(SoUnit.Sprite, SoUnit.Name, SoUnit.ModelID, Data.ID);
+        else
+            view.SetData(null, "", "", "");
 
-        view.SetData(SoUnit.Sprite, SoUnit.Name, Data.ID);
-
-        if (Application.isPlaying == false)
+        if (Application.isPlaying == false || GameManager.Instance.IsCatalogActive)
             return;
 
         Controller.StartCoroutine(UpdateLevelXP(IsPhaseShop(Data.UnitState), false));
