@@ -8,21 +8,25 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
 
     [Header("References")]
     [SerializeField] private GameObject[] components;
-    [SerializeField] private TextMeshProUGUI
+    [SerializeField]
+    private TextMeshProUGUI
         myName,
+        modelID,
         attack,
-        health,
-        ability1,
-        ability2,
-        ability3,
-        consumedEnergy1,
-        consumedEnergy2,
-        consumedEnergy3;
-    [SerializeField] private GameObject energyIcon1;
-    [SerializeField] private GameObject energyIcon2;
-    [SerializeField] private GameObject energyIcon3;
+        health;
+
+    [SerializeField] private GameObject stats;
+
+    [SerializeField] private GameObject[] myLevels;
+
+    [SerializeField] private TextMeshProUGUI[] abilitys;
+
+    [SerializeField] private GameObject[] energyIcons;
+
+    [SerializeField] private TextMeshProUGUI[] consumedEnergys;
 
     private UnitController attachedController;
+
 
     private void Awake()
     {
@@ -70,6 +74,7 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
 
         if (_target && _target.enabled && _target.DefinedUnit)
         {
+            SetActive(true);
             SetData(_target.DefinedUnit);
         }
         else
@@ -97,46 +102,52 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
     /// <param name="_data"></param>
     private void SetData(SoUnit _data)
     {
-        SetActive(true);
+        myName.text = _data.Name;
+        modelID.text = _data.ModelID == ""
+            ? ""
+            : "- Model " + _data.ModelID + " -";
 
-        myName.text = _data.Name + " - Model " + _data.ModelID;
-        attack.text = _data.Attack.ToString();
-        health.text = _data.Health.ToString();
-        ability1.text = _data.Levels[0].Description;
-        ability2.text = _data.Levels[1].Description;
-        ability3.text = _data.Levels[2].Description;
-
-        if (_data.Levels[0].ConsumedEnergy && _data.Levels[0].ConsumedEnergy.Value < 0)
+        if (_data.Attack <= 0 && _data.Health <= 0)
         {
-            consumedEnergy1.text = _data.Levels[0].ConsumedEnergy.Value.ToString();
-            energyIcon1.SetActive(true);
+            stats.SetActive(false);
         }
         else
         {
-            energyIcon1.SetActive(false);
+            stats.SetActive(true);
+            attack.text = _data.Attack.ToString();
+            health.text = _data.Health.ToString();
         }
 
-        if (_data.Levels[1].ConsumedEnergy && _data.Levels[1].ConsumedEnergy.Value < 0)
+        if (_data.Levels.Length > 0)
         {
-            consumedEnergy2.text = _data.Levels[1].ConsumedEnergy.Value.ToString();
-            energyIcon2.SetActive(true);
+            for (int i = 0; i < myLevels.Length; i++)
+            {
+                if (i >= _data.Levels.Length)
+                {
+                    myLevels[i].SetActive(false);
+                    continue;
+                }
+
+                myLevels[i].SetActive(true);
+                abilitys[i].text = _data.Levels[i].Description;
+
+                if (_data.Levels[i].ConsumedEnergy && _data.Levels[i].ConsumedEnergy.Value < 0)
+                {
+                    energyIcons[i].SetActive(true);
+                    consumedEnergys[i].text = _data.Levels[i].ConsumedEnergy.Value.ToString();
+                }
+                else
+                {
+                    energyIcons[i].SetActive(false);
+                }
+            }
         }
         else
         {
-            energyIcon2.SetActive(false);
-        }
-
-        if (_data.Levels[2].ConsumedEnergy && _data.Levels[2].ConsumedEnergy.Value < 0)
-        {
-            consumedEnergy3.text = _data.Levels[2].ConsumedEnergy.Value.ToString();
-            energyIcon3.SetActive(true);
-        }
-        else
-        {
-            energyIcon3.SetActive(false);
+            for (int i = 0; i < myLevels.Length; i++)
+            {
+                myLevels[i].SetActive(false);
+            }
         }
     }
-
-
-
 }

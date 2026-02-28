@@ -3806,6 +3806,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2815906826059942133}
     m_Modifications:
+    - target: {fileID: 2502400018216306148, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6224582216105774692, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
       propertyPath: m_Name
       value: Repair Display
@@ -4127,6 +4131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5652270745230826452}
     m_Modifications:
+    - target: {fileID: 2502400018216306148, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6224582216105774692, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
       propertyPath: m_Name
       value: Repair Display
@@ -4214,6 +4222,10 @@ PrefabInstance:
     - target: {fileID: 6945990910072396543, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895358801575017971, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
