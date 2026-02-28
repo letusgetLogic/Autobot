@@ -103,7 +103,7 @@ public class UnitController : MonoBehaviour
     {
         if (Application.isPlaying == false)
         {
-            Initialize(editorSoUnit, 0, default, editorUnitState, !editorIsOnRightSide);
+            Initialize(editorSoUnit, 0, null, editorUnitState, !editorIsOnRightSide);
         }
     }
 
@@ -355,7 +355,7 @@ public class UnitController : MonoBehaviour
     /// </summary>
     /// <param name="_addEnergy"></param>
     /// <param name="_onBuff"></param>
-    public void SetEnergy(int _addEnergy, bool _onBuff)
+    public float SetEnergy(int _addEnergy, bool _onBuff)
     {
         int value = model.Data.Cur.ENG + _addEnergy;
 
@@ -376,6 +376,8 @@ public class UnitController : MonoBehaviour
         view.SetData(
             model.Data.FullHP, model.Data.FullATK,
             model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
+
+        return view.Settings.DurationShowTemporaryValue;
     }
 
     /// <summary>

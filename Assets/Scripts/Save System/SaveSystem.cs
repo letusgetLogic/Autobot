@@ -10,16 +10,16 @@ public static class SaveSystem
     /// <param name="_game"></param>
     public static void SaveGame(Game _game)
     {
-        GameData savedData = LoadGameData() != null ? LoadGameData() : GameData.Instance;
-        savedData.AddGame(_game);
+        //GameData savedData = LoadGameData() != null ? LoadGameData() : GameData.Instance;
+        //savedData.AddGame(_game);
 
-        BinaryFormatter formatter = new BinaryFormatter();
+        //BinaryFormatter formatter = new BinaryFormatter();
 
-        string path = Application.persistentDataPath + $"/game.fun";
-        FileStream stream = new FileStream(path, FileMode.Create);
+        //string path = Application.persistentDataPath + $"/game.fun";
+        //FileStream stream = new FileStream(path, FileMode.Create);
 
-        formatter.Serialize(stream, savedData);
-        stream.Close();
+        //formatter.Serialize(stream, savedData);
+        //stream.Close();
     }
 
     /// <summary>

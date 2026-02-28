@@ -251,12 +251,12 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Bots.Count == 0)
                 return;
 
-            int rand = UnityEngine.Random.Range(0, PackManager.Instance.Bots.Count);
-            var data = PackManager.Instance.Bots[rand];
+            int randomNumber = UnityEngine.Random.Range(0, PackManager.Instance.Bots.Count);
+            var soUnit = PackManager.Instance.Bots[randomNumber];
 
             SpawnManager.Instance.Spawn(
-                data,
-                rand,
+                soUnit,
+                randomNumber,
                 null,
                 UnitState.InSlotShop,
                 shopBotSlots[i].transform);
@@ -314,9 +314,13 @@ public class PhaseShopController : MonoBehaviour
 
         yield return new WaitForSeconds(process.DelayChargingAtStart);
 
+        float durationCharge = 0f;
+
         var unit = ChargeSlot.UnitController();
         if (unit != null)
-            unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value, true);
+            durationCharge = unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value, true);
+
+        yield return new WaitForSeconds(durationCharge);
 
         //if (Player.Data.Turn > 1)
         //    ChargeTeamBots();
@@ -647,9 +651,8 @@ public class PhaseShopController : MonoBehaviour
 
         AttachedController = _target;
         SetDropHint(_target != null);
-
-        if (_target != null)
-            EventManager.Instance.OnAttachedUnit?.Invoke(_target);
+         
+        EventManager.Instance.OnAttachedUnit?.Invoke(_target);
     }
 
     /// <summary>
