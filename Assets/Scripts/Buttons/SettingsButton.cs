@@ -35,11 +35,11 @@ public class SettingsButton : MonoBehaviour
         isSettingsOpen = !isSettingsOpen;
         settingsPanel.SetActive(isSettingsOpen);
 
-        if (GameManager.Instance.CurrentRound != null)
-        {
-            if (rewatchButton != null)
-               rewatchButton.SetActive(!isSettingsOpen);
-        }
+        //if (GameManager.Instance.CurrentRound != null)
+        //{
+        //    if (rewatchButton != null)
+        //       rewatchButton.SetActive(!isSettingsOpen);
+        //}
 
         if (deactivateButtons != null && deactivateButtons.Count > 0)
         {

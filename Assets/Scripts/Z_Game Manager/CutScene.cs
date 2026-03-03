@@ -108,8 +108,10 @@ public class CutScene : MonoBehaviour
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
 
-        if (GameManager.Instance.Replay != null)
-            GameManager.Instance.Replay.Switch(GameState.LoadScene);
+        if (GameManager.Instance.Replay == null)
+            GameManager.Instance.Replay = new ReplayManager();
+
+        GameManager.Instance.Replay.Switch(GameState.LoadScene);
     }
 
     /// <summary>
