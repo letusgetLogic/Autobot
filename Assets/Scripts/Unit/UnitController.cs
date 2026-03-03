@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Creating and initializing components.
+/// Processing and calling methods between internal and external components.
+/// Includes some data and logic that can be processed directly.
+/// </summary>
 public class UnitController : MonoBehaviour
 {
     [Header("References")]
@@ -9,6 +14,7 @@ public class UnitController : MonoBehaviour
     [SerializeField] private LerpMovement toNextSlotMover;
     [SerializeField] private LerpMovement attackMover;
 
+    #region Editor Mode
     [Header("Editor Mode")]
     [SerializeField] private SoUnit editorSoUnit;
     [SerializeField] private bool editorIsOnRightSide = false;
@@ -18,6 +24,8 @@ public class UnitController : MonoBehaviour
 
     public SoUnit DefinedUnit => editorSoUnit;
     public SoPack DefinedPack => editorDefinedPack;
+
+    #endregion
 
     public UnitView View => view;
 
@@ -118,7 +126,7 @@ public class UnitController : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes data.
+    /// Creates a model with/without repair system and initializes the view and sets data.
     /// </summary>
     /// <param name="_soUnit"></param>
     public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState, bool _isTeamLeft)
@@ -143,6 +151,7 @@ public class UnitController : MonoBehaviour
 
         model.InitView(view, _isTeamLeft);
 
+        // If unit is in the catalog, it already has all required data and stops processing here.
         if (GameManager.Instance == null || GameManager.Instance.IsCatalogActive)
             return;
 
@@ -158,14 +167,18 @@ public class UnitController : MonoBehaviour
     public AbilityBase TriggerAbility(TriggerType _triggerType)
     {
         int consumedEnergy = 0;
+
+        // Initialize consumed energy with the absolute value of scriptable object negative value.
         if (model.CurrentLevel.ConsumedEnergy != null)
         {
             consumedEnergy = Mathf.Abs(model.CurrentLevel.ConsumedEnergy.Value);
         }
 
+        // Doesn't have enough energy to trigger the ability.
         if (model.Data.Cur.ENG < consumedEnergy)
             return null;
 
+        // All conditions are satisfied, return the ability.
         if (_triggerType == model.CurrentLevel.TriggerType)
             return Ability;
 
@@ -222,6 +235,10 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Triggers the ability if it is existent at the start of battle.
+    /// </summary>
+    /// <returns></returns>
     public bool TriggerStartOfBattle()
     {
         var ability = TriggerAbility(TriggerType.StartOfBattle);
@@ -232,17 +249,25 @@ public class UnitController : MonoBehaviour
         return ability != null;
     }
 
+    /// <summary>
+    /// Triggers the ability associated with the BeforeAttack event and enqueues the specified enemy as a target if
+    /// applicable.
+    /// </summary>
+    /// <param name="_enemy">The enemy unit to evaluate and potentially enqueue as a target.</param>
+    /// <returns>The triggered ability if conditions are met; otherwise, null.</returns>
     public AbilityBase TriggerBeforeAttack(UnitController _enemy)
     {
         var ability = TriggerAbility(TriggerType.BeforeAttack);
         if (ability != null)
         {
+            // If the enemy don't have enough energy to steal, don't trigger.
             if (model.CurrentLevel.DoType == DoType.Steal)
             {
                 if (_enemy.Model.Data.Cur.ENG <= 0)
                     return null;
             }
 
+            // If the target of ability is attacking enemy, enqueue the enemy as a target.
             if (model.CurrentLevel.FromWho == FromWho.AttackingEnemy)
                 Targets.Enqueue(_enemy);
         }
@@ -361,14 +386,14 @@ public class UnitController : MonoBehaviour
 
         model.Data.SetEnergy(value);
 
-        if (_addEnergy > 0)
+        if (_addEnergy > 0) // Add energy.
         {
             view.ShowBuff(new Attribute(0, 0, _addEnergy));
 
             if (_onBuff)
                 EventManager.Instance.OnBuff?.Invoke();
         }
-        else
+        else // Consume energy.
         {
             view.ShowConsume(_addEnergy);
         }
@@ -384,13 +409,14 @@ public class UnitController : MonoBehaviour
     /// Add buff to the model data and updates the view.
     /// </summary>
     /// <param name="_isPernament"></param>
-    /// <param name="_addHealth"></param>
-    /// <param name="_addAttack"></param>
+    /// <param name="_attribute"></param>
     public void Buff(bool _isPernament, Attribute _attribute)
     {
         if (_isPernament)
+            // Add permanent buff.
             model.Add(_attribute, new Attribute(0, 0, 0));
         else
+            // Add temporary buff.
             model.Add(new Attribute(0, 0, 0), _attribute);
 
         view.ShowBuff(_attribute);

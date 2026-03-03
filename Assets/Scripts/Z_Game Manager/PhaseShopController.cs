@@ -39,6 +39,8 @@ public class PhaseShopController : MonoBehaviour
     /// </summary>
     public bool IsDragging { get; set; } = false;
 
+    public bool IsSwapping { get; private set; } = false;
+
     private StartTurnState startTurn = StartTurnState.None;
 
     private void Awake()
@@ -394,6 +396,7 @@ public class PhaseShopController : MonoBehaviour
                     _target.UpdateLevel(_attached.Model, true);
                     Destroy(_attached.gameObject);
                 }
+                else StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
             }
         }
         // Set drop slot inactive for randomness item.
@@ -508,6 +511,8 @@ public class PhaseShopController : MonoBehaviour
     /// <returns></returns>
     public IEnumerator Swap(UnitController _unitTarget, Transform _slotDragged, UnitController _unitDragged, Transform _slotTarget)
     {
+        IsSwapping = true;
+
         HideDescriptionByTransport();
 
         var _unitTargetView = _unitTarget.GetComponent<UnitView>();
@@ -520,8 +525,14 @@ public class PhaseShopController : MonoBehaviour
             _unitTarget.transform.SetParent(null, true);
             _unitTargetView.SetSpriteOverOther();
             delay1 = _unitTarget.MoveToParent(_slotDragged.position, _slotDragged);
+            EventManager.Instance.OnSwap?.Invoke();
         }
-        EventManager.Instance.OnSwap?.Invoke();
+        else
+        {
+            IsSwapping = false;
+            GameManager.Instance.IsBlockingInput = false;
+            yield break;
+        }
 
         yield return new WaitUntil(() => _unitTarget.transform.parent != null);
 
@@ -534,14 +545,21 @@ public class PhaseShopController : MonoBehaviour
         {
             _unitDragged.BeginSwap();
             delay2 = _unitDragged.MoveToParent(_slotTarget.position, _slotTarget);
+            EventManager.Instance.OnSwap?.Invoke();
         }
-        EventManager.Instance.OnSwap?.Invoke();
+        else
+        {
+            IsSwapping = false;
+            GameManager.Instance.IsBlockingInput = false;
+            yield break;
+        }
 
         yield return new WaitUntil(() => _unitDragged.transform.parent != null);
 
         Transport(_unitDragged, _slotTarget, true);
 
         Player.UpdateUnitData();
+        IsSwapping = false;
         GameManager.Instance.IsBlockingInput = false;
     }
 
@@ -651,7 +669,7 @@ public class PhaseShopController : MonoBehaviour
 
         AttachedController = _target;
         SetDropHint(_target != null);
-         
+
         EventManager.Instance.OnAttachedUnit?.Invoke(_target);
     }
 

@@ -2,6 +2,10 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Represents a unit with associated data, providing functionality for
+/// initialization, state management, attribute modification, and level progression.
+/// </summary>
 [Serializable]
 public class UnitModel
 {

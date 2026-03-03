@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Provides functionality for managing and displaying the repair mechanic, including durability, for a unit.
+/// </summary>
 public class RepairSystem
 {
     private UnitModel model;

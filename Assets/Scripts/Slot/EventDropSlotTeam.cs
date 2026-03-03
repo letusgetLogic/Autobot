@@ -38,6 +38,7 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
                 return;
         }
 
+        // EndDrag set later blocking input = false.
         GameManager.Instance.IsBlockingInput = true;
 
         PhaseShopController.Instance.ManageAttachedUnit(attached, slot, slot.UnitController());

@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Managing Visual Components.
+/// </summary>
 public class UnitView : MonoBehaviour
 {
     #region Variables
@@ -122,6 +125,7 @@ public class UnitView : MonoBehaviour
 
     private void Awake()
     {
+        // The unit in catalog sometimes doesn't need the components, so the components should be checked.
         if (description) description.SetActive(false);
         if (lockSpriteRenderer) lockSpriteRenderer.enabled = false;
         if (damageSpriteRenderer) damageSpriteRenderer.enabled = false;
@@ -143,6 +147,7 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void SetData(Sprite _sprite, string _name, string _modelID, string _id)
     {
+        // The unit in catalog sometimes doesn't need the components, so the components should be checked.
         if (dragSpriteRenderer) dragSpriteRenderer.sprite = _sprite;
         if (damageSpriteRenderer) damageSpriteRenderer.sprite = _sprite;
         if (shadowSpriteRenderer) shadowSpriteRenderer.sprite = _sprite;
@@ -249,13 +254,12 @@ public class UnitView : MonoBehaviour
         if (description) description.SetActive(_value);
     }
 
-    // Drag Event
-    #region Drag Event 
+    #region Drag Event Behaviour
 
     /// <summary>
-    /// OnPointerDown calls this method.
+    /// Adjusts the drag sprite's scale and updates sorting orders when the drag operation begins.
     /// </summary>
-    /// <param name="eventData"></param>
+    /// <param name="eventData">Pointer event data associated with the drag operation.</param>
     public void BeingAttached(PointerEventData eventData)
     {
         dragSpriteRenderer.gameObject.transform.localScale *= settings.DraggingScale;
@@ -265,9 +269,10 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
-    /// OnDrag calls this method.
+    /// Updates the positions of the drag sprite and canvas statistics to follow the mouse pointer during a drag
+    /// operation.
     /// </summary>
-    /// <param name="eventData"></param>
+    /// <param name="eventData">Pointer event data containing the current mouse position.</param>
     public void BeingMovedOnMouse(PointerEventData eventData)
     {
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(
@@ -278,9 +283,9 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
-    /// OnPointerUp calls this method.
+    /// Resets the visual state and local position in response to a pointer release event.
     /// </summary>
-    /// <param name="eventData"></param>
+    /// <param name="eventData">Event data associated with the pointer release.</param>
     public void BeingReleased(PointerEventData eventData)
     {
         SetVisualDefault();
@@ -355,7 +360,6 @@ public class UnitView : MonoBehaviour
     {
         repairDisplayHp.SetActive(_value);
         repairDisplayAtk.SetActive(_value);
-        Debug.Log(gameObject.name + repairDisplayHp + " is " + repairDisplayHp.activeSelf);
     }
 
     /// <summary>
