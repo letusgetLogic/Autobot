@@ -32,6 +32,7 @@ public class SettingsButton : MonoBehaviour
         //else
         //    return;
 
+        isSettingsOpen = settingsPanel.activeSelf;
         isSettingsOpen = !isSettingsOpen;
         settingsPanel.SetActive(isSettingsOpen);
 
