@@ -8,6 +8,12 @@ public class MenuButton : MonoBehaviour
     /// </summary>
     public void OnButtonClick()
     {
+        if (GameManager.Instance &&
+            GameManager.Instance.CurrentGame != null)
+        {
+            GameManager.Instance.CurrentGame.State = GameState.EndOfGame;
+        }
+
         SceneManager.LoadScene("Menu");
     }
 }

@@ -41,52 +41,6 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
     }
 
-    /// <summary>
-    /// Is the hovered slot interactable?
-    /// </summary>
-    /// <param name="_attached"></param>
-    /// <param name="_dragged"></param>
-    /// <returns></returns>
-    private bool IsInteractable(UnitController _attached, GameObject _dragged)
-    {
-        if (_attached == null)
-            return false;
-
-        if (_attached.Model.IsInShop())
-        {
-            if (PhaseShopUI.Instance.HasEnoughCurrency(
-                   _attached.Model.Cost.Nut, _attached.Model.Cost.Tool, false) == false)
-            return false;
-
-            if (_attached.Model.IsItemDoRandomness)
-            {
-                if (slot.CompareTag("Slot Random"))
-                    return true;
-            }
-        }
-
-        //  attached is clicked and slot is empty
-        if (_attached.IsRobot(_attached.Model.SoUnit.UnitType) && slot.Unit() == null)
-            return true;
-
-        if (_dragged == null || _dragged.CompareTag("Unit") == false)
-            return false;
-
-        var controller = _dragged.GetComponent<UnitController>();
-        if (controller == null)
-            return false;
-
-        // dragged is a robot
-        if (controller.IsRobot(controller.Model.SoUnit.UnitType))
-            return true;
-
-        // dragged is an item and slot is team slot
-        if (controller.CanItemBeDropped())
-            return true;
-
-        return false;
-    }
-
     private void OnMouseOver()
     {
         if (GameManager.Instance.IsBlockingInput)
@@ -144,6 +98,15 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
     }
 
+    /// <summary>
+    /// Mouse exited the collider.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isCounting = false;
+    }
+
     private void SetDefault()
     {
         unitOnSlot = default;
@@ -170,15 +133,6 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
 
         return 0;
-    }
-
-    /// <summary>
-    /// Mouse exited the collider.
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        isCounting = false;
     }
 
     /// <summary>
@@ -225,4 +179,51 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         return false;
     }
+
+    /// <summary>
+    /// Is the hovered slot interactable?
+    /// </summary>
+    /// <param name="_attached"></param>
+    /// <param name="_dragged"></param>
+    /// <returns></returns>
+    private bool IsInteractable(UnitController _attached, GameObject _dragged)
+    {
+        if (_attached == null)
+            return false;
+
+        if (_attached.Model.IsInShop())
+        {
+            if (PhaseShopUI.Instance.HasEnoughCurrency(
+                   _attached.Model.Cost.Nut, _attached.Model.Cost.Tool, false) == false)
+                return false;
+
+            if (_attached.Model.IsItemDoRandomness)
+            {
+                if (slot.CompareTag("Slot Random"))
+                    return true;
+            }
+        }
+
+        //  attached is clicked and slot is empty
+        if (_attached.IsRobot(_attached.Model.SoUnit.UnitType) && slot.Unit() == null)
+            return true;
+
+        if (_dragged == null || _dragged.CompareTag("Unit") == false)
+            return false;
+
+        var controller = _dragged.GetComponent<UnitController>();
+        if (controller == null)
+            return false;
+
+        // dragged is a robot
+        if (controller.IsRobot(controller.Model.SoUnit.UnitType))
+            return true;
+
+        // dragged is an item and slot is team slot
+        if (controller.CanItemBeDropped())
+            return true;
+
+        return false;
+    }
+
 }
