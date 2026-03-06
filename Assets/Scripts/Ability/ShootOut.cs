@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 public class ShootOut : AbilityBase
 {
     private readonly UnitModel model;
@@ -21,7 +21,7 @@ public class ShootOut : AbilityBase
     }
 
     /// <summary>
-    ///  Constructor of Craft.
+    ///  Constructor of ShootOut.
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_model"></param>
@@ -71,6 +71,7 @@ public class ShootOut : AbilityBase
 
         Coroutine = null;
 
+        // other variant of shoot out, not used for now
 
         //EventManager.Instance.OnShootOut?.Invoke();
 

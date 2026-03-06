@@ -68,6 +68,10 @@ public class ButtonInteractedAnimation : MonoBehaviour, IPointerClickHandler, IP
         GameManager.Instance.IsBlockingInput = false;
     }
 
+    /// <summary>
+    /// OnPointerClick method to handle button click events. It initiates the rotation animation and manages input blocking.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         if (GameManager.Instance.IsBlockingInput || isRunning)

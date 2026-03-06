@@ -13,7 +13,10 @@
         }
     }
 
-
+    /// <summary>
+    /// Switch the game state and execute the corresponding actions for each state.
+    /// </summary>
+    /// <param name="_state"></param>
     public void Switch(GameState _state)
     {
         state = _state;

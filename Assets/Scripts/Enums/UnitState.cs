@@ -1,12 +1,4 @@
-﻿/// <summary>
-/// None, 
-/// InSlotShop,
-/// Freezed,
-/// InSlotTeam,
-/// InSlotCharge,
-/// InPhaseBattle
-/// </summary>
-public enum UnitState
+﻿public enum UnitState
 {
     None, 
     InSlotShop,

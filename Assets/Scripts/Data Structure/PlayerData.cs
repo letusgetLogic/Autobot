@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-
+﻿
 [System.Serializable]
 public class PlayerData
 {

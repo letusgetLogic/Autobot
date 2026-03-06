@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -23,6 +22,11 @@ public class TurnManager
     private uint remoteBattleHash;
     private BattleResult cachedBattleResult;
 
+    /// <summary>
+    /// Submits the player's actions for the current turn. This will start the lockstep process, where both players exchange hashes and confirmations to ensure that they are in sync. 
+    /// If the lockstep process fails, the session will handle the desync or disconnect as needed.
+    /// </summary>
+    /// <param name="actions"></param>
     public void SubmitTurn(List<int> actions)
     {
         if (state != TurnLockState.Idle)
@@ -42,6 +46,11 @@ public class TurnManager
         timer = 0f;
     }
 
+    /// <summary>
+    /// On receiving a turn hash from the remote player, this method compares it with the local hash. If they match, it sends an acknowledgment and waits for confirmation. 
+    /// If they don't match, it sends a desync message and handles the desync scenario.
+    /// </summary>
+    /// <param name="hash"></param>
     public void OnRemoteTurnHash(uint hash)
     {
         remoteHash = hash;
@@ -58,23 +67,39 @@ public class TurnManager
         state = TurnLockState.WaitingForTurnAck;
         ResetTimeout();
     }
+
+    /// <summary>
+    /// On receiving a turn acknowledgment from the remote player, this method confirms the turn and advances to the next turn. 
+    /// It also resets the lockstep state to idle for the next turn.
+    /// </summary>
     public void OnTurnAckReceived()
     {
         state = TurnLockState.Confirmed;
         AdvanceTurn();
     }
 
+    /// <summary>
+    /// On receiving a battle result acknowledgment from the remote player, this method applies the battle result and advances to the next turn.
+    /// </summary>
     public void OnBattleResultAckReceived()
     {
         ApplyBattleResult(cachedBattleResult);
         AdvanceTurn();
     }
 
+    /// <summary>
+    /// Applies the battle result to the game state. This method should update the game state based on the results of the battle simulation, such as updating player health, unit states, and any other relevant information.
+    /// </summary>
+    /// <param name="cachedBattleResult"></param>
     private void ApplyBattleResult(BattleResult cachedBattleResult)
     {
         
     }
 
+    /// <summary>
+    /// Advances to the next turn by incrementing the current turn counter and resetting the lockstep state to idle. 
+    /// This method is called after a turn is confirmed or after applying the battle result, preparing the system for the next turn's input.
+    /// </summary>
     private void AdvanceTurn()
     {
         currentTurn++;
@@ -84,6 +109,12 @@ public class TurnManager
         ResetTimeout();
     }
 
+    /// <summary>
+    /// On receiving turn input from the remote player, this method validates the input against the expected actions for the current turn. 
+    /// If the input is valid, it proceeds with the lockstep process.
+    /// </summary>
+    /// <param name="reader"></param>
+    /// <param name="expectedActions"></param>
     public void OnTurnInputReceived(
         DataStreamReader reader,
         List<int> expectedActions
@@ -105,6 +136,9 @@ public class TurnManager
         }
     }
 
+    /// <summary>
+    /// On confirming the turn, this method runs the deterministic battle simulation based on the current game state and the actions taken by both players.
+    /// </summary>
     private void OnTurnConfirmed()
     {
         state = TurnLockState.BattleSimulating;
@@ -122,6 +156,11 @@ public class TurnManager
         ResetTimeout();
     }
 
+    /// <summary>
+    /// On receiving a battle result hash from the remote player, this method compares it with the local battle hash. 
+    /// If they match, it sends an acknowledgment and waits for confirmation.
+    /// </summary>
+    /// <param name="hash"></param>
     public void OnBattleResultHashReceived(uint hash)
     {
         remoteBattleHash = hash;
@@ -139,6 +178,11 @@ public class TurnManager
         ResetTimeout();
     }
 
+    /// <summary>
+    /// This method should be called regularly (e.g., in the Update loop) to check for timeouts in the lockstep process. 
+    /// If a timeout occurs, it will trigger a retry of the current step in the lockstep process.
+    /// </summary>
+    /// <param name="deltaTime"></param>
     public void Tick(float deltaTime)
     {
         if (state == TurnLockState.Confirmed ||
@@ -155,6 +199,9 @@ public class TurnManager
         }
     }
 
+    /// <summary>
+    /// Handles a timeout in the lockstep process by incrementing the retry count and checking if it exceeds the maximum allowed retries.
+    /// </summary>
     private void HandleTimeout()
     {
         retryCount++;
@@ -172,6 +219,9 @@ public class TurnManager
         Resend();
     }
 
+    /// <summary>
+    /// Resends the necessary data based on the current state of the lockstep process. This method is called when a timeout occurs, allowing the system to attempt to recover from potential packet loss or delays by resending the relevant information to the remote player.
+    /// </summary>
     private void Resend()
     {
         switch (state)
@@ -194,12 +244,18 @@ public class TurnManager
         }
     }
 
+    /// <summary>
+    /// Resets the timeout timer and retry count. This method is called after successfully receiving the expected data from the remote player, allowing the lockstep process to continue without triggering unnecessary retries or timeouts.
+    /// </summary>
     private void ResetTimeout()
     {
         timer = 0f;
         retryCount = 0;
     }
 
+    /// <summary>
+    /// Resets the lockstep state to idle and clears any cached data. This method can be called when starting a new game session or after handling a desync or disconnect scenario, ensuring that the turn manager is in a clean state for the next round of gameplay.
+    /// </summary>
     public void ResetLockstep()
     {
         state = TurnLockState.Idle;

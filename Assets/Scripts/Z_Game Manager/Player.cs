@@ -62,6 +62,9 @@ public class Player
         GameManager.Instance.Switch(GameState.EndOfTurn);
     }
 
+    /// <summary>
+    /// Saves the data of units from shop phase for replaying the battle phase. This is used for replaying the battle phase after watching the replay of the battle phase.
+    /// </summary>
     public void SaveDataByReplay()
     {
         var phaseShop = PhaseShopController.Instance;
@@ -75,6 +78,9 @@ public class Player
         UpdateUnitData();
     }
 
+    /// <summary>
+    /// Loads the data of units from shop phase for replaying the battle phase. This is used for replaying the battle phase after watching the replay of the battle phase.
+    /// </summary>
     public void LoadDataByReplay()
     {
         var phaseShop = PhaseShopController.Instance;

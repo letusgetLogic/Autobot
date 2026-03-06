@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 /// <summary>
 /// Only items trigger Shutdown.
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 public class Shutdown : AbilityBase
 {
     /// <summary>
-    /// Constructor of Buff.
+    /// Constructor of Shutdown.
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>

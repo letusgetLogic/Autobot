@@ -2,14 +2,9 @@
 
 public class ReplayBattleButton : MonoBehaviour
 {
-
-    private StateBase state { get; set; }
-
     /// <summary>
-    /// This sub state is used to run another states without breaking the current base state.
+    /// Initiates replay playback if input is not blocked and no replay is currently active.
     /// </summary>
-    public StateBase SubState { get; set; }
-
     public void OnReplay()
     {
         if (GameManager.Instance.IsBlockingInput)

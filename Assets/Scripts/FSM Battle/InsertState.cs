@@ -71,8 +71,11 @@ public class InsertState : StateBase
         IsDone = true;
     }
 
-
-
+    /// <summary>
+    /// Attempts to move the front unit in the slot array to the nearest available empty slot, if possible.
+    /// </summary>
+    /// <param name="_slots">An array of Slot objects to search for available space and move units.</param>
+    /// <returns>A tuple containing the animation time for the move and a value indicating whether a move was possible.</returns>
     public static (float AnimTime, bool CanMove) MakeSpaceAtMostFront(Slot[] _slots)
     {
         float animTime = 0f;
@@ -128,7 +131,6 @@ public class InsertState : StateBase
                     var slot = _slots[mostBehindEmpty];
 
                     countTime += movedUnit.MoveToParent(slot.transform.position, slot.transform);
-                    //movedUnit.transform.SetParent(_slots[mostBehindEmpty].transform, false);
 
                     mostBehindEmpty--;
                     continue;

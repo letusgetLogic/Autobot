@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Unity.Collections;
 
 public static class DeterminismHash
 {
+    /// <summary>
+    /// Hashes the input for a turn, including the turn number, random seed, and player actions.
+    /// </summary>
+    /// <param name="turn"></param>
+    /// <param name="seed"></param>
+    /// <param name="actions"></param>
+    /// <returns></returns>
     public static uint HashTurnInput(
         int turn,
         int seed,
@@ -24,6 +30,12 @@ public static class DeterminismHash
         return Crc32.Compute(stream.ToArray());
     }
 
+    /// <summary>
+    /// Hashes the battle result, including the winner and the final state of all units.
+    /// </summary>
+    /// <param name="units"></param>
+    /// <param name="winner"></param>
+    /// <returns></returns>
     public static uint HashBattleResult(
         IReadOnlyList<SaveUnitData> units,
         int winner
@@ -44,6 +56,12 @@ public static class DeterminismHash
         return Crc32.Compute(stream.ToArray());
     }
 
+    /// <summary>
+    /// Hashes the battle result, including the winner and the final state of all units, using a custom hash function.
+    /// </summary>
+    /// <param name="turn"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
     public static uint HashBattleResult(int turn, BattleResult result)
     {
         unchecked
@@ -61,6 +79,13 @@ public static class DeterminismHash
         }
     }
 
+    /// <summary>
+    /// Hashes the battle result, including the winner and the final state of all units, using a custom hash function.
+    /// </summary>
+    /// <param name="unitSnapshots"></param>
+    /// <param name="winner"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     internal static uint HashBattleResult(object unitSnapshots, int winner)
     {
         throw new NotImplementedException();

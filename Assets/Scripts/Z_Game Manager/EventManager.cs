@@ -8,15 +8,15 @@ public class EventManager
         get
         {
             // Lazy loading
-            if (instance == null)
+            if (_Instance == null)
             {
-                instance = new EventManager();
+                _Instance = new EventManager();
             }
 
-            return instance;
+            return _Instance;
         }
     }
-    private static EventManager instance;
+    private static EventManager _Instance;
 
     private EventManager() { }
 

@@ -200,6 +200,10 @@ public class GameManager : MonoBehaviour
         //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
 
+    /// <summary>
+    /// Switches the game state and performs actions based on the new state.
+    /// </summary>
+    /// <param name="_state"></param>
     public void Switch(GameState _state)
     {
         if (CurrentGame != null)
@@ -321,6 +325,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Plays the replay of the last battle. It initializes a new ReplayManager and switches to the battle scene.
+    /// </summary>
     public void PlayReplay()
     {
         Replay = new ReplayManager();
@@ -328,6 +335,10 @@ public class GameManager : MonoBehaviour
         CutScene.Instance.SwitchScene("PhaseBattle");
     }
 
+    /// <summary>
+    /// Loads the scene with the given name. It is called by the CutScene component after the close scene animation is finished.
+    /// </summary>
+    /// <param name="_scene"></param>
     public void LoadScene(string _scene)
     {
         Debug.Log("Loading Scene: " + _scene);

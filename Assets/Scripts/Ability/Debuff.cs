@@ -8,7 +8,7 @@ public class Debuff : AbilityBase
     private readonly Slot[] enemySlots;
 
     /// <summary>
-    /// Constructor of Buff.
+    /// Constructor of Debuff.
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
@@ -34,6 +34,8 @@ public class Debuff : AbilityBase
                 DebuffRandomEnemy(rand);
                 break;
 
+                // not used yet
+
             //case var a when a == ToWho.NearestMateAhead:
             //    BuffNearest(GetNearest(a, CurrentLevel.ToWhoCount));
             //    break;
@@ -55,6 +57,10 @@ public class Debuff : AbilityBase
         Coroutine = null;
     }
 
+    /// <summary>
+    /// Applies a debuff to a random enemy unit for a specified number of times.
+    /// </summary>
+    /// <param name="_rnd">The random number generator used to select enemy units.</param>
     private void DebuffRandomEnemy(Random _rnd)
     {
         List<UnitController> teams = AllBotsIn(enemySlots);
@@ -71,6 +77,11 @@ public class Debuff : AbilityBase
         }
     }
 
+    /// <summary>
+    /// Applies a debuff to the specified unit, dealing damage based on the current level's debuff value.
+    /// </summary>
+    /// <param name="_unit">The unit to apply the debuff to.</param>
+    /// <returns>true if the debuff was applied; otherwise, false.</returns>
     private bool DebuffUnit(UnitController _unit)
     {
         if (_unit == null)

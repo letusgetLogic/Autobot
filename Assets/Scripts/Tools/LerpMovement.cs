@@ -37,6 +37,9 @@ public class LerpMovement : MonoBehaviour
         MoveBackward();
     }
 
+    /// <summary>
+    /// Sets the default values for the movement.
+    /// </summary>
     private void SetDefault()
     {
         currentValue = 0f;
@@ -51,6 +54,9 @@ public class LerpMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// OnMove is called from the context menu to start the movement.
+    /// </summary>
     [ContextMenu("Move")]
     public void OnMove()
     {
@@ -58,6 +64,10 @@ public class LerpMovement : MonoBehaviour
         moveState = Direction.Forward;
     }
 
+    /// <summary>
+    /// Triggers the movement and returns the animation time.
+    /// </summary>
+    /// <returns></returns>
     public float Trigger()
     {
         SetDefault();
@@ -69,6 +79,12 @@ public class LerpMovement : MonoBehaviour
         return default;
     }
 
+    /// <summary>
+    /// Moves to the target position and returns the animation time.
+    /// </summary>
+    /// <param name="_target"></param>
+    /// <param name="_targetTf"></param>
+    /// <returns></returns>
     public float MoveTo(Vector3 _target, Transform _targetTf)
     {
         SetDefault();
@@ -84,6 +100,11 @@ public class LerpMovement : MonoBehaviour
         return default;
     }
 
+    /// <summary>
+    /// Moves with the delta position and returns the animation time.
+    /// </summary>
+    /// <param name="_deltaPosition"></param>
+    /// <returns></returns>
     public float MoveWithDelta(Vector3 _deltaPosition)
     {
         SetDefault();

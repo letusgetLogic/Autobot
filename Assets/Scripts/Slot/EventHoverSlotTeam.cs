@@ -88,9 +88,6 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
                     unitOnSlot, draggedSlot.transform,
                     unitDragged, slot.transform));
 
-                //PhaseShopUnitManager.Instance.Transport(unitOnSlot, draggedSlot.transform, true, false);
-                //PhaseShopUnitManager.Instance.Transport(unitDragged, slot.transform, true, false);
-
                 SetDefault();
 
                 isCounting = false;
@@ -107,6 +104,9 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
         isCounting = false;
     }
 
+    /// <summary>
+    /// Set default values to references.
+    /// </summary>
     private void SetDefault()
     {
         unitOnSlot = default;

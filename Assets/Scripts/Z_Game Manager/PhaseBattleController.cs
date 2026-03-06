@@ -210,6 +210,11 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
         }
     }
 
+    /// <summary>
+    /// Enqueue the ability that will be triggered, and this queue will be executed later.
+    /// </summary>
+    /// <param name="ability"></param>
+    /// <param name="isDestroyingUnit"></param>
     private void EnqueueAbility(AbilityBase ability, bool isDestroyingUnit)
     {
         UnitAbilities.Enqueue(ability);

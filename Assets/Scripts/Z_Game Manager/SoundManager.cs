@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿
 public class SoundManager
 {
     #region Instance Lazy Loading
@@ -8,16 +7,19 @@ public class SoundManager
         get
         {
             // Lazy loading
-            if (instance == null)
+            if (_Instance == null)
             {
-                instance = new SoundManager();
+                _Instance = new SoundManager();
             }
 
-            return instance;
+            return _Instance;
         }
     }
-    private static SoundManager instance;
+    private static SoundManager _Instance;
 
+    /// <summary>
+    /// Constructor of SoundManager, subscribes to events.
+    /// </summary>
     private SoundManager() 
     {
         EventManager.Instance.OnIncreaseLives += () => PlayOneShot("Button");

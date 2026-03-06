@@ -75,6 +75,11 @@ public class CutScene : MonoBehaviour
             StartCoroutine(LoadSceneByReplay(_scene));
     }
 
+    /// <summary>
+    /// Loads the new scene by loading the scene directly after the close scene animation.
+    /// </summary>
+    /// <param name="_scene"></param>
+    /// <returns></returns>
     private IEnumerator LoadScene(string _scene)
     {
         yield return new WaitForSeconds(delayClose);
@@ -97,6 +102,11 @@ public class CutScene : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads the new scene by replaying the cutscene instead of loading the scene directly.
+    /// </summary>
+    /// <param name="_scene"></param>
+    /// <returns></returns>
     private IEnumerator LoadSceneByReplay(string _scene)
     {
         yield return new WaitForSeconds(delayClose);

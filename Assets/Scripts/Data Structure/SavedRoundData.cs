@@ -1,5 +1,4 @@
 ﻿[System.Serializable]
-
 public class SavedRoundData
 {
     public PlayerData SavedPlayerData1 { get; set; }

@@ -32,6 +32,11 @@ public struct Currency
     /// </summary>
     public int SoTool;
 
+    /// <summary>
+    /// Initializes a new instance of the Currency class with the specified nut and tool values.
+    /// </summary>
+    /// <param name="_nut">The value to assign to Nut.</param>
+    /// <param name="_tool">The value to assign to SoTool.</param>
     public Currency(int _nut, int _tool)
     {
         Nut = _nut;

@@ -1,5 +1,4 @@
-﻿using FMODUnity;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -135,7 +134,11 @@ public abstract class AbilityBase : ScriptableObject
         return false;
     }
 
-
+    /// <summary>
+    /// Retrieves all unit controllers in the specified slots except the current controller.
+    /// </summary>
+    /// <param name="_slots">An array of slots to search for unit controllers.</param>
+    /// <returns>A list of unit controllers found in the provided slots, excluding the current controller.</returns>
     protected virtual List<UnitController> AllBotsIn(Slot[] _slots)
     {
         List<UnitController> teamUnitControllers = new List<UnitController>();
@@ -152,6 +155,11 @@ public abstract class AbilityBase : ScriptableObject
         return teamUnitControllers;
     }
 
+    /// <summary>
+    /// Finds and returns the nearest unit controller in the specified direction relative to the current unit.
+    /// </summary>
+    /// <param name="_toWho">Specifies the direction in which to search for the nearest unit.</param>
+    /// <returns>The nearest UnitController in the specified direction, or null if none is found.</returns>
     protected virtual UnitController GetOneNearest(ToWho _toWho)
     {
         int dir = _toWho switch
@@ -170,6 +178,12 @@ public abstract class AbilityBase : ScriptableObject
             return Controller.TeamSlots[target].UnitController();
     }
 
+    /// <summary>
+    /// Finds an amount of the nearest unit controllers based on the specified direction.
+    /// </summary>
+    /// <param name="_toWho">Specifies the direction to search for nearby units.</param>
+    /// <param name="_amount">The number of nearest units to retrieve.</param>
+    /// <returns>A list of the nearest unit controllers in the specified direction.</returns>
     protected virtual List<UnitController> GetNearest(ToWho _toWho, int _amount)
     {
         var units = new List<UnitController>();

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Steal : AbilityBase
 {
@@ -44,6 +42,12 @@ public class Steal : AbilityBase
         Coroutine = null;
     }
 
+    /// <summary>
+    /// Calculates the amount of energy stolen from a target unit based on the causer's debuff value.
+    /// </summary>
+    /// <param name="_target">The unit from which energy is being stolen.</param>
+    /// <param name="_causer">The unit causing the energy to be stolen.</param>
+    /// <returns>The amount of energy stolen, as a negative value up to the target's current energy.</returns>
     public static int StolenEnergy(UnitController _target, UnitController _causer)
     {
         int targetENG = _target.Model.Data.Cur.ENG;

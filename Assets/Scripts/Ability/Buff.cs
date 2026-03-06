@@ -61,6 +61,10 @@ public class Buff : AbilityBase
         Coroutine = null;
     }
 
+    /// <summary>
+    /// Applies a buff to a random selection of allied units based on the current level's target count.
+    /// </summary>
+    /// <param name="_rnd">The random number generator used to select units.</param>
     private void BuffRandomMate(Random _rnd)
     {
         List<UnitController> teams = AllBotsIn(teamSlots);
@@ -77,6 +81,9 @@ public class Buff : AbilityBase
         }
     }
 
+    /// <summary>
+    /// Applies a buff to the next unit in the target queue if any are available.
+    /// </summary>
     private void BuffTargetByItem()
     {
         if (Targets.Count <= 0)
@@ -86,6 +93,10 @@ public class Buff : AbilityBase
         BuffUnit(unit);
     }
 
+    /// <summary>
+    /// Applies a buff to each unit in the specified list.
+    /// </summary>
+    /// <param name="_units">The list of units to buff.</param>
     private void BuffNearest(List<UnitController> _units)
     {
         if (_units.Count == 0)
@@ -97,6 +108,9 @@ public class Buff : AbilityBase
         }
     }
 
+    /// <summary>
+    /// Applies a buff to all allied units in the current team slots.
+    /// </summary>
     private void BuffAllMates()
     {
         List<UnitController> teams = AllBotsIn(teamSlots);
@@ -107,6 +121,11 @@ public class Buff : AbilityBase
         }
     }
 
+    /// <summary>
+    /// Applies a buff to the specified unit and sets it as a temporary item if applicable.
+    /// </summary>
+    /// <param name="_unit">The unit to buff.</param>
+    /// <returns>true if the buff was applied; otherwise, false.</returns>
     private bool BuffUnit(UnitController _unit)
     {
         if (_unit == null)

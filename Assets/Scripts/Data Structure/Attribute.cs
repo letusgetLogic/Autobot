@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
+﻿
 [System.Serializable]
 public struct Attribute
 {

@@ -150,6 +150,10 @@ public static class NetworkProtocol
         }
     }
 
+    /// <summary>
+    /// Handle turn input received from the client. This method reads the turn index and the list of actions from the incoming data stream.
+    /// </summary>
+    /// <param name="_reader"></param>
     private static void HandleTurnInput(
         DataStreamReader _reader
     )

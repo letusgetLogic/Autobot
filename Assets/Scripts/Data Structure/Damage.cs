@@ -1,9 +1,12 @@
-﻿public struct Damage
+﻿/// <summary>
+/// Return non-negative value.
+/// </summary>
+public struct Damage
 {
     public int Value;
 
     /// <summary>
-    /// Get the damage value in parameter and return the valid value.
+    /// Get the damage value in parameter and return non-negative value.
     /// </summary>
     /// <param name="_value"></param>
     public Damage(int _value)

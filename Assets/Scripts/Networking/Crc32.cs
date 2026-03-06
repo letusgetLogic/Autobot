@@ -2,6 +2,11 @@
 {
     static readonly uint[] Table = CreateTable();
 
+    /// <summary>
+    /// Creates the CRC32 lookup table using the polynomial 0xEDB88320. 
+    /// This table is used to efficiently compute the CRC32 hash for byte arrays.
+    /// </summary>
+    /// <returns></returns>
     static uint[] CreateTable()
     {
         uint poly = 0xEDB88320u;
@@ -19,6 +24,11 @@
         return table;
     }
 
+    /// <summary>
+    /// Computes the CRC32 hash for the given byte array using the precomputed lookup table.
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static uint Compute(byte[] data)
     {
         uint crc = 0xFFFFFFFFu;

@@ -26,6 +26,11 @@ public class MainMenu : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Sets the replay button active if there is a current round in the GameManager, allowing the player to replay the last round they played. 
+    /// This is done after ensuring that the GameManager instance is available, as it may not be immediately accessible when the main menu is loaded.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator SetReplayButton()
     {
         yield return new WaitUntil(() => GameManager.Instance != null);

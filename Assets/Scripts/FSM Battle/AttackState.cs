@@ -105,6 +105,11 @@ public class AttackState : StateBase
         IsDone = true;
     }
 
+    /// <summary>
+    /// Displays the collision visual after a specified delay and schedules it to be hidden after a set duration.
+    /// </summary>
+    /// <param name="_delay">The time, in seconds, to wait before showing the collision visual.</param>
+    /// <returns>An enumerator for coroutine execution.</returns>
     private IEnumerator ShowCollide(float _delay)
     {
         yield return new WaitForSeconds(_delay);

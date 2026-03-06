@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PhaseShopController : MonoBehaviour
 {
@@ -837,11 +835,18 @@ public class PhaseShopController : MonoBehaviour
         return isRandomnessItemAttached && _slot != itemRandomnessDropSlot;
     }
 
+    /// <summary>
+    /// Sets the drop slot for randomness item inactive.
+    /// </summary>
     public void SetItemRandomnessInactive()
     {
         itemRandomnessDropSlot.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Destroys the unit.
+    /// </summary>
+    /// <param name="_unit"></param>
     public void DestroyUnit(UnitController _unit)
     {
         _unit.DestroyObject();

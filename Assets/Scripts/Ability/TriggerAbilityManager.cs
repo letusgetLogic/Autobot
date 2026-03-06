@@ -18,10 +18,6 @@
 
     #endregion
 
-    #region Trigger Queues
-
-
-    #endregion
 
     /// <summary>
     /// Triggers abilities in the right order. Steal has the greatest priority.
@@ -106,7 +102,12 @@
     }
 
 
-
+    /// <summary>
+    /// Registers a unit's ability if a friend ahead meets the specified trigger condition.
+    /// </summary>
+    /// <param name="_friendAhead">The unit controller representing the friend ahead in the team.</param>
+    /// <param name="_triggerType">The trigger type to check for the friend ahead.</param>
+    /// <returns>true if the ability was registered or the trigger condition was met; otherwise, false.</returns>
     public bool RegisterFriendAhead(UnitController _friendAhead, TriggerType _triggerType)
     {
         for (int i = 1; i < _friendAhead.TeamSlots.Length; i++)
