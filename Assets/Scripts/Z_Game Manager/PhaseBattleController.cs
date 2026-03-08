@@ -69,6 +69,12 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
 
         Time.timeScale = 1f;
 
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
+            return;
+        }
+
         if (GameManager.Instance.Replay != null)
             GameManager.Instance.Replay.Switch(GameState.StartOfBattle);
         else

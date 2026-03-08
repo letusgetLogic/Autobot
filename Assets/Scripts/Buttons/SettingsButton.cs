@@ -18,6 +18,9 @@ public class SettingsButton : MonoBehaviour
     /// </summary>
     public void OnButtonClick()
     {
+        if (GameManager.Instance.IsBlockingInput)
+            return;
+
         isSettingsOpen = settingsPanel.activeSelf;
         isSettingsOpen = !isSettingsOpen;
         settingsPanel.SetActive(isSettingsOpen);

@@ -3158,8 +3158,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8643658486882797714}
   - component: {fileID: 6062272584430887621}
-  - component: {fileID: 4368942393228875258}
   - component: {fileID: 8761252099582369240}
+  - component: {fileID: 4368942393228875258}
   m_Layer: 0
   m_Name: 
   m_TagString: Unit
@@ -3207,6 +3207,20 @@ MonoBehaviour:
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
   editorDefinedPack: {fileID: 0}
+--- !u!114 &8761252099582369240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8212703507569859520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605ddcb485355074986b4660c8fef850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soSettings: {fileID: 11400000, guid: 810627d1b43751b44aefe2115093914d, type: 2}
+  definedTargetTransform: {fileID: 0}
 --- !u!114 &4368942393228875258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3292,20 +3306,6 @@ MonoBehaviour:
   repairStepFillAtk3: {fileID: 7162433002788989233}
   canvasStats: {fileID: 879442083360165133}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
---- !u!114 &8761252099582369240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8212703507569859520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605ddcb485355074986b4660c8fef850, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soSettings: {fileID: 11400000, guid: 810627d1b43751b44aefe2115093914d, type: 2}
-  definedTargetTransform: {fileID: 0}
 --- !u!1 &8580300401846943112
 GameObject:
   m_ObjectHideFlags: 0

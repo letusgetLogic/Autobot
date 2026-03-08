@@ -19,21 +19,23 @@ public class EventManager
     private static EventManager _Instance;
 
     private EventManager() { }
-
     #endregion
 
 
+    public UnityAction OnButtonSound { get; set; }
+
+    #region Menu
     public UnityAction OnIncreaseLives { get; set; }
     public UnityAction OnDecreaseLives { get; set; }
-
-
-
     public UnityAction OnInvalidInput { get; set; }
+    #endregion
+
+
     public UnityAction OnCloseScene { get; set; }
     public UnityAction OnMoveHintClick { get; set; }
     public UnityAction OnOpenScene { get; set; }
 
-
+    
 
     #region Phase Shop
 

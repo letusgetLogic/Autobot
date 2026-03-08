@@ -46,9 +46,9 @@ public class Player
         delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
         phaseShop.ChargeTeamBots();
 
-        PhaseShopController.Instance.StartCoroutine(DelayEndShop(delay));
+        endShopCoroutine = PhaseShopController.Instance.StartCoroutine(DelayEndShop(delay));
     }
-
+    private Coroutine endShopCoroutine;
     /// <summary>
     /// Delays ending the shop phase for charging units at turn 1.
     /// </summary>
@@ -60,6 +60,7 @@ public class Player
 
         UpdateUnitData();
         GameManager.Instance.Switch(GameState.EndOfTurn);
+        endShopCoroutine = null;
     }
 
     /// <summary>

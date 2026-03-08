@@ -15,8 +15,10 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
         modelID,
         attack,
         health,
-        itemAbility;
+        itemAbility,
+        itemNut;
 
+    [Header("References")]
     [SerializeField] private GameObject stats;
 
     [SerializeField] private GameObject[] myLevels;
@@ -124,10 +126,16 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
 
             itemAbility.gameObject.SetActive(true);
             itemAbility.text = _data.Levels.Length > 0 ? _data.Levels[0].Description : "";
+            itemNut.text = _data.UniqueCostNuts != null ? _data.UniqueCostNuts.Value.ToString() : "";
             return;
         }
 
         itemAbility.gameObject.SetActive(false);
+
+        foreach (var hide in hideByItems)
+        {
+            hide.SetActive(true);
+        }
 
         if (_data.Attack <= 0 && _data.Health <= 0)
         {

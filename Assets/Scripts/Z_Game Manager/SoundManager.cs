@@ -22,6 +22,8 @@ public class SoundManager
     /// </summary>
     private SoundManager() 
     {
+        EventManager.Instance.OnButtonSound += () => PlayOneShot("Button");
+
         EventManager.Instance.OnIncreaseLives += () => PlayOneShot("Button");
         EventManager.Instance.OnDecreaseLives += () => PlayOneShot("Button");
 
@@ -44,7 +46,6 @@ public class SoundManager
         EventManager.Instance.OnDropUnit += () => PlayOneShot("Drop_Unit"); 
 
         EventManager.Instance.OnRoll += () => PlayOneShot("Roll");
-        EventManager.Instance.OnEndTurn += () => PlayOneShot("Button");
 
         EventManager.Instance.OnCraft += () => PlayOneShot("Buy");
         EventManager.Instance.OnRecycle += () => PlayOneShot("Sell");

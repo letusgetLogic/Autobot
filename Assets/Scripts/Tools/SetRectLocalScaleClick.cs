@@ -20,7 +20,6 @@ public class SetRectLocalScaleClick : MonoBehaviour,
     private void OnEnable()
     {
         originalScale = GetComponent<RectTransform>().localScale;
-        GameManager.Instance.IsBlockingInput = false;
     }
 
     /// <summary>

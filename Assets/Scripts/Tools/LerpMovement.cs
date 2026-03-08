@@ -25,6 +25,7 @@ public class LerpMovement : MonoBehaviour
     private Vector3 defaultPosition;
     private Vector3 targetPosition;
     private Transform targetTransform;
+    private SoLerpMovementSettings mySettings;
 
     private void OnEnable()
     {
@@ -50,8 +51,11 @@ public class LerpMovement : MonoBehaviour
         else
         {
             if (soSettings)
+            {
                 targetPosition = defaultPosition + soSettings.DeltaPosition;
+            }
         }
+        mySettings = soSettings;
     }
 
     /// <summary>
@@ -73,8 +77,8 @@ public class LerpMovement : MonoBehaviour
         SetDefault();
         moveState = Direction.Forward;
 
-        if (soSettings)
-            return soSettings.AnimTime;
+        if (mySettings)
+            return mySettings.AnimTime;
 
         return default;
     }
@@ -94,8 +98,32 @@ public class LerpMovement : MonoBehaviour
 
         moveState = Direction.Forward;
 
-        if (soSettings)
-            return soSettings.AnimTime;
+        if (mySettings)
+            return mySettings.AnimTime;
+
+        return default;
+    }
+
+    /// <summary>
+    /// Moves to the target position with settings and returns the animation time.
+    /// </summary>
+    /// <param name="_target"></param>
+    /// <param name="_targetTf"></param>
+    /// <returns></returns>
+    public float MoveTo(Vector3 _target, Transform _targetTf, SoLerpMovementSettings _so)
+    {
+        SetDefault();
+
+        targetPosition = _target;
+        targetTransform = _targetTf;
+
+        moveState = Direction.Forward;
+
+        if (_so)
+        {
+            mySettings = _so;
+            return _so.AnimTime;
+        }
 
         return default;
     }
@@ -113,8 +141,8 @@ public class LerpMovement : MonoBehaviour
 
         moveState = Direction.Forward;
 
-        if (soSettings)
-            return soSettings.AnimTime;
+        if (mySettings)
+            return mySettings.AnimTime;
 
         return default;
     }
@@ -129,7 +157,7 @@ public class LerpMovement : MonoBehaviour
         {
             if (currentValue == 1f)
             {
-                if (soSettings.RunBackward)
+                if (mySettings.RunBackward)
                 {
                     moveState = Direction.Backward;
                 }
@@ -171,9 +199,9 @@ public class LerpMovement : MonoBehaviour
     private void Interpolate(float _target)
     {
         currentValue = Mathf.MoveTowards(
-            currentValue, _target, Time.deltaTime / soSettings.AnimTime);
+            currentValue, _target, Time.deltaTime / mySettings.AnimTime);
 
-        Vector3 position = Vector3.Lerp(defaultPosition, targetPosition, soSettings.AnimCurve.Evaluate(currentValue));
+        Vector3 position = Vector3.Lerp(defaultPosition, targetPosition, mySettings.AnimCurve.Evaluate(currentValue));
         SetPosition(position);
     }
 

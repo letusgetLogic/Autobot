@@ -18,6 +18,7 @@ public class PhaseShopController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private SoShopProcess process;
+    [SerializeField] private SoLerpMovementSettings unitSwapSettings;
     public SoShopProcess Process => process;
 
     public Player Player { get; private set; }
@@ -50,6 +51,13 @@ public class PhaseShopController : MonoBehaviour
         Instance = this;
 
         Time.timeScale = 1f;
+
+
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
+            return;
+        }
 
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
@@ -522,7 +530,7 @@ public class PhaseShopController : MonoBehaviour
         {
             _unitTarget.transform.SetParent(null, true);
             _unitTargetView.SetSpriteOverOther();
-            delay1 = _unitTarget.MoveToParent(_slotDragged.position, _slotDragged);
+            delay1 = _unitTarget.SwapMoveToParent(_slotDragged.position, _slotDragged, unitSwapSettings);
             EventManager.Instance.OnSwap?.Invoke();
         }
         else
@@ -542,7 +550,7 @@ public class PhaseShopController : MonoBehaviour
         if (_unitDragged != null && _slotTarget != null)
         {
             _unitDragged.BeginSwap();
-            delay2 = _unitDragged.MoveToParent(_slotTarget.position, _slotTarget);
+            delay2 = _unitDragged.SwapMoveToParent(_slotTarget.position, _slotTarget, unitSwapSettings);
             EventManager.Instance.OnSwap?.Invoke();
         }
         else

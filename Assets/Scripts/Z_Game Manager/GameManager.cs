@@ -5,14 +5,25 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameManager Instance 
+    { 
+        get
+        {
+            if (_Instance == null)
+            {
+                if (Application.isPlaying)
+                    SceneManager.LoadScene("Menu");
+
+                Debug.LogWarning("GameManager instance is null.");
+            }
+            return _Instance;
+        }
+    }
+    private static GameManager _Instance;
 
     [Header("Develop Settings")]
     [SerializeField] private bool isNotSavingGame;
     [SerializeField] public bool IsRepairSystemActive;
-
-    [Header("Settings")]
-    [SerializeField] private float delayHintClick = 5f;
 
     // This code block or the time scaling feature is disabled,
     // because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
@@ -59,7 +70,7 @@ public class GameManager : MonoBehaviour
         {
             if (currentRound == null)
             {
-                Debug.LogWarning("currentRound is " + currentRound);
+                Debug.LogWarning("currentRound is null");
                 return null;
             }
             return currentRound;
@@ -122,18 +133,15 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
-    private float countHintClick = 0f;
-
-
     private void Awake()
     {
-        if (Instance != null)
+        if (_Instance != null)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        _Instance = this;
         DontDestroyOnLoad(gameObject);
 
         soundManager = SoundManager.Instance;

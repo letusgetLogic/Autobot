@@ -12,33 +12,33 @@ public class PlayerData
     /// Wins saves the number of wins the player has achieved so far, ONLY used in arena mode.
     /// </summary>
     public int Wins { get; set; }
-   
+
     /// <summary>
     /// - save the data of team units from the shop phase
     /// - load them in the battle phase
     /// - override changes after the battle phase
     /// - load them back in the shop phase
     /// </summary>
-    public SaveUnitData[] TeamUnitDatas {  get; set; }
+    public SaveUnitData[] TeamUnitDatas { get; set; }
 
     /// <summary>
     /// - save the data of the to be charged unit in the shop phase
     /// - load it in the next shop phase
     /// - give energy to the unit at the start of the shop phase
     /// </summary>
-    public SaveUnitData ChargeUnitData {  get; set; }
+    public SaveUnitData ChargeUnitData { get; set; }
 
     /// <summary>
     /// - save the data of shop bots from the shop phase
     /// - load them in the next shop phase
     /// </summary>
-    public SaveUnitData[] ShopBotDatas {  get; set; }
+    public SaveUnitData[] ShopBotDatas { get; set; }
 
     /// <summary>
     /// - save the data load them in the next shop phaseata of shop items from the shop phase
     /// 
     /// </summary>
-    public SaveUnitData[] ShopItemDatas {  get; set; }
+    public SaveUnitData[] ShopItemDatas { get; set; }
 
     /// <summary>
     /// Assigns the template values.
@@ -66,35 +66,45 @@ public class PlayerData
         Tools = _other.Tools;
         Wins = _other.Wins;
 
-        TeamUnitDatas = new SaveUnitData[_other.TeamUnitDatas.Length];
-        for (int i = 0; i < _other.TeamUnitDatas.Length; i++)
+        if (_other.TeamUnitDatas != null)
         {
-            var unit = _other.TeamUnitDatas[i];
-            if (unit != null)
+            TeamUnitDatas = new SaveUnitData[_other.TeamUnitDatas.Length];
+            for (int i = 0; i < _other.TeamUnitDatas.Length; i++)
             {
-                TeamUnitDatas[i] = new SaveUnitData(unit);
+                var unit = _other.TeamUnitDatas[i];
+                if (unit != null)
+                {
+                    TeamUnitDatas[i] = new SaveUnitData(unit);
+                }
             }
         }
-        ChargeUnitData = _other.ChargeUnitData != null 
+
+        ChargeUnitData = _other.ChargeUnitData != null
             ? new SaveUnitData(_other.ChargeUnitData) : null;
 
-        ShopBotDatas = new SaveUnitData[_other.ShopBotDatas.Length];
-        for (int i = 0; i < _other.ShopBotDatas.Length; i++)
+        if (_other.ShopBotDatas != null)
         {
-            var unit = _other.ShopBotDatas[i];
-            if (unit != null)
+            ShopBotDatas = new SaveUnitData[_other.ShopBotDatas.Length];
+            for (int i = 0; i < _other.ShopBotDatas.Length; i++)
             {
-                ShopBotDatas[i] = new SaveUnitData(unit);
+                var unit = _other.ShopBotDatas[i];
+                if (unit != null)
+                {
+                    ShopBotDatas[i] = new SaveUnitData(unit);
+                }
             }
         }
 
-        ShopItemDatas = new SaveUnitData [_other.ShopItemDatas.Length];
-        for (int i = 0; i < _other.ShopItemDatas.Length; i++)
+        if (_other.ShopItemDatas != null)
         {
-            var unit = _other.ShopItemDatas[i];
-            if (unit != null)
+            ShopItemDatas = new SaveUnitData[_other.ShopItemDatas.Length];
+            for (int i = 0; i < _other.ShopItemDatas.Length; i++)
             {
-                ShopItemDatas[i] = new SaveUnitData(unit);
+                var unit = _other.ShopItemDatas[i];
+                if (unit != null)
+                {
+                    ShopItemDatas[i] = new SaveUnitData(unit);
+                }
             }
         }
     }

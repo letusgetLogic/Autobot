@@ -438,6 +438,12 @@ public class UnitController : MonoBehaviour
 
         return animDelay;
     }
+    public float SwapMoveToParent(Vector3 _target, Transform _parent, SoLerpMovementSettings _so)
+    {
+        float animDelay = toNextSlotMover.MoveTo(_target, _parent, _so);
+
+        return animDelay;
+    }
 
     /// <summary>
     /// Sets slot as parent.

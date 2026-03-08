@@ -29,6 +29,12 @@ public class CutScene : MonoBehaviour
         }
         Instance = this;
 
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
+            return;
+        }
+
         if (coverPanelOpen != null)
         {
             if (hintClickClose && GameManager.Instance.Replay == null)

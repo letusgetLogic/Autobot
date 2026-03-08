@@ -1,7 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -48,12 +46,12 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI energyText;
     [SerializeField] private int turnToEnable = 1;
 
+    [Header("References")]
+    [SerializeField] private PanelLeftCurrency panelLeftCurrency;
 
     public Player Player { get; private set; }
 
     private Currency rollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
-
-    private ColorBlock defaultColorBlock;
 
 
     private void Awake()
@@ -63,6 +61,14 @@ public class PhaseShopUI : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+
+
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
+            return;
+        }
+
 
         Settings();
     }
@@ -89,7 +95,6 @@ public class PhaseShopUI : MonoBehaviour
 
         replayButton.SetActive(GameManager.Instance.CurrentRound != null);
 
-        defaultColorBlock = new ColorBlock();
         SetButtonActive(null);
     }
 
@@ -137,17 +142,17 @@ public class PhaseShopUI : MonoBehaviour
             chargingStation.SetActive(false);
         }
 
-            switch (_turn)
-            {
-                case 0:
-                    break;
-                case 1:
-                    energyBonusLabel.SetActive(true);
-                    break;
-                case >= 2:
-                    energyBonusLabel.SetActive(false);
-                    break;
-            }
+        switch (_turn)
+        {
+            case 0:
+                break;
+            case 1:
+                energyBonusLabel.SetActive(true);
+                break;
+            case >= 2:
+                energyBonusLabel.SetActive(false);
+                break;
+        }
         energyText.text = "+" + PackManager.Instance.MyPack.ChargingEnergy.Value.ToString();
     }
 
@@ -180,9 +185,20 @@ public class PhaseShopUI : MonoBehaviour
             return;
 
         GameManager.Instance.IsBlockingInput = true;
-        Player.EndShop();
 
-        EventManager.Instance.OnEndTurn?.Invoke();
+        EventManager.Instance.OnButtonSound?.Invoke();
+
+        bool hasEnoughCur = panelLeftCurrency.IsEnough(Player.Data.Tools, Player.Data.Nuts);
+        panelLeftCurrency.gameObject.SetActive(hasEnoughCur);
+
+        if (hasEnoughCur == false)
+        {
+            Player.EndShop();
+        }
+        else
+        {
+            // wait for panelLeftCurrency.Confirm calls PhaseShopUI.Instance.Player.EndShop();
+        }
     }
 
     #region Manage Buttons
@@ -199,7 +215,7 @@ public class PhaseShopUI : MonoBehaviour
         {
             var unit = PhaseShopController.Instance.AttachedController;
 
-            if (!HasEnoughCurrency( unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool, true))
+            if (!HasEnoughCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool, true))
                 return;
 
             UpdateCurrency(unit.Model.RepairCost.Nut, unit.Model.RepairCost.Tool);
@@ -222,7 +238,7 @@ public class PhaseShopUI : MonoBehaviour
 
         if (PhaseShopController.Instance.AttachedController.CompareTag("Unit"))
         {
-            var unit = PhaseShopController.Instance.AttachedController; 
+            var unit = PhaseShopController.Instance.AttachedController;
 
             unit.Model.SetData(UnitState.Freezed);
 
@@ -294,7 +310,7 @@ public class PhaseShopUI : MonoBehaviour
             return;
 
         var unitModel = _unit.Model;
-        
+
         switch (unitModel.Data.UnitState)
         {
             case UnitState.InSlotShop:
@@ -392,7 +408,7 @@ public class PhaseShopUI : MonoBehaviour
     {
         bool value = true;
 
-       if (Player.Data.Nuts + _nuts < 0)
+        if (Player.Data.Nuts + _nuts < 0)
         {
             if (_activeHint)
                 HintNotEnoughCoins();
