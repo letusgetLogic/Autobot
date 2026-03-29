@@ -1,12 +1,20 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhaseShopUI : MonoBehaviour
 {
     public static PhaseShopUI Instance { get; private set; }
 
+    [Header("Settings")]
     [SerializeField]
     private float durationCoinsRedDefault = 0.2f;
+
+    [Header("References")]
+    [SerializeField] private PanelLeftCurrency panelLeftCurrency;
+    [SerializeField] private GameObject hintLabel;
+    [SerializeField] private TextMeshProUGUI hintLabelText;
 
     [Header("Player Infos Components")]
     [SerializeField] private TextMeshProUGUI nameLabel;
@@ -16,6 +24,7 @@ public class PhaseShopUI : MonoBehaviour
         heartLabel,
         nutLabel,
         toolLabel;
+    [SerializeField] private Image nutBG, toolBG;
     [SerializeField] private GameObject energyBonusLabel;
     [SerializeField] private RectTransform clockPointer;
 
@@ -45,9 +54,6 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private GameObject chargingStation;
     [SerializeField] private TextMeshProUGUI energyText;
     [SerializeField] private int turnToEnable = 1;
-
-    [Header("References")]
-    [SerializeField] private PanelLeftCurrency panelLeftCurrency;
 
     public Player Player { get; private set; }
 
@@ -402,27 +408,31 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     /// <param name="_nuts"></param>
     /// <param name="_tools"></param>
-    /// <param name="_activeHint"> It can</param>
+    /// <param name="_showHint"> It can</param>
     /// <returns></returns>
-    public bool HasEnoughCurrency(int _nuts, int _tools, bool _activeHint)
+    public bool HasEnoughCurrency(int _nuts, int _tools, bool _showHint)
     {
         bool value = true;
 
         if (Player.Data.Nuts + _nuts < 0)
         {
-            if (_activeHint)
-                HintNotEnoughCoins();
+            if (_showHint)
+            {
+                HintNotEnoughNuts();
+            }
             value = false;
         }
 
         if (Player.Data.Tools + _tools < 0)
         {
-            if (_activeHint)
+            if (_showHint)
+            {
                 HintNotEnoughTools();
+            }
             value = false;
         }
 
-        if (_activeHint && value == false)
+        if (_showHint && value == false)
         {
             EventManager.Instance.OnNotEnoughCurrency?.Invoke();
         }
@@ -433,13 +443,13 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Hints not enough coins.
     /// </summary>
-    public void HintNotEnoughCoins()
+    public void HintNotEnoughNuts()
     {
         var markColorRed = GetComponent<MarkColorRed>();
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(nutLabel, durationCoinsRedDefault);
+        markColorRed.SetComponent(nutBG, durationCoinsRedDefault);
     }
 
     /// <summary>
@@ -451,7 +461,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(toolLabel, durationCoinsRedDefault);
+        markColorRed.SetComponent(toolBG, durationCoinsRedDefault);
     }
 
     /// <summary>

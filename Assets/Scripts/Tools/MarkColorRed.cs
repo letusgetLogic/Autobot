@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MarkColorRed : MonoBehaviour
 {
@@ -19,15 +20,40 @@ public class MarkColorRed : MonoBehaviour
     /// <summary>
     /// Delays the setting color default.
     /// </summary>
-    /// <param name="_text"></param>
+    /// <param name="_target"></param>
     /// <param name="_duration"></param>
     /// <param name="_defaultColor"></param>
     /// <returns></returns>
-    private IEnumerator SetDefault(TextMeshProUGUI _text, float _duration, Color _defaultColor)
+    private IEnumerator SetDefault(TextMeshProUGUI _target, float _duration, Color _defaultColor)
     {
         yield return new WaitForSeconds(_duration);
 
-        _text.color = _defaultColor;
+        _target.color = _defaultColor;
+    }
+    /// <summary>
+    /// Sets the color of the text red and back to default color with a delay.
+    /// </summary>
+    /// <param name="_target"></param>
+    /// <param name="_duration"></param>
+    public void SetComponent(Image _target, float _duration)
+    {
+        var defaultColor = _target.color;
+        _target.color = Color.red;
+        StartCoroutine(SetDefault(_target, _duration, defaultColor));
+    }
+
+    /// <summary>
+    /// Delays the setting color default.
+    /// </summary>
+    /// <param name="_target"></param>
+    /// <param name="_duration"></param>
+    /// <param name="_defaultColor"></param>
+    /// <returns></returns>
+    private IEnumerator SetDefault(Image _target, float _duration, Color _defaultColor)
+    {
+        yield return new WaitForSeconds(_duration);
+
+        _target.color = _defaultColor;
     }
 
     /// <summary>

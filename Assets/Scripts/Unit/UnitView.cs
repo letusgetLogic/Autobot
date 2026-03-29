@@ -10,6 +10,9 @@ public class UnitView : MonoBehaviour
 {
     #region Variables
 
+    [Header("Smoke Effect")]
+    [SerializeField] private ParticleSystem smoke;
+
     [Header("Hide Objects")]
     [SerializeField] GameObject energyConsumptionComponent;
     [SerializeField]
@@ -28,7 +31,7 @@ public class UnitView : MonoBehaviour
         doAbilitySpriteRenderer,
         getAbilitySpriteRenderer,
         lockSpriteRenderer,
-        damageSpriteRenderer,
+        damageFade,
         shutdownSpriteRenderer,
         temporaryItemSpriteRenderer;
 
@@ -77,7 +80,8 @@ public class UnitView : MonoBehaviour
         buffHealth,
         buffAttack,
         addEnergy,
-        consumEnergy;
+        consumEnergy,
+        shutdown;
 
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
@@ -128,7 +132,7 @@ public class UnitView : MonoBehaviour
         // The unit in catalog sometimes doesn't need the components, so the components should be checked.
         if (description) description.SetActive(false);
         if (lockSpriteRenderer) lockSpriteRenderer.enabled = false;
-        if (damageSpriteRenderer) damageSpriteRenderer.enabled = false;
+        if (damageFade) damageFade.enabled = false;
         if (shutdownSpriteRenderer) shutdownSpriteRenderer.enabled = false;
         if (temporaryItemSpriteRenderer) temporaryItemSpriteRenderer.enabled = false;
         if (doAbilitySpriteRenderer) doAbilitySpriteRenderer.enabled = false;
@@ -149,7 +153,7 @@ public class UnitView : MonoBehaviour
     {
         // The unit in catalog sometimes doesn't need the components, so the components should be checked.
         if (dragSpriteRenderer) dragSpriteRenderer.sprite = _sprite;
-        if (damageSpriteRenderer) damageSpriteRenderer.sprite = _sprite;
+        if (damageFade) damageFade.sprite = _sprite;
         if (shadowSpriteRenderer) shadowSpriteRenderer.sprite = _sprite;
         if (doAbilitySpriteRenderer) doAbilitySpriteRenderer.sprite = _sprite;
         if (getAbilitySpriteRenderer)getAbilitySpriteRenderer.sprite = _sprite;
@@ -161,13 +165,14 @@ public class UnitView : MonoBehaviour
     /// Sets the components view in slot shop.
     /// </summary>
     /// <param name="_value"></param>
-    public void SetShopView(bool _value, bool _showLevel, bool _isLocked)
+    public void SetShopView(bool _value, bool _showLevel, bool _isLocked, bool _isShutdown)
     {
         levelDisplay.SetActive(_showLevel);
         ShowFullAttributes(!_value);
         energyIcon.SetActive(!_value);
         shadowSpriteRenderer.enabled = _value;
         lockSpriteRenderer.enabled = _isLocked;
+        smoke.gameObject.SetActive(_isShutdown);
     }
 
     /// <summary>
@@ -243,6 +248,7 @@ public class UnitView : MonoBehaviour
         if (health) health.text = _hp.ToString();
         if (attack) attack.text = _atk.ToString();
         if (energy) energy.text = _energy.ToString();
+        if (smoke && smoke.gameObject.activeSelf && smoke.isPlaying && _hp > 0) smoke.Stop();
     }
 
     /// <summary>
@@ -399,7 +405,7 @@ public class UnitView : MonoBehaviour
     public void SetRightSide()
     {
         dragSpriteRenderer.flipX = true;
-        damageSpriteRenderer.flipX = true;
+        damageFade.flipX = true;
         temporaryItemSpriteRenderer.flipX = true;
         doAbilitySpriteRenderer.flipX = true;
         getAbilitySpriteRenderer.flipX = true;
@@ -414,9 +420,10 @@ public class UnitView : MonoBehaviour
     public void ShowDamage(int _damage, int _health)
     {
         health.text = _health.ToString();
+        shutdown.enabled = _health <= 0;
         damage.enabled = true;
         damage.text = _damage.ToString();
-        damageSpriteRenderer.enabled = true;
+        damageFade.enabled = true;
         StartCoroutine(HideDamage());
         StartCoroutine(HideDamageVisual());
     }
@@ -430,6 +437,7 @@ public class UnitView : MonoBehaviour
         yield return new WaitForSeconds(settings.DurationShowDamage);
 
         damage.enabled = false;
+        shutdown.enabled = false;   
     }
 
     /// <summary>
@@ -440,7 +448,7 @@ public class UnitView : MonoBehaviour
     {
         yield return new WaitForSeconds(settings.DurationShowDamageVisual);
 
-        damageSpriteRenderer.enabled = false;
+        damageFade.enabled = false;
     }
 
     /// <summary>

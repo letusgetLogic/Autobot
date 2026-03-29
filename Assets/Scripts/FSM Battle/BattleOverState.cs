@@ -2,17 +2,15 @@
 
 public class BattleOverState : StateBase
 {
-    private bool isSettedGameOver = false;
-
-    private Player player1;
-    private Player player2;
+    private int outcome; // 0 = draw, 1 = right wins, -1 = left wins.
 
     /// <summary>
     /// Constructor of BattleOverState
     /// </summary>
     /// <param name="_maxTimeCount"></param>
-    public BattleOverState(float _maxTimeCount) : base(_maxTimeCount)
+    public BattleOverState(float _maxTimeCount, int _outcome) : base(_maxTimeCount)
     {
+        outcome = _outcome;
     }
 
     public override void OnEnter(IFiniteStateMachine _ctx)
@@ -26,8 +24,44 @@ public class BattleOverState : StateBase
             return;
         }
 
-        player1 = GameManager.Instance.Players[0];
-        player2 = GameManager.Instance.Players[1];
+        var player1 = GameManager.Instance.Players[0];
+        var player2 = GameManager.Instance.Players[1];
+
+        var data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
+        var data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
+
+        switch (outcome)
+        {
+            case -1: // Left Wins
+                PhaseBattleView.Instance.ShowWinner(player1.Data.Name, player2.Data.Lives == 0);
+                if (GameManager.Instance.Replay == null)
+                {
+                    GameManager.Instance.UpdatePlayerStats(-1);
+                    PhaseBattleView.Instance.UpdateLives(player1.Data.Lives, player2.Data.Lives);
+                }
+                else
+                    PhaseBattleView.Instance.UpdateLives(data1.Lives, data2.Lives - 1);
+                break;
+
+            case 0: // Draw
+                PhaseBattleView.Instance.ShowWinner("Nobody", false);
+                if (GameManager.Instance.Replay == null)
+                {
+                    GameManager.Instance.UpdatePlayerStats(0);
+                }
+                break;
+
+            case 1: // Right wins
+                PhaseBattleView.Instance.ShowWinner(player2.Data.Name, player1.Data.Lives == 0);
+                if (GameManager.Instance.Replay == null)
+                {
+                    GameManager.Instance.UpdatePlayerStats(1);
+                    PhaseBattleView.Instance.UpdateLives(player1.Data.Lives, player2.Data.Lives);
+                }
+                else
+                    PhaseBattleView.Instance.UpdateLives(data1.Lives - 1, data2.Lives);
+                break;
+        }
 
         if (GameManager.Instance.Replay == null)
         {
@@ -38,16 +72,19 @@ public class BattleOverState : StateBase
             if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
             {
                 GameManager.Instance.Switch(GameState.EndOfBattle);
-                _ctx.SetState(null);
-                return;
+            }
+            else // end the game, when one of them has 0 lives.
+            {
+                EventManager.Instance.OnGameOver?.Invoke();
+                GameManager.Instance.Switch(GameState.EndOfGame);
             }
         }
         else // go out of the replay, waiting of input click to load the current play scene 
         {
             GameManager.Instance.Replay.Switch(GameState.EndOfBattle);
-            _ctx.SetState(null);
-            return;
         }
+
+        _ctx.SetState(null);
     }
 
     public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
@@ -55,25 +92,6 @@ public class BattleOverState : StateBase
         if (TimeCount < MaxTimeCount)
         {
             TimeCount += _speed;
-        }
-        else if (isSettedGameOver == false) // Sets game over.
-        {
-            isSettedGameOver = true;
-
-            if (player1.Data.Lives == 0)
-            {
-                PhaseBattleView.Instance.ShowWinner(player2.Data.Name, true);
-            }
-            else if (player2.Data.Lives == 0)
-            {
-                PhaseBattleView.Instance.ShowWinner(player1.Data.Name, true);
-            }
-
-            EventManager.Instance.OnGameOver?.Invoke();
-
-            GameManager.Instance.Switch(GameState.EndOfGame);
-
-            _ctx.SetState(null);
         }
     }
 }

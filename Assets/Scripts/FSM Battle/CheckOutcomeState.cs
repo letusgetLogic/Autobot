@@ -2,6 +2,7 @@
 
 public class CheckOutcomeState : StateBase
 {
+    private int outcome = -2;  // 0 = draw, 1 = right wins, -1 = left wins.
     private bool hasOutcomeOfBattle;
     private int amountOfActiveUnits1;
     private int amountOfActiveUnits2;
@@ -29,17 +30,13 @@ public class CheckOutcomeState : StateBase
         var player1 = GameManager.Instance.Players[0];
         var player2 = GameManager.Instance.Players[1];
 
-        var data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
-        var data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
-
-        hasOutcomeOfBattle = GameManager.Instance.Replay != null
-            ? CheckOutcomeReplay(data1, data2)
-            : CheckOutcome(player1, player2);
+        hasOutcomeOfBattle = CheckOutcome(player1, player2);
 
         // Necessary for jumping directly on next state, which isn't BattleOverState
-        if (hasOutcomeOfBattle) 
+        if (hasOutcomeOfBattle)
         {
-            MaxTimeCount += MaxTimeCount; // Extend time for showing winner
+            _ctx.SetState(new BattleOverState(
+                  PhaseBattleController.Instance.Process.DurationBattleOver, outcome));
         }
     }
 
@@ -51,32 +48,24 @@ public class CheckOutcomeState : StateBase
         }
         else
         {
-            if (hasOutcomeOfBattle)
+            if (NeedInsert(PhaseBattleController.Instance.Slots1(), amountOfActiveUnits1) ||
+                     NeedInsert(PhaseBattleController.Instance.Slots2(), amountOfActiveUnits2))
             {
-                _ctx.SetState(new BattleOverState(
-                    PhaseBattleController.Instance.Process.DurationBattleOver));
+                _ctx.SetState(new InsertState(
+                    PhaseBattleController.Instance.Process.DurationInsert));
             }
             else
             {
-                if (NeedInsert(PhaseBattleController.Instance.Slots1(), amountOfActiveUnits1) ||
-                    NeedInsert(PhaseBattleController.Instance.Slots2(), amountOfActiveUnits2))
+                var gameManager = GameManager.Instance;
+                if (gameManager.CurrentGame.State == GameState.StartOfBattle ||
+                    gameManager.Replay != null && gameManager.Replay.State == GameState.StartOfBattle)
                 {
-                    _ctx.SetState(new InsertState(
-                        PhaseBattleController.Instance.Process.DurationInsert));
+                    _ctx.SetState(new StartOfBattleState(0));
                 }
                 else
                 {
-                    var gameManager = GameManager.Instance;
-                    if (gameManager.CurrentGame.State == GameState.StartOfBattle ||
-                        gameManager.Replay != null && gameManager.Replay.State == GameState.StartOfBattle)
-                    {
-                        _ctx.SetState(new StartOfBattleState(0));
-                    }
-                    else
-                    {
-                        _ctx.SetState(new AttackState(
-                             PhaseBattleController.Instance.Process.DurationAttack));
-                    }
+                    _ctx.SetState(new AttackState(
+                         PhaseBattleController.Instance.Process.DurationAttack));
                 }
             }
         }
@@ -102,10 +91,7 @@ public class CheckOutcomeState : StateBase
             }
             else
             {
-                GameManager.Instance.UpdatePlayerStats(-1); // Left Wins
-
-                PhaseBattleView.Instance.ShowWinner(_player1.Data.Name, false);
-                PhaseBattleView.Instance.UpdateLives(_player1.Data.Lives, _player2.Data.Lives);
+                outcome = -1; // Left wins
             }
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
@@ -115,65 +101,12 @@ public class CheckOutcomeState : StateBase
         {
             if (amountOfActiveUnits2 > 0)
             {
-                GameManager.Instance.UpdatePlayerStats(1); // Right wins
-
-                PhaseBattleView.Instance.ShowWinner(_player2.Data.Name, false);
+                outcome = 1; // Right wins
             }
             else
             {
-                GameManager.Instance.UpdatePlayerStats(0); // Draw
-
-                PhaseBattleView.Instance.ShowWinner("Nobody", false);
+                outcome = 0;
             }
-
-            PhaseBattleView.Instance.UpdateLives(_player1.Data.Lives, _player2.Data.Lives);
-
-            //PhaseBattleView.Instance.SetSpeedButton(false);
-            return true;
-        }
-    }
-
-    /// <summary>
-    /// Checks the outcome of battle.
-    /// </summary>
-    /// <returns></returns>
-    private bool CheckOutcomeReplay(PlayerData _data1, PlayerData _data2)
-    {
-        var slots1 = PhaseBattleController.Instance.Slots1();
-        var slots2 = PhaseBattleController.Instance.Slots2();
-
-        amountOfActiveUnits1 = IsAnyoneIn(slots1, null);
-        amountOfActiveUnits2 = IsAnyoneIn(slots2, null);
-
-        if (amountOfActiveUnits1 > 0)
-        {
-            if (amountOfActiveUnits2 > 0)
-            {
-                return false; // Continue battle
-            }
-            else
-            {
-                PhaseBattleView.Instance.ShowWinner(_data1.Name, false);
-                PhaseBattleView.Instance.UpdateLives(_data1.Lives, _data2.Lives - 1);
-            }
-
-            //PhaseBattleView.Instance.SetSpeedButton(false);
-            return true;
-        }
-        else
-        {
-            if (amountOfActiveUnits2 > 0)
-            {
-                PhaseBattleView.Instance.ShowWinner(_data2.Name, false);
-                PhaseBattleView.Instance.UpdateLives(_data1.Lives - 1, _data2.Lives);
-                return true;
-            }
-            else
-            {
-                PhaseBattleView.Instance.ShowWinner("Nobody", false);
-            }
-
-            PhaseBattleView.Instance.UpdateLives(_data1.Lives, _data2.Lives);
 
             //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;

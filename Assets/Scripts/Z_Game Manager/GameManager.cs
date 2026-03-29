@@ -238,6 +238,12 @@ public class GameManager : MonoBehaviour
                 // Waiting for player input
                 break;
 
+            case GameState.WaitingEndOfGame:
+                IsBlockingInput = false;
+                EventManager.Instance.OnWaitingForClick?.Invoke();
+                // Waiting for player input
+                break;
+
             case GameState.WaitingCutScene:
                 IsBlockingInput = false;
                 // Waiting for player input
@@ -284,6 +290,8 @@ public class GameManager : MonoBehaviour
 
             case GameState.EndOfGame:
                 SaveSystem.SaveGame(CurrentGame);
+
+                Switch(GameState.WaitingEndOfGame);
                 break;
         }
     }

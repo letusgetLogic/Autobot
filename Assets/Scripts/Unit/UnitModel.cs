@@ -206,28 +206,28 @@ public class UnitModel
         {
             case UnitState.InSlotShop:
                 view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
-                view.SetShopView(true, false, false);
+                view.SetShopView(true, false, false, IsRobot() && Data.Cur.HP <= 0);
                 break;
 
             case UnitState.Freezed:
                 view.SetBuyOrSell(Currency(_unitState), true, Data.UnitType);
-                view.SetShopView(true, false, true);
+                view.SetShopView(true, false, true, IsRobot() && Data.Cur.HP <= 0);
                 break;
 
             case UnitState.InSlotTeam:
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true, false);
+                view.SetShopView(false, true, false, IsRobot() && Data.Cur.HP <= 0);
                 break;
 
             case UnitState.InSlotCharge:
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, true, false);
+                view.SetShopView(false, true, false, IsRobot() && Data.Cur.HP <= 0);
                 break;
 
             case UnitState.InPhaseBattle:
                 view.HideObjectsDuringBattle();
                 view.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                view.SetShopView(false, false, false);
+                view.SetShopView(false, false, false, IsRobot() && Data.Cur.HP <= 0);
                 break;
         }
 

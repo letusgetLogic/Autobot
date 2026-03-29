@@ -173,6 +173,9 @@ public class Player
     /// </summary>
     public void UpdateTeamUnitData()
     {
+        if (Data.TeamUnitDatas == null)
+            return;
+
         for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
             if (Data.TeamUnitDatas[i] == null)

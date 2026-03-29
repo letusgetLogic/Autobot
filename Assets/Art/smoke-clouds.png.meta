@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 57eb4f64730277549829d672d366bbb9
+guid: 58149f089b630014e82ca499b1e1179b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4214831084420001730
-    second: Energy_Pill_0
+      213: -3521114063558961861
+    second: smoke-clouds_0
+  - first:
+      213: 2683097936170695435
+    second: smoke-clouds_1
+  - first:
+      213: 245500330510791660
+    second: smoke-clouds_2
+  - first:
+      213: 4354331460137671076
+    second: smoke-clouds_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +55,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,7 +106,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WindowsStoreApps
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -110,7 +119,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
+    buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -126,13 +135,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Energy_Pill_0
+      name: smoke-clouds_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 5
-        width: 72
-        height: 115
+        x: 9
+        y: 67
+        width: 47
+        height: 58
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +150,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2cfe0274a861e7a30800000000000000
-      internalID: 4214831084420001730
+      spriteID: b359fe33a6d722fc0800000000000000
+      internalID: -3521114063558961861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smoke-clouds_1
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 73
+        width: 58
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0bb9077b574c3520800000000000000
+      internalID: 2683097936170695435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smoke-clouds_2
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 4
+        width: 47
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce33658ff31386300800000000000000
+      internalID: 245500330510791660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smoke-clouds_3
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 8
+        width: 58
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a950db8461bd6c30800000000000000
+      internalID: 4354331460137671076
       vertices: []
       indices: 
       edges: []
@@ -151,7 +226,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 0ffe257e949b36a498e21f4195a104b5
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +236,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Energy_Pill_0: 4214831084420001730
+      smoke-clouds_0: -3521114063558961861
+      smoke-clouds_1: 2683097936170695435
+      smoke-clouds_2: 245500330510791660
+      smoke-clouds_3: 4354331460137671076
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

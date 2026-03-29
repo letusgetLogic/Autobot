@@ -15,5 +15,6 @@
     BattlePhase,
     EndOfBattle,
 
-    EndOfGame
+    EndOfGame,
+    WaitingEndOfGame
 }

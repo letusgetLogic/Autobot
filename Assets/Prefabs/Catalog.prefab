@@ -1356,6 +1356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -1366,7 +1367,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -1400,6 +1401,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -2802,6 +2804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -2812,7 +2815,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -2846,6 +2849,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -3529,6 +3533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -3539,7 +3544,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -3573,6 +3578,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -5860,6 +5866,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -5870,7 +5877,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -5904,6 +5911,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -9753,6 +9761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -9763,7 +9772,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -9797,6 +9806,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -10784,6 +10794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -10794,7 +10805,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -10828,6 +10839,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -11504,6 +11516,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2331198585717636269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7897408230406233989}
+  m_Layer: 0
+  m_Name: Layout units
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7897408230406233989
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331198585717636269}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1100371501455536966}
+  - {fileID: 2953812608614061641}
+  m_Father: {fileID: 6337827859172256838}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -200, y: 0}
+  m_SizeDelta: {x: -400, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2372271397092904618
 GameObject:
   m_ObjectHideFlags: 0
@@ -13950,6 +13999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -13960,7 +14010,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -13994,6 +14044,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -15443,6 +15494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -15453,7 +15505,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -15487,6 +15539,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -15583,6 +15636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -15593,7 +15647,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -15627,6 +15681,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -15984,6 +16039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -15994,7 +16050,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -16028,6 +16084,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -16124,6 +16181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -16134,7 +16192,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -16168,6 +16226,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -17579,6 +17638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -17589,7 +17649,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -17623,6 +17683,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -20075,12 +20136,12 @@ RectTransform:
   - {fileID: 3297471088412162078}
   - {fileID: 6106875723529133030}
   - {fileID: 1554427417031713641}
-  m_Father: {fileID: 6337827859172256838}
+  m_Father: {fileID: 7897408230406233989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -50, y: 0}
-  m_SizeDelta: {x: -700, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 380, y: 0}
+  m_SizeDelta: {x: 1514, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1286306737858115214
 MonoBehaviour:
@@ -22127,6 +22188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -22137,7 +22199,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -22171,6 +22233,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -24133,6 +24196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -24143,7 +24207,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -24177,6 +24241,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -24708,6 +24773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -24718,7 +24784,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -24752,6 +24818,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -27446,6 +27513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -27456,7 +27524,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -27490,6 +27558,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -27736,6 +27805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -27746,7 +27816,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -27780,6 +27850,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -28151,10 +28222,8 @@ RectTransform:
   m_Children:
   - {fileID: 4112881351938486562}
   - {fileID: 8271445106517391066}
-  - {fileID: 2771180670278498628}
   - {fileID: 1050185548971195208}
-  - {fileID: 1100371501455536966}
-  - {fileID: 2953812608614061641}
+  - {fileID: 7897408230406233989}
   - {fileID: 9161620056652835225}
   m_Father: {fileID: 4109462191387289223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30744,6 +30813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -30754,7 +30824,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -30788,6 +30858,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -31145,6 +31216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -31155,7 +31227,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -31189,6 +31261,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -33090,12 +33163,12 @@ RectTransform:
   - {fileID: 5573208249100569396}
   - {fileID: 8007089809477924034}
   - {fileID: 511253388489910855}
-  m_Father: {fileID: 6337827859172256838}
+  m_Father: {fileID: 7897408230406233989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 175, y: 0}
-  m_SizeDelta: {x: 350, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -507.8, y: 0}
+  m_SizeDelta: {x: 350, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2951339784687497741
 MonoBehaviour:
@@ -34493,81 +34566,6 @@ MonoBehaviour:
   hintLight: {fileID: 0}
   lightenUpDown: {fileID: 0}
   lightenScale: {fileID: 0}
---- !u!1 &6654516304421518092
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2771180670278498628}
-  - component: {fileID: 3752371078211000968}
-  - component: {fileID: 5871773914697683697}
-  m_Layer: 0
-  m_Name: Label Bg
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &2771180670278498628
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6654516304421518092}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6337827859172256838}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 200, y: 80}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3752371078211000968
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6654516304421518092}
-  m_CullTransparentMesh: 1
---- !u!114 &5871773914697683697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6654516304421518092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &6655882184622864630
 GameObject:
   m_ObjectHideFlags: 0
@@ -35588,6 +35586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -35598,7 +35597,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -35632,6 +35631,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -36804,6 +36804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -36814,7 +36815,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -36848,6 +36849,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -36927,7 +36929,7 @@ MonoBehaviour:
   view: {fileID: 7353784074822020813}
   toNextSlotMover: {fileID: 836320783216990365}
   attackMover: {fileID: 3460152518940801982}
-  editorSoUnit: {fileID: 11400000, guid: 149b7ba33cbe84840b3b0de9217e1610, type: 2}
+  editorSoUnit: {fileID: 0}
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
@@ -36944,6 +36946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -36954,7 +36957,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -36988,6 +36991,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -40822,6 +40826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -40832,7 +40837,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -40866,6 +40871,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -42591,6 +42597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -42601,7 +42608,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -42635,6 +42642,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -43280,6 +43288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -43290,7 +43299,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -43324,6 +43333,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -45705,7 +45715,7 @@ MonoBehaviour:
   view: {fileID: 1284130899682061973}
   toNextSlotMover: {fileID: 3204179498900114041}
   attackMover: {fileID: 2992360349840701193}
-  editorSoUnit: {fileID: 11400000, guid: 149b7ba33cbe84840b3b0de9217e1610, type: 2}
+  editorSoUnit: {fileID: 0}
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
@@ -45722,6 +45732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -45732,7 +45743,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -45766,6 +45777,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -46156,6 +46168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -46166,7 +46179,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -46200,6 +46213,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -47075,6 +47089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -47085,7 +47100,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -47119,6 +47134,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -47479,7 +47495,7 @@ MonoBehaviour:
   view: {fileID: 6597122372287033717}
   toNextSlotMover: {fileID: 5920497544781390557}
   attackMover: {fileID: 8241352632336821203}
-  editorSoUnit: {fileID: 11400000, guid: 149b7ba33cbe84840b3b0de9217e1610, type: 2}
+  editorSoUnit: {fileID: 0}
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
@@ -47496,6 +47512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -47506,7 +47523,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -47540,6 +47557,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -47723,6 +47741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -47733,7 +47752,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -47767,6 +47786,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -48199,6 +48219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -48209,7 +48230,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -48243,6 +48264,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -49783,6 +49805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544b8270e092fed4e9f5a18dc07f42ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitView
+  smoke: {fileID: 0}
   energyConsumptionComponent: {fileID: 4030437309546852760}
   hideObjectsDuringBattle: []
   hideFullAttributes: []
@@ -49793,7 +49816,7 @@ MonoBehaviour:
   doAbilitySpriteRenderer: {fileID: 0}
   getAbilitySpriteRenderer: {fileID: 0}
   lockSpriteRenderer: {fileID: 0}
-  damageSpriteRenderer: {fileID: 0}
+  damageFade: {fileID: 0}
   shutdownSpriteRenderer: {fileID: 0}
   temporaryItemSpriteRenderer: {fileID: 0}
   description: {fileID: 0}
@@ -49827,6 +49850,7 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
+  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}

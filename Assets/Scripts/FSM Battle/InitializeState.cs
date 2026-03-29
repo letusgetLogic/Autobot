@@ -74,6 +74,18 @@ public class InitializeState : StateBase
     /// </summary>
     private void SpawnUnits(Player _player, Slot[] _slots, bool _isLeft)
     {
+        if (_player.Data.TeamUnitDatas == null)
+        {
+            Debug.LogWarning($"{_player.Data.Name} TeamUnitDatas is null");
+            return;
+        }
+
+        if (_player.Data.TeamUnitDatas.Length < _slots.Length)
+        {
+            Debug.LogWarning($"{_player.Data.Name} TeamUnitDatas.Length < Slots.Length");
+            return;
+        }
+
         for (int i = 0; i < _slots.Length; i++)
         {
             var unitData = _player.Data.TeamUnitDatas[i];
@@ -98,6 +110,18 @@ public class InitializeState : StateBase
     /// <param name="_isLeft"></param>
     private void SpawnUnitsByReplay(PlayerData _data, Slot[] _slots, bool _isLeft)
     {
+        if (_data.TeamUnitDatas == null)
+        {
+            Debug.LogWarning($"{_data.Name} TeamUnitDatas is null");
+            return;
+        }
+
+        if (_data.TeamUnitDatas.Length < _slots.Length)
+        {
+            Debug.LogWarning($"{_data.Name} TeamUnitDatas.Length < Slots.Length");
+            return;
+        }
+
         for (int i = 0; i < _slots.Length; i++)
         {
             var unitData = _data.TeamUnitDatas[i];

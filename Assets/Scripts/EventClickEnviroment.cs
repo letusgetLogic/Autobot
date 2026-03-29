@@ -43,6 +43,12 @@ public class EventClickEnviroment : MonoBehaviour, IPointerClickHandler
                     GameManager.Instance.IsBlockingInput = true;
                     GameManager.Instance.Switch(GameState.PlayCutScene);
                 }
+
+                if (game.State == GameState.WaitingEndOfGame)
+                {
+                    GameManager.Instance.LoadScene("Menu");
+                }
+
                 var replay = GameManager.Instance.Replay;
                 if (replay != null && replay.State == GameState.WaitingEndOfBattle)
                 {
