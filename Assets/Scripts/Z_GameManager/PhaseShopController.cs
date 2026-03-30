@@ -59,11 +59,55 @@ public class PhaseShopController : MonoBehaviour
             return;
         }
 
+        var game = GameManager.Instance.CurrentGame;
+        if (game == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: CurrentGame not found in GameManager.");
+            return;
+        }
+
+        var player = GameManager.Instance.CurrentPlayer;
+        if (player == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: CurrentPlayer not found in GameManager.");
+            return;
+        }
+
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
 
 
-        GameManager.Instance.Switch(GameState.StartOfTurn);
+        if (IsTurnAI())
+        {
+            player.StartShop();
+        }
+        else
+            GameManager.Instance.Switch(GameState.StartOfTurn);
+    }
+
+    private bool IsTurnAI()
+    {
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
+            return false;
+        }
+
+        var game = GameManager.Instance.CurrentGame;
+        if (game == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: CurrentGame not found in GameManager.");
+            return false;
+        }
+
+        var player = GameManager.Instance.CurrentPlayer;
+        if (player == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: CurrentPlayer not found in GameManager.");
+            return false;
+        }
+
+        return game.Mode == GameMode.AI && player.Data.IsAI;
     }
 
     private void OnEnable()
@@ -98,7 +142,9 @@ public class PhaseShopController : MonoBehaviour
     {
         Player = _player;
         SetStartTurn(StartTurnState.Init);
-        StartCoroutine(SetHintClick());
+
+        if (IsTurnAI() == false)
+            StartCoroutine(SetHintClick());
     }
 
     /// <summary>
@@ -125,6 +171,11 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.Init:
+                if (IsTurnAI())
+                {
+                    PackManager.Instance.AssignList(Player.Data.Turn);
+                    return;
+                }
 
                 PhaseShopUI.Instance.UpdateUI(Player);
                 PhaseShopUI.Instance.SetChargingStationAt(Player.Data.Turn);
@@ -398,11 +449,11 @@ public class PhaseShopController : MonoBehaviour
                 else
                     // else fusion, if both are fusible.
                     if (IsFusible(_target, _attached))
-                {
-                    _target.UpdateLevel(_attached.Model, true);
-                    Destroy(_attached.gameObject);
-                }
-                else StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
+                    {
+                        _target.UpdateLevel(_attached.Model, true);
+                        Destroy(_attached.gameObject);
+                    }
+                    else StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
             }
         }
         // Set drop slot inactive for randomness item.

@@ -2,6 +2,7 @@
 [System.Serializable]
 public class PlayerData
 {
+    public bool IsAI { get; set; }
     public string Name { get; private set; }
     public int Lives { get; set; }
     public int Turn { get; set; }
