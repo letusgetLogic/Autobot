@@ -262,7 +262,8 @@ public class GameManager : MonoBehaviour
 
             case GameState.ShopPhase:
                 Replay = null;
-                IsBlockingInput = false;
+                if (PhaseShopController.Instance.IsTurnAI() == false)
+                    IsBlockingInput = false;
                 break;
 
             case GameState.EndOfTurn:

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class AttackState : StateBase
+public class AttackState : StateBaseBattle
 {
     private bool setSubState = false;
 
@@ -16,13 +16,13 @@ public class AttackState : StateBase
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.Log("--- AttackState");
         PhaseBattleController.Instance.StartCoroutine(AttackEachOther());
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
     {
         timeCount += _speed;
 
@@ -44,7 +44,7 @@ public class AttackState : StateBase
         }
     }
 
-    public override void OnExit(IFiniteStateMachine _ctx)
+    public override void OnExit(I_FSM_Battle _ctx)
     {
         if (PhaseBattleController.Instance.SubState != null)
         {

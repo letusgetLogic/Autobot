@@ -40,7 +40,7 @@ public abstract class AbilityBase : ScriptableObject
         Controller.View.ShowAbility(true);
 
         if (CurrentLevel.ConsumedEnergy != null)
-            Controller.SetEnergy(CurrentLevel.ConsumedEnergy.Value, true);
+            Controller.AddEnergy(CurrentLevel.ConsumedEnergy.Value, true, true);
 
         Coroutine = GameManager.Instance.StartCoroutine(Activate());
 

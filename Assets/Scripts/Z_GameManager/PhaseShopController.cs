@@ -17,6 +17,8 @@ public class PhaseShopController : MonoBehaviour
     public Slot ChargeSlot => chargeSlot;
 
     [Header("Settings")]
+    [SerializeField] private int shopBotLength = 3;
+    [SerializeField] private int shopItemLength = 2;
     [SerializeField] private SoShopProcess process;
     [SerializeField] private SoLerpMovementSettings unitSwapSettings;
     public SoShopProcess Process => process;
@@ -76,38 +78,7 @@ public class PhaseShopController : MonoBehaviour
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
 
-
-        if (IsTurnAI())
-        {
-            player.StartShop();
-        }
-        else
-            GameManager.Instance.Switch(GameState.StartOfTurn);
-    }
-
-    private bool IsTurnAI()
-    {
-        if (GameManager.Instance == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
-            return false;
-        }
-
-        var game = GameManager.Instance.CurrentGame;
-        if (game == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: CurrentGame not found in GameManager.");
-            return false;
-        }
-
-        var player = GameManager.Instance.CurrentPlayer;
-        if (player == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: CurrentPlayer not found in GameManager.");
-            return false;
-        }
-
-        return game.Mode == GameMode.AI && player.Data.IsAI;
+        GameManager.Instance.Switch(GameState.StartOfTurn);
     }
 
     private void OnEnable()
@@ -144,7 +115,9 @@ public class PhaseShopController : MonoBehaviour
         SetStartTurn(StartTurnState.Init);
 
         if (IsTurnAI() == false)
+        {
             StartCoroutine(SetHintClick());
+        }
     }
 
     /// <summary>
@@ -171,11 +144,6 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.Init:
-                if (IsTurnAI())
-                {
-                    PackManager.Instance.AssignList(Player.Data.Turn);
-                    return;
-                }
 
                 PhaseShopUI.Instance.UpdateUI(Player);
                 PhaseShopUI.Instance.SetChargingStationAt(Player.Data.Turn);
@@ -199,12 +167,20 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.ChargeBot:
-                StartCoroutine(DelayChargeBotsAtStartShop());
+                if (IsTurnAI())
+                {
+                    ChargeBotAtStartShop();
+                }
+                else
+                    StartCoroutine(DelayChargeBotsAtStartShop());
                 break;
 
             case StartTurnState.Done:
                 GameManager.Instance.Switch(GameState.ShopPhase);
                 SetStartTurn(StartTurnState.None);
+
+                if (IsTurnAI())
+                    gameObject.AddComponent<AI>();
                 break;
 
         }
@@ -310,7 +286,7 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Bots.Count == 0)
                 return;
 
-            int randomNumber = UnityEngine.Random.Range(0, PackManager.Instance.Bots.Count);
+            int randomNumber = GetRandom(PackManager.Instance.Bots.Count);
             var soUnit = PackManager.Instance.Bots[randomNumber];
 
             SpawnManager.Instance.Spawn(
@@ -341,12 +317,12 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Items.Count == 0)
                 return;
 
-            int random = UnityEngine.Random.Range(0, PackManager.Instance.Items.Count);
-            var soUnit = PackManager.Instance.Items[random];
+            int randomNumber = GetRandom(PackManager.Instance.Items.Count);
+            var soUnit = PackManager.Instance.Items[randomNumber];
 
             SpawnManager.Instance.Spawn(
                 soUnit,
-                random,
+                randomNumber,
                 null,
                 UnitState.InSlotShop,
                 shopItemSlots[i].transform);
@@ -355,8 +331,25 @@ public class PhaseShopController : MonoBehaviour
 
     #endregion
 
+    private int GetRandom(int _length)
+    {
+        return UnityEngine.Random.Range(0, _length);
+    }
+
 
     #region Charge Bot at start of Shop
+
+    private void ChargeBotAtStartShop()
+    {
+        if (ChargeSlot == null)
+            return;
+
+        var unit = ChargeSlot.UnitController();
+        if (unit != null)
+            unit.AddEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value, true, true);
+
+        SetStartTurn(StartTurnState.Done);
+    }
 
     /// <summary>
     /// Delays charging bots at start of phase shop.
@@ -377,7 +370,7 @@ public class PhaseShopController : MonoBehaviour
 
         var unit = ChargeSlot.UnitController();
         if (unit != null)
-            durationCharge = unit.SetEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value, true);
+            durationCharge = unit.AddEnergy(PackManager.Instance.MyPack.ChargingEnergy.Value, true, true);
 
         yield return new WaitForSeconds(durationCharge);
 
@@ -402,7 +395,7 @@ public class PhaseShopController : MonoBehaviour
                 var unitController = slot.UnitController();
                 if (unitController != null)
                 {
-                    unitController.SetEnergy(PackManager.Instance.MyPack.ChargingEnergyTeam.Value, false);
+                    unitController.AddEnergy(PackManager.Instance.MyPack.ChargingEnergyTeam.Value, false, true);
                     isSomeoneThere = true;
                 }
             }
@@ -540,7 +533,7 @@ public class PhaseShopController : MonoBehaviour
 
         if (model != null)
         {
-            model.SetData(_dropSlot.CompareTag("Slot Charge") ?
+            model.SetDataView(_dropSlot.CompareTag("Slot Charge") ?
                 UnitState.InSlotCharge :
                 UnitState.InSlotTeam);
         }
@@ -910,4 +903,30 @@ public class PhaseShopController : MonoBehaviour
     {
         _unit.DestroyObject();
     }
+
+    public bool IsTurnAI()
+    {
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
+            return false;
+        }
+
+        var game = GameManager.Instance.CurrentGame;
+        if (game == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: CurrentGame not found in GameManager.");
+            return false;
+        }
+
+        var player = GameManager.Instance.CurrentPlayer;
+        if (player == null)
+        {
+            Debug.LogWarning(this.name + ".Awake: CurrentPlayer not found in GameManager.");
+            return false;
+        }
+
+        return game.Mode == GameMode.AI && player.Data.IsAI;
+    }
+
 }

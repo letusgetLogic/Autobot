@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InitializeState : StateBase
+public class InitializeState : StateBaseBattle
 {
     private Player player1;
     private Player player2;
@@ -14,7 +14,7 @@ public class InitializeState : StateBase
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.Log("--- InitState - Battle Phase " + GameManager.Instance.CurrentGame.SavedRounds.Count);
 
@@ -32,7 +32,7 @@ public class InitializeState : StateBase
         PhaseBattleController.Instance.StartCoroutine(Initialize());
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {

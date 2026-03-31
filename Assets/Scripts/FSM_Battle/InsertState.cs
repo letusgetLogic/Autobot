@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InsertState : StateBase
+public class InsertState : StateBaseBattle
 {
     /// <summary>
     /// Constructor of InsertState. Moves the units to the center.
@@ -11,7 +11,7 @@ public class InsertState : StateBase
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.Log("--- InsertState");
         PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots1()));
@@ -19,7 +19,7 @@ public class InsertState : StateBase
         EventManager.Instance.OnSwap?.Invoke();
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
     {
         if (IsDone)
         {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ShutdownState : StateBase
+public class ShutdownState : StateBaseBattle
 {
     /// <summary>
     /// Constructor of ShutdownState.
@@ -10,14 +10,14 @@ public class ShutdownState : StateBase
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.Log("--- ShutdownState");
 
         HideUnit();
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {

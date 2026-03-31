@@ -246,7 +246,7 @@ public class PhaseShopUI : MonoBehaviour
         {
             var unit = PhaseShopController.Instance.AttachedController;
 
-            unit.Model.SetData(UnitState.Freezed);
+            unit.Model.SetDataView(UnitState.Freezed);
 
             SetButtonActive(unit);
 
@@ -266,7 +266,7 @@ public class PhaseShopUI : MonoBehaviour
         {
             var unit = PhaseShopController.Instance.AttachedController;
 
-            unit.Model.SetData(UnitState.InSlotShop);
+            unit.Model.SetDataView(UnitState.InSlotShop);
 
             SetButtonActive(unit);
 

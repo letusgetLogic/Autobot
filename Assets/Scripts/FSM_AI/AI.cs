@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class AI : MonoBehaviour, IFiniteStateMachine
+public class AI : MonoBehaviour, I_FSM_AI
 {
-    private StateBase state;
+    private StateBaseAI state;
+
+    private UnitController[] shopBotDatas;
+    private UnitController[] shopItemDatas;
 
     private void Awake()
     {
-        
+        StartShop();
     }
 
     // Update is called once per frame
@@ -15,13 +18,22 @@ public class AI : MonoBehaviour, IFiniteStateMachine
         
     }
 
-    public void SetState(StateBase _state)
+    public void SetState(StateBaseAI _state)
     {
-        throw new System.NotImplementedException();
+        if (state != null)
+            state.OnExit(this);
+
+        state = _state;
+
+        if (_state == null)
+            return;
+
+        state.OnEnter(this);
     }
 
-    public void SetSubState(StateBase _state)
+    private void StartShop()
     {
-        throw new System.NotImplementedException();
+
+        SetState(new AI_SearchInFactory());
     }
 }

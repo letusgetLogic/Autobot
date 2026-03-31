@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-public class HandleAbilityState : StateBase
+public class HandleAbilityState : StateBaseBattle
 {
     /// <summary>
     /// Consturctor of HandleAbilityState.
@@ -10,14 +10,14 @@ public class HandleAbilityState : StateBase
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.Log("--- HandleAbilityState");
 
         PhaseBattleController.Instance.StartCoroutine(HandleAbility());
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
     {
         if (IsDone)
         {

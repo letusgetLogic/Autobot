@@ -1,0 +1,13 @@
+﻿public interface I_FSM_AI
+{
+    /// <summary>
+    /// Update is called every frame to update the state machine.
+    /// </summary>
+    public abstract void Update();
+
+    /// <summary>
+    /// SetState is used to change the current state of the state machine.
+    /// </summary>
+    /// <param name="_state"></param>
+    public abstract void SetState(StateBaseAI _state);
+}

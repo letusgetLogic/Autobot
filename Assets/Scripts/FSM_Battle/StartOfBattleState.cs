@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-public class StartOfBattleState : StateBase
+public class StartOfBattleState : StateBaseBattle
 {
     /// <summary>
     /// Constructor of StartOfBattleState.
@@ -10,7 +10,7 @@ public class StartOfBattleState : StateBase
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.WriteLine("--- StartOfBattleState");
 
@@ -26,12 +26,12 @@ public class StartOfBattleState : StateBase
                      PhaseBattleController.Instance.Process.DurationAttack));
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
     {
 
     }
 
-    public override void OnExit(IFiniteStateMachine _ctx)
+    public override void OnExit(I_FSM_Battle _ctx)
     {
         if (GameManager.Instance.Replay != null)
             GameManager.Instance.Replay.Switch(GameState.BattlePhase);

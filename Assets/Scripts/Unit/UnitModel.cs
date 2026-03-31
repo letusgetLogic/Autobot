@@ -142,7 +142,8 @@ public class UnitModel
                     Repair.Initialize(this, _view);
                     Repair.SetDurability(GameManager.Instance != null
                         ? (GameManager.Instance.Replay != null ? false : true)
-                        : false);
+                        : false, 
+                        true);
                     Repair.SetRepairPanel();
                 }
                 else
@@ -197,8 +198,10 @@ public class UnitModel
     /// Sets the unit state and updates view.
     /// </summary>
     /// <param name="_unitState"></param>
-    public void SetData(UnitState _unitState)
+    public void SetDataView(UnitState _unitState)
     {
+        Data.UnitState = _unitState;
+
         if (GameManager.Instance && GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
             _unitState = UnitState.InPhaseBattle;
 
@@ -232,8 +235,6 @@ public class UnitModel
         }
 
         Repair?.SetDisplay(_unitState);
-
-        Data.UnitState = _unitState;
     }
 
     /// <summary>

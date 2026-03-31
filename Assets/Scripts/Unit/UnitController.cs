@@ -33,8 +33,8 @@ public class UnitController : MonoBehaviour
     private UnitModel model;
 
     public AbilityBase Ability => AbilityBase.GetAbility(
-        this, 
-        model.CurrentLevel, 
+        this,
+        model.CurrentLevel,
         Targets,
         GameManager.Instance.RandomSeed
         );
@@ -106,6 +106,18 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public bool IsTurnAI
+    {
+        get
+        {
+            if (PhaseShopController.Instance && PhaseShopController.Instance.Player.Data.IsAI)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+
 
     private void OnValidate()
     {
@@ -129,6 +141,7 @@ public class UnitController : MonoBehaviour
     /// Creates a model with/without repair system and initializes the view and sets data.
     /// </summary>
     /// <param name="_soUnit"></param>
+    /// <param name="_index"> came from random spawning in shop </param>
     public void Initialize(SoUnit _soUnit, int _index, SaveUnitData _data, UnitState _unitState, bool _isTeamLeft)
     {
         // If the saved data has no reference, 
@@ -155,9 +168,8 @@ public class UnitController : MonoBehaviour
         if (GameManager.Instance == null || GameManager.Instance.IsCatalogActive)
             return;
 
-        model.SetData(_unitState);
+        model.SetDataView(_unitState);
     }
-
 
     /// <summary>
     /// Returns the ability if the energy isn't smaller as the value of energy to consume.
@@ -310,7 +322,7 @@ public class UnitController : MonoBehaviour
 
         model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
         StartCoroutine(model.UpdateLevelXP(_isPhaseShop, true));
-        model.Repair?.SetDurability(false);
+        model.Repair?.SetDurability(false, true);
 
         EventManager.Instance.OnFusion?.Invoke();
     }
@@ -380,11 +392,13 @@ public class UnitController : MonoBehaviour
     /// </summary>
     /// <param name="_addEnergy"></param>
     /// <param name="_onBuff"></param>
-    public float SetEnergy(int _addEnergy, bool _onBuff)
+    public float AddEnergy(int _addEnergy, bool _onBuff, bool _updateView)
     {
         int value = model.Data.Cur.ENG + _addEnergy;
-
         model.Data.SetEnergy(value);
+
+        if (_updateView == false)
+            return 0;
 
         if (_addEnergy > 0) // Add energy.
         {
@@ -421,7 +435,7 @@ public class UnitController : MonoBehaviour
 
         view.ShowBuff(_attribute);
         view.GetTargetedByAbility();
-        model.Repair?.SetDurability(false);
+        model.Repair?.SetDurability(false, true);
     }
 
     #endregion

@@ -29,8 +29,8 @@ public class Steal : AbilityBase
 
                     int stolen = StolenEnergy(target, Controller);
 
-                    target.SetEnergy(stolen, default);
-                    Controller.SetEnergy(Math.Abs(stolen), true);
+                    target.AddEnergy(stolen, default, true);
+                    Controller.AddEnergy(Math.Abs(stolen), true, true);
 
                     yield return new WaitForSeconds(Controller.View.Settings.DurationShowTemporaryValue);
                 }

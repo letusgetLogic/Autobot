@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
+public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
 {
     public static PhaseBattleController Instance { get; private set; }
 
@@ -17,12 +17,12 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     [SerializeField]
     private Slot[] slots2;
 
-    private StateBase state { get; set; }
+    private StateBaseBattle state { get; set; }
 
     /// <summary>
     /// This sub state is used to run another states without breaking the current base state.
     /// </summary>
-    public StateBase SubState { get; set; }
+    public StateBaseBattle SubState { get; set; }
 
     public UnitController AttackingUnit1 => slots1[0].UnitController();
     public UnitController AttackingUnit2 => slots2[0].UnitController();
@@ -143,7 +143,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     /// Set the state of the battle.
     /// </summary>
     /// <param name="_state"></param>
-    public void SetState(StateBase _state)
+    public void SetState(StateBaseBattle _state)
     {
         if (state != null)
             state.OnExit(this);
@@ -160,7 +160,7 @@ public class PhaseBattleController : MonoBehaviour, IFiniteStateMachine
     /// Set the sub state of the battle, and this sub state will run without breaking the current base state.
     /// </summary>
     /// <param name="_state"></param>
-    public void SetSubState(StateBase _state)
+    public void SetSubState(StateBaseBattle _state)
     {
         if (SubState != null)
             SubState.OnExit(this);

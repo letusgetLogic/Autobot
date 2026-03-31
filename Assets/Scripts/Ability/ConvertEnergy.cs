@@ -21,7 +21,7 @@ public class ConvertEnergy : AbilityBase
 
         // Execute only when the current energy > 0
 
-        Controller.SetEnergy(-energy, false);
+        Controller.AddEnergy(-energy, false, true);
 
         Attribute buff = default;
 

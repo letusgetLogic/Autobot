@@ -1,15 +1,15 @@
-﻿public class AI_SearchInFactory : StateBase
+﻿public class AI_SearchInFactory : StateBaseAI
 {
-    public AI_SearchInFactory(float _maxTimeCount) : base(_maxTimeCount)
+    public AI_SearchInFactory() : base()
     {
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_AI _ctx)
     {
         
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_AI _ctx, float _speed)
     {
         
     }

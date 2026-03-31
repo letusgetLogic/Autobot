@@ -1,4 +1,4 @@
-public interface IFiniteStateMachine
+public interface I_FSM_Battle
 {
     /// <summary>
     /// Update is called every frame to update the state machine.
@@ -9,12 +9,13 @@ public interface IFiniteStateMachine
     /// SetState is used to change the current state of the state machine.
     /// </summary>
     /// <param name="_state"></param>
-    public abstract void SetState(StateBase _state);
+    public abstract void SetState(StateBaseBattle _state);
 
     /// <summary>
     /// SetSubState is used to change the current state of the sub state machine.
     /// </summary>
     /// <param name="_state"></param>
-    public abstract void SetSubState(StateBase _state);
+    public abstract void SetSubState(StateBaseBattle _state);
 }
+
 

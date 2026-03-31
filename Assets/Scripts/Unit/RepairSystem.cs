@@ -72,10 +72,12 @@ public class RepairSystem
     /// <param name="_updateATK"></param>
     /// <param name="_durability"></param>
     /// <param name="_ratio"></param>
-    public void SetDurability(bool _updateATK)
+    public void SetDurability(bool _updateATK, bool _updateView)
     {
         model.Data.Durability = GetDurabilityFromHealth(_updateATK);
-        ShowDurability();
+
+        if (_updateView)
+            ShowDurability();
     }
 
     /// <summary>

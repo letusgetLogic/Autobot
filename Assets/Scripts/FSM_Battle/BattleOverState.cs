@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BattleOverState : StateBase
+public class BattleOverState : StateBaseBattle
 {
     private int outcome; // 0 = draw, 1 = right wins, -1 = left wins.
 
@@ -13,7 +13,7 @@ public class BattleOverState : StateBase
         outcome = _outcome;
     }
 
-    public override void OnEnter(IFiniteStateMachine _ctx)
+    public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.Log("--- BattleOverState ---");
 
@@ -87,7 +87,7 @@ public class BattleOverState : StateBase
         _ctx.SetState(null);
     }
 
-    public override void OnUpdate(IFiniteStateMachine _ctx, float _speed)
+    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
     {
         if (TimeCount < MaxTimeCount)
         {
