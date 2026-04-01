@@ -12,7 +12,7 @@ public class PhaseShopUI : MonoBehaviour
     private float durationCoinsRedDefault = 0.2f;
 
     [Header("References")]
-    [SerializeField] private PanelLeftCurrency panelLeftCurrency;
+    [SerializeField] private PanelConfirmation panelLeftCurrency;
     [SerializeField] private GameObject hintLabel;
     [SerializeField] private TextMeshProUGUI hintLabelText;
 

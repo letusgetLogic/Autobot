@@ -118,8 +118,8 @@ public class UnitController : MonoBehaviour
         }
     }
 
-
-    private void OnValidate()
+    [ContextMenu("OnInitialize")]
+    private void OnInit()
     {
         if (Application.isPlaying == false)
         {

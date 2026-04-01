@@ -1,18 +1,32 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelLeftCurrency : MonoBehaviour
+public class PanelConfirmation : MonoBehaviour
 {
+    private enum Type
+    {
+        None,
+        LeftCurrency,
+        ToMenu
+    }
+
     public Button OnContinueDeclined;
     public Button OnContinueConfirmed;
 
+    [SerializeField] private Type type;
     [SerializeField] private TextMeshProUGUI tool, nut;
+    [SerializeField] private List<GameObject> leftCurrencyComponents;
+    [SerializeField] private List<GameObject> toMenuComponents;
 
     public static readonly int MinLeftTool = 1, MinLeftNut = 5;
 
     private void OnEnable()
     {
+        leftCurrencyComponents.ForEach(x => x.SetActive(type == Type.LeftCurrency));
+        toMenuComponents.ForEach(x => x.SetActive(type == Type.ToMenu));
+
         OnContinueDeclined.interactable = true;
         OnContinueDeclined.onClick.AddListener(Decline);
         OnContinueConfirmed.interactable = true;
@@ -39,6 +53,20 @@ public class PanelLeftCurrency : MonoBehaviour
     {
         OnContinueConfirmed.interactable = false;
         gameObject.SetActive(false);
-        PhaseShopUI.Instance.Player.EndShop();
+
+        switch (type)
+        {
+            case Type.LeftCurrency:
+                PhaseShopUI.Instance.Player.EndShop();
+                break;
+            case Type.ToMenu:
+                if (GameManager.Instance.CurrentGame != null)
+                {
+                    GameManager.Instance.CurrentGame.State = GameState.EndOfGame;
+                }
+                GameManager.Instance.LoadScene("Menu");
+                break;
+        }
+
     }
 }
