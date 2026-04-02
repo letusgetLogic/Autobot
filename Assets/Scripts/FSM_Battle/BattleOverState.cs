@@ -33,7 +33,6 @@ public class BattleOverState : StateBaseBattle
         switch (outcome)
         {
             case -1: // Left Wins
-                PhaseBattleView.Instance.ShowWinner(player1.Data.Name, player2.Data.Lives == 0);
                 if (GameManager.Instance.Replay == null)
                 {
                     GameManager.Instance.UpdatePlayerStats(-1);
@@ -41,18 +40,19 @@ public class BattleOverState : StateBaseBattle
                 }
                 else
                     PhaseBattleView.Instance.UpdateLives(data1.Lives, data2.Lives - 1);
+
+                PhaseBattleView.Instance.ShowWinner(player1.Data.Name, player2.Data.Lives == 0);
                 break;
 
             case 0: // Draw
-                PhaseBattleView.Instance.ShowWinner("Nobody", false);
                 if (GameManager.Instance.Replay == null)
                 {
                     GameManager.Instance.UpdatePlayerStats(0);
                 }
+                PhaseBattleView.Instance.ShowWinner("Nobody", false);
                 break;
 
             case 1: // Right wins
-                PhaseBattleView.Instance.ShowWinner(player2.Data.Name, player1.Data.Lives == 0);
                 if (GameManager.Instance.Replay == null)
                 {
                     GameManager.Instance.UpdatePlayerStats(1);
@@ -60,6 +60,8 @@ public class BattleOverState : StateBaseBattle
                 }
                 else
                     PhaseBattleView.Instance.UpdateLives(data1.Lives - 1, data2.Lives);
+
+                PhaseBattleView.Instance.ShowWinner(player2.Data.Name, player1.Data.Lives == 0);
                 break;
         }
 

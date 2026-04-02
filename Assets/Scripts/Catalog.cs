@@ -6,9 +6,16 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
 {
     public static Catalog Instance { get; private set; }
 
-    [Header("References")]
+    [Header("Pack")]
+    [SerializeField] private SoPack pack;
+
+    [Header("Description References")]
     [SerializeField] private GameObject[] components;
     [SerializeField] private GameObject[] hideByItems;
+    [SerializeField] private GameObject stats;
+    [SerializeField] private GameObject cost;
+    [SerializeField] private GameObject costTool;
+    [SerializeField] private GameObject costNut;
     [SerializeField]
     private TextMeshProUGUI
         myName,
@@ -16,18 +23,13 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
         attack,
         health,
         itemAbility,
-        itemNut;
+        itemNut,
+        costToolText,
+        costNutText;
 
-    [Header("References")]
-    [SerializeField] private GameObject stats;
 
-    [SerializeField] private GameObject[] myLevels;
-
-    [SerializeField] private TextMeshProUGUI[] abilitys;
-
-    [SerializeField] private GameObject[] energyIcons;
-
-    [SerializeField] private TextMeshProUGUI[] consumedEnergys;
+    [Header("Level References")]
+    [SerializeField] private CatalogDescriptionLevel[] myLevels;
 
     private UnitController attachedController;
 
@@ -109,15 +111,16 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
     /// <summary>
     /// Pass the data of the unit over.
     /// </summary>
-    /// <param name="_data"></param>
-    private void SetData(SoUnit _data)
+    /// <param name="_soUnit"></param>
+    private void SetData(SoUnit _soUnit)
     {
-        myName.text = _data.Name;
-        modelID.text = _data.ModelID == ""
+        myName.text = _soUnit.Name;
+        modelID.text = _soUnit.ModelID == ""
             ? ""
-            : "- Model " + _data.ModelID + " -";
+            : "- Model " + _soUnit.ModelID + " -";
 
-        if (_data.UnitType == UnitType.Item)
+        // Special settings for items, as they don't have attack and health but have a unique ability and cost.
+        if (_soUnit.UnitType == UnitType.Item)
         {
             foreach (var hide in hideByItems)
             {
@@ -125,10 +128,12 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
             }
 
             itemAbility.gameObject.SetActive(true);
-            itemAbility.text = _data.Levels.Length > 0 ? _data.Levels[0].Description : "";
-            itemNut.text = _data.UniqueCostNuts != null ? _data.UniqueCostNuts.Value.ToString() : "";
+            itemAbility.text = _soUnit.Levels.Length > 0 ? _soUnit.Levels[0].Description : "";
+            itemNut.text = _soUnit.UniqueCostNuts != null ? _soUnit.UniqueCostNuts.Value.ToString() : "";
             return;
         }
+
+        // Settings for bots.
 
         itemAbility.gameObject.SetActive(false);
 
@@ -137,46 +142,51 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
             hide.SetActive(true);
         }
 
-        if (_data.Attack <= 0 && _data.Health <= 0)
+        if (_soUnit.Attack <= 0 && _soUnit.Health <= 0)
         {
             stats.SetActive(false);
         }
         else
         {
             stats.SetActive(true);
-            attack.text = _data.Attack.ToString();
-            health.text = _data.Health.ToString();
+            attack.text = _soUnit.Attack.ToString();
+            health.text = _soUnit.Health.ToString();
         }
 
-        if (_data.Levels.Length > 0)
+        var unitCost = pack.CurrencyData.UnitCost;
+        if (unitCost.SoTool == 0 && unitCost.Nut == 0)
+        {
+            cost.SetActive(false);
+        }
+        else
+        {
+            cost.SetActive(true);
+            costTool.SetActive(unitCost.SoTool < 0);
+            costToolText.text = unitCost.SoTool.ToString();
+            costNut.SetActive(unitCost.Nut < 0);
+            costNutText.text = unitCost.Nut.ToString();
+        }
+
+        // Settings for levels.
+        if (_soUnit.Levels.Length > 0)
         {
             for (int i = 0; i < myLevels.Length; i++)
             {
-                if (i >= _data.Levels.Length)
+                if (i >= _soUnit.Levels.Length)
                 {
-                    myLevels[i].SetActive(false);
+                    myLevels[i].gameObject.SetActive(false);
                     continue;
                 }
 
-                myLevels[i].SetActive(true);
-                abilitys[i].text = _data.Levels[i].Description;
-
-                if (_data.Levels[i].ConsumedEnergy && _data.Levels[i].ConsumedEnergy.Value < 0)
-                {
-                    energyIcons[i].SetActive(true);
-                    consumedEnergys[i].text = _data.Levels[i].ConsumedEnergy.Value.ToString();
-                }
-                else
-                {
-                    energyIcons[i].SetActive(false);
-                }
+                myLevels[i].gameObject.SetActive(true);
+                myLevels[i].SetData(_soUnit, pack.CurrencyData, i);
             }
         }
         else
         {
             for (int i = 0; i < myLevels.Length; i++)
             {
-                myLevels[i].SetActive(false);
+                myLevels[i].gameObject.SetActive(false);
             }
         }
     }
