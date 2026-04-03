@@ -242,7 +242,7 @@ public class UnitController : MonoBehaviour
         }
         else
         {
-            GameManager.Instance.IsBlockingInput = false;
+            InputManager.Instance.BlocksInput = false;
             Destroy(gameObject);
         }
     }

@@ -43,9 +43,12 @@ public class PhaseShopController : MonoBehaviour
     public bool IsSwapping { get; private set; } = false;
 
     private StartTurnState startTurn = StartTurnState.None;
+    private InputManager input => InputManager.Instance;
 
     private void Awake()
     {
+        Debug.Log(this.name + ".Awake()");
+
         if (Instance != null)
         {
             Destroy(Instance.gameObject);
@@ -53,7 +56,6 @@ public class PhaseShopController : MonoBehaviour
         Instance = this;
 
         Time.timeScale = 1f;
-
 
         if (GameManager.Instance == null)
         {
@@ -579,6 +581,7 @@ public class PhaseShopController : MonoBehaviour
         }
         else
         {
+            input.BlocksInput = false;
             IsSwapping = false;
             GameManager.Instance.IsBlockingInput = false;
             yield break;
@@ -600,7 +603,7 @@ public class PhaseShopController : MonoBehaviour
         else
         {
             IsSwapping = false;
-            GameManager.Instance.IsBlockingInput = false;
+            input.BlocksInput = false;
             yield break;
         }
 
@@ -610,7 +613,7 @@ public class PhaseShopController : MonoBehaviour
 
         Player.UpdateUnitData();
         IsSwapping = false;
-        GameManager.Instance.IsBlockingInput = false;
+        input.BlocksInput = false;
     }
 
     ///summary>
@@ -678,7 +681,7 @@ public class PhaseShopController : MonoBehaviour
 
         yield return new WaitForSeconds(Process.DelayHideDescription);
 
-        GameManager.Instance.IsBlockingInput = false;
+        input.BlocksInput = false;
     }
 
     /// <summary>

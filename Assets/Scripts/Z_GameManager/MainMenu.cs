@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour
         Time.timeScale = 1.0f;
 
         GameManager.Instance.Replay = null;
-        GameManager.Instance.IsBlockingInput = false;
+        InputManager.Instance.BlocksInput = false;
 
         StartCoroutine(SetReplayButton());
     }

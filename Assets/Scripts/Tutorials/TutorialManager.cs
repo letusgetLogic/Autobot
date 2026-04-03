@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Unity.Multiplayer.Playmode;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -8,16 +11,15 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TutorialStep[] steps;
     [SerializeField] private float maxCountAFK = 3f;
 
-    private int runIndex = 0;
-    private float count = 0f;
-    private float countAFK = 0f;
-
-    private bool isAlreadyLateEnter = false;
-    private bool isAlreadyAFK = false;
+    public bool TutorialCompleted
+    {
+        get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
+        set => PlayerPrefs.SetInt("TutorialCompleted", value ? 1 : 0);
+    }
 
     private enum StepState
     {
-        None,
+        None = -1,
         Welcome = 0,
         BuildTeam,
         ShowTeam,
@@ -37,10 +39,17 @@ public class TutorialManager : MonoBehaviour
     }
     private StepState stepState;
 
-    public bool TutorialCompleted
+    private int runIndex = 0;
+    private float count = 0f;
+    private float countAFK = 0f;
+
+    private bool isAlreadyLateEnter = false;
+    private bool isAlreadyAFK = false;
+
+    private List<InputKey> currentAllowedInputs;
+    public List<InputKey> CurrentAllowedInputs
     {
-        get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
-        set => PlayerPrefs.SetInt("TutorialCompleted", value ? 1 : 0);
+        get => currentAllowedInputs;
     }
 
     public bool ShouldClickForNextStep { get; private set; } = true;
@@ -60,11 +69,16 @@ public class TutorialManager : MonoBehaviour
             TutorialCompleted = false;
         }
 
-        stepState = StepState.Welcome;
+        Switch(StepState.Welcome);
     }
 
     private void Update()
     {
+        if (TutorialCompleted ||
+            process == null || process.Delays == null || runIndex >= process.Delays.Length 
+            || steps == null || runIndex >= steps.Length)
+            return;
+
         if (count < process.Delays[runIndex])
         {
             count += Time.deltaTime;
@@ -101,6 +115,50 @@ public class TutorialManager : MonoBehaviour
             step.gameObject.name = $"{i}_{(StepState)i}";
         }
     }
+
+
+    /// <summary>
+    /// Switches the state and performs actions based on the new state.
+    /// </summary>
+    /// <param name="_state"></param>
+    private void Switch(StepState _state)
+    {
+        stepState = _state;
+
+        switch (_state)
+        {
+            case StepState.None:
+                break;
+
+            case StepState.Welcome:
+                break;
+
+            case StepState.BuildTeam:
+                break;
+
+            case StepState.ShowTeam:
+                break;
+
+            case StepState.ShowFactory:
+                break;
+
+            case StepState.ClickRobot:
+                break;
+
+            case StepState.FactoryRobotSlots:
+                break;
+
+            case StepState.RobotCost:
+                break;
+
+            case StepState.PickRobot:
+                break;
+
+            case StepState.FusionRobot:
+                break;
+        }
+    }
+
 
     public void SetNextStep()
     {

@@ -4,6 +4,28 @@ using UnityEngine.EventSystems;
 public class EventClickSlot : MonoBehaviour, IPointerClickHandler
 {
     private Slot slot;
+    private InputKey inputKey
+    {
+        get
+        {
+            if (slot.CompareTag("Slot Team"))
+                return InputKey.ClickSlotTeam;
+
+            if (slot.CompareTag("Slot Charge"))
+                return InputKey.ClickSlotCharge;
+            
+            if (slot.CompareTag("Slot Shop"))
+            {
+                var unit = slot.UnitController();
+                if (unit && unit.IsRobot(unit.Model.SoUnit.UnitType))
+                    return InputKey.ClickSlotShopBot;
+                else
+                    return InputKey.ClickSlotShopItem;
+            }
+
+            return InputKey.None;
+        }
+    }
 
     private void Start()
     {
@@ -16,7 +38,7 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsBlockingInput)
+        if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
         var unit = slot.UnitController();

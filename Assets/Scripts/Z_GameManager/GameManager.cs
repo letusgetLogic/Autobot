@@ -98,19 +98,19 @@ public class GameManager : MonoBehaviour
     public Player CurrentPlayer { get; set; }
     //public bool IsCatalogActive { get; set; } = false;
 
-    // SoundManager Lazy Loading is initialized once to create and hold an instance.
-    private SoundManager soundManager;
+    // Lazy Loading is initialized once to create and hold an instance.
+    private SoundManager sound => SoundManager.Instance;
+    private InputManager input => InputManager.Instance;
 
     #endregion
 
 
     public string SceneName => SceneManager.GetActiveScene().name;
     public string SceneToLoad { get; set; }
-
     /// <summary>
     /// To block player's input while animation is running.
     /// </summary>
-    public bool IsBlockingInput { get; set; } = false;
+    public bool IsBlockingInput {  get; set; }
     public bool IsCatalogActive { get; set; } = false;
     public ReplayManager Replay { get; set; }
 
@@ -144,7 +144,12 @@ public class GameManager : MonoBehaviour
         _Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        soundManager = SoundManager.Instance;
+        if (sound != null && input != null) 
+        {
+            // this if-query is used to initialize instances once.
+            // for example, button's sound wouldn't be triggered,
+            // because until then no one has accessed/initalized SoundManager's instence.
+        };
     }
 
     /// <summary>
@@ -228,24 +233,24 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.PlayCutScene:
-                    IsBlockingInput = true;
-                    RunModeSingle();
+                input.BlocksInput = true;
+                RunModeSingle();
                 break;
 
             case GameState.WaitingEndOfBattle:
-                IsBlockingInput = false;
+                input.BlocksInput = false;
                 EventManager.Instance.OnWaitingForClick?.Invoke();
                 // Waiting for player input
                 break;
 
             case GameState.WaitingEndOfGame:
-                IsBlockingInput = false;
+                input.BlocksInput = false;
                 EventManager.Instance.OnWaitingForClick?.Invoke();
                 // Waiting for player input
                 break;
 
             case GameState.WaitingCutScene:
-                IsBlockingInput = false;
+                input.BlocksInput = false;
                 // Waiting for player input
                 break;
 
@@ -263,7 +268,7 @@ public class GameManager : MonoBehaviour
             case GameState.ShopPhase:
                 Replay = null;
                 if (PhaseShopController.Instance.IsTurnAI() == false)
-                    IsBlockingInput = false;
+                    input.BlocksInput = false;
                 break;
 
             case GameState.EndOfTurn:

@@ -1,11 +1,22 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EventDropSlotTeam : MonoBehaviour, IDropHandler
 {
     private Slot slot { get; set; }
+    private InputKey inputKey
+    {
+        get
+        {
+            if (slot.CompareTag("Slot Team"))
+                return InputKey.DropSlotTeam;
 
+            if (slot.CompareTag("Slot Charge"))
+                return InputKey.DropSlotCharge;
+
+            return InputKey.None;
+        }
+    }
     private void OnEnable()
     {
         slot = transform.parent.GetComponent<Slot>();
@@ -17,7 +28,7 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
     /// <param name="eventData"></param>
     public void OnDrop(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsBlockingInput)
+        if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
         if (eventData.pointerDrag == null)
@@ -38,24 +49,10 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
         }
 
         // EndDrag set later blocking input = false.
-        GameManager.Instance.IsBlockingInput = true;
+        InputManager.Instance.BlocksInput = true;
 
         PhaseShopController.Instance.ManageAttachedUnit(attached, slot, slot.UnitController());
         PhaseShopController.Instance.SetAttachedGameObject(null);
         PhaseShopController.Instance.SetItemRandomnessInactive();
-
-
-        //StartCoroutine(DelayEnableInput()); // End drag set blocking input = false
-    }
-
-    /// <summary>
-    /// Delay enabling input.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator DelayEnableInput()
-    {
-        yield return new WaitForEndOfFrame();
-
-        GameManager.Instance.IsBlockingInput = false;
     }
 }

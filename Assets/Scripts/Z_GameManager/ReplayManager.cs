@@ -3,6 +3,8 @@
     public GameState State => state;
     private GameState state;
 
+    private InputManager input => InputManager.Instance;
+
     public ReplayManager()
     {
         if (PhaseShopController.Instance != null)
@@ -35,7 +37,7 @@
                 break;
 
             case GameState.WaitingEndOfBattle:
-                GameManager.Instance.IsBlockingInput = false;
+                input.BlocksInput = false;
                 EventManager.Instance.OnWaitingForClick?.Invoke();
                 // Waiting for player input
                 break;
@@ -47,7 +49,7 @@
                 break;
 
             case GameState.BattlePhase:
-                GameManager.Instance.IsBlockingInput = false;
+                input.BlocksInput = false;
                 break;
 
             case GameState.EndOfBattle:

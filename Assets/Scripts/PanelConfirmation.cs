@@ -46,7 +46,7 @@ public class PanelConfirmation : MonoBehaviour
     {
         OnContinueDeclined.interactable = false;
         gameObject.SetActive(false);
-        GameManager.Instance.IsBlockingInput = false;
+        InputManager.Instance.BlocksInput = false;
     }
 
     private void Confirm()

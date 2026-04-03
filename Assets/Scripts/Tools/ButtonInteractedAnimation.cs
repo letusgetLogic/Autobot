@@ -34,7 +34,7 @@ public class ButtonInteractedAnimation : MonoBehaviour, IPointerClickHandler, IP
             rotatedSprite2.localRotation = originalRotation;
         }
 
-        GameManager.Instance.IsBlockingInput = false;
+        InputManager.Instance.BlocksInput = false;
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class ButtonInteractedAnimation : MonoBehaviour, IPointerClickHandler, IP
         if (rotatedSprite2 != null)
             rotatedSprite2.gameObject.SetActive(false);
 
-        GameManager.Instance.IsBlockingInput = false;
+        InputManager.Instance.BlocksInput = false;
     }
 
     /// <summary>
@@ -74,10 +74,10 @@ public class ButtonInteractedAnimation : MonoBehaviour, IPointerClickHandler, IP
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsBlockingInput || isRunning)
+        if (InputManager.Instance.IsBlockingInput(default) || isRunning)
             return;
 
-        GameManager.Instance.IsBlockingInput = true;
+        InputManager.Instance.BlocksInput = true;
 
         isRunning = true;
         countdown = rotateTime;
@@ -112,7 +112,7 @@ public class ButtonInteractedAnimation : MonoBehaviour, IPointerClickHandler, IP
                     rotatedSprite2.gameObject.SetActive(false);
                 }
 
-                GameManager.Instance.IsBlockingInput = false;
+                InputManager.Instance.BlocksInput = false;
                 isRunning = false;
                 return;
             }

@@ -28,6 +28,29 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         gameObject.CompareTag("Slot Charge") || 
         gameObject.CompareTag("Slot Random");
 
+    private InputKey inputKey
+    {
+        get
+        {
+            if (CompareTag("Slot Team"))
+                return InputKey.HoverSlotTeam;
+
+            if (CompareTag("Slot Charge"))
+                return InputKey.HoverSlotCharge;
+
+            if (CompareTag("Slot Shop"))
+            {
+                var unit = UnitController();
+                if (unit && unit.IsRobot(unit.Model.SoUnit.UnitType))
+                    return InputKey.HoverSlotShopBot;
+                else
+                    return InputKey.HoverSlotShopItem;
+            }
+
+            return InputKey.None;
+        }
+    }
+
     private void Start()
     {
         if (indicator != null)
@@ -126,7 +149,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// </summary>
     private void ShowDescription()
     {
-        if (GameManager.Instance.IsBlockingInput)
+        if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
         if (UnitView() == null)

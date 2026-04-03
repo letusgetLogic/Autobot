@@ -5,6 +5,29 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     private Slot slot { get; set; }
 
+    private InputKey inputKey
+    {
+        get
+        {
+            if (slot.CompareTag("Slot Team"))
+                return InputKey.DragSlotTeam;
+
+            if (slot.CompareTag("Slot Charge"))
+                return InputKey.DragSlotCharge;
+
+            if (slot.CompareTag("Slot Shop"))
+            {
+                var unit = slot.UnitController();
+                if (unit && unit.IsRobot(unit.Model.SoUnit.UnitType))
+                    return InputKey.DragSlotShopBot;
+                else
+                    return InputKey.DragSlotShopItem;
+            }
+
+            return InputKey.None;
+        }
+    }
+
     private void Start()
     {
         slot = transform.parent.GetComponent<Slot>();
@@ -16,7 +39,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsBlockingInput)
+        if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -39,7 +62,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsBlockingInput)
+        if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -64,7 +87,7 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (PhaseShopController.Instance.IsSwapping)
             return;
 
-        GameManager.Instance.IsBlockingInput = false;
+        InputManager.Instance.BlocksInput = false;
         PhaseShopController.Instance.IsDragging = false;
 
         if (eventData.button != PointerEventData.InputButton.Left)

@@ -14,6 +14,28 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     private UnitController unitDragged { get; set; }
     private Slot draggedSlot { get; set; }
 
+    private InputKey inputKey
+    {
+        get
+        {
+            if (slot.CompareTag("Slot Team"))
+                return InputKey.HoverSlotTeam;
+
+            if (slot.CompareTag("Slot Charge"))
+                return InputKey.HoverSlotCharge;
+
+            if (slot.CompareTag("Slot Shop"))
+            {
+                var unit = slot.UnitController();
+                if (unit && unit.IsRobot(unit.Model.SoUnit.UnitType))
+                    return InputKey.HoverSlotShopBot;
+                else
+                    return InputKey.HoverSlotShopItem;
+            }
+
+            return InputKey.None;
+        }
+    }
 
     private void OnEnable()
     {
@@ -26,7 +48,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsBlockingInput)
+        if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
         if (PhaseShopController.Instance.IsBlockingInputsByItemRandomness(slot)) 
@@ -43,7 +65,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void OnMouseOver()
     {
-        if (GameManager.Instance.IsBlockingInput)
+        if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
         if (PhaseShopController.Instance.IsBlockingInputsByItemRandomness(slot))
@@ -80,7 +102,7 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
             if (countDown <= 0)
             {
                 //PhaseShopUnitManager.Instance.PushOtherAway(slot.Index, DirectionMoveOther());
-                GameManager.Instance.IsBlockingInput = true;
+                InputManager.Instance.BlocksInput = true;
                 PhaseShopController.Instance.IsDragging = false;
                 PhaseShopController.Instance.SetAttachedGameObject(null);
 
