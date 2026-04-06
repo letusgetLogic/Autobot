@@ -23,9 +23,8 @@ public class TutorialManager : MonoBehaviour
         BuildTeam,
         ShowTeam,
         ShowFactory,
+        ShowCurrency,
         ClickRobot,
-        FactoryRobotSlots,
-        RobotCost,
         PickRobot,
         FusionRobot,
         LevelUp,
@@ -40,7 +39,7 @@ public class TutorialManager : MonoBehaviour
 
     private float countTime = 0f;
 
-    private enum RunState { None, Start, Delay, Duration, SetAFK, AFK }
+    private enum RunState { None, Start, Delay, Duration, DurationHide, AFK }
     private RunState runState = RunState.None;
 
     private List<InputKey> currentAllowedInputs;
@@ -67,6 +66,14 @@ public class TutorialManager : MonoBehaviour
         SetNextStep();
     }
 
+    private void OnEnable()
+    {
+        foreach (var step in steps)
+        {
+            step.OnLabelPopup += () => SoundManager.Instance.PlayOneShot("Drop_Unit");
+        }
+    }
+
     private void Update()
     {
         if (TutorialCompleted ||
@@ -87,6 +94,7 @@ public class TutorialManager : MonoBehaviour
                     break;
 
                 case RunState.Delay:
+                    Debug.Log($"{stepState}.OnEnter");
                     steps[(int)stepState].OnEnter();
                     currentAllowedInputs = settings[(int)stepState].AllowedInputs;
                     countTime = settings[(int)stepState].Duration;
@@ -99,12 +107,7 @@ public class TutorialManager : MonoBehaviour
                         SetNextStep();
                         return;
                     }
-                    steps[(int)stepState].OnLateEnter();
-                    countTime = settings[(int)stepState].Delay;
-                    runState = RunState.SetAFK;
-                    break;
-
-                case RunState.SetAFK:
+                    Debug.Log($"{stepState}.OnAnimateAFK");
                     steps[(int)stepState].OnAnimateAFK();
                     runState = RunState.AFK;
                     break;
@@ -137,7 +140,9 @@ public class TutorialManager : MonoBehaviour
     public void SetNextStep()
     {
         runState = RunState.None;
-        currentAllowedInputs.Clear();
+
+        if (currentAllowedInputs != null)
+            currentAllowedInputs = new();
 
         if (stepState >= 0)
             steps[(int)stepState].OnExit();

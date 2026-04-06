@@ -26,16 +26,24 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
         switch (GameManager.Instance.SceneName)
         {
             case "PhaseShop":
+                //var tutorial = TutorialManager.Instance;
+                //if (tutorial != null && tutorial.TutorialCompleted == false)
+                //{
+                //    tutorial.SetNextStep();
+                //}
+                //else
+                //{
+                    var phaseShop = PhaseShopController.Instance;
+                    if (phaseShop)
+                        phaseShop.SetAttachedGameObject(null);
+                //}
+                break;
+
+            case "PhaseShop 1":
                 var tutorial = TutorialManager.Instance;
                 if (tutorial != null && tutorial.TutorialCompleted == false)
                 {
                     tutorial.SetNextStep();
-                }
-                else
-                {
-                    var phaseShop = PhaseShopController.Instance;
-                    if (phaseShop)
-                        phaseShop.SetAttachedGameObject(null);
                 }
                 break;
             case "PhaseBattle":

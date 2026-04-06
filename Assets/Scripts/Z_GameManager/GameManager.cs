@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
         }
 
         _Instance = this;
+       
         DontDestroyOnLoad(gameObject);
 
         if (sound != null && input != null) 

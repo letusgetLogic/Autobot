@@ -19,7 +19,7 @@
 
     public bool BlocksInput { set { isInputBlocked = value; } }
 
-    private bool isInputBlocked;
+    private bool isInputBlocked = true;
 
     /// <summary>
     /// Constructor of InputManager.

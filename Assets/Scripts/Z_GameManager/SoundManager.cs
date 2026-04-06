@@ -70,7 +70,7 @@ public class SoundManager
         EventManager.Instance.OnGameOver += () => PlayOneShot("Game_Over");
     }
 
-    private void PlayOneShot(string eventPath)
+    public void PlayOneShot(string eventPath)
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/" + eventPath);
     }
