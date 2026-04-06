@@ -7,7 +7,7 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] private SoTutorialSettings[] settings;
     [SerializeField] private TutorialStep[] steps;
-    
+
 
     public bool TutorialCompleted
     {
@@ -18,7 +18,8 @@ public class TutorialManager : MonoBehaviour
     private enum StepState
     {
         None = -1,
-        Welcome = 0,
+        Idle = 0,
+        Welcome = 1,
         BuildTeam,
         ShowTeam,
         ShowFactory,
@@ -35,13 +36,12 @@ public class TutorialManager : MonoBehaviour
         BonusEnergy,
 
     }
-    private StepState stepState = StepState.None;
+    private StepState stepState = StepState.Idle;
 
-    private float count = 0f;
-    private float countAFK = 0f;
+    private float countTime = 0f;
 
-    private bool isAlreadyLateEnter = false;
-    private bool isAlreadyAFK = false;
+    private enum RunState { None, Start, Delay, Duration, SetAFK, AFK }
+    private RunState runState = RunState.None;
 
     private List<InputKey> currentAllowedInputs;
     public List<InputKey> CurrentAllowedInputs
@@ -64,43 +64,59 @@ public class TutorialManager : MonoBehaviour
             TutorialCompleted = false;
         }
 
-        SetNextStep();  
+        SetNextStep();
     }
 
     private void Update()
     {
         if (TutorialCompleted ||
-            settings == null || (int)stepState >= settings.Length 
+            settings == null || (int)stepState >= settings.Length
             || steps == null || (int)stepState >= steps.Length)
             return;
 
-        if (count > 0)
+        if (countTime <= 0)
         {
-            count -= Time.deltaTime;
-        }
-        else if (isAlreadyLateEnter == false)
-        {
-            steps[(int)stepState].OnLateEnter();
+            switch (runState)
+            {
+                case RunState.None:
+                    break;
 
-            currentAllowedInputs = settings[(int)stepState].AllowedInputs;
+                case RunState.Start:
+                    countTime = settings[(int)stepState].Delay;
+                    runState = RunState.Delay;
+                    break;
 
-            countAFK = settings[(int)stepState].DelayAFK;
+                case RunState.Delay:
+                    steps[(int)stepState].OnEnter();
+                    currentAllowedInputs = settings[(int)stepState].AllowedInputs;
+                    countTime = settings[(int)stepState].Duration;
+                    runState = RunState.Duration;
+                    break;
 
-            isAlreadyLateEnter = true;
+                case RunState.Duration:
+                    if (settings[(int)stepState].AutoCompleted)
+                    {
+                        SetNextStep();
+                        return;
+                    }
+                    steps[(int)stepState].OnLateEnter();
+                    countTime = settings[(int)stepState].Delay;
+                    runState = RunState.SetAFK;
+                    break;
+
+                case RunState.SetAFK:
+                    steps[(int)stepState].OnAnimateAFK();
+                    runState = RunState.AFK;
+                    break;
+
+                case RunState.AFK:
+                    break;
+            }
         }
-        else if (settings[(int)stepState].DelayAFK == 0f)
+
+        if (countTime > 0)
         {
-            return;
-        }
-       
-        if (countAFK > 0)
-        {
-            countAFK -= Time.deltaTime;
-        }
-        else if (isAlreadyAFK == false)
-        {
-            steps[(int)stepState].OnAnimateAFK();
-            isAlreadyAFK = true;
+            countTime -= Time.deltaTime;
         }
     }
 
@@ -112,7 +128,7 @@ public class TutorialManager : MonoBehaviour
         for (int i = 0; i < steps.Length; i++)
         {
             var step = steps[i];
-            if (step == null) 
+            if (step == null)
                 continue;
             step.gameObject.name = $"{i}_{(StepState)i}";
         }
@@ -120,19 +136,15 @@ public class TutorialManager : MonoBehaviour
 
     public void SetNextStep()
     {
+        runState = RunState.None;
+        currentAllowedInputs.Clear();
+
         if (stepState >= 0)
             steps[(int)stepState].OnExit();
 
-        isAlreadyLateEnter = false;
-        isAlreadyAFK = false;
-        currentAllowedInputs.Clear();
-
         stepState++;
-        count = settings[(int)stepState].Delay;
-
-        steps[(int)stepState].OnEnter();
+        runState = RunState.Start;
     }
-
 
     /// <summary>
     /// Sets integer value of PlayerPrefs.

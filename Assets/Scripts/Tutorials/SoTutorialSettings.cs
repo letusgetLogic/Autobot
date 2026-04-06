@@ -4,8 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TutorialSettings", menuName = "ScriptableObject/TutorialSettings")]
 public class SoTutorialSettings : ScriptableObject
 {
-    [Range(0f, 2f)] public float Delay;
-    public float DelayAFK;
+    public float Delay;
+    public float Duration;
 
     public bool AutoCompleted = false;
     public List<InputKey> AllowedInputs;
