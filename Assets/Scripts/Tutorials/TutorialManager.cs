@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
-using Unity.Multiplayer.Playmode;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
 
-    [SerializeField] private SoTutorialProcess process;
+    [SerializeField] private SoTutorialSettings[] settings;
     [SerializeField] private TutorialStep[] steps;
-    [SerializeField] private float maxCountAFK = 3f;
+    
 
     public bool TutorialCompleted
     {
@@ -37,9 +35,8 @@ public class TutorialManager : MonoBehaviour
         BonusEnergy,
 
     }
-    private StepState stepState;
+    private StepState stepState = StepState.None;
 
-    private int runIndex = 0;
     private float count = 0f;
     private float countAFK = 0f;
 
@@ -51,8 +48,6 @@ public class TutorialManager : MonoBehaviour
     {
         get => currentAllowedInputs;
     }
-
-    public bool ShouldClickForNextStep { get; private set; } = true;
 
     private void Awake()
     {
@@ -69,35 +64,42 @@ public class TutorialManager : MonoBehaviour
             TutorialCompleted = false;
         }
 
-        Switch(StepState.Welcome);
+        SetNextStep();  
     }
 
     private void Update()
     {
         if (TutorialCompleted ||
-            process == null || process.Delays == null || runIndex >= process.Delays.Length 
-            || steps == null || runIndex >= steps.Length)
+            settings == null || (int)stepState >= settings.Length 
+            || steps == null || (int)stepState >= steps.Length)
             return;
 
-        if (count < process.Delays[runIndex])
+        if (count > 0)
         {
-            count += Time.deltaTime;
+            count -= Time.deltaTime;
         }
         else if (isAlreadyLateEnter == false)
         {
-            steps[runIndex].OnLateEnter();
+            steps[(int)stepState].OnLateEnter();
+
+            currentAllowedInputs = settings[(int)stepState].AllowedInputs;
+
+            countAFK = settings[(int)stepState].DelayAFK;
+
             isAlreadyLateEnter = true;
         }
-
-
-
-        if (countAFK < maxCountAFK)
+        else if (settings[(int)stepState].DelayAFK == 0f)
         {
-            countAFK += Time.deltaTime;
+            return;
+        }
+       
+        if (countAFK > 0)
+        {
+            countAFK -= Time.deltaTime;
         }
         else if (isAlreadyAFK == false)
         {
-            steps[runIndex].OnAFKAnimator();
+            steps[(int)stepState].OnAnimateAFK();
             isAlreadyAFK = true;
         }
     }
@@ -116,65 +118,19 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-
-    /// <summary>
-    /// Switches the state and performs actions based on the new state.
-    /// </summary>
-    /// <param name="_state"></param>
-    private void Switch(StepState _state)
-    {
-        stepState = _state;
-
-        switch (_state)
-        {
-            case StepState.None:
-                break;
-
-            case StepState.Welcome:
-                break;
-
-            case StepState.BuildTeam:
-                break;
-
-            case StepState.ShowTeam:
-                break;
-
-            case StepState.ShowFactory:
-                break;
-
-            case StepState.ClickRobot:
-                break;
-
-            case StepState.FactoryRobotSlots:
-                break;
-
-            case StepState.RobotCost:
-                break;
-
-            case StepState.PickRobot:
-                break;
-
-            case StepState.FusionRobot:
-                break;
-        }
-    }
-
-
     public void SetNextStep()
     {
-        steps[runIndex].OnExit();
-
-        count = 0f;
-        runIndex++;
-        stepState++;
+        if (stepState >= 0)
+            steps[(int)stepState].OnExit();
 
         isAlreadyLateEnter = false;
         isAlreadyAFK = false;
+        currentAllowedInputs.Clear();
 
-        if (stepState == StepState.ClickRobot)
-            ShouldClickForNextStep = false;
+        stepState++;
+        count = settings[(int)stepState].Delay;
 
-        steps[runIndex].OnEnter();
+        steps[(int)stepState].OnEnter();
     }
 
 
@@ -198,4 +154,3 @@ public class TutorialManager : MonoBehaviour
         return PlayerPrefs.GetInt(KeyName);
     }
 }
-

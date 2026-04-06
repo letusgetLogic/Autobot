@@ -6,7 +6,6 @@ public class TutorialStep : MonoBehaviour
     public GameObject[] Labels;
     public GameObject[] Hints;
     public GameObject[] HintsAFK;
-    public bool IsValidating = false;
 
     public void OnEnter()
     {
@@ -16,9 +15,6 @@ public class TutorialStep : MonoBehaviour
 
     public void OnLateEnter()
     {
-        if (IsValidating)
-            return;
-
         SetActive(Labels, true);
         SetActive(Hints, true);
     }
@@ -33,7 +29,7 @@ public class TutorialStep : MonoBehaviour
             SetActive(CoverPanels, false);
     }
 
-    public void OnAFKAnimator()
+    public void OnAnimateAFK()
     {
         SetActive(HintsAFK, true);
     }

@@ -140,7 +140,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Slot
   indicator: {fileID: 1453819904975111775}
-  eventHover: {fileID: 8281347087159405306}
   eventDrag: {fileID: 1041606978909519795}
   lighting: {fileID: 0}
   settings: {fileID: 0}
@@ -330,7 +329,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5713887637951691163}
-  - component: {fileID: 8281347087159405306}
   - component: {fileID: 1041606978909519795}
   - component: {fileID: 5550672734624980433}
   - component: {fileID: 2979704131088494113}
@@ -356,18 +354,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5731142434893304905}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8281347087159405306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8786873524014026692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9147dedae6bd68448d175a15e898358, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EventHover
 --- !u!114 &1041606978909519795
 MonoBehaviour:
   m_ObjectHideFlags: 0

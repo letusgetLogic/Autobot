@@ -24,22 +24,32 @@
     /// <summary>
     /// Constructor of InputManager.
     /// </summary>
-    private InputManager() 
+    private InputManager()
     {
-       
+
     }
 
     public bool IsBlockingInput(InputKey _key)
     {
-        if (TutorialManager.Instance && TutorialManager.Instance.CurrentAllowedInputs != null)
+        if (_key == InputKey.AlwaysEnabled)
+        {
+            return false;
+        }
+
+        if (TutorialManager.Instance)
         {
             var allowedInputs = TutorialManager.Instance.CurrentAllowedInputs;
-            foreach (var allowedInput in allowedInputs)
+            if (allowedInputs != null)
             {
-                if (allowedInput == _key)
+                foreach (var allowedInput in allowedInputs)
                 {
-                    return false;
+                    if (allowedInput == _key)
+                    {
+                        return false;
+                    }
                 }
+
+                return true;
             }
         }
 

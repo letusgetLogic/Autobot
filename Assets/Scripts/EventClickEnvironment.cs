@@ -27,7 +27,7 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
         {
             case "PhaseShop":
                 var tutorial = TutorialManager.Instance;
-                if (tutorial != null && tutorial.TutorialCompleted == false && tutorial.ShouldClickForNextStep)
+                if (tutorial != null && tutorial.TutorialCompleted == false)
                 {
                     tutorial.SetNextStep();
                 }
