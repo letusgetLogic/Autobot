@@ -77,14 +77,18 @@ public class PhaseShopController : MonoBehaviour
             return;
         }
 
-        SetIndex(teamSlots);
-        SetIndex(shopBotSlots);
-
-        GameManager.Instance.Switch(GameState.StartOfTurn);
     }
 
     private void OnEnable()
     {
+        Instance = this;
+
+        SetIndex(teamSlots);
+        SetIndex(shopBotSlots);
+
+        RefreshUnitsInFactory();
+        GameManager.Instance.Switch(GameState.StartOfTurn);
+
         if (itemRandomnessDropSlot != null)
             itemRandomnessDropSlot.gameObject.SetActive(false);
 
@@ -96,6 +100,26 @@ public class PhaseShopController : MonoBehaviour
     {
         EventManager.Instance.OnTriggerAbility -= TriggerAbility;
         EventManager.Instance.OnShutdown -= DestroyUnit;
+    }
+
+    public void RefreshUnitsInFactory()
+    {
+        foreach (var slot in ShopBotSlots())
+        {
+            var unit = slot.UnitController();
+            if (unit != null)
+            {
+                unit.OnInit();
+            }
+        }
+        foreach (var slot in ShopItemSlots())
+        {
+            var unit = slot.UnitController();
+            if (unit != null)
+            {
+                unit.OnInit();
+            }
+        }
     }
 
     /// <summary>
@@ -476,7 +500,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                      _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                EventManager.Instance.OnCraft?.Invoke();
+                EventManager.Instance.OnCraft?.Invoke(_purchased);
 
                 Destroy(_purchased.gameObject);
             }
@@ -489,7 +513,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                      _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                EventManager.Instance.OnCraft?.Invoke();
+                EventManager.Instance.OnCraft?.Invoke(_purchased);
 
                 Destroy(_purchased.gameObject);
             }
@@ -503,7 +527,7 @@ public class PhaseShopController : MonoBehaviour
 
                 Transport(_purchased, _targetSlot.transform, true);
 
-                EventManager.Instance.OnCraft?.Invoke();
+                EventManager.Instance.OnCraft?.Invoke(_purchased);
 
                 _purchased.TriggerCraft();
             }
@@ -952,5 +976,15 @@ public class PhaseShopController : MonoBehaviour
         }
 
         return value;
+    }
+
+    public bool HasAnyBotInShop()
+    {
+        foreach (var slot in ShopBotSlots())
+        {
+            if (slot.UnitController() != null)
+                return true;
+        }
+        return false;
     }
 }

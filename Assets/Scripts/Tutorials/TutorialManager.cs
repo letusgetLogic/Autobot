@@ -27,15 +27,19 @@ public class TutorialManager : MonoBehaviour
         ClickRobot,
         PickRobot,
         PickOthers,
+        PickBattery,
+        ShowFactoryReseted,
+        ClickBattery,
+        LockBattery,
+        EndTurn,
 
         FusionRobot,
         LevelUp,
         Roll,
         Rool2,
-        Lock,
-        EndTurn,
         BonusEnergy,
 
+        
     }
     private StepState stepState = StepState.Idle;
 
@@ -50,8 +54,15 @@ public class TutorialManager : MonoBehaviour
         get => currentAllowedInputs;
     }
 
-
-
+    [ContextMenu("OnReset")]
+    private void Reset()
+    {
+        stepState = StepState.Idle;
+        countTime = 0f;
+        runState = RunState.None;
+        currentAllowedInputs = null;
+        SetNextStep();
+    }
 
     private void Awake()
     {
@@ -80,6 +91,7 @@ public class TutorialManager : MonoBehaviour
 
         EventManager.Instance.OnAttachedUnit += CheckInput;
         EventManager.Instance.OnDropUnit += () => CheckInput(InputKey.DropSlotTeam);
+        EventManager.Instance.OnCraft += CheckInput;
     }
 
     private void Update()
@@ -153,7 +165,10 @@ public class TutorialManager : MonoBehaviour
             currentAllowedInputs = new();
 
         if (stepState >= 0)
+        {
+            Debug.Log($"{stepState}.OnExit");
             steps[(int)stepState].OnExit();
+        }
 
         stepState++;
         runState = RunState.Start;
@@ -165,13 +180,21 @@ public class TutorialManager : MonoBehaviour
         {
             SetNextStep();
         }
+        if (_unit && _unit.Model.Data.UnitType == UnitType.Item && stepState == StepState.PickBattery)
+        {
+            SetNextStep();
+        }
     }
 
     public void CheckInput(InputKey _inputKey)
     {
-        if (_inputKey == InputKey.DropSlotTeam && stepState == StepState.PickRobot)
+        if (_inputKey == InputKey.DropSlotTeam)
         {
-            SetNextStep();
+            if (stepState == StepState.PickRobot ||
+                stepState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false)
+                SetNextStep();
+
+
         }
     }
 

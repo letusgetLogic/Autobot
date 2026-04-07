@@ -153,6 +153,11 @@ public class GameManager : MonoBehaviour
         };
     }
 
+    private void OnEnable()
+    {
+        _Instance = this;
+    }
+
     /// <summary>
     /// Loads game.
     /// </summary>
@@ -225,7 +230,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogError("GameManager doesn't contain any instance of the current game.");
-            return;
         }
 
         switch (_state)
@@ -261,7 +265,12 @@ public class GameManager : MonoBehaviour
 
             case GameState.StartOfTurn:
                 if (Replay == null)
+                {
+                    if (CurrentPlayer == null)
+                        CurrentPlayer = new Player();
+
                     CurrentPlayer.StartShop();
+                }
                 else
                     CurrentPlayer.LoadDataByReplay();
                 break;

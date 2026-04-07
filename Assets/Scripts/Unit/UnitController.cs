@@ -119,12 +119,9 @@ public class UnitController : MonoBehaviour
     }
 
     [ContextMenu("OnInitialize")]
-    private void OnInit()
+    public void OnInit()
     {
-        if (Application.isPlaying == false)
-        {
-            Initialize(editorSoUnit, 0, null, editorUnitState, !editorIsOnRightSide);
-        }
+        Initialize(editorSoUnit, 0, null, editorUnitState, !editorIsOnRightSide);
     }
 
     private void OnEnable()
@@ -165,7 +162,8 @@ public class UnitController : MonoBehaviour
         model.InitView(view, _isTeamLeft);
 
         // If unit is in the catalog, it already has all required data and stops processing here.
-        if (GameManager.Instance == null || GameManager.Instance.IsCatalogActive)
+        if (Application.isPlaying &&
+            (GameManager.Instance == null || GameManager.Instance.IsCatalogActive))
             return;
 
         model.SetDataView(_unitState);

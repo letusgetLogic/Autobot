@@ -48,7 +48,7 @@ public class SoundManager
 
         EventManager.Instance.OnRoll += () => PlayOneShot("Roll");
 
-        EventManager.Instance.OnCraft += () => PlayOneShot("Buy");
+        EventManager.Instance.OnCraft += unit => PlayOneShot("Buy");
         EventManager.Instance.OnRecycle += () => PlayOneShot("Sell");
 
         EventManager.Instance.OnRepair += () => PlayOneShot("Repair");

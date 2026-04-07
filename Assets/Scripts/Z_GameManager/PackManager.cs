@@ -27,6 +27,11 @@ public class PackManager : MonoBehaviour
         DebugID = 0;
     }
 
+    private void OnEnable()
+    {
+        Instance = this;
+    }
+
     /// <summary>
     /// Initializes the pack.
     /// </summary>

@@ -76,14 +76,14 @@ public class PhaseShopUI : MonoBehaviour
             Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
             return;
         }
-
-
-        Settings();
+      
     }
 
     private void OnEnable()
     {
+        Instance = this;
         EventManager.Instance.OnAttachedUnit += SetButtonActive;
+        Settings();
     }
 
     private void OnDisable()

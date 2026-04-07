@@ -123,7 +123,8 @@ public class UnitModel
     {
         view = _view;
 
-        if (GameManager.Instance && GameManager.Instance.IsCatalogActive == false)
+        if (Application.isPlaying == false ||
+            GameManager.Instance && GameManager.Instance.IsCatalogActive == false)
         {
             if (_isTeamLeft)
             {
@@ -142,7 +143,7 @@ public class UnitModel
                     Repair.Initialize(this, _view);
                     Repair.SetDurability(GameManager.Instance != null
                         ? (GameManager.Instance.Replay != null ? false : true)
-                        : false, 
+                        : false,
                         true);
                     Repair.SetRepairPanel();
                 }
@@ -166,7 +167,8 @@ public class UnitModel
         else
             view.SetData(null, "", "", "");
 
-        if (Application.isPlaying == false || GameManager.Instance.IsCatalogActive)
+        if (Application.isPlaying == false ||
+            GameManager.Instance && GameManager.Instance.IsCatalogActive)
             return;
 
         Controller.StartCoroutine(UpdateLevelXP(IsPhaseShop(Data.UnitState), false));
@@ -202,7 +204,8 @@ public class UnitModel
     {
         Data.UnitState = _unitState;
 
-        if (GameManager.Instance && GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
+        if (GameManager.Instance && GameManager.Instance.CurrentGame != null &&
+            GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
             _unitState = UnitState.InPhaseBattle;
 
         switch (_unitState)
@@ -234,7 +237,8 @@ public class UnitModel
                 break;
         }
 
-        Repair?.SetDisplay(_unitState);
+        if (IsRobot())
+            Repair?.SetDisplay(_unitState);
     }
 
     /// <summary>

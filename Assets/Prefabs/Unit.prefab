@@ -2762,7 +2762,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6897067196927149076
@@ -8249,7 +8249,7 @@ GameObject:
   - component: {fileID: 8761252099582369240}
   - component: {fileID: 4368942393228875258}
   m_Layer: 0
-  m_Name: 
+  m_Name: Unit
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8295,7 +8295,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
-  editorDefinedPack: {fileID: 0}
+  editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &8761252099582369240
 MonoBehaviour:
   m_ObjectHideFlags: 0

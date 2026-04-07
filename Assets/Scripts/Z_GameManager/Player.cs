@@ -6,7 +6,10 @@ public class Player
 {
     public PlayerData Data;
 
-
+    public Player()
+    {
+        Data = new PlayerData("Player", 5, 0);
+    }
 
     /// <summary>
     /// Starts the phase shop.
