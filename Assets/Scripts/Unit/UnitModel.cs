@@ -487,5 +487,13 @@ public class UnitModel
 
         return false;
     }
+
+    public bool IsFullDurability()
+    {
+        if (Repair == null)
+            return false;
+
+        return Data.Durability >= Repair.PortionAmount;
+    }
 }
 

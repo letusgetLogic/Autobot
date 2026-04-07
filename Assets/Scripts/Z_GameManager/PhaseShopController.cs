@@ -339,7 +339,7 @@ public class PhaseShopController : MonoBehaviour
     }
 
 
-    #region Charge Bot at start of Shop
+    #region Charge Bot
 
     private void ChargeBotAtStartShop()
     {
@@ -718,7 +718,9 @@ public class PhaseShopController : MonoBehaviour
             AttachedController.Slot.SetIndicatorActive(false);
 
         if (_target && _target.Slot)
+        {
             _target.Slot.SetIndicatorActive(true);
+        }
 
         AttachedController = _target;
         SetDropHint(_target != null);
@@ -932,4 +934,23 @@ public class PhaseShopController : MonoBehaviour
         return game.Mode == GameMode.AI && player.Data.IsAI;
     }
 
+
+    public bool IsAnyRobotDamaged()
+    {
+        bool value = false;
+
+        foreach (var slot in teamSlots)
+        {
+            if (slot.gameObject.activeSelf)
+            {
+                var unitController = slot.UnitController();
+                if (unitController != null)
+                {
+                    value = unitController.Model.IsFullDurability() == false;
+                }
+            }
+        }
+
+        return value;
+    }
 }

@@ -8,8 +8,8 @@ public class RepairSystem
     private UnitModel model;
     private UnitView view;
 
-    private float portionSize => 1 / (float)portionAmount;
-    private int portionAmount
+    private float portionSize => 1 / (float)PortionAmount;
+    public int PortionAmount
     {
         get
         {

@@ -9,7 +9,8 @@
     #region Slots
 
     HoverSlotTeam,
-    HoverSlotCharge,
+    HoverSlotTeamRandom = 64,
+    HoverSlotCharge = 4,
     HoverSlotShopBot,
     HoverSlotShopItem,
 
@@ -24,7 +25,8 @@
     DragSlotShopItem,
 
     DropSlotTeam,
-    DropSlotCharge,
+    DropSlotTeamRandom = 65,
+    DropSlotCharge = 16,
 
     #endregion
 

@@ -20,7 +20,7 @@ public class PanelConfirmation : MonoBehaviour
     [SerializeField] private List<GameObject> leftCurrencyComponents;
     [SerializeField] private List<GameObject> toMenuComponents;
 
-    public static readonly int MinLeftTool = 1, MinLeftNut = 5;
+   
 
     private void OnEnable()
     {
@@ -34,12 +34,10 @@ public class PanelConfirmation : MonoBehaviour
     }
 
 
-    public bool IsEnough(int _tool, int _nut)
+    public void SetData(int _tool, int _nut)
     {
         tool.text = _tool.ToString();
         nut.text = _nut.ToString();
-
-        return _tool >= MinLeftTool || _nut >= MinLeftNut;
     }
 
     private void Decline()

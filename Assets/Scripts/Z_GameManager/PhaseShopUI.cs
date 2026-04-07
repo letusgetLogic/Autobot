@@ -59,6 +59,8 @@ public class PhaseShopUI : MonoBehaviour
     private Currency rollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
     private InputManager input => InputManager.Instance;
 
+    public static readonly int MinLeftTool = 1, MinLeftNut = 5;
+
     private void Awake()
     {
         Debug.Log(this.name + ".Awake()");
@@ -194,7 +196,8 @@ public class PhaseShopUI : MonoBehaviour
 
         EventManager.Instance.OnButtonSound?.Invoke();
 
-        bool hasEnoughCur = panelLeftCurrency.IsEnough(Player.Data.Tools, Player.Data.Nuts);
+        bool hasEnoughCur = Player.Data.Nuts >= MinLeftNut || Player.Data.Tools > 0 && PhaseShopController.Instance.IsAnyRobotDamaged();
+
         panelLeftCurrency.gameObject.SetActive(hasEnoughCur);
 
         if (hasEnoughCur == false)
@@ -203,6 +206,7 @@ public class PhaseShopUI : MonoBehaviour
         }
         else
         {
+            panelLeftCurrency.SetData(Player.Data.Tools, Player.Data.Nuts);
             // wait for panelLeftCurrency.Confirm calls PhaseShopUI.Instance.Player.EndShop();
         }
     }

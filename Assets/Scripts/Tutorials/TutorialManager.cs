@@ -26,6 +26,8 @@ public class TutorialManager : MonoBehaviour
         ShowCurrency,
         ClickRobot,
         PickRobot,
+        PickOthers,
+
         FusionRobot,
         LevelUp,
         Roll,
@@ -47,6 +49,9 @@ public class TutorialManager : MonoBehaviour
     {
         get => currentAllowedInputs;
     }
+
+
+
 
     private void Awake()
     {
@@ -72,6 +77,9 @@ public class TutorialManager : MonoBehaviour
         {
             step.OnLabelPopup += () => SoundManager.Instance.PlayOneShot("Drop_Unit");
         }
+
+        EventManager.Instance.OnAttachedUnit += CheckInput;
+        EventManager.Instance.OnDropUnit += () => CheckInput(InputKey.DropSlotTeam);
     }
 
     private void Update()
@@ -149,6 +157,22 @@ public class TutorialManager : MonoBehaviour
 
         stepState++;
         runState = RunState.Start;
+    }
+
+    public void CheckInput(UnitController _unit)
+    {
+        if (_unit && _unit.Model.IsRobotInShop() && stepState == StepState.ClickRobot)
+        {
+            SetNextStep();
+        }
+    }
+
+    public void CheckInput(InputKey _inputKey)
+    {
+        if (_inputKey == InputKey.DropSlotTeam && stepState == StepState.PickRobot)
+        {
+            SetNextStep();
+        }
     }
 
     /// <summary>

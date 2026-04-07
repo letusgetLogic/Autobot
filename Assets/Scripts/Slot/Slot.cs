@@ -47,6 +47,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                     return InputKey.HoverSlotShopItem;
             }
 
+            if (CompareTag("Slot Random"))
+                return InputKey.HoverSlotTeamRandom;
+
             return InputKey.None;
         }
     }

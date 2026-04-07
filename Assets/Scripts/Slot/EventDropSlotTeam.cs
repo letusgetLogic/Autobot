@@ -14,6 +14,9 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
             if (slot.CompareTag("Slot Charge"))
                 return InputKey.DropSlotCharge;
 
+            if (slot.CompareTag("Slot Random"))
+                return InputKey.DropSlotTeamRandom;
+
             return InputKey.None;
         }
     }

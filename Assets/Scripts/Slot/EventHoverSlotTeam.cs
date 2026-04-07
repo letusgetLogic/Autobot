@@ -33,6 +33,9 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
                     return InputKey.HoverSlotShopItem;
             }
 
+            if (slot.CompareTag("Slot Random"))
+                return InputKey.HoverSlotTeamRandom;
+
             return InputKey.None;
         }
     }
