@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,9 +22,16 @@ public class GameManager : MonoBehaviour
     }
     private static GameManager _Instance;
 
+
     [Header("Develop Settings")]
+    public bool IsModeDevelop;
+    [SerializeField] private bool playTutorial;
     [SerializeField] private bool isNotSavingGame;
     [SerializeField] public bool IsRepairSystemActive;
+    [SerializeField] private int defaultTutorialLives = 3;
+    [SerializeField] private int devLives = 3;
+    [SerializeField] private float timer = 90.0f;
+
 
     // This code block or the time scaling feature is disabled,
     // because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
@@ -37,8 +45,8 @@ public class GameManager : MonoBehaviour
 
     // GameSettings set those variables, to initialize in the next scene.
     public GameMode Mode { get; set; }
-    public string Name1 { get; set; }
-    public string Name2 { get; set; }
+    public string Name1 { get; set; } = "Player 1";
+    public string Name2 { get; set; } = "Player 2";
     public int PlayerLives { get; set; }
     public int Timer { get; set; } = 0;
     //
@@ -107,12 +115,20 @@ public class GameManager : MonoBehaviour
 
     public string SceneName => SceneManager.GetActiveScene().name;
     public string SceneToLoad { get; set; }
+
     /// <summary>
     /// To block player's input while animation is running.
     /// </summary>
     public bool IsBlockingInput {  get; set; }
     public bool IsCatalogActive { get; set; } = false;
     public ReplayManager Replay { get; set; }
+
+    public bool TutorialCompleted
+    {
+        get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
+        set => PlayerPrefs.SetInt("TutorialCompleted", value ? 1 : 0);
+    }
+
 
     public int RandomSeed
     {
@@ -153,9 +169,32 @@ public class GameManager : MonoBehaviour
         };
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        _Instance = this;
+        if (IsModeDevelop)
+        {
+            if (playTutorial)
+                 StartTutorial();
+
+            if (IsModeDevelop)
+            {
+                PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
+                Mode = GameMode.Local1v1;
+                PlayerLives = devLives;
+
+                LoadGame();
+            }
+        }
+    }
+
+    public void StartTutorial()
+    {
+        TutorialCompleted = false;
+        PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
+        Mode = GameMode.Local1v1;
+        PlayerLives = defaultTutorialLives;
+
+        LoadScene("PhaseShop");
     }
 
     /// <summary>
@@ -376,4 +415,5 @@ public class GameManager : MonoBehaviour
         Debug.Log("Loading Scene: " + _scene);
         SceneManager.LoadScene(_scene);
     }
+
 }

@@ -37,4 +37,12 @@ public class MainMenu : MonoBehaviour
 
         replayButton.SetActive(GameManager.Instance.CurrentRound != null);
     }
+
+    public void OnPlay()
+    {
+        if (!PlayerPrefs.HasKey("TutorialCompleted"))
+        {
+            GameManager.Instance.StartTutorial();
+        }
+    }
 }

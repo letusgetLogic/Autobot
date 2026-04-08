@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
 
     [SerializeField] private SoTutorialSettings[] settings;
     [SerializeField] private TutorialStep[] steps;
-
 
     public bool TutorialCompleted
     {
@@ -57,22 +57,12 @@ public class TutorialManager : MonoBehaviour
     [ContextMenu("OnReset")]
     private void Reset()
     {
-        stepState = StepState.Idle;
-        countTime = 0f;
-        runState = RunState.None;
-        currentAllowedInputs = null;
-        SetNextStep();
+        GameManager.Instance.StartTutorial();
     }
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(Instance.gameObject);
-            return;
-        }
         Instance = this;
-
 
         if (!PlayerPrefs.HasKey("TutorialCompleted"))
         {

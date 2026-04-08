@@ -7,16 +7,6 @@ public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance { get; private set; }
 
-
-    [Header("Mode Development")]
-    public bool IsModeDevelop;
-    
-    [SerializeField] private int lives = 6;
-    [SerializeField] private float timer = 90.0f;
-
-    private string name1 = "Player 1";
-    private string name2 = "Player 2";
-
     [Header("References")]
     [SerializeField] private TextMeshProUGUI showLives;
     [SerializeField] private Pack[] packs;
@@ -30,11 +20,14 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private int defaultLives = 5;
     [SerializeField] private int maxLives = 10;
 
+
+
     [Header("Settings")]
     [SerializeField] private float durationColorDefault = 0.2f;
     [SerializeField] private float durationHintDefault = 0.5f;
 
-    
+    public SoPack DefaultPack => packs[0].SoPack;    
+
     private void Awake()
     {
         if (Instance != null)
@@ -43,21 +36,6 @@ public class GameSettings : MonoBehaviour
         }
 
         Instance = this;
-    }
-
-    private void Start()
-    {
-        GameManager.Instance.Name1 = name1;
-        GameManager.Instance.Name2 = name2;
-
-        if (IsModeDevelop)
-        {
-            PackManager.Instance.InitPack(packs[0].SoPack);
-            GameManager.Instance.Mode = GameMode.Local1v1;
-            GameManager.Instance.PlayerLives = lives;
-        
-            GameManager.Instance.LoadGame();
-        }
     }
 
     /// <summary>
@@ -116,7 +94,7 @@ public class GameSettings : MonoBehaviour
             EventManager.Instance.OnInvalidInput?.Invoke();
             return;
         }
-        
+
         GameManager.Instance.PlayerLives = choice;
         showLives.text = choice.ToString();
 

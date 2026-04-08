@@ -77,18 +77,14 @@ public class PhaseShopController : MonoBehaviour
             return;
         }
 
+        SetIndex(teamSlots);
+        SetIndex(shopBotSlots);
+
+        GameManager.Instance.Switch(GameState.StartOfTurn);
     }
 
     private void OnEnable()
     {
-        Instance = this;
-
-        SetIndex(teamSlots);
-        SetIndex(shopBotSlots);
-
-        RefreshUnitsInFactory();
-        GameManager.Instance.Switch(GameState.StartOfTurn);
-
         if (itemRandomnessDropSlot != null)
             itemRandomnessDropSlot.gameObject.SetActive(false);
 
@@ -100,26 +96,6 @@ public class PhaseShopController : MonoBehaviour
     {
         EventManager.Instance.OnTriggerAbility -= TriggerAbility;
         EventManager.Instance.OnShutdown -= DestroyUnit;
-    }
-
-    public void RefreshUnitsInFactory()
-    {
-        foreach (var slot in ShopBotSlots())
-        {
-            var unit = slot.UnitController();
-            if (unit != null)
-            {
-                unit.OnInit();
-            }
-        }
-        foreach (var slot in ShopItemSlots())
-        {
-            var unit = slot.UnitController();
-            if (unit != null)
-            {
-                unit.OnInit();
-            }
-        }
     }
 
     /// <summary>
