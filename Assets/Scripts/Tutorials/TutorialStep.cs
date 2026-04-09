@@ -12,7 +12,7 @@ public class TutorialStep : MonoBehaviour
     public GameObject[] Hints;
     public GameObject[] HintsAFK;
 
-    public UnityAction OnLabelPopup;
+    public UnityAction OnLabelPopup {  get; set; }
 
     private Transform[] targetParents;
     private int[] posInParent;
@@ -32,8 +32,9 @@ public class TutorialStep : MonoBehaviour
         SetParent(true);
 
         bool hasAnim = false;
-        hasAnim = SetScaleUp(CoverPanels, true);
-        hasAnim = SetScaleUp(CoverPanelsToDeactivate, true);
+        bool hasAnim1 = SetScaleUp(CoverPanels, true);
+        bool hasAnim2 = SetScaleUp(CoverPanelsToDeactivate, true);
+        hasAnim = hasAnim1 || hasAnim2;
 
         if (hasAnim)
         {
@@ -118,11 +119,14 @@ public class TutorialStep : MonoBehaviour
             for (int i = 0; i < _objectArray.Length; i++)
             {
                 var obj = _objectArray[i];
-                if (obj != null && obj.activeSelf == false)
+                if (obj != null)
                 {
                     var scale = obj.GetComponent<ScaleUpDown>();
-                    if (scale != null)
+                    if (scale != null && 
+                        ((_up && obj.activeSelf == false) || 
+                        (!_up && obj.activeSelf == true)))
                     {
+                        obj.SetActive(true);
                         scale.ScaleUp(_up);
                         animTime = scale.AnimTime;
                         isRunning = true;

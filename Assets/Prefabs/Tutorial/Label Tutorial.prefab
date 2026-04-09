@@ -52,9 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runState: 4
-  isDisableAtAwake: 1
+  isDisableAtAwake: 0
+  isSetToScaleMin: 0
   isSetBackToScaleMin: 0
-  animTime: 1
+  animTime: 0.5
   scaleMax: {x: 1, y: 1, z: 0}
   scaleMin: {x: 0, y: 0, z: 0}
   animCurve:

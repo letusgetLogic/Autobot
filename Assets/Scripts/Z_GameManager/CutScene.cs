@@ -77,7 +77,9 @@ public class CutScene : MonoBehaviour
         yield return new WaitForSeconds(_delay);
 
         OpenPanel.ScaleUp(false);
-        EventManager.Instance.OnOpenScene?.Invoke();
+
+        if (GameManager.Instance.TutorialCompleted)
+            EventManager.Instance.OnOpenScene?.Invoke();
 
         //if (GameManager.Instance.SceneName == "PhaseShop")
         //    OpenPanel.OnRunningDone += () => GameManager.Instance.Replay = null;

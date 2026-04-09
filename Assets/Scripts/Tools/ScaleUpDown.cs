@@ -20,6 +20,7 @@ public class ScaleUpDown : MonoBehaviour
         "Manually - Scale up or down from a external call\n")]
     [SerializeField] private RunState runState = RunState.None;
     [SerializeField] private bool isDisableAtAwake = false;
+    [SerializeField] private bool isSetToScaleMin = false;
     [SerializeField] private bool isSetBackToScaleMin = false;
 
     [SerializeField] private float animTime = 1f;
@@ -228,19 +229,29 @@ public class ScaleUpDown : MonoBehaviour
         if (rect != null)
         {
             defaultValue = rect.localScale;
+
+            if (isSetToScaleMin)
+            {
+                rect.localScale = scaleMin;
+            }
+
             if (isSetBackToScaleMin)
             {
                 defaultValue = scaleMin;
-                rect.localScale = defaultValue;
             }
             return;
         }
 
         defaultValue = transform.localScale;
+
+        if (isSetToScaleMin)
+        {
+            transform.localScale = scaleMin;
+        }
+
         if (isSetBackToScaleMin)
         {
             defaultValue = scaleMin;
-            transform.localScale = defaultValue;
         }
     }
 

@@ -37,7 +37,7 @@ public class TutorialManager : MonoBehaviour
         Rool2,
         BonusEnergy,
 
-        
+
     }
     private StepState stepState = StepState.Idle;
 
@@ -149,14 +149,19 @@ public class TutorialManager : MonoBehaviour
     {
         runState = RunState.None;
 
-        if (currentAllowedInputs != null)
-            currentAllowedInputs = new();
+        currentAllowedInputs = new();
 
         float delay = 0f;
         if (stepState >= 0)
         {
             Debug.Log($"{stepState}.OnExit");
             delay += steps[(int)stepState].OnExit();
+        }
+        if (delay == 0f)
+        {
+            stepState++;
+            runState = RunState.Start;
+            return;
         }
 
         coroutine = StartCoroutine(DelaySetNextStep(delay));
@@ -174,7 +179,11 @@ public class TutorialManager : MonoBehaviour
 
     public void CheckInput(UnitController _unit)
     {
-        if (_unit && _unit.Model.IsRobotInShop() && stepState == StepState.ClickRobot)
+        if (stepState == StepState.ClickRobot && _unit && _unit.Model.IsRobotInShop())
+        {
+            SetNextStep();
+        }
+        if (stepState == StepState.ShowFactoryReseted && _unit && _unit.Model.Data.UnitType == UnitType.Item)
         {
             SetNextStep();
         }
