@@ -53,6 +53,7 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private GameObject chargingStation;
     [SerializeField] private TextMeshProUGUI energyText;
     [SerializeField] private int turnToEnable = 1;
+    [SerializeField] private int turnToEnableTutorial = 2;
 
     public Player Player { get; private set; }
 
@@ -141,7 +142,8 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="_turn"></param>
     public void SetChargingStationAt(int _turn)
     {
-        if (_turn >= turnToEnable)
+        if ((!GameManager.Instance.TutorialCompleted && _turn >= turnToEnableTutorial) ||
+            (GameManager.Instance.TutorialCompleted && _turn >= turnToEnable))
         {
             chargingStation.SetActive(true);
         }

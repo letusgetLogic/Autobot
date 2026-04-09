@@ -15,6 +15,7 @@ public class TutorialStep : MonoBehaviour
     public UnityAction OnLabelPopup;
 
     private Transform[] targetParents;
+    private int[] posInParent;
     private List<Coroutine> coroutines = new();
     private float animTime;
 
@@ -28,8 +29,6 @@ public class TutorialStep : MonoBehaviour
 
     public void OnEnter()
     {
-        SetActive(CoverPanels, true);
-        SetActive(CoverPanelsToDeactivate, true);
         SetParent(true);
 
         bool hasAnim = false;
@@ -38,21 +37,27 @@ public class TutorialStep : MonoBehaviour
 
         if (hasAnim)
         {
-            coroutines.Add(StartCoroutine(DelayActivate(Labels, animTime)));
-            coroutines.Add(StartCoroutine(DelayActivate(Hints, animTime)));
+            coroutines.Add(StartCoroutine(DelayActivate(Labels, animTime, true)));
+            coroutines.Add(StartCoroutine(DelayActivate(Hints, animTime, false)));
         }
         else
         {
             SetActive(Labels, true);
             SetActive(Hints, true);
         }
+
+        SetActive(CoverPanels, true);
+        SetActive(CoverPanelsToDeactivate, true);
     }
 
-    private IEnumerator DelayActivate(GameObject[] _objects, float _delay)
+    private IEnumerator DelayActivate(GameObject[] _objects, float _delay, bool _withScalingUp)
     {
         yield return new WaitForSeconds(_delay);
 
         SetActive(_objects, true);
+
+        if (_withScalingUp)
+            SetScaleUp(_objects, true);
     }
 
     public void OnAnimateAFK()
@@ -60,18 +65,22 @@ public class TutorialStep : MonoBehaviour
         SetActive(HintsAFK, true);
     }
 
-    public void OnExit()
+    public float OnExit()
     {
         SetActive(HintsAFK, false);
         SetActive(Labels, false);
         SetActive(Hints, false);
-        SetScaleUp(CoverPanels, false);
         SetParent(false);
 
         if (SetScaleUp(CoverPanelsToDeactivate, false))
+        {
             coroutines.Add(StartCoroutine(DelayDeactivate(animTime)));
+            return animTime;
+        }
         else
             SetActive(CoverPanelsToDeactivate, false);
+
+        return 0f;
     }
 
     private IEnumerator DelayDeactivate(float _delay)
@@ -109,7 +118,7 @@ public class TutorialStep : MonoBehaviour
             for (int i = 0; i < _objectArray.Length; i++)
             {
                 var obj = _objectArray[i];
-                if (obj != null)
+                if (obj != null && obj.activeSelf == false)
                 {
                     var scale = obj.GetComponent<ScaleUpDown>();
                     if (scale != null)
@@ -133,12 +142,14 @@ public class TutorialStep : MonoBehaviour
         if (_value)
         {
             targetParents = new Transform[TargetsToBeChild.Length];
+            posInParent = new int[TargetsToBeChild.Length];
             for (int i = 0; i < TargetsToBeChild.Length; i++)
             {
                 var target = TargetsToBeChild[i];
                 if (target != null)
                 {
                     targetParents[i] = target.parent;
+                    posInParent[i] = target.GetSiblingIndex();
                     target.SetParent(transform.parent, true);
                 }
             }
@@ -151,10 +162,12 @@ public class TutorialStep : MonoBehaviour
                 if (target != null && targetParents != null && targetParents.Length > i)
                 {
                     target.SetParent(targetParents[i], true);
+                    target.SetSiblingIndex(posInParent[i]);
                 }
             }
 
             targetParents = null;
+            posInParent = null;
         }
     }
 }

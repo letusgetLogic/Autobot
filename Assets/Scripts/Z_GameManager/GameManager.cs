@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance 
-    { 
+    public static GameManager Instance
+    {
         get
         {
             if (_Instance == null)
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Develop Settings")]
     public bool IsModeDevelop;
-    [SerializeField] private bool playTutorial;
+    public bool PlayTutorial;
     [SerializeField] private bool isNotSavingGame;
     [SerializeField] public bool IsRepairSystemActive;
     [SerializeField] private int defaultTutorialLives = 3;
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// To block player's input while animation is running.
     /// </summary>
-    public bool IsBlockingInput {  get; set; }
+    public bool IsBlockingInput { get; set; }
     public bool IsCatalogActive { get; set; } = false;
     public ReplayManager Replay { get; set; }
 
@@ -158,43 +158,40 @@ public class GameManager : MonoBehaviour
         }
 
         _Instance = this;
-       
+
         DontDestroyOnLoad(gameObject);
 
-        if (sound != null && input != null) 
+        if (sound != null && input != null)
         {
             // this if-query is used to initialize instances once.
             // for example, button's sound wouldn't be triggered,
             // because until then no one has accessed/initalized SoundManager's instence.
-        };
+        }
+        ;
     }
 
     private void Start()
     {
+        if (!PlayerPrefs.HasKey("TutorialCompleted"))
+            TutorialCompleted = false;
+
+        // auto play in dev mode.
         if (IsModeDevelop)
         {
-            if (playTutorial)
-                 StartTutorial();
+            PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
+            Mode = GameMode.Local1v1;
+            PlayerLives = devLives;
 
-            if (IsModeDevelop)
-            {
-                PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
-                Mode = GameMode.Local1v1;
-                PlayerLives = devLives;
-
+            if (PlayTutorial == false)
                 LoadGame();
-            }
         }
     }
 
     public void StartTutorial()
     {
         TutorialCompleted = false;
-        PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
-        Mode = GameMode.Local1v1;
         PlayerLives = defaultTutorialLives;
-
-        LoadScene("PhaseShop");
+        LoadGame();
     }
 
     /// <summary>
@@ -329,7 +326,7 @@ public class GameManager : MonoBehaviour
             case GameState.StartOfBattle:
                 randomSeed++;
                 currentRound = SaveSystem.SaveRoundData(CurrentGame, players[0].Data, players[1].Data, randomSeed);
-                
+
                 PhaseBattleController.Instance.Run(players[0], players[1]);
                 break;
 
@@ -414,6 +411,12 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Loading Scene: " + _scene);
         SceneManager.LoadScene(_scene);
+    }
+
+    public void SetTutorialStart()
+    {
+        if (TutorialCompleted == false)
+            TutorialManager.Instance.SetNextStep();
     }
 
 }

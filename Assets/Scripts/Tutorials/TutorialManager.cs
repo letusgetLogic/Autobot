@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -8,12 +9,10 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] private SoTutorialSettings[] settings;
     [SerializeField] private TutorialStep[] steps;
+    public SoUnit[] BotsTurn1;
+    public SoUnit[] ItemsTurn1;
 
-    public bool TutorialCompleted
-    {
-        get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
-        set => PlayerPrefs.SetInt("TutorialCompleted", value ? 1 : 0);
-    }
+
 
     private enum StepState
     {
@@ -29,7 +28,6 @@ public class TutorialManager : MonoBehaviour
         PickOthers,
         PickBattery,
         ShowFactoryReseted,
-        ClickBattery,
         LockBattery,
         EndTurn,
 
@@ -54,6 +52,8 @@ public class TutorialManager : MonoBehaviour
         get => currentAllowedInputs;
     }
 
+    private Coroutine coroutine;
+
     [ContextMenu("OnReset")]
     private void Reset()
     {
@@ -64,12 +64,11 @@ public class TutorialManager : MonoBehaviour
     {
         Instance = this;
 
-        if (!PlayerPrefs.HasKey("TutorialCompleted"))
+        if (GameManager.Instance.TutorialCompleted)
         {
-            TutorialCompleted = false;
+            gameObject.SetActive(false);
+            return;
         }
-
-        SetNextStep();
     }
 
     private void OnEnable()
@@ -80,14 +79,13 @@ public class TutorialManager : MonoBehaviour
         }
 
         EventManager.Instance.OnAttachedUnit += CheckInput;
-        EventManager.Instance.OnDropUnit += () => CheckInput(InputKey.DropSlotTeam);
-        EventManager.Instance.OnCraft += CheckInput;
+        EventManager.Instance.OnCraft += (unit) => CheckInput(InputKey.DropSlotTeam);
+        EventManager.Instance.OnLock += () => CheckInput(InputKey.ClickButtonLock);
     }
 
     private void Update()
     {
-        if (TutorialCompleted ||
-            settings == null || (int)stepState >= settings.Length
+        if (settings == null || (int)stepState >= settings.Length
             || steps == null || (int)stepState >= steps.Length)
             return;
 
@@ -154,23 +152,29 @@ public class TutorialManager : MonoBehaviour
         if (currentAllowedInputs != null)
             currentAllowedInputs = new();
 
+        float delay = 0f;
         if (stepState >= 0)
         {
             Debug.Log($"{stepState}.OnExit");
-            steps[(int)stepState].OnExit();
+            delay += steps[(int)stepState].OnExit();
         }
+
+        coroutine = StartCoroutine(DelaySetNextStep(delay));
+    }
+
+    private IEnumerator DelaySetNextStep(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
 
         stepState++;
         runState = RunState.Start;
+
+        coroutine = null;
     }
 
     public void CheckInput(UnitController _unit)
     {
         if (_unit && _unit.Model.IsRobotInShop() && stepState == StepState.ClickRobot)
-        {
-            SetNextStep();
-        }
-        if (_unit && _unit.Model.Data.UnitType == UnitType.Item && stepState == StepState.PickBattery)
         {
             SetNextStep();
         }
@@ -181,10 +185,14 @@ public class TutorialManager : MonoBehaviour
         if (_inputKey == InputKey.DropSlotTeam)
         {
             if (stepState == StepState.PickRobot ||
-                stepState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false)
+                stepState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false ||
+                stepState == StepState.PickBattery)
                 SetNextStep();
-
-
+        }
+        if (_inputKey == InputKey.ClickButtonLock)
+        {
+            if (stepState == StepState.LockBattery)
+                SetNextStep();
         }
     }
 

@@ -36,7 +36,7 @@
             return false;
         }
 
-        if (TutorialManager.Instance)
+        if (GameManager.Instance.TutorialCompleted == false && TutorialManager.Instance)
         {
             var allowedInputs = TutorialManager.Instance.CurrentAllowedInputs;
             if (allowedInputs != null)

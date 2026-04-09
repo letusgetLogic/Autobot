@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CutScene : MonoBehaviour
 {
@@ -37,21 +38,34 @@ public class CutScene : MonoBehaviour
 
         if (coverPanelOpen != null)
         {
-            if (hintClickClose && GameManager.Instance.Replay == null)
+            coverPanelOpen.gameObject.SetActive(true);
+            StartCoroutine(OpenScene(GameManager.Instance.Replay != null ? 0f : delayOpen));
+        }
+
+        if (hintClickClose)
+        {
+            if (GameManager.Instance.Replay == null && GameManager.Instance.TutorialCompleted)
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
                 EventManager.Instance.OnMoveHintClick?.Invoke();
             }
-
-            coverPanelOpen.gameObject.SetActive(true);
-            StartCoroutine(OpenScene(GameManager.Instance.Replay != null ? 0f : delayOpen));
+            else
+            {
+                hintClickClose.gameObject.SetActive(false);
+            }
         }
 
         if (coverPanelClose != null)
         {
             coverPanelClose.gameObject.SetActive(true);
         }
+    }
+
+    private void OnEnable()
+    {
+        if (OpenPanel != null)
+            OpenPanel.OnRunningDone += GameManager.Instance.SetTutorialStart;
     }
 
     /// <summary>
@@ -95,13 +109,17 @@ public class CutScene : MonoBehaviour
 
         EventManager.Instance.OnCloseScene?.Invoke();
 
-        yield return new WaitForSeconds(ClosePanel.AnimTime);
+        if (GameManager.Instance.TutorialCompleted == false)
+        {
+            GameManager.Instance.Switch(GameState.LoadScene);
+            yield break;
+        }
 
-        //SceneManager.LoadScene(GameManager.Instance.SceneToLoad);
+        yield return new WaitForSeconds(ClosePanel.AnimTime);
 
         GameManager.Instance.Switch(GameState.WaitingCutScene);
 
-        if (hintClick != null)
+        if (hintClick != null && GameManager.Instance.TutorialCompleted)
         {
             hintClick.Trigger();
             EventManager.Instance.OnMoveHintClick?.Invoke();

@@ -154,7 +154,16 @@ public class PhaseShopController : MonoBehaviour
                 if (GameManager.Instance.Replay == null)
                 {
                     PackManager.Instance.AssignList(Player.Data.Turn);
-                    SpawnShopUnits();
+
+                    if (ShouldFixedUnitsSpawned)
+                    {
+                        SpawnFixedUnits();
+                    }
+                    else
+                    {
+                        SpawnShopUnits();
+                    }
+
                     SetStartTurn(StartTurnState.ChargeBot);
                 }
                 else
@@ -187,6 +196,8 @@ public class PhaseShopController : MonoBehaviour
 
         }
     }
+
+    private bool ShouldFixedUnitsSpawned => Player.Data.Turn == 1 && !GameManager.Instance.TutorialCompleted;
 
     // Spawn Objects
     #region Spawn objects
@@ -325,6 +336,63 @@ public class PhaseShopController : MonoBehaviour
             SpawnManager.Instance.Spawn(
                 soUnit,
                 randomNumber,
+                null,
+                UnitState.InSlotShop,
+                shopItemSlots[i].transform);
+        }
+    }
+
+    private void SpawnFixedUnits()
+    {
+        for (int i = 0; i < shopBotSlots.Length; i++)
+        {
+            if (shopBotSlots[i].gameObject.activeSelf == false)
+                continue;
+
+            var units = TutorialManager.Instance.BotsTurn1;
+            if (i >= units.Length)
+                continue;
+
+            int index = -1;
+            for (int j = 0; j < PackManager.Instance.Bots.Count; j++)
+            {
+                if (PackManager.Instance.Bots[j] == units[i])
+                {
+                    index = j;
+                    break;
+                }
+            }
+
+            SpawnManager.Instance.Spawn(
+                units[i],
+                index,
+                null,
+                UnitState.InSlotShop,
+                shopBotSlots[i].transform);
+        }
+
+        for (int i = 0; i < shopItemSlots.Length; i++)
+        {
+            if (shopItemSlots[i].gameObject.activeSelf == false)
+                continue;
+
+            var units = TutorialManager.Instance.ItemsTurn1;
+            if (i >= units.Length)
+                continue;
+
+            int index = -1;
+            for (int j = 0; j < PackManager.Instance.Items.Count; j++)
+            {
+                if (PackManager.Instance.Items[j] == units[i])
+                {
+                    index = j;
+                    break;
+                }
+            }
+
+            SpawnManager.Instance.Spawn(
+                units[i],
+                index,
                 null,
                 UnitState.InSlotShop,
                 shopItemSlots[i].transform);
