@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Provides functionality for managing and displaying the repair mechanic, including durability, for a unit.
@@ -6,17 +7,16 @@
 public class RepairSystem
 {
     private UnitModel model;
-    private UnitView view;
 
     private float portionSize => 1 / (float)PortionAmount;
     public int PortionAmount
     {
         get
         {
-            if (model.Data.FullHP <= model.Controller.Pack.CurrencyData.HealthPortion)
+            if (model.Data.FullHP <= model.Pack.CurrencyData.HealthPortion)
                 return model.Data.FullHP;
 
-            return model.Controller.Pack.CurrencyData.HealthPortion;
+            return model.Pack.CurrencyData.HealthPortion;
         }
     }
 
@@ -25,81 +25,9 @@ public class RepairSystem
     /// </summary>
     /// <param name="_model"></param>
     /// <param name="_view"></param>
-    public void Initialize(UnitModel _model, UnitView _view)
+    public void Initialize(UnitModel _model)
     {
         model = _model;
-        view = _view;
-    }
-
-    /// <summary>
-    /// Sets the display of the repair mechanic.
-    /// </summary>
-    /// <param name="_unitState"></param>
-    public void SetDisplay(UnitState _unitState)
-    {
-        switch (_unitState)
-        {
-            case UnitState.InSlotShop:
-                view.SetRepairDisplayActive(false);
-                break;
-            case UnitState.Freezed:
-                view.SetRepairDisplayActive(false);
-                break;
-            case UnitState.InSlotTeam:
-                view.SetRepairDisplayActive(true);
-                break;
-            case UnitState.InSlotCharge:
-                view.SetRepairDisplayActive(true);
-                break;
-            case UnitState.InPhaseBattle:
-                view.SetRepairDisplayActive(false);
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Shows or hides the repair panel based on full HP. For example, Full HP = 1 should show only 1 bar. 
-    /// </summary>
-    public void SetRepairPanel()
-    {
-        view.SetRepairPanelActive(model.Data.FullHP >= 2, model.Data.FullHP >= 3);
-    }
-
-    /// <summary>
-    /// Sets the durability based on health or the give durability value.
-    /// </summary>
-    /// <param name="_shouldGetDurability"></param>
-    /// <param name="_updateATK"></param>
-    /// <param name="_durability"></param>
-    /// <param name="_ratio"></param>
-    public void SetDurability(bool _updateATK, bool _updateView)
-    {
-        model.Data.Durability = GetDurabilityFromHealth(_updateATK);
-
-        if (_updateView)
-            ShowDurability();
-    }
-
-    /// <summary>
-    /// Shows the filled steps of durability.
-    /// </summary>
-    private void ShowDurability()
-    {
-        switch (model.Data.Durability)
-        {
-            case 0:
-                view.SetRepairStepFillActive(false, false, false);
-                break;
-            case 1:
-                view.SetRepairStepFillActive(true, false, false);
-                break;
-            case 2:
-                view.SetRepairStepFillActive(true, true, false);
-                break;
-            case 3:
-                view.SetRepairStepFillActive(true, true, true);
-                break;
-        }
     }
 
     /// <summary>
@@ -107,7 +35,7 @@ public class RepairSystem
     /// </summary>
     /// <param name="_updateAtk"></param>
     /// <returns></returns>
-    private int GetDurabilityFromHealth(bool _updateAtk)
+    public int GetDurabilityFromHealth(bool _updateAtk)
     {
         float portionHp = (float)model.Data.Cur.HP / model.Data.FullHP;
         model.Data.DurabilityRatio = portionHp;
@@ -120,13 +48,13 @@ public class RepairSystem
             model.Data.SetATK(atk);
         }
 
-        if (model.Data.FullHP <= model.Controller.Pack.CurrencyData.HealthPortion)
+        if (model.Data.FullHP <= model.Pack.CurrencyData.HealthPortion)
             return model.Data.Cur.HP;
 
         if (model.Data.Cur.HP == model.Data.FullHP)
-            return model.Controller.Pack.CurrencyData.HealthPortion;
+            return model.Pack.CurrencyData.HealthPortion;
 
-        for (int i = model.Controller.Pack.CurrencyData.HealthPortion; i > 0; i--)
+        for (int i = model.Pack.CurrencyData.HealthPortion; i > 0; i--)
         {
             float portionShiftingRelativeToDurability = portionSize / 2;
             float portionLowerLimit = (portionSize * i) - portionShiftingRelativeToDurability;
@@ -150,11 +78,11 @@ public class RepairSystem
 
         int currentHp = model.Data.Cur.HP;
         int currentAtk = model.Data.Cur.ATK;
-
-        model.Data.SetHP(hp < currentHp ? currentHp : hp, SetRepairPanel);
+    
+        model.Data.SetHP(hp < currentHp ? currentHp : hp, model.SetRepairPanel);
         model.Data.SetATK(atk < currentAtk ? currentAtk : atk);
 
-        view.SetData(
+        model.View.SetData(
             model.Data.FullHP, model.Data.FullATK,
             model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
     }
@@ -168,19 +96,18 @@ public class RepairSystem
         model.Data.Durability++;
 
         if (model.Data.DurabilityRatio >= 1f ||
-             model.Data.Durability >= model.Controller.Pack.CurrencyData.HealthPortion)
+             model.Data.Durability >= model.Pack.CurrencyData.HealthPortion)
         {
             model.Data.DurabilityRatio = 1f;
-            model.Data.Durability = model.Controller.Pack.CurrencyData.HealthPortion;
+            model.Data.Durability = model.Pack.CurrencyData.HealthPortion;
         }
 
         SetStatsBasedDurability();
-        ShowDurability();
+        model.View.ShowDurability(model.Data.Durability);
 
         if (Application.isPlaying == false)
             return;
 
-        view.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
+        model.View.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
     }
-
 }

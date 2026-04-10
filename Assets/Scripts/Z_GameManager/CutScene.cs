@@ -78,8 +78,8 @@ public class CutScene : MonoBehaviour
 
         OpenPanel.ScaleUp(false);
 
-        if (GameManager.Instance.TutorialCompleted)
-            EventManager.Instance.OnOpenScene?.Invoke();
+
+        EventManager.Instance.OnOpenScene?.Invoke();
 
         //if (GameManager.Instance.SceneName == "PhaseShop")
         //    OpenPanel.OnRunningDone += () => GameManager.Instance.Replay = null;
@@ -109,7 +109,8 @@ public class CutScene : MonoBehaviour
         GameManager.Instance.SceneToLoad = _scene;
         ClosePanel.ScaleUp(true);
 
-        EventManager.Instance.OnCloseScene?.Invoke();
+        if (GameManager.Instance.TutorialCompleted)
+            EventManager.Instance.OnCloseScene?.Invoke();
 
         if (GameManager.Instance.TutorialCompleted == false)
         {

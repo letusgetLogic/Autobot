@@ -42,6 +42,9 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
+        if (PhaseShopController.Instance.IsSwapping)
+            return;
+
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
@@ -63,6 +66,9 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnDrag(PointerEventData eventData)
     {
         if (InputManager.Instance.IsBlockingInput(inputKey))
+            return;
+
+        if (PhaseShopController.Instance.IsSwapping)
             return;
 
         if (eventData.button != PointerEventData.InputButton.Left)

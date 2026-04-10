@@ -299,7 +299,7 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Bots.Count == 0)
                 return;
 
-            int randomNumber = GetRandom(PackManager.Instance.Bots.Count);
+            int randomNumber = Random.Range(0, PackManager.Instance.Bots.Count);
             var soUnit = PackManager.Instance.Bots[randomNumber];
 
             SpawnManager.Instance.Spawn(
@@ -330,7 +330,7 @@ public class PhaseShopController : MonoBehaviour
             if (PackManager.Instance.Items.Count == 0)
                 return;
 
-            int randomNumber = GetRandom(PackManager.Instance.Items.Count);
+            int randomNumber = Random.Range(0, PackManager.Instance.Items.Count);
             var soUnit = PackManager.Instance.Items[randomNumber];
 
             SpawnManager.Instance.Spawn(
@@ -400,12 +400,6 @@ public class PhaseShopController : MonoBehaviour
     }
 
     #endregion
-
-    private int GetRandom(int _length)
-    {
-        return UnityEngine.Random.Range(0, _length);
-    }
-
 
     #region Charge Bot
 
@@ -647,14 +641,8 @@ public class PhaseShopController : MonoBehaviour
             delay1 = _unitTarget.SwapMoveToParent(_slotDragged.position, _slotDragged, unitSwapSettings);
             EventManager.Instance.OnSwap?.Invoke();
         }
-        else
-        {
-            input.BlocksInput = false;
-            IsSwapping = false;
-            GameManager.Instance.IsBlockingInput = false;
-            yield break;
-        }
 
+        yield return new WaitForSeconds(delay1);
         yield return new WaitUntil(() => _unitTarget.transform.parent != null);
 
         Transport(_unitTarget, _slotDragged, false);
@@ -668,18 +656,12 @@ public class PhaseShopController : MonoBehaviour
             delay2 = _unitDragged.SwapMoveToParent(_slotTarget.position, _slotTarget, unitSwapSettings);
             EventManager.Instance.OnSwap?.Invoke();
         }
-        else
-        {
-            IsSwapping = false;
-            input.BlocksInput = false;
-            yield break;
-        }
 
+        yield return new WaitForSeconds(delay2);
         yield return new WaitUntil(() => _unitDragged.transform.parent != null);
 
         Transport(_unitDragged, _slotTarget, true);
 
-        Player.UpdateUnitData();
         IsSwapping = false;
         input.BlocksInput = false;
     }
@@ -827,7 +809,6 @@ public class PhaseShopController : MonoBehaviour
                     {
                         isRandomnessItemAttached = true;
                         itemRandomnessDropSlot.gameObject.SetActive(true);
-                        Debug.Log("Set drop hint true for randomness item");
                     }
                 }
             }
@@ -841,7 +822,6 @@ public class PhaseShopController : MonoBehaviour
                 {
                     isRandomnessItemAttached = false;
                     itemRandomnessDropSlot.gameObject.SetActive(false);
-                    Debug.Log("Set drop hint false");
                 }
             }
         }

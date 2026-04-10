@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 /// <summary>
 /// Creating and initializing components.
@@ -52,18 +53,6 @@ public class UnitController : MonoBehaviour
         }
     }
     private Queue<UnitController> targets;
-
-
-    public SoPack Pack
-    {
-        get
-        {
-            if (PackManager.Instance == null)
-                return DefinedPack;
-
-            return PackManager.Instance.MyPack;
-        }
-    }
 
     public Slot[] TeamSlots
     {
@@ -159,14 +148,19 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(this, _soUnit, _data, isRepairActive ? new RepairSystem() : null);
         }
 
+        if (model.IsRobot() && model.Repair != null)
+        {
+            model.InitRepair();
+        }
+
         model.InitView(view, _isTeamLeft);
 
-        // If unit is in the catalog, it already has all required data and stops processing here.
-        if (Application.isPlaying &&
-            (GameManager.Instance == null || GameManager.Instance.IsCatalogActive))
-            return;
-
-        model.SetDataView(_unitState);
+        // Catalog doesn't need to update level and set data view.
+        if (Application.isPlaying && !GameManager.Instance.IsCatalogActive)
+        {
+            StartCoroutine(model.UpdateLevelXP(model.IsPhaseShop(model.Data.UnitState), false));
+            model.SetDataView(_unitState);
+        }
     }
 
     /// <summary>
@@ -320,7 +314,12 @@ public class UnitController : MonoBehaviour
 
         model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
         StartCoroutine(model.UpdateLevelXP(_isPhaseShop, true));
-        model.Repair?.SetDurability(false, true);
+
+        if (model.Repair != null)
+        {
+            model.Data.Durability = model.Repair.GetDurabilityFromHealth(false);
+            view.ShowDurability(model.Data.Durability);
+        }
 
         EventManager.Instance.OnFusion?.Invoke();
     }
@@ -433,7 +432,12 @@ public class UnitController : MonoBehaviour
 
         view.ShowBuff(_attribute);
         view.GetTargetedByAbility();
-        model.Repair?.SetDurability(false, true);
+
+        if (model.Repair != null)
+        {
+            model.Data.Durability = model.Repair.GetDurabilityFromHealth(false);
+            view.ShowDurability(model.Data.Durability);
+        }
     }
 
     #endregion

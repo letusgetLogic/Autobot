@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,6 +10,34 @@ public class Player
     public Player()
     {
         Data = new PlayerData("Player", 5, 0);
+    }
+
+    public void ExecuteByTutorialAI()
+    {
+        Data.Turn++;
+        PackManager.Instance.AssignList(Data.Turn);
+        Data.TeamUnitDatas = new SaveUnitData[5];
+        if (Data.Turn == 1)
+        {
+            Data.TeamUnitDatas = GetRandomShopBots();
+        }
+        UpdateUnitData();
+        GameManager.Instance.Switch(GameState.EndOfTurn);
+    }
+
+    private SaveUnitData[] GetRandomShopBots()
+    {
+        SaveUnitData[] saveUnitDatas = new SaveUnitData[3];
+        for (int i = 0; i < 3; i++)
+        {
+            int randomNumber = Random.Range(0, PackManager.Instance.Bots.Count);
+            var soUnit = PackManager.Instance.Bots[randomNumber];
+            var unit = PhaseShopController.Instance ? PhaseShopController.Instance.AddComponent<UnitController>()
+                : GameManager.Instance.AddComponent<UnitController>();
+            unit.Initialize(soUnit, randomNumber, null, UnitState.InSlotShop, true);
+            saveUnitDatas[i] = unit.Model.Data;
+        }
+        return saveUnitDatas;
     }
 
     /// <summary>
@@ -49,9 +78,10 @@ public class Player
         delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
         phaseShop.ChargeTeamBots();
 
-        endShopCoroutine = PhaseShopController.Instance.StartCoroutine(DelayEndShop(delay));
+        endShopCoroutine = phaseShop.StartCoroutine(DelayEndShop(delay));
     }
     private Coroutine endShopCoroutine;
+
     /// <summary>
     /// Delays ending the shop phase for charging units at turn 1.
     /// </summary>

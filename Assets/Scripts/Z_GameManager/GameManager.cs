@@ -116,10 +116,6 @@ public class GameManager : MonoBehaviour
     public string SceneName => SceneManager.GetActiveScene().name;
     public string SceneToLoad { get; set; }
 
-    /// <summary>
-    /// To block player's input while animation is running.
-    /// </summary>
-    public bool IsBlockingInput { get; set; }
     public bool IsCatalogActive { get; set; } = false;
     public ReplayManager Replay { get; set; }
 
@@ -205,7 +201,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameMode.Local1v1:
-                InitSingle();
+                InitPvP();
                 Switch(GameState.PlayCutScene);
                 break;
 
@@ -218,9 +214,9 @@ public class GameManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// Initialize game with mode Singleplayer.
+    /// Initialize game with mode PvP.
     /// </summary>
-    private void InitSingle()
+    private void InitPvP()
     {
         players = new List<Player>();
 
@@ -240,7 +236,9 @@ public class GameManager : MonoBehaviour
 
         // Create a new game.
         players[0].Data = new PlayerData(Name1, PlayerLives, 0);
-        players[1].Data = new PlayerData(Name2, PlayerLives, 0);
+        players[1].Data = TutorialCompleted
+            ? new PlayerData(Name2, PlayerLives, 0)
+            : new PlayerData(AI.Name, PlayerLives, 0);
 
         currentGame = new Game(
                 Mode,
@@ -359,11 +357,18 @@ public class GameManager : MonoBehaviour
         if (CurrentGame.CurrentPlayerIndex < players.Count)
         {
             CurrentPlayer = players[CurrentGame.CurrentPlayerIndex];
-            CutScene.Instance.SetHintClick(CurrentPlayer.Data.Name, false);
-            CutScene.Instance.SwitchScene("PhaseShop");
 
             Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
             PhaseShopIndex++;
+
+            if (TutorialCompleted && CurrentPlayer.Data.IsAI)
+            {
+                CurrentPlayer.ExecuteByTutorialAI();
+                return;
+            }
+
+            CutScene.Instance.SetHintClick(CurrentPlayer.Data.Name, false);
+            CutScene.Instance.SwitchScene("PhaseShop");
         }
         else
         {

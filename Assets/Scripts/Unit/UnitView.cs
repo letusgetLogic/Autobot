@@ -383,6 +383,28 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
+    /// Shows the filled steps of durability.
+    /// </summary>
+    public void ShowDurability(int _durability)
+    {
+        switch (_durability)
+        {
+            case 0:
+                SetRepairStepFillActive(false, false, false);
+                break;
+            case 1:
+                SetRepairStepFillActive(true, false, false);
+                break;
+            case 2:
+                SetRepairStepFillActive(true, true, false);
+                break;
+            case 3:
+                SetRepairStepFillActive(true, true, true);
+                break;
+        }
+    }
+
+    /// <summary>
     /// Sets the activity of the repair steps.
     /// </summary>
     /// <param name="_fill1"></param>
