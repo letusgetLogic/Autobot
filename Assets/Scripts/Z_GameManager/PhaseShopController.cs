@@ -197,7 +197,7 @@ public class PhaseShopController : MonoBehaviour
         }
     }
 
-    private bool ShouldFixedUnitsSpawned => Player.Data.Turn == 1 && !GameManager.Instance.TutorialCompleted;
+    private bool ShouldFixedUnitsSpawned => Player.Data.Turn == 1 && GameManager.Instance.IsTutorialRunning;
 
     // Spawn Objects
     #region Spawn objects
@@ -597,9 +597,10 @@ public class PhaseShopController : MonoBehaviour
 
         if (model != null)
         {
-            model.SetDataView(_dropSlot.CompareTag("Slot Charge") ?
-                UnitState.InSlotCharge :
-                UnitState.InSlotTeam);
+            model.SetDataView(_dropSlot.CompareTag("Slot Charge") 
+                ? UnitState.InSlotCharge 
+                : UnitState.InSlotTeam,
+                true);
         }
 
         if (view != null)

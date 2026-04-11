@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 639b104ba2020244ca5dc9d366c0493b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Slot
-  border: {fileID: 0}
-  eventHover: {fileID: 4044667939586932334}
+  indicator: {fileID: 0}
   eventDrag: {fileID: 0}
-  lighten: {fileID: 0}
+  lighting: {fileID: 0}
+  settings: {fileID: 0}
+  hintLight: {fileID: 0}
+  lightenUpDown: {fileID: 0}
   lightenScale: {fileID: 0}
 --- !u!1 &6251666269217186889
 GameObject:
@@ -59,7 +61,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7021078470758031946}
-  - component: {fileID: 4044667939586932334}
   - component: {fileID: 2522493888726673995}
   m_Layer: 0
   m_Name: Collider
@@ -83,18 +84,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2554116639902043894}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4044667939586932334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6251666269217186889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9147dedae6bd68448d175a15e898358, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EventHover
 --- !u!61 &2522493888726673995
 BoxCollider2D:
   m_ObjectHideFlags: 0

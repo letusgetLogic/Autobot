@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbilityBase : ScriptableObject
+public abstract class AbilityBase
 {
     public UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }

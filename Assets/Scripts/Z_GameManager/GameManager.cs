@@ -25,13 +25,12 @@ public class GameManager : MonoBehaviour
 
     [Header("Develop Settings")]
     public bool IsModeDevelop;
-    public bool PlayTutorial;
+    [SerializeField] private bool shouldPlayTutorial;
     [SerializeField] private bool isNotSavingGame;
     [SerializeField] public bool IsRepairSystemActive;
     [SerializeField] private int defaultTutorialLives = 3;
     [SerializeField] private int devLives = 3;
     [SerializeField] private float timer = 90.0f;
-
 
     // This code block or the time scaling feature is disabled,
     // because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
@@ -119,12 +118,12 @@ public class GameManager : MonoBehaviour
     public bool IsCatalogActive { get; set; } = false;
     public ReplayManager Replay { get; set; }
 
-    public bool TutorialCompleted
+    private bool isTutorialCompleted
     {
         get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
         set => PlayerPrefs.SetInt("TutorialCompleted", value ? 1 : 0);
     }
-
+    public bool IsTutorialRunning => !isTutorialCompleted;
 
     public int RandomSeed
     {
@@ -141,6 +140,7 @@ public class GameManager : MonoBehaviour
 
     #region Debug Variables
     public int PhaseShopIndex { get; set; } = 0;
+    public int ClickIndex { get; set; } = 0;
 
     #endregion
 
@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if (!PlayerPrefs.HasKey("TutorialCompleted"))
-            TutorialCompleted = false;
+            isTutorialCompleted = false;
 
         // auto play in dev mode.
         if (IsModeDevelop)
@@ -178,14 +178,14 @@ public class GameManager : MonoBehaviour
             Mode = GameMode.Local1v1;
             PlayerLives = devLives;
 
-            if (PlayTutorial == false)
+            if (shouldPlayTutorial == false)
                 LoadGame();
         }
     }
 
     public void StartTutorial()
     {
-        TutorialCompleted = false;
+        isTutorialCompleted = false;
         PlayerLives = defaultTutorialLives;
         LoadGame();
     }
@@ -236,9 +236,9 @@ public class GameManager : MonoBehaviour
 
         // Create a new game.
         players[0].Data = new PlayerData(Name1, PlayerLives, 0);
-        players[1].Data = TutorialCompleted
+        players[1].Data = isTutorialCompleted
             ? new PlayerData(Name2, PlayerLives, 0)
-            : new PlayerData(AI.Name, PlayerLives, 0);
+            : new PlayerData(AI.Name, PlayerLives, 0, true);
 
         currentGame = new Game(
                 Mode,
@@ -361,7 +361,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
             PhaseShopIndex++;
 
-            if (TutorialCompleted && CurrentPlayer.Data.IsAI)
+            if (IsTutorialRunning && CurrentPlayer.Data.IsAI)
             {
                 CurrentPlayer.ExecuteByTutorialAI();
                 return;
@@ -420,7 +420,7 @@ public class GameManager : MonoBehaviour
 
     public void SetTutorialStart()
     {
-        if (TutorialCompleted == false)
+        if (IsTutorialRunning)
             TutorialManager.Instance.SetNextStep();
     }
 

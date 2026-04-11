@@ -55,6 +55,20 @@ public class PlayerData
     }
 
     /// <summary>
+    /// Assigns the template values.
+    /// </summary>
+    /// <param name="_name"></param>
+    /// <param name="_lives"></param>
+    /// <param name="_wins"></param>
+    public PlayerData(string _name, int _lives, int _wins, bool _isAI)
+    {
+        Name = _name;
+        Lives = _lives;
+        Wins = _wins;
+        IsAI = _isAI;
+    }
+
+    /// <summary>
     /// Makes a copy of the reference.
     /// </summary>
     /// <param name="_other"></param>

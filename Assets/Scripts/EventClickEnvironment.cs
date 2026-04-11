@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
 {
     private readonly InputKey inputKey = InputKey.ClickEnvironment;
+    private bool isChecking = false;
 
     /// <summary>
     /// Button click calls.
@@ -11,14 +12,27 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (InputManager.Instance.IsBlockingInput(inputKey))
+        int a = GameManager.Instance.ClickIndex++;
+        Debug.Log("Click " + a);
+        if (isChecking)
             return;
+
+      
+        isChecking = true;
+
+        if (InputManager.Instance.IsBlockingInput(inputKey))
+        {
+            isChecking = false;
+            return;
+        }
 
         var game = GameManager.Instance.CurrentGame;
         if (game != null && game.State == GameState.WaitingCutScene)
         {
             GameManager.Instance.Switch(GameState.LoadScene);
             InputManager.Instance.BlocksInput = true;
+
+            isChecking = false;
             return;
         }
 
@@ -27,8 +41,9 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
         {
             case "PhaseShop":
                 var tutorial = TutorialManager.Instance;
-                if (tutorial != null && GameManager.Instance.TutorialCompleted == false)
+                if (tutorial != null && GameManager.Instance.IsTutorialRunning)
                 {
+                    Debug.Log("SetNextStep " + GameManager.Instance.ClickIndex);
                     tutorial.SetNextStep();
                 }
 
@@ -59,7 +74,8 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
 
                 //PhaseBattleView.Instance.OnRunningButtonClick();
                 break;
-
         }
+        Debug.Log("Click " + GameManager.Instance.ClickIndex + " -> Execute");
+        isChecking = false;
     }
 }

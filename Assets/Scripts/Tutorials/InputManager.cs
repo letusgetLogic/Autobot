@@ -20,6 +20,7 @@
     public bool BlocksInput { set { isInputBlocked = value; } }
 
     private bool isInputBlocked = true;
+    private bool isChecking = false;
 
     /// <summary>
     /// Constructor of InputManager.
@@ -31,12 +32,18 @@
 
     public bool IsBlockingInput(InputKey _key)
     {
+        if (isChecking)
+            return true;
+
+        isChecking = true;
+
         if (_key == InputKey.AlwaysEnabled)
         {
+            isChecking = false;
             return false;
         }
 
-        if (GameManager.Instance.TutorialCompleted == false && TutorialManager.Instance)
+        if (GameManager.Instance.IsTutorialRunning && TutorialManager.Instance)
         {
             var allowedInputs = TutorialManager.Instance.CurrentAllowedInputs;
             if (allowedInputs != null)
@@ -45,14 +52,17 @@
                 {
                     if (allowedInput == _key)
                     {
+                        isChecking = false;
                         return false;
                     }
                 }
             }
 
+            isChecking = false;
             return true;
         }
 
+        isChecking = false;
         return isInputBlocked;
     }
 }

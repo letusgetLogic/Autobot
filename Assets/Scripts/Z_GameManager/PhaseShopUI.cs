@@ -142,8 +142,8 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="_turn"></param>
     public void SetChargingStationAt(int _turn)
     {
-        if ((!GameManager.Instance.TutorialCompleted && _turn >= turnToEnableTutorial) ||
-            (GameManager.Instance.TutorialCompleted && _turn >= turnToEnable))
+        if ((GameManager.Instance.IsTutorialRunning && _turn >= turnToEnableTutorial) ||
+            (GameManager.Instance.IsTutorialRunning == false && _turn >= turnToEnable))
         {
             chargingStation.SetActive(true);
         }
@@ -252,7 +252,7 @@ public class PhaseShopUI : MonoBehaviour
         {
             var unit = PhaseShopController.Instance.AttachedController;
 
-            unit.Model.SetDataView(UnitState.Freezed);
+            unit.Model.SetDataView(UnitState.Freezed, true);
 
             SetButtonActive(unit);
 
@@ -272,7 +272,7 @@ public class PhaseShopUI : MonoBehaviour
         {
             var unit = PhaseShopController.Instance.AttachedController;
 
-            unit.Model.SetDataView(UnitState.InSlotShop);
+            unit.Model.SetDataView(UnitState.InSlotShop, true);
 
             SetButtonActive(unit);
 

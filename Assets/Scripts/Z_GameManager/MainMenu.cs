@@ -40,8 +40,7 @@ public class MainMenu : MonoBehaviour
 
     public void OnPlay()
     {
-        if (GameManager.Instance.TutorialCompleted == false ||
-            (GameManager.Instance.IsModeDevelop && GameManager.Instance.PlayTutorial))
+        if (GameManager.Instance.IsTutorialRunning)
         {
             GameManager.Instance.StartTutorial();
         }

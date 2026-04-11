@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 /// <summary>
@@ -9,10 +10,8 @@ using UnityEngine;
 [Serializable]
 public class UnitModel
 {
-    private UnitController controller { get; set; }
-    public UnitView View { get; set; }
     public RepairSystem Repair { get; set; }
-
+    public UnitView View { get; set; }
     public SaveUnitData Data { get; set; } = new SaveUnitData();
 
     public SoUnit SoUnit { get; private set; }
@@ -25,12 +24,12 @@ public class UnitModel
         get
         {
             if (PackManager.Instance == null)
-                if (controller)
-                    return controller.DefinedPack;
+                return definedPack;
 
             return PackManager.Instance.MyPack;
         }
     }
+    private SoPack definedPack;
 
     public Currency Cost
     {
@@ -76,7 +75,7 @@ public class UnitModel
     /// <param name="_repair"></param>
     public UnitModel(UnitController _controller, SoUnit _soUnit, int _index, RepairSystem _repair)
     {
-        controller = _controller;
+        definedPack = _controller.DefinedPack;
         Repair = _repair;
         SoUnit = _soUnit;
         Data.Index = _index;
@@ -114,7 +113,7 @@ public class UnitModel
     /// <param name="_repair"></param>
     public UnitModel(UnitController _controller, SoUnit _soUnit, SaveUnitData _data, RepairSystem _repair)
     {
-        controller = _controller;
+        definedPack = _controller.DefinedPack;
         Repair = _repair;
         SoUnit = _soUnit;
         Data = _data;
@@ -135,21 +134,16 @@ public class UnitModel
     /// Initializes the view and the repair system.
     /// </summary>
     /// <param name="_view"></param>
-    public void InitView(UnitView _view, bool _isTeamLeft)
+    public void InitView(UnitView _view)
     {
         View = _view;
 
         if (Application.isPlaying == false ||
             GameManager.Instance && GameManager.Instance.IsCatalogActive == false)
         {
-            if (_isTeamLeft)
-            {
-                Data.IsTeamLeft = true;
-            }
-            else
+            if (Data.IsTeamLeft == false)
             {
                 View.SetRightSide();
-                Data.IsTeamLeft = false;
             }
 
             if (IsRobot())
@@ -204,13 +198,16 @@ public class UnitModel
     /// Sets the unit state and updates view.
     /// </summary>
     /// <param name="_unitState"></param>
-    public void SetDataView(UnitState _unitState)
+    public void SetDataView(UnitState _unitState, bool _hasView)
     {
         Data.UnitState = _unitState;
 
         if (GameManager.Instance && GameManager.Instance.CurrentGame != null &&
             GameManager.Instance.CurrentGame.State == GameState.BattlePhase)
             _unitState = UnitState.InPhaseBattle;
+
+        if (_hasView == false)
+            return;
 
         switch (_unitState)
         {
@@ -292,7 +289,36 @@ public class UnitModel
     /// Updates the level and xp.
     /// </summary>
     /// <param name="xp"></param>
-    public IEnumerator UpdateLevelXP(bool _isPhaseShop, bool _isMakingSound)
+    public void UpdateLevelXP()
+    {
+        switch (Data.XP)
+        { 
+            case 1:
+                CurrentLevel = SoUnit.Levels[0];
+                 break;
+            case 2:
+                CurrentLevel = SoUnit.Levels[0];
+                break;
+            case 3:
+                CurrentLevel = SoUnit.Levels[1];
+                break;
+            case 4:
+                CurrentLevel = SoUnit.Levels[1];
+                break;
+            case 5:
+                CurrentLevel = SoUnit.Levels[1];
+                break;
+            case 6:
+                CurrentLevel = SoUnit.Levels[2];
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Updates the level and xp.
+    /// </summary>
+    /// <param name="xp"></param>
+    public IEnumerator UpdateLevelXPView(bool _isPhaseShop, bool _isMakingSound)
     {
         switch (Data.XP)
         {//                        level  box1   box2  step1  step2  box3  step3  step4  step5  

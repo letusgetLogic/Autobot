@@ -153,13 +153,23 @@ public class UnitController : MonoBehaviour
             model.InitRepair();
         }
 
-        model.InitView(view, _isTeamLeft);
+        model.Data.IsTeamLeft = _isTeamLeft;
+
+        var shop = PhaseShopController.Instance;
+        var battle = PhaseBattleController.Instance;
+        bool hasView = (shop && GameManager.Instance.CurrentPlayer.Data.IsAI == false) || battle;
+        if (hasView)
+            model.InitView(view);
 
         // Catalog doesn't need to update level and set data view.
         if (Application.isPlaying && !GameManager.Instance.IsCatalogActive)
         {
-            StartCoroutine(model.UpdateLevelXP(model.IsPhaseShop(model.Data.UnitState), false));
-            model.SetDataView(_unitState);
+            if (hasView)
+                StartCoroutine(model.UpdateLevelXPView(model.IsPhaseShop(model.Data.UnitState), false));
+            else
+                model.UpdateLevelXP();
+
+            model.SetDataView(_unitState, hasView);
         }
     }
 
@@ -313,7 +323,7 @@ public class UnitController : MonoBehaviour
             _draggingModel.Data.Cur.HP == _draggingModel.Data.FullHP);
 
         model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
-        StartCoroutine(model.UpdateLevelXP(_isPhaseShop, true));
+        StartCoroutine(model.UpdateLevelXPView(_isPhaseShop, true));
 
         if (model.Repair != null)
         {

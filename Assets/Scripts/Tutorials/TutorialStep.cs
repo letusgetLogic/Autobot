@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,10 +13,14 @@ public class TutorialStep : MonoBehaviour
     public GameObject[] Hints;
     public GameObject[] HintsAFK;
 
-    public UnityAction OnLabelPopup {  get; set; }
+    public UnityAction OnLabelPopup { get; set; }
+    public List<ScaleUpDown> ActiveActions { get; set; } = new();
+    public UnityAction<ScaleUpDown> OnDone { get; set; }
 
     private Transform[] targetParents;
     private int[] posInParent;
+
+    public List<Coroutine> Coroutines => coroutines;
     private List<Coroutine> coroutines = new();
     private float animTime;
 
@@ -87,6 +92,7 @@ public class TutorialStep : MonoBehaviour
     private IEnumerator DelayDeactivate(float _delay)
     {
         yield return new WaitForSeconds(_delay);
+        yield return new WaitUntil(() => ActiveActions.Count == 0);
 
         SetActive(CoverPanelsToDeactivate, false);
     }
@@ -122,13 +128,16 @@ public class TutorialStep : MonoBehaviour
                 if (obj != null)
                 {
                     var scale = obj.GetComponent<ScaleUpDown>();
-                    if (scale != null && 
-                        ((_up && obj.activeSelf == false) || 
+                    if (scale != null &&
+                        ((_up && obj.activeSelf == false) ||
                         (!_up && obj.activeSelf == true)))
                     {
                         obj.SetActive(true);
                         scale.ScaleUp(_up);
                         animTime = scale.AnimTime;
+
+                        ActiveActions.Add(scale);
+                        scale.OnRunningDone += () => RemoveAction(scale);
                         isRunning = true;
                     }
                 }
@@ -173,6 +182,11 @@ public class TutorialStep : MonoBehaviour
             targetParents = null;
             posInParent = null;
         }
+    }
+
+    private void RemoveAction(ScaleUpDown _scale)
+    {
+        ActiveActions.Remove(_scale);
     }
 }
 

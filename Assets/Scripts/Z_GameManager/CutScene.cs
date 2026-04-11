@@ -16,7 +16,16 @@ public class CutScene : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hintClickCloseText;
     [SerializeField] private TextMeshProUGUI hintClickText;
 
-    public ScaleUpDown OpenPanel => coverPanelOpen.GetComponent<ScaleUpDown>();
+    public ScaleUpDown OpenPanel
+    {
+        get
+        {
+            if (coverPanelOpen != null) 
+                return coverPanelOpen.GetComponent<ScaleUpDown>();
+
+            return null;
+        }
+    }
     public ScaleUpDown ClosePanel => coverPanelClose.GetComponent<ScaleUpDown>();
     public float DelayOpen => delayOpen;
     public float DelayClose => delayClose;
@@ -44,7 +53,7 @@ public class CutScene : MonoBehaviour
 
         if (hintClickClose)
         {
-            if (GameManager.Instance.Replay == null && GameManager.Instance.TutorialCompleted)
+            if (GameManager.Instance.Replay == null && GameManager.Instance.IsTutorialRunning == false)
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
@@ -109,10 +118,10 @@ public class CutScene : MonoBehaviour
         GameManager.Instance.SceneToLoad = _scene;
         ClosePanel.ScaleUp(true);
 
-        if (GameManager.Instance.TutorialCompleted)
+        if (GameManager.Instance.IsTutorialRunning == false)
             EventManager.Instance.OnCloseScene?.Invoke();
 
-        if (GameManager.Instance.TutorialCompleted == false)
+        if (GameManager.Instance.IsTutorialRunning)
         {
             GameManager.Instance.Switch(GameState.LoadScene);
             yield break;
@@ -122,7 +131,7 @@ public class CutScene : MonoBehaviour
 
         GameManager.Instance.Switch(GameState.WaitingCutScene);
 
-        if (hintClick != null && GameManager.Instance.TutorialCompleted)
+        if (hintClick != null)
         {
             hintClick.Trigger();
             EventManager.Instance.OnMoveHintClick?.Invoke();

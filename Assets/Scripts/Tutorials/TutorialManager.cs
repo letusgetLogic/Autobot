@@ -46,11 +46,8 @@ public class TutorialManager : MonoBehaviour
     private enum RunState { None, Start, Delay, Duration, DurationHide, AFK }
     private RunState runState = RunState.None;
 
+    public List<InputKey> CurrentAllowedInputs => currentAllowedInputs;
     private List<InputKey> currentAllowedInputs;
-    public List<InputKey> CurrentAllowedInputs
-    {
-        get => currentAllowedInputs;
-    }
 
     private Coroutine coroutine;
 
@@ -64,7 +61,7 @@ public class TutorialManager : MonoBehaviour
     {
         Instance = this;
 
-        if (GameManager.Instance.TutorialCompleted)
+        if (GameManager.Instance.IsTutorialRunning == false)
         {
             gameObject.SetActive(false);
             return;
@@ -148,17 +145,19 @@ public class TutorialManager : MonoBehaviour
     public void SetNextStep()
     {
         runState = RunState.None;
-
         currentAllowedInputs = new();
-
+        countTime = 0f;
         float delay = 0f;
+
         if (stepState >= 0)
         {
             Debug.Log($"{stepState}.OnExit");
             delay += steps[(int)stepState].OnExit();
         }
+
         if (delay == 0f)
         {
+            steps[(int)stepState].gameObject.SetActive(false);
             stepState++;
             runState = RunState.Start;
             return;
@@ -171,6 +170,9 @@ public class TutorialManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_delay);
 
+        yield return new WaitUntil(() => steps[(int)stepState].ActiveActions.Count == 0);
+
+        steps[(int)stepState].gameObject.SetActive(false);
         stepState++;
         runState = RunState.Start;
 
