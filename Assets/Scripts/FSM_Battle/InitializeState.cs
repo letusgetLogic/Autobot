@@ -98,6 +98,8 @@ public class InitializeState : StateBaseBattle
                     UnitState.InPhaseBattle,
                     _slots[i].transform,
                     _isLeft);
+
+                Debug.Log(unitController.name + " init is left " + unitController.Model.Data.IsTeamLeft);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,16 +13,22 @@ public class Player
         Data = new PlayerData("Player", 5, 0);
     }
 
-    public void ExecuteByTutorialAI()
+    public IEnumerator ExecuteByTutorialAI()
     {
+        yield return new WaitUntil(() => PhaseShopController.Instance != null &&
+                                        PhaseShopController.Instance.ShopBotSlots().Length > 0);
+
         Data.Turn++;
         PackManager.Instance.AssignList(Data.Turn);
         Data.TeamUnitDatas = new SaveUnitData[5];
         if (Data.Turn == 1)
         {
-            Data.TeamUnitDatas = GetRandomShopBots();
+            var shopBots = GetRandomShopBots();
+            for (int i = 0; i < shopBots.Length; i++)
+            {
+                Data.TeamUnitDatas[i] = shopBots[i];
+            }
         }
-        UpdateUnitData();
         GameManager.Instance.Switch(GameState.EndOfTurn);
     }
 

@@ -187,7 +187,10 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.Done:
-                GameManager.Instance.Switch(GameState.ShopPhase);
+                if (IsTurnAI() == false)
+                {
+                    GameManager.Instance.Switch(GameState.ShopPhase);
+                }
                 SetStartTurn(StartTurnState.None);
 
                 if (IsTurnAI())
@@ -972,6 +975,9 @@ public class PhaseShopController : MonoBehaviour
             Debug.LogWarning(this.name + ".Awake: CurrentGame not found in GameManager.");
             return false;
         }
+
+        if (game.Mode == GameMode.TestBattle)
+            return true;
 
         var player = GameManager.Instance.CurrentPlayer;
         if (player == null)

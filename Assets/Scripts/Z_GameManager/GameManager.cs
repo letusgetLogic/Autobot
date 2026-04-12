@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool shouldPlayTutorial;
     [SerializeField] private bool isNotSavingGame;
     [SerializeField] public bool IsRepairSystemActive;
+    [SerializeField] public bool TestBattle;
     [SerializeField] private int defaultTutorialLives = 3;
     [SerializeField] private int devLives = 3;
     [SerializeField] private float timer = 90.0f;
@@ -168,9 +169,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (!PlayerPrefs.HasKey("TutorialCompleted"))
-            isTutorialCompleted = false;
-
         // auto play in dev mode.
         if (IsModeDevelop)
         {
@@ -178,8 +176,28 @@ public class GameManager : MonoBehaviour
             PlayerLives = devLives;
 
             if (shouldPlayTutorial == false)
+            {
+                isTutorialCompleted = true;
+
+                if (TestBattle)
+                {
+                    LoadGame(GameMode.TestBattle);
+                    return;
+                }
+
                 LoadGame(GameMode.Local1v1);
+            }
+            else
+            {
+                isTutorialCompleted = false;    
+            }
+
+
+            return;
         }
+
+        if (!PlayerPrefs.HasKey("TutorialCompleted"))
+            isTutorialCompleted = false;
     }
 
     /// <summary>
@@ -192,6 +210,11 @@ public class GameManager : MonoBehaviour
         switch (Mode)
         {
             case GameMode.None:
+                break;
+
+            case GameMode.TestBattle:
+                InitTest();
+                Switch(GameState.StartScene);
                 break;
 
             case GameMode.Tutorial:
@@ -229,7 +252,7 @@ public class GameManager : MonoBehaviour
 
         var prevState = CurrentGame.State;
         CurrentGame.State = _state;
-
+        Debug.Log(_state.ToString());
         switch (_state)
         {
             case GameState.None:
@@ -238,7 +261,7 @@ public class GameManager : MonoBehaviour
             case GameState.StartScene:
                 input.BlocksInput = true;
                 StartScene();
-                return; // not initializing game state
+                break;
 
             case GameState.PlayCutSceneShop:
                 CutScene.Instance.SetHintClick(CurrentPlayer.Data.Name, false);
@@ -253,7 +276,8 @@ public class GameManager : MonoBehaviour
             case GameState.WaitingCutScene:
                 input.BlocksInput = false;
                 // Waiting for player input
-                return; // not initializing game state
+                CurrentGame.State = prevState;
+                break;
 
             case GameState.WaitingEndOfBattle:
                 input.BlocksInput = false;
@@ -291,7 +315,8 @@ public class GameManager : MonoBehaviour
                     if (CurrentPlayer == null)
                         CurrentPlayer = new Player();
 
-                    CurrentPlayer.StartShop();
+                    if (CurrentPlayer.Data.IsAI == false)
+                        CurrentPlayer.StartShop();
                 }
                 else
                     CurrentPlayer.LoadDataByReplay();
@@ -356,6 +381,28 @@ public class GameManager : MonoBehaviour
                );
     }
 
+    private void InitTest()
+    {
+        players = new List<Player>();
+
+        // Initialize player instances.
+        players.Add(new Player());
+        players.Add(new Player());
+
+        // Create a new game.
+        players[0].Data = new PlayerData(AI.Name + " 1", PlayerLives, 0, true);
+        players[1].Data = new PlayerData(AI.Name + " 2", PlayerLives, 0, true);
+
+        currentGame = new Game(
+               Mode,
+               2,
+               Timer,
+               PlayerLives,
+               0,
+               GameState.None
+               );
+    }
+
     /// <summary>
     /// Initialize game with mode PvP.
     /// </summary>
@@ -409,9 +456,11 @@ public class GameManager : MonoBehaviour
             Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
             PhaseShopIndex++;
 
-            if (IsTutorialRunning && CurrentPlayer.Data.IsAI)
+            if ((IsTutorialRunning || TestBattle) && CurrentPlayer.Data.IsAI)
             {
-                CurrentPlayer.ExecuteByTutorialAI();
+                if (TestBattle && PhaseShopIndex == 1)
+                    LoadScene("PhaseShop");
+                StartCoroutine(CurrentPlayer.ExecuteByTutorialAI());
                 return;
             }
 
