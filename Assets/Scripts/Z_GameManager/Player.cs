@@ -64,6 +64,8 @@ public class Player
     /// </summary>
     public void EndShop()
     {
+        EventManager.Instance.OnEndTurn?.Invoke();
+
         var phaseShop = PhaseShopController.Instance;
         if (phaseShop == null)
         {

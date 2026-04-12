@@ -54,23 +54,17 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
                 break;
 
             case "PhaseBattle":
-                if (game.State == GameState.WaitingEndOfBattle)
-                {
-                    InputManager.Instance.BlocksInput = true;
-                    GameManager.Instance.Switch(GameState.PlayCutScene);
-                }
-
-                if (game.State == GameState.WaitingEndOfGame)
-                {
-                    GameManager.Instance.LoadScene("Menu");
-                }
-
                 var replay = GameManager.Instance.Replay;
-                if (replay != null && replay.State == GameState.WaitingEndOfBattle)
+                if (replay != null && 
+                    replay.State == GameState.WaitingEndOfBattle || game.State == GameState.WaitingEndOfGame)
                 {
                     InputManager.Instance.BlocksInput = true;
-                    replay.Switch(GameState.PlayCutScene);
+                    replay.Switch(GameState.LoadScene);
+                    return;
                 }
+
+                if (game.State == GameState.WaitingEndOfBattle || game.State == GameState.WaitingEndOfGame)
+                    GameManager.Instance.Switch(GameState.LoadScene);
 
                 //PhaseBattleView.Instance.OnRunningButtonClick();
                 break;

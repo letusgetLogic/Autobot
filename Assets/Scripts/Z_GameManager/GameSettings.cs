@@ -139,7 +139,7 @@ public class GameSettings : MonoBehaviour
                     GameManager.Instance.Name2 = inputName2.text;
 
                 startButton.interactable = false;
-                GameManager.Instance.LoadGame();
+                GameManager.Instance.LoadGame(GameMode.Local1v1);
 
                 break;
         }

@@ -42,7 +42,7 @@ public class MainMenu : MonoBehaviour
     {
         if (GameManager.Instance.IsTutorialRunning)
         {
-            GameManager.Instance.StartTutorial();
+            GameManager.Instance.LoadGame(GameMode.Tutorial);
         }
     }
 }

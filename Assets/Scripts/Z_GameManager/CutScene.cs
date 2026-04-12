@@ -73,7 +73,8 @@ public class CutScene : MonoBehaviour
 
     private void OnEnable()
     {
-        if (OpenPanel != null)
+        if (OpenPanel != null && GameManager.Instance.IsTutorialRunning && 
+            GameManager.Instance.CurrentPlayer != null)
             OpenPanel.OnRunningDone += GameManager.Instance.SetTutorialStart;
     }
 
@@ -98,12 +99,12 @@ public class CutScene : MonoBehaviour
     /// Runs the close scene animation for a time then load the new scene.
     /// </summary>
     /// <param name="_scene"></param>
-    public void SwitchScene(string _scene)
+    public void SwitchScene()
     {
         if (GameManager.Instance.Replay == null)
-            StartCoroutine(LoadScene(_scene));
+            StartCoroutine(LoadScene());
         else
-            StartCoroutine(LoadSceneByReplay(_scene));
+            StartCoroutine(LoadSceneByReplay());
     }
 
     /// <summary>
@@ -111,11 +112,10 @@ public class CutScene : MonoBehaviour
     /// </summary>
     /// <param name="_scene"></param>
     /// <returns></returns>
-    private IEnumerator LoadScene(string _scene)
+    private IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(delayClose);
 
-        GameManager.Instance.SceneToLoad = _scene;
         ClosePanel.ScaleUp(true);
 
         if (GameManager.Instance.IsTutorialRunning == false)
@@ -143,11 +143,10 @@ public class CutScene : MonoBehaviour
     /// </summary>
     /// <param name="_scene"></param>
     /// <returns></returns>
-    private IEnumerator LoadSceneByReplay(string _scene)
+    private IEnumerator LoadSceneByReplay()
     {
         yield return new WaitForSeconds(delayClose);
 
-        GameManager.Instance.SceneToLoad = _scene;
         ClosePanel.ScaleUp(true);
 
         EventManager.Instance.OnCloseScene?.Invoke();

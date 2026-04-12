@@ -1,4 +1,6 @@
-﻿public class ReplayManager
+﻿using Unity.Multiplayer.Playmode;
+
+public class ReplayManager
 {
     public GameState State => state;
     private GameState state;
@@ -21,24 +23,49 @@
     /// <param name="_state"></param>
     public void Switch(GameState _state)
     {
-        state = _state;
+        var prevState = state;
+            state = _state;
 
         switch (_state)
         {
             case GameState.None:
                 break;
 
-            case GameState.LoadScene:
-                GameManager.Instance.LoadScene(GameManager.Instance.SceneToLoad);
+            case GameState.PlayCutSceneBattle:
+                CutScene.Instance.SwitchScene();
                 break;
 
-            case GameState.PlayCutScene:
-                CutScene.Instance.SwitchScene(GameManager.Instance.SceneToLoad);
+            case GameState.PlayCutSceneShop:
+                CutScene.Instance.SwitchScene();
+                break;
+
+            case GameState.LoadScene:
+                switch (prevState)
+                {
+                    case GameState.PlayCutSceneBattle:
+                        GameManager.Instance.LoadScene("PhaseBattle");
+                        break;
+                    case GameState.PlayCutSceneShop:
+                        GameManager.Instance.LoadScene("PhaseShop");
+                        break;
+                    case GameState.WaitingEndOfBattle:
+                        Switch(GameState.PlayCutSceneShop);
+                        break;
+                    case GameState.WaitingEndOfGame:
+                        GameManager.Instance.LoadScene("Menu");
+                        break;
+                }
                 break;
 
             case GameState.WaitingEndOfBattle:
                 input.BlocksInput = false;
-                EventManager.Instance.OnWaitingForClick?.Invoke();
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
+                // Waiting for player input
+                break;
+
+            case GameState.WaitingEndOfGame:
+                input.BlocksInput = false;
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
                 // Waiting for player input
                 break;
 
@@ -53,15 +80,15 @@
                 break;
 
             case GameState.EndOfBattle:
-                if (GameManager.Instance.CurrentGame.State == GameState.EndOfGame)
-                {
-                    GameManager.Instance.SceneToLoad = "Menu";
-                }
-                else GameManager.Instance.SceneToLoad = "PhaseShop";
-
                 Switch(GameState.WaitingEndOfBattle);
                 break;
+
+            case GameState.EndOfGame:
+                Switch(GameState.WaitingEndOfGame);
+                break;
         }
+
+        
     }
 
 

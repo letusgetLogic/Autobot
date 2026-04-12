@@ -50,6 +50,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             if (CompareTag("Slot Random"))
                 return InputKey.HoverSlotTeamRandom;
 
+            if (CompareTag("Slot Battle"))
+                return InputKey.HoverSlotBattle;
+
             return InputKey.None;
         }
     }

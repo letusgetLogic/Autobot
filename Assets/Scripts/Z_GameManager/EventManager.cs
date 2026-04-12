@@ -89,6 +89,6 @@ public class EventManager
 
 
     public UnityAction OnMatchOver { get; set; }
-    public UnityAction OnWaitingForClick { get; set; }
+    public UnityAction OnBattleDelayHintClick { get; set; }
     public UnityAction OnGameOver { get; set; }
 }

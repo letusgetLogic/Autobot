@@ -13,8 +13,9 @@
     HoverSlotCharge = 4,
     HoverSlotShopBot,
     HoverSlotShopItem,
+    HoverSlotBattle = 66,
 
-    ClickSlotTeam,
+    ClickSlotTeam = 7,
     ClickSlotCharge,
     ClickSlotShopBot,
     ClickSlotShopItem,

@@ -105,14 +105,14 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     {
         EventManager.Instance.OnTriggerAbility += EnqueueAbility;
         EventManager.Instance.OnShutdown += EnqueueShutdown;
-        EventManager.Instance.OnWaitingForClick += DelayHintClick;
+        EventManager.Instance.OnBattleDelayHintClick += DelayHintClick;
     }
 
     private void OnDisable()
     {
         EventManager.Instance.OnTriggerAbility -= EnqueueAbility;
         EventManager.Instance.OnShutdown -= EnqueueShutdown;
-        EventManager.Instance.OnWaitingForClick -= DelayHintClick;
+        EventManager.Instance.OnBattleDelayHintClick -= DelayHintClick;
     }
 
     /// <summary>
@@ -129,6 +129,16 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
 
     public void Update()
     {
+        if (Slots1() != null && Slots1()[0].UnitController())
+        {
+            var unit = Slots1()[0].UnitController();
+            if (unit.Model != null)
+            {
+                Debug.Log(unit.name + " is left " + unit.Model.Data.IsTeamLeft);
+            }
+        }
+
+
         if (state == null)
             return;
 

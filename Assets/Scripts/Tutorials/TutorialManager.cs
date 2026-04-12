@@ -14,7 +14,7 @@ public class TutorialManager : MonoBehaviour
 
 
 
-    private enum StepState
+    public enum StepState
     {
         None = -1,
         Idle = 0,
@@ -31,15 +31,16 @@ public class TutorialManager : MonoBehaviour
         LockBattery,
         EndTurn,
 
+        BattleIdle,
+
         FusionRobot,
         LevelUp,
         Roll,
         Rool2,
-        BonusEnergy,
 
 
     }
-    private StepState stepState = StepState.Idle;
+    public StepState CurrentState { get; set; } = StepState.Idle;
 
     private float countTime = 0f;
 
@@ -54,7 +55,7 @@ public class TutorialManager : MonoBehaviour
     [ContextMenu("OnReset")]
     private void Reset()
     {
-        GameManager.Instance.StartTutorial();
+        GameManager.Instance.LoadGame(GameMode.Tutorial); 
     }
 
     private void Awake()
@@ -78,12 +79,13 @@ public class TutorialManager : MonoBehaviour
         EventManager.Instance.OnAttachedUnit += CheckInput;
         EventManager.Instance.OnCraft += (unit) => CheckInput(InputKey.DropSlotTeam);
         EventManager.Instance.OnLock += () => CheckInput(InputKey.ClickButtonLock);
+        EventManager.Instance.OnEndTurn += () => CheckInput(InputKey.ClickButtonEndTurn);
     }
 
     private void Update()
     {
-        if (settings == null || (int)stepState >= settings.Length
-            || steps == null || (int)stepState >= steps.Length)
+        if (settings == null || (int)CurrentState >= settings.Length
+            || steps == null || (int)CurrentState >= steps.Length)
             return;
 
         if (countTime <= 0)
@@ -94,26 +96,26 @@ public class TutorialManager : MonoBehaviour
                     break;
 
                 case RunState.Start:
-                    countTime = settings[(int)stepState].Delay;
+                    countTime = settings[(int)CurrentState].Delay;
                     runState = RunState.Delay;
                     break;
 
                 case RunState.Delay:
-                    Debug.Log($"{stepState}.OnEnter");
-                    steps[(int)stepState].OnEnter();
-                    currentAllowedInputs = settings[(int)stepState].AllowedInputs;
-                    countTime = settings[(int)stepState].Duration;
+                    Debug.Log($"{CurrentState}.OnEnter");
+                    steps[(int)CurrentState].OnEnter();
+                    currentAllowedInputs = settings[(int)CurrentState].AllowedInputs;
+                    countTime = settings[(int)CurrentState].Duration;
                     runState = RunState.Duration;
                     break;
 
                 case RunState.Duration:
-                    if (settings[(int)stepState].AutoCompleted)
+                    if (settings[(int)CurrentState].AutoCompleted)
                     {
                         SetNextStep();
                         return;
                     }
-                    Debug.Log($"{stepState}.OnAnimateAFK");
-                    steps[(int)stepState].OnAnimateAFK();
+                    Debug.Log($"{CurrentState}.OnAnimateAFK");
+                    steps[(int)CurrentState].OnAnimateAFK();
                     runState = RunState.AFK;
                     break;
 
@@ -149,16 +151,18 @@ public class TutorialManager : MonoBehaviour
         countTime = 0f;
         float delay = 0f;
 
-        if (stepState >= 0)
+        if (CurrentState >= 0 && steps[(int)CurrentState] != null)
         {
-            Debug.Log($"{stepState}.OnExit");
-            delay += steps[(int)stepState].OnExit();
+            Debug.Log($"{CurrentState}.OnExit");
+            delay += steps[(int)CurrentState].OnExit();
         }
 
         if (delay == 0f)
         {
-            steps[(int)stepState].gameObject.SetActive(false);
-            stepState++;
+            if (steps[(int)CurrentState] != null && steps[(int)CurrentState].gameObject)
+                steps[(int)CurrentState].gameObject.SetActive(false);
+
+            CurrentState++;
             runState = RunState.Start;
             return;
         }
@@ -170,10 +174,10 @@ public class TutorialManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_delay);
 
-        yield return new WaitUntil(() => steps[(int)stepState].ActiveActions.Count == 0);
+        yield return new WaitUntil(() => steps[(int)CurrentState].ActiveActions.Count == 0);
 
-        steps[(int)stepState].gameObject.SetActive(false);
-        stepState++;
+        steps[(int)CurrentState].gameObject.SetActive(false);
+        CurrentState++;
         runState = RunState.Start;
 
         coroutine = null;
@@ -181,11 +185,11 @@ public class TutorialManager : MonoBehaviour
 
     public void CheckInput(UnitController _unit)
     {
-        if (stepState == StepState.ClickRobot && _unit && _unit.Model.IsRobotInShop())
+        if (CurrentState == StepState.ClickRobot && _unit && _unit.Model.IsRobotInShop())
         {
             SetNextStep();
         }
-        if (stepState == StepState.ShowFactoryReseted && _unit && _unit.Model.Data.UnitType == UnitType.Item)
+        if (CurrentState == StepState.ShowFactoryReseted && _unit && _unit.Model.Data.UnitType == UnitType.Item)
         {
             SetNextStep();
         }
@@ -195,15 +199,23 @@ public class TutorialManager : MonoBehaviour
     {
         if (_inputKey == InputKey.DropSlotTeam)
         {
-            if (stepState == StepState.PickRobot ||
-                stepState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false ||
-                stepState == StepState.PickBattery)
+            if (CurrentState == StepState.PickRobot ||
+                CurrentState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false ||
+                CurrentState == StepState.PickBattery)
                 SetNextStep();
         }
         if (_inputKey == InputKey.ClickButtonLock)
         {
-            if (stepState == StepState.LockBattery)
+            if (CurrentState == StepState.LockBattery)
                 SetNextStep();
+        }
+        if (_inputKey == InputKey.ClickButtonEndTurn)
+        {
+            steps[(int)StepState.EndTurn].OnExit();
+            CurrentState = StepState.BattleIdle;
+
+            if (GameManager.Instance.CurrentGame != null)
+                GameManager.Instance.CurrentGame.TutorialStepState = StepState.BattleIdle;
         }
     }
 

@@ -2,7 +2,10 @@
 {
     None,
 
-    PlayCutScene,
+    StartScene,
+
+    PlayCutSceneShop,
+    PlayCutSceneBattle,
     WaitingEndOfBattle,
     WaitingCutScene,
     LoadScene,

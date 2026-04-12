@@ -11,6 +11,7 @@ public class Game
     public GameState State { get; set; }
     public int CurrentPlayerIndex { get; set; }
     public List<SavedRoundData> SavedRounds { get; set; }
+    public TutorialManager.StepState TutorialStepState { get; set; }
 
     /// <summary>
     /// Constructor of Game. Hold the data of game for saving and loading.

@@ -175,34 +175,35 @@ public class GameManager : MonoBehaviour
         if (IsModeDevelop)
         {
             PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
-            Mode = GameMode.Local1v1;
             PlayerLives = devLives;
 
             if (shouldPlayTutorial == false)
-                LoadGame();
+                LoadGame(GameMode.Local1v1);
         }
-    }
-
-    public void StartTutorial()
-    {
-        isTutorialCompleted = false;
-        PlayerLives = defaultTutorialLives;
-        LoadGame();
     }
 
     /// <summary>
     /// Loads game.
     /// </summary>
-    public void LoadGame()
+    public void LoadGame(GameMode _mode)
     {
+        Mode = _mode;
+
         switch (Mode)
         {
             case GameMode.None:
                 break;
 
+            case GameMode.Tutorial:
+                isTutorialCompleted = false;
+                PlayerLives = defaultTutorialLives;
+                InitTutorial();
+                Switch(GameState.StartScene);
+                break;
+
             case GameMode.Local1v1:
                 InitPvP();
-                Switch(GameState.PlayCutScene);
+                Switch(GameState.StartScene);
                 break;
 
             case GameMode.AI:
@@ -213,45 +214,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    /// <summary>
-    /// Initialize game with mode PvP.
-    /// </summary>
-    private void InitPvP()
-    {
-        players = new List<Player>();
-
-        // Initialize player instances.
-        players.Add(new Player());
-        players.Add(new Player());
-
-        //// Load saved game.
-        //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
-        // if (savedGame != null)
-        // {
-        //     players[0].Data = savedGame.PlayerData1;
-        //     players[1].Data = savedGame.PlayerData2;
-        //     CurrentGame = savedGame;
-        //     return;
-        // }
-
-        // Create a new game.
-        players[0].Data = new PlayerData(Name1, PlayerLives, 0);
-        players[1].Data = isTutorialCompleted
-            ? new PlayerData(Name2, PlayerLives, 0)
-            : new PlayerData(AI.Name, PlayerLives, 0, true);
-
-        currentGame = new Game(
-                Mode,
-                2,
-                Timer,
-                PlayerLives,
-                0,
-                GameState.PlayCutScene
-                );
-
-        // Set default speed multiplier for phase battle
-        //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
-    }
 
     /// <summary>
     /// Switches the game state and performs actions based on the new state.
@@ -259,42 +221,68 @@ public class GameManager : MonoBehaviour
     /// <param name="_state"></param>
     public void Switch(GameState _state)
     {
-        if (CurrentGame != null)
-            CurrentGame.State = _state;
-        else
+        if (CurrentGame == null)
         {
             Debug.LogError("GameManager doesn't contain any instance of the current game.");
+            return;
         }
+
+        var prevState = CurrentGame.State;
+        CurrentGame.State = _state;
 
         switch (_state)
         {
             case GameState.None:
                 break;
 
-            case GameState.PlayCutScene:
+            case GameState.StartScene:
                 input.BlocksInput = true;
-                RunModeSingle();
+                StartScene();
+                return; // not initializing game state
+
+            case GameState.PlayCutSceneShop:
+                CutScene.Instance.SetHintClick(CurrentPlayer.Data.Name, false);
+                CutScene.Instance.SwitchScene();
                 break;
 
-            case GameState.WaitingEndOfBattle:
-                input.BlocksInput = false;
-                EventManager.Instance.OnWaitingForClick?.Invoke();
-                // Waiting for player input
-                break;
-
-            case GameState.WaitingEndOfGame:
-                input.BlocksInput = false;
-                EventManager.Instance.OnWaitingForClick?.Invoke();
-                // Waiting for player input
+            case GameState.PlayCutSceneBattle:
+                CutScene.Instance.SetHintClick("", true);
+                CutScene.Instance.SwitchScene();
                 break;
 
             case GameState.WaitingCutScene:
                 input.BlocksInput = false;
                 // Waiting for player input
+                return; // not initializing game state
+
+            case GameState.WaitingEndOfBattle:
+                input.BlocksInput = false;
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
+                // Waiting for player input
+                break;
+
+            case GameState.WaitingEndOfGame:
+                input.BlocksInput = false;
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
+                // Waiting for player input
                 break;
 
             case GameState.LoadScene:
-                LoadScene(SceneToLoad);
+                switch (prevState)
+                {
+                    case GameState.PlayCutSceneShop:
+                        LoadScene("PhaseShop");
+                        break;
+                    case GameState.PlayCutSceneBattle:
+                        LoadScene("PhaseBattle");
+                        break;
+                    case GameState.WaitingEndOfBattle:
+                        Switch(GameState.StartScene);
+                        break;
+                    case GameState.WaitingEndOfGame:
+                        LoadScene("Menu");
+                        break;
+                }
                 break;
 
             case GameState.StartOfTurn:
@@ -318,7 +306,7 @@ public class GameManager : MonoBehaviour
             case GameState.EndOfTurn:
                 CurrentGame.CurrentPlayerIndex++;
                 SaveSystem.SaveGame(CurrentGame);
-                Switch(GameState.PlayCutScene);
+                Switch(GameState.StartScene);
                 break;
 
             case GameState.StartOfBattle:
@@ -346,10 +334,70 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void InitTutorial()
+    {
+        players = new List<Player>();
+
+        // Initialize player instances.
+        players.Add(new Player());
+        players.Add(new Player());
+
+        // Create a new game.
+        players[0].Data = new PlayerData(Name1, PlayerLives, 0);
+        players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
+
+        currentGame = new Game(
+               Mode,
+               2,
+               Timer,
+               PlayerLives,
+               0,
+               GameState.None
+               );
+    }
+
     /// <summary>
-    /// Starts game mode singleplayer.
+    /// Initialize game with mode PvP.
     /// </summary>
-    private void RunModeSingle()
+    private void InitPvP()
+    {
+        players = new List<Player>();
+
+        // Initialize player instances.
+        players.Add(new Player());
+        players.Add(new Player());
+
+        //// Load saved game.
+        //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
+        // if (savedGame != null)
+        // {
+        //     players[0].Data = savedGame.PlayerData1;
+        //     players[1].Data = savedGame.PlayerData2;
+        //     CurrentGame = savedGame;
+        //     return;
+        // }
+
+        // Create a new game.
+        players[0].Data = new PlayerData(Name1, PlayerLives, 0);
+        players[1].Data = new PlayerData(Name2, PlayerLives, 0);
+
+        currentGame = new Game(
+                Mode,
+                2,
+                Timer,
+                PlayerLives,
+                0,
+                GameState.None
+                );
+
+        // Set default speed multiplier for phase battle
+        //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
+    }
+
+    /// <summary>
+    /// Starts scene.
+    /// </summary>
+    private void StartScene()
     {
         if (CurrentGame == null)
             return;
@@ -367,15 +415,13 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            CutScene.Instance.SetHintClick(CurrentPlayer.Data.Name, false);
-            CutScene.Instance.SwitchScene("PhaseShop");
+            Switch(GameState.PlayCutSceneShop);
         }
         else
         {
-            CutScene.Instance.SetHintClick("", true);
-            CutScene.Instance.SwitchScene("PhaseBattle");
-
+            CurrentPlayer = null;
             Debug.Log("--------------- Phase Battle ----------------");
+            Switch(GameState.PlayCutSceneBattle);
         }
     }
 
@@ -404,8 +450,7 @@ public class GameManager : MonoBehaviour
     public void PlayReplay()
     {
         Replay = new ReplayManager();
-
-        CutScene.Instance.SwitchScene("PhaseBattle");
+        Replay.Switch(GameState.PlayCutSceneBattle);
     }
 
     /// <summary>
