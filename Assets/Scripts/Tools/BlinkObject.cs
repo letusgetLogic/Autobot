@@ -5,13 +5,22 @@ public class BlinkObject : MonoBehaviour
     public GameObject targetObject;
     public float blinkInterval = 0.5f;
 
-    public void Play()
+    public void OnEnable()
     {
-        InvokeRepeating("ToggleBlink", 0f, blinkInterval);
+        InvokeRepeating(nameof(ToggleBlink), 0f, blinkInterval);
+    }
+
+    private void OnDisable()
+    {
+        targetObject.SetActive(false);
+        StopBlinking();
     }
 
     void ToggleBlink()
     {
+        if (gameObject.activeSelf == false)
+            return;
+
         if (targetObject != null)
         {
             targetObject.SetActive(!targetObject.activeSelf);
@@ -21,6 +30,6 @@ public class BlinkObject : MonoBehaviour
     // Optional: Stop blinking, ex. for interaction.
     void StopBlinking()
     {
-        CancelInvoke("ToggleBlink");
+        CancelInvoke(nameof(ToggleBlink));
     }
 }

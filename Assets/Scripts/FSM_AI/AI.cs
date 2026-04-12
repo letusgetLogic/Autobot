@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AI : MonoBehaviour, I_FSM_AI
 {
-    public static readonly string Name = "Your Math Teacher";
+    public static readonly string Name = "Evil AI";
 
     private StateBaseAI state;
 

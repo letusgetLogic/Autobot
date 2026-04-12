@@ -49,9 +49,9 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     /// <param name="_player1"></param>
     /// <param name="_player2"></param>
-    public void Initialize(PlayerData _player1, PlayerData _player2)
+    public void Initialize(bool defaultName, PlayerData _player1, PlayerData _player2)
     {
-        name1.text = _player1.Name;
+        name1.text = defaultName ? "You" : _player1.Name;
         if (turn1) turn1.text = _player1.Turn.ToString();
         if (wins1) wins1.text = _player1.Wins.ToString();
         if (lives1) lives1.text = _player1.Lives.ToString();

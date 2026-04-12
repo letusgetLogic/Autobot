@@ -33,6 +33,7 @@ public class TutorialManager : MonoBehaviour
 
         BattleIdle,
 
+        RepairRobot,
         FusionRobot,
         LevelUp,
         Roll,
@@ -79,7 +80,8 @@ public class TutorialManager : MonoBehaviour
         EventManager.Instance.OnAttachedUnit += CheckInput;
         EventManager.Instance.OnCraft += (unit) => CheckInput(InputKey.DropSlotTeam);
         EventManager.Instance.OnLock += () => CheckInput(InputKey.ClickButtonLock);
-        EventManager.Instance.OnEndTurn += () => CheckInput(InputKey.ClickButtonEndTurn);
+        EventManager.Instance.OnEndTurnClick += () => currentAllowedInputs = new(); 
+        EventManager.Instance.OnEndShop += () => CheckInput(InputKey.ClickButtonEndTurn);
     }
 
     private void Update()
@@ -102,7 +104,9 @@ public class TutorialManager : MonoBehaviour
 
                 case RunState.Delay:
                     Debug.Log($"{CurrentState}.OnEnter");
+
                     steps[(int)CurrentState].OnEnter();
+
                     currentAllowedInputs = settings[(int)CurrentState].AllowedInputs;
                     countTime = settings[(int)CurrentState].Duration;
                     runState = RunState.Duration;
@@ -115,7 +119,9 @@ public class TutorialManager : MonoBehaviour
                         return;
                     }
                     Debug.Log($"{CurrentState}.OnAnimateAFK");
+
                     steps[(int)CurrentState].OnAnimateAFK();
+
                     runState = RunState.AFK;
                     break;
 

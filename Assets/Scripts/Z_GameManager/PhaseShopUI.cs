@@ -195,7 +195,7 @@ public class PhaseShopUI : MonoBehaviour
             return;
 
         input.BlocksInput = true;
-
+        EventManager.Instance.OnEndTurnClick?.Invoke();
         EventManager.Instance.OnButtonSound?.Invoke();
 
         bool hasEnoughCur = Player.Data.Nuts >= MinLeftNut || Player.Data.Tools > 0 && PhaseShopController.Instance.IsAnyRobotDamaged();

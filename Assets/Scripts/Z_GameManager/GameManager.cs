@@ -169,10 +169,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
+
+        if (!PlayerPrefs.HasKey("TutorialCompleted"))
+            isTutorialCompleted = false;
+
         // auto play in dev mode.
         if (IsModeDevelop)
         {
-            PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
             PlayerLives = devLives;
 
             if (shouldPlayTutorial == false)
@@ -189,15 +193,10 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                isTutorialCompleted = false;    
+                isTutorialCompleted = false;
             }
-
-
-            return;
         }
-
-        if (!PlayerPrefs.HasKey("TutorialCompleted"))
-            isTutorialCompleted = false;
+        isTutorialCompleted = false;
     }
 
     /// <summary>
@@ -368,7 +367,7 @@ public class GameManager : MonoBehaviour
         players.Add(new Player());
 
         // Create a new game.
-        players[0].Data = new PlayerData(Name1, PlayerLives, 0);
+        players[0].Data = new PlayerData("Tutorial Mode", PlayerLives, 0);
         players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
 
         currentGame = new Game(
@@ -515,7 +514,13 @@ public class GameManager : MonoBehaviour
     public void SetTutorialStart()
     {
         if (IsTutorialRunning)
+        {
+            if (TutorialManager.Instance.CurrentState == TutorialManager.StepState.BattleIdle)
+                TutorialManager.Instance.CurrentState = TutorialManager.StepState.BattleIdle;
+
             TutorialManager.Instance.SetNextStep();
+        }
+
     }
 
 }

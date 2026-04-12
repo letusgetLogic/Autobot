@@ -44,7 +44,8 @@ public class EventManager
     public UnityAction OnDropUnit { get; set; }
 
     public UnityAction OnRoll {  get; set; }
-    public UnityAction OnEndTurn {  get; set; }
+    public UnityAction OnEndTurnClick{  get; set; }
+    public UnityAction OnEndShop {  get; set; }
 
     public UnityAction<UnitController> OnCraft {  get; set; }
     public UnityAction OnRecycle { get; set; }

@@ -149,7 +149,10 @@ public class UnitModel
             if (IsRobot())
             {
                 if (Repair != null)
+                {
                     View.SetRepairPanelActive(Data.FullHP >= 2, Data.FullHP >= 3);
+                    View.ShowDurability(Data.Durability);
+                }
                 else
                 {
                     View.ShowFullAttributes(false);
