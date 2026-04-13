@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         {
             if (currentGame == null)
             {
-                Debug.LogWarning("currentGame is " + currentGame);
+                Debug.LogWarning("currentGame is null");
                 return null;
             }
             return currentGame;
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         {
             if (players == null)
             {
-                Debug.LogWarning("The list of players is " + players);
+                Debug.LogWarning("The list of players is null");
                 return null;
             }
             return players;
@@ -114,17 +114,17 @@ public class GameManager : MonoBehaviour
 
 
     public string SceneName => SceneManager.GetActiveScene().name;
-    public string SceneToLoad { get; set; }
 
     public bool IsCatalogActive { get; set; } = false;
     public ReplayManager Replay { get; set; }
 
+    public TutorialManager.StepState TutorialStepState { get; set; }
+    public bool IsTutorialRunning => !isTutorialCompleted;
     private bool isTutorialCompleted
     {
         get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
         set => PlayerPrefs.SetInt("TutorialCompleted", value ? 1 : 0);
     }
-    public bool IsTutorialRunning => !isTutorialCompleted;
 
     public int RandomSeed
     {
@@ -196,7 +196,6 @@ public class GameManager : MonoBehaviour
                 isTutorialCompleted = false;
             }
         }
-        isTutorialCompleted = false;
     }
 
     /// <summary>
@@ -367,7 +366,7 @@ public class GameManager : MonoBehaviour
         players.Add(new Player());
 
         // Create a new game.
-        players[0].Data = new PlayerData("Tutorial Mode", PlayerLives, 0);
+        players[0].Data = new PlayerData("You", PlayerLives, 0);
         players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
 
         currentGame = new Game(
@@ -459,6 +458,7 @@ public class GameManager : MonoBehaviour
             {
                 if (TestBattle && PhaseShopIndex == 1)
                     LoadScene("PhaseShop");
+
                 StartCoroutine(CurrentPlayer.ExecuteByTutorialAI());
                 return;
             }
@@ -511,13 +511,10 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(_scene);
     }
 
-    public void SetTutorialStart()
+    public void SetTutorialStartAtSceneStart()
     {
         if (IsTutorialRunning)
         {
-            if (TutorialManager.Instance.CurrentState == TutorialManager.StepState.BattleIdle)
-                TutorialManager.Instance.CurrentState = TutorialManager.StepState.BattleIdle;
-
             TutorialManager.Instance.SetNextStep();
         }
 

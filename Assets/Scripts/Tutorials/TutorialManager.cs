@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 public class TutorialManager : MonoBehaviour
@@ -12,12 +13,16 @@ public class TutorialManager : MonoBehaviour
     public SoUnit[] BotsTurn1;
     public SoUnit[] ItemsTurn1;
 
-
+    public UnityAction OnEnter { get; private set; }
+    public UnityAction OnAnimateAFK { get; private set; }
+    public UnityAction OnExit { get; private set; }
 
     public enum StepState
     {
         None = -1,
         Idle = 0,
+
+        // --- Turn 1 ---
         Welcome = 1,
         BuildTeam,
         ShowTeam,
@@ -31,17 +36,53 @@ public class TutorialManager : MonoBehaviour
         LockBattery,
         EndTurn,
 
+        ShopToBattle,
+
         BattleIdle,
+        RobotHasAbility,
+        RobotEnergyConsumption,
+        RobotUseAbility,
 
+        BattleToShop,
+
+        // --- Turn 2 ---
+        ClickRobotToRepair,
         RepairRobot,
-        FusionRobot,
-        LevelUp,
-        Roll,
-        Rool2,
+        ClickRobotToSell,
+        SellRobot,
+        ClickRobotToFusion,
+        PickToFusion,
+        ShowRoll,
+        
+        ShopIdle,
+        ShopToBattle2,
+        BattleIdle2,
+        BattleToShop2,
 
+        // --- Turn 3 ---
+        UnlockTier,
+        RepairToLevelUp,
+        ClickRobotToLevelUp,
+        PickToLevelUp,
+        LevelUpEffect,
+        ShowChargingStation,
 
+        Reserve1,
+        Reserve2,
+        Reserve3,
+        Reserve4,
+        Reserve5,
+        
+        Done,
     }
-    public StepState CurrentState { get; set; } = StepState.Idle;
+    private StepState currentState
+    {
+        get => GameManager.Instance.TutorialStepState;
+        set
+        {
+            GameManager.Instance.TutorialStepState = value;
+        }
+    }
 
     private float countTime = 0f;
 
@@ -86,8 +127,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Update()
     {
-        if (settings == null || (int)CurrentState >= settings.Length
-            || steps == null || (int)CurrentState >= steps.Length)
+        if (settings == null || (int)currentState >= settings.Length
+            || steps == null || (int)currentState >= steps.Length)
             return;
 
         if (countTime <= 0)
@@ -98,29 +139,29 @@ public class TutorialManager : MonoBehaviour
                     break;
 
                 case RunState.Start:
-                    countTime = settings[(int)CurrentState].Delay;
+                    countTime = settings[(int)currentState].Delay;
                     runState = RunState.Delay;
                     break;
 
                 case RunState.Delay:
-                    Debug.Log($"{CurrentState}.OnEnter");
+                    Debug.Log($"{currentState}.OnEnter");
 
-                    steps[(int)CurrentState].OnEnter();
+                    steps[(int)currentState].OnEnter();
 
-                    currentAllowedInputs = settings[(int)CurrentState].AllowedInputs;
-                    countTime = settings[(int)CurrentState].Duration;
+                    currentAllowedInputs = settings[(int)currentState].AllowedInputs;
+                    countTime = settings[(int)currentState].Duration;
                     runState = RunState.Duration;
                     break;
 
                 case RunState.Duration:
-                    if (settings[(int)CurrentState].AutoCompleted)
+                    if (settings[(int)currentState].AutoCompleted)
                     {
                         SetNextStep();
                         return;
                     }
-                    Debug.Log($"{CurrentState}.OnAnimateAFK");
+                    Debug.Log($"{currentState}.OnAnimateAFK");
 
-                    steps[(int)CurrentState].OnAnimateAFK();
+                    steps[(int)currentState].OnAnimateAFK();
 
                     runState = RunState.AFK;
                     break;
@@ -157,18 +198,18 @@ public class TutorialManager : MonoBehaviour
         countTime = 0f;
         float delay = 0f;
 
-        if (CurrentState >= 0 && steps[(int)CurrentState] != null)
+        if (currentState >= 0 && steps[(int)currentState] != null)
         {
-            Debug.Log($"{CurrentState}.OnExit");
-            delay += steps[(int)CurrentState].OnExit();
+            Debug.Log($"{currentState}.OnExit");
+            delay += steps[(int)currentState].OnExit();
         }
 
         if (delay == 0f)
         {
-            if (steps[(int)CurrentState] != null && steps[(int)CurrentState].gameObject)
-                steps[(int)CurrentState].gameObject.SetActive(false);
+            if (steps[(int)currentState] != null && steps[(int)currentState].gameObject)
+                steps[(int)currentState].gameObject.SetActive(false);
 
-            CurrentState++;
+            currentState++;
             runState = RunState.Start;
             return;
         }
@@ -180,10 +221,10 @@ public class TutorialManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_delay);
 
-        yield return new WaitUntil(() => steps[(int)CurrentState].ActiveActions.Count == 0);
+        yield return new WaitUntil(() => steps[(int)currentState].ActiveActions.Count == 0);
 
-        steps[(int)CurrentState].gameObject.SetActive(false);
-        CurrentState++;
+        steps[(int)currentState].gameObject.SetActive(false);
+        currentState++;
         runState = RunState.Start;
 
         coroutine = null;
@@ -191,11 +232,11 @@ public class TutorialManager : MonoBehaviour
 
     public void CheckInput(UnitController _unit)
     {
-        if (CurrentState == StepState.ClickRobot && _unit && _unit.Model.IsRobotInShop())
+        if (currentState == StepState.ClickRobot && _unit && _unit.Model.IsRobotInShop())
         {
             SetNextStep();
         }
-        if (CurrentState == StepState.ShowFactoryReseted && _unit && _unit.Model.Data.UnitType == UnitType.Item)
+        if (currentState == StepState.ShowFactoryReseted && _unit && _unit.Model.Data.UnitType == UnitType.Item)
         {
             SetNextStep();
         }
@@ -205,23 +246,22 @@ public class TutorialManager : MonoBehaviour
     {
         if (_inputKey == InputKey.DropSlotTeam)
         {
-            if (CurrentState == StepState.PickRobot ||
-                CurrentState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false ||
-                CurrentState == StepState.PickBattery)
+            if (currentState == StepState.PickRobot ||
+                currentState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false ||
+                currentState == StepState.PickBattery)
                 SetNextStep();
         }
         if (_inputKey == InputKey.ClickButtonLock)
         {
-            if (CurrentState == StepState.LockBattery)
+            if (currentState == StepState.LockBattery)
                 SetNextStep();
         }
         if (_inputKey == InputKey.ClickButtonEndTurn)
         {
             steps[(int)StepState.EndTurn].OnExit();
-            CurrentState = StepState.BattleIdle;
+            currentState = StepState.BattleIdle;
 
-            if (GameManager.Instance.CurrentGame != null)
-                GameManager.Instance.CurrentGame.TutorialStepState = StepState.BattleIdle;
+            GameManager.Instance.TutorialStepState = StepState.ShopToBattle;
         }
     }
 

@@ -76,7 +76,10 @@ public class PhaseShopController : MonoBehaviour
             Debug.LogWarning(this.name + ".Awake: CurrentPlayer not found in GameManager.");
             return;
         }
+    }
 
+    private void Start()
+    {
         SetIndex(teamSlots);
         SetIndex(shopBotSlots);
 
@@ -146,8 +149,8 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.Init:
-
-                PhaseShopUI.Instance.UpdateUI(Player);
+                bool isTutorial = GameManager.Instance.Mode == GameMode.Tutorial;
+                PhaseShopUI.Instance.UpdateUI(isTutorial, Player);
                 PhaseShopUI.Instance.SetChargingStationAt(Player.Data.Turn);
                 SpawnSavedUnits();
 

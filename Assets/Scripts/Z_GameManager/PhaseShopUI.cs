@@ -110,10 +110,10 @@ public class PhaseShopUI : MonoBehaviour
     /// <summary>
     /// Updates template.
     /// </summary>
-    public void UpdateUI(Player _player)
+    public void UpdateUI(bool _isTutorial, Player _player)
     {
         Player = _player;
-        nameLabel.text = Player.Data.Name;
+        nameLabel.text = _isTutorial ?  "Tutorial Mode" : Player.Data.Name;
         nutLabel.text = Player.Data.Nuts.ToString();
         toolLabel.text = Player.Data.Tools.ToString();
         heartLabel.text = Player.Data.Lives.ToString();

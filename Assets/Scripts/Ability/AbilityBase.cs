@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class AbilityBase
+public abstract partial class AbilityBase
 {
     public UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
@@ -26,7 +27,6 @@ public abstract class AbilityBase
         Targets = _controller.Targets;
         RandomSeed = _seed;
     }
-
     /// <summary>
     /// Shows and hides with the given delay time, and executes the ability.
     /// </summary>
@@ -38,6 +38,18 @@ public abstract class AbilityBase
         DurationDescription = _delayHideDescription;
         Controller.View.SetDescriptionActive(true);
         Controller.View.ShowAbility(true);
+
+        // Feature Tutorial
+        yield return new WaitUntil(() => TutorialManager.Instance);
+        if (GameManager.Instance.TutorialStepState == TutorialManager.StepState.BattleIdle)
+        {
+            TutorialManager.Instance.SetNextStep();
+        }
+        yield return new WaitUntil(() =>
+        GameManager.Instance.TutorialStepState < TutorialManager.StepState.BattleIdle ||
+        GameManager.Instance.TutorialStepState > TutorialManager.StepState.RobotUseAbility
+        );
+        //
 
         if (CurrentLevel.ConsumedEnergy != null)
             Controller.AddEnergy(CurrentLevel.ConsumedEnergy.Value, true, true);
