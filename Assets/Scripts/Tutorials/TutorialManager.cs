@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -38,7 +39,10 @@ public class TutorialManager : MonoBehaviour
 
         ShopToBattle,
 
-        BattleIdle,
+        BattleIntro1,
+        BattleIntro2,
+        BattleIntro3,
+        WaitingForAbility,
         RobotHasAbility,
         RobotEnergyConsumption,
         RobotUseAbility,
@@ -53,7 +57,7 @@ public class TutorialManager : MonoBehaviour
         ClickRobotToFusion,
         PickToFusion,
         ShowRoll,
-        
+
         ShopIdle,
         ShopToBattle2,
         BattleIdle2,
@@ -72,7 +76,7 @@ public class TutorialManager : MonoBehaviour
         Reserve3,
         Reserve4,
         Reserve5,
-        
+
         Done,
     }
     private StepState currentState
@@ -97,10 +101,35 @@ public class TutorialManager : MonoBehaviour
     [ContextMenu("OnReset")]
     private void Reset()
     {
-        GameManager.Instance.LoadGame(GameMode.Tutorial); 
+        GameManager.Instance.LoadGame(GameMode.Tutorial);
     }
 
-    private void Awake()
+    private void OnValidate()
+    {
+        if (steps != null)
+        {
+            for (int i = 0; i < steps.Length; i++)
+            {
+                var step = steps[i];
+                if (step == null)
+                    continue;
+                step.gameObject.name = $"{i}_{(StepState)i}";
+            }
+        }
+        if (settings != null)
+        {
+            for (int i = 0; i < settings.Length; i++)
+            {
+                var setting = settings[i];
+                if (setting == null)
+                    continue;
+
+                RenameScriptableObject.RenameAsset(setting, $"{i}_{(StepState)i}");
+                //setting.name = $"{i}_{(StepState)i}";
+            }
+        }
+    }
+private void Awake()
     {
         Instance = this;
 
@@ -121,7 +150,7 @@ public class TutorialManager : MonoBehaviour
         EventManager.Instance.OnAttachedUnit += CheckInput;
         EventManager.Instance.OnCraft += (unit) => CheckInput(InputKey.DropSlotTeam);
         EventManager.Instance.OnLock += () => CheckInput(InputKey.ClickButtonLock);
-        EventManager.Instance.OnEndTurnClick += () => currentAllowedInputs = new(); 
+        EventManager.Instance.OnEndTurnClick += () => currentAllowedInputs = new();
         EventManager.Instance.OnEndShop += () => CheckInput(InputKey.ClickButtonEndTurn);
     }
 
@@ -174,20 +203,6 @@ public class TutorialManager : MonoBehaviour
         if (countTime > 0)
         {
             countTime -= Time.deltaTime;
-        }
-    }
-
-    private void OnValidate()
-    {
-        if (steps == null)
-            return;
-
-        for (int i = 0; i < steps.Length; i++)
-        {
-            var step = steps[i];
-            if (step == null)
-                continue;
-            step.gameObject.name = $"{i}_{(StepState)i}";
         }
     }
 
@@ -259,7 +274,7 @@ public class TutorialManager : MonoBehaviour
         if (_inputKey == InputKey.ClickButtonEndTurn)
         {
             steps[(int)StepState.EndTurn].OnExit();
-            currentState = StepState.BattleIdle;
+            currentState = StepState.ShopToBattle;
 
             GameManager.Instance.TutorialStepState = StepState.ShopToBattle;
         }

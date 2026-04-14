@@ -41,12 +41,12 @@ public abstract partial class AbilityBase
 
         // Feature Tutorial
         yield return new WaitUntil(() => TutorialManager.Instance);
-        if (GameManager.Instance.TutorialStepState == TutorialManager.StepState.BattleIdle)
+        if (GameManager.Instance.TutorialStepState == TutorialManager.StepState.WaitingForAbility)
         {
             TutorialManager.Instance.SetNextStep();
         }
         yield return new WaitUntil(() =>
-        GameManager.Instance.TutorialStepState < TutorialManager.StepState.BattleIdle ||
+        GameManager.Instance.TutorialStepState < TutorialManager.StepState.WaitingForAbility ||
         GameManager.Instance.TutorialStepState > TutorialManager.StepState.RobotUseAbility
         );
         //
