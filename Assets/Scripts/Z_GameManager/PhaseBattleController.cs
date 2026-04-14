@@ -130,16 +130,6 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
 
     public void Update()
     {
-        if (Slots1() != null && Slots1()[0].UnitController())
-        {
-            var unit = Slots1()[0].UnitController();
-            if (unit.Model != null)
-            {
-                Debug.Log(unit.name + " is left " + unit.Model.Data.IsTeamLeft);
-            }
-        }
-
-
         if (state == null)
             return;
 
@@ -206,10 +196,12 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     /// <summary>
     /// Set boolean IsRunning.
     /// </summary>
-    public void SetRunning()
+    public void SetRunning(bool value)
     {
-        IsStopped = !IsStopped;
-        IsRunning = IsStopped ? 0f : 1f;
+        IsStopped = !value;
+        IsRunning = value ? 1f : 0f;
+
+        PhaseBattleView.Instance.SetRunningButton();
     }
 
     /// <summary>

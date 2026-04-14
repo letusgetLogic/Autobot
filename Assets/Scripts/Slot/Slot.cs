@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,7 +11,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private EventDragSlot eventDrag;
     [SerializeField] private GameObject lighting;
     [SerializeField] private SoSlotSettings settings;
-    
 
     [Tooltip("The hint of dropable slot.")]
     [SerializeField] private SpriteRenderer hintLight;
@@ -23,9 +23,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Color defaultColor;
     public int Index { get; set; }
 
-    public bool IsDroppable => 
+    public bool IsDroppable =>
         gameObject.CompareTag("Slot Team") ||
-        gameObject.CompareTag("Slot Charge") || 
+        gameObject.CompareTag("Slot Charge") ||
         gameObject.CompareTag("Slot Random");
 
     private InputKey inputKey
@@ -87,6 +87,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (InputManager.Instance.IsBlockingInput(inputKey))
+            return;
+
         if (GameManager.Instance.IsCatalogActive == false)
             ShowDescription();
     }
@@ -97,6 +100,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (InputManager.Instance.IsBlockingInput(inputKey))
+            return;
+
         if (GameManager.Instance.IsCatalogActive == false)
             HideDescription();
     }
@@ -155,18 +161,15 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// </summary>
     private void ShowDescription()
     {
-        if (InputManager.Instance.IsBlockingInput(inputKey))
-            return;
-
         if (UnitView() == null)
             return;
 
         UnitView().SetDescriptionActive(true);
-    
+
         if (PhaseShopController.Instance &&
             PhaseShopController.Instance.IsBlockingInputsByItemRandomness(this))
             return;
-     
+
         if (indicator != null)
             indicator.enabled = true;
     }

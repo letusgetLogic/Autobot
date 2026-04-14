@@ -37,17 +37,9 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-
         switch (GameManager.Instance.SceneName)
         {
             case "PhaseShop":
-                var tutorial = TutorialManager.Instance;
-                if (tutorial != null && GameManager.Instance.IsTutorialRunning)
-                {
-                    Debug.Log("SetNextStep " + GameManager.Instance.ClickIndex);
-                    tutorial.SetNextStep();
-                }
-
                 var phaseShop = PhaseShopController.Instance;
                 if (phaseShop)
                     phaseShop.SetAttachedGameObject(null);
@@ -70,7 +62,16 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
                 //PhaseBattleView.Instance.OnRunningButtonClick();
                 break;
         }
+
+        var tutorial = TutorialManager.Instance;
+        if (tutorial != null && GameManager.Instance.IsTutorialRunning)
+        {
+            Debug.Log("SetNextStep " + GameManager.Instance.ClickIndex);
+            tutorial.SetNextStep();
+        }
+
         Debug.Log("Click " + GameManager.Instance.ClickIndex + " -> Execute");
+
         isChecking = false;
     }
 }

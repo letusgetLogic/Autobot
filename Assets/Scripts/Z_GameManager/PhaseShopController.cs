@@ -17,8 +17,6 @@ public class PhaseShopController : MonoBehaviour
     public Slot ChargeSlot => chargeSlot;
 
     [Header("Settings")]
-    [SerializeField] private int shopBotLength = 3;
-    [SerializeField] private int shopItemLength = 2;
     [SerializeField] private SoShopProcess process;
     [SerializeField] private SoLerpMovementSettings unitSwapSettings;
     public SoShopProcess Process => process;

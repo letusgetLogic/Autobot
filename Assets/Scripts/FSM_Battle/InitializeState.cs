@@ -45,6 +45,11 @@ public class InitializeState : StateBaseBattle
         }
     }
 
+    public override void OnExit(I_FSM_Battle _ctx)
+    {
+       
+    }
+
     /// <summary>
     /// Initializes the unit team of players.
     /// </summary>
@@ -69,7 +74,8 @@ public class InitializeState : StateBaseBattle
             SpawnUnitsByReplay(data1, PhaseBattleController.Instance.Slots1(), true);
             SpawnUnitsByReplay(data2, PhaseBattleController.Instance.Slots2(), false);
         }
-     
+
+        EventManager.Instance.OnInitDone?.Invoke();
     }
 
     /// <summary>

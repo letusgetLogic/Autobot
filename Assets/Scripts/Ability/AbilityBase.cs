@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract partial class AbilityBase
@@ -43,7 +42,8 @@ public abstract partial class AbilityBase
         yield return new WaitUntil(() => TutorialManager.Instance);
         if (GameManager.Instance.TutorialStepState == TutorialManager.StepState.WaitingForAbility)
         {
-            TutorialManager.Instance.SetNextStep();
+            TutorialManager.Instance.AbilitySlot = Controller.Slot.GetComponent<SlotTutorial>();
+            TutorialManager.Instance.Check();
         }
         yield return new WaitUntil(() =>
         GameManager.Instance.TutorialStepState < TutorialManager.StepState.WaitingForAbility ||

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.GraphicsBuffer;
 
 public class TutorialStep : MonoBehaviour
 {
@@ -17,8 +18,8 @@ public class TutorialStep : MonoBehaviour
     public List<ScaleUpDown> ActiveActions { get; set; } = new();
     public UnityAction<ScaleUpDown> OnDone { get; set; }
 
-    private Transform[] targetParents;
-    private int[] posInParent;
+    private Stack<Transform> targetParents = new();
+    private Stack<int> posInParent = new();
 
     public List<Coroutine> Coroutines => coroutines;
     private List<Coroutine> coroutines = new();
@@ -66,7 +67,7 @@ public class TutorialStep : MonoBehaviour
             SetScaleUp(_objects, true);
     }
 
-    public void OnAnimateAFK()
+    public void OnLateEnter()
     {
         SetActive(HintsAFK, true);
     }
@@ -154,33 +155,45 @@ public class TutorialStep : MonoBehaviour
 
         if (_value)
         {
-            targetParents = new Transform[TargetsToBeChild.Length];
-            posInParent = new int[TargetsToBeChild.Length];
+            Stack<Transform> stackChilds = new Stack<Transform>();
+
             for (int i = 0; i < TargetsToBeChild.Length; i++)
             {
                 var target = TargetsToBeChild[i];
                 if (target != null)
                 {
-                    targetParents[i] = target.parent;
-                    posInParent[i] = target.GetSiblingIndex();
-                    target.SetParent(transform.parent, true);
+                    targetParents.Push( target.parent);
+                    posInParent.Push(target.GetSiblingIndex());
+                    stackChilds.Push(target);
+                  
                 }
+            }
+            while (stackChilds.Count > 0)
+            {
+                var child = stackChilds.Pop();
+                child.SetParent(transform.parent, true);
             }
         }
         else
         {
+            Stack<Transform> stackChilds = new Stack<Transform>();
+
             for (int i = 0; i < TargetsToBeChild.Length; i++)
             {
                 var target = TargetsToBeChild[i];
-                if (target != null && targetParents != null && targetParents.Length > i)
+                if (target != null)
                 {
-                    target.SetParent(targetParents[i], true);
-                    target.SetSiblingIndex(posInParent[i]);
+                    stackChilds.Push(target);
                 }
             }
-
-            targetParents = null;
-            posInParent = null;
+            while (stackChilds.Count > 0)
+            {
+                var child = stackChilds.Pop();
+                var parent = targetParents.Pop();
+                var index = posInParent.Pop();
+                child.SetParent(parent, true);
+                child.SetSiblingIndex(index);
+            }
         }
     }
 

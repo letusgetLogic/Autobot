@@ -21,6 +21,7 @@ public class UnitController : MonoBehaviour
     [SerializeField] private bool editorIsOnRightSide = false;
     [SerializeField] private UnitState editorUnitState;
     [SerializeField] private bool editorIsRepairOnValidateActive = true;
+    [SerializeField] private bool editorHasView = true;
     [SerializeField] private SoPack editorDefinedPack;
 
     public SoUnit DefinedUnit => editorSoUnit;
@@ -148,6 +149,8 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(this, _soUnit, _data, isRepairActive ? new RepairSystem() : null);
         }
 
+        
+
         if (model.IsRobot() && model.Repair != null)
         {
             model.InitRepair();
@@ -157,20 +160,23 @@ public class UnitController : MonoBehaviour
 
         var shop = PhaseShopController.Instance;
         var battle = PhaseBattleController.Instance;
-        bool hasView = (shop && GameManager.Instance.CurrentPlayer.Data.IsAI == false) || battle;
+        bool hasView = 
+            (shop && GameManager.Instance.CurrentPlayer.Data.IsAI == false) 
+            || battle 
+            || (Application.isPlaying == false && editorHasView);
+
         if (hasView)
+        {
             model.InitView(view);
 
-        // Catalog doesn't need to update level and set data view.
-        if (Application.isPlaying && !GameManager.Instance.IsCatalogActive)
-        {
-            if (hasView)
+            if (Application.isPlaying) 
                 StartCoroutine(model.UpdateLevelXPView(model.IsPhaseShop(model.Data.UnitState), false));
             else
-                model.UpdateLevelXP();
-
-            model.SetDataView(_unitState, hasView);
+                model.UpdateLevelXP(hasView);
         }
+        else model.UpdateLevelXP(hasView);
+
+        model.SetDataView(_unitState, hasView);
     }
 
     /// <summary>

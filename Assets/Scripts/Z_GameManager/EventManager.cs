@@ -86,10 +86,13 @@ public class EventManager
     #endregion
 
 
+    #region Phase Battle
 
-
+    public UnityAction OnInitDone { get; set; }
 
     public UnityAction OnMatchOver { get; set; }
     public UnityAction OnBattleDelayHintClick { get; set; }
     public UnityAction OnGameOver { get; set; }
+    #endregion
 }
+

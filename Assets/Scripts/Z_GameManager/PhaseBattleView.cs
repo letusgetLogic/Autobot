@@ -134,8 +134,10 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     public void OnRunningButtonClick()
     {
-        PhaseBattleController.Instance.SetRunning();
-        SetRunningButton();
+        if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonPlayInBattle))
+            return;
+
+        PhaseBattleController.Instance.SetRunning(PhaseBattleController.Instance.IsStopped);
     }
 
     /// <summary>

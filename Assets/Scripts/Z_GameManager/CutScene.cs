@@ -73,8 +73,7 @@ public class CutScene : MonoBehaviour
 
     private void OnEnable()
     {
-        if (OpenPanel != null && GameManager.Instance.IsTutorialRunning && 
-            GameManager.Instance.CurrentPlayer != null)
+        if (OpenPanel != null && GameManager.Instance.IsTutorialRunning)
             OpenPanel.OnRunningDone += GameManager.Instance.SetTutorialStartAtSceneStart;
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.XR;
 
 [DisallowMultipleComponent]
 public class TutorialManager : MonoBehaviour
@@ -13,10 +14,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TutorialStep[] steps;
     public SoUnit[] BotsTurn1;
     public SoUnit[] ItemsTurn1;
-
-    public UnityAction OnEnter { get; private set; }
-    public UnityAction OnAnimateAFK { get; private set; }
-    public UnityAction OnExit { get; private set; }
 
     public enum StepState
     {
@@ -46,6 +43,8 @@ public class TutorialManager : MonoBehaviour
         RobotHasAbility,
         RobotEnergyConsumption,
         RobotUseAbility,
+        BattleIdle,
+        WaitingEndBattle,
 
         BattleToShop,
 
@@ -98,13 +97,17 @@ public class TutorialManager : MonoBehaviour
 
     private Coroutine coroutine;
 
+    [HideInInspector] public SlotTutorial AbilitySlot;
+
+
     [ContextMenu("OnReset")]
     private void Reset()
     {
         GameManager.Instance.LoadGame(GameMode.Tutorial);
     }
-
-    private void OnValidate()
+#if UNITY_EDITOR
+    [ContextMenu("OnRename")]
+    private void OnRename()
     {
         if (steps != null)
         {
@@ -129,8 +132,13 @@ public class TutorialManager : MonoBehaviour
             }
         }
     }
-private void Awake()
+#endif
+    private void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(Instance.gameObject);
+        }
         Instance = this;
 
         if (GameManager.Instance.IsTutorialRunning == false)
@@ -152,6 +160,7 @@ private void Awake()
         EventManager.Instance.OnLock += () => CheckInput(InputKey.ClickButtonLock);
         EventManager.Instance.OnEndTurnClick += () => currentAllowedInputs = new();
         EventManager.Instance.OnEndShop += () => CheckInput(InputKey.ClickButtonEndTurn);
+        EventManager.Instance.OnInitDone += () => Check();
     }
 
     private void Update()
@@ -176,6 +185,7 @@ private void Awake()
                     Debug.Log($"{currentState}.OnEnter");
 
                     steps[(int)currentState].OnEnter();
+                    OnValidatedEnter();
 
                     currentAllowedInputs = settings[(int)currentState].AllowedInputs;
                     countTime = settings[(int)currentState].Duration;
@@ -188,9 +198,10 @@ private void Awake()
                         SetNextStep();
                         return;
                     }
-                    Debug.Log($"{currentState}.OnAnimateAFK");
+                    Debug.Log($"{currentState}.OnLateEnter");
 
-                    steps[(int)currentState].OnAnimateAFK();
+                    steps[(int)currentState].OnLateEnter();
+                    OnValidatedLateEnter();
 
                     runState = RunState.AFK;
                     break;
@@ -217,6 +228,7 @@ private void Awake()
         {
             Debug.Log($"{currentState}.OnExit");
             delay += steps[(int)currentState].OnExit();
+            OnValidatedExit();
         }
 
         if (delay == 0f)
@@ -243,6 +255,51 @@ private void Awake()
         runState = RunState.Start;
 
         coroutine = null;
+    }
+
+    private void OnValidatedEnter()
+    {
+        if (currentState == StepState.RobotEnergyConsumption)
+        {
+            if (AbilitySlot)
+                AbilitySlot.EnergyConsumptionIndicator.SetActive(true);
+        }
+        if (currentState == StepState.RobotUseAbility)
+        {
+            if (AbilitySlot)
+            {
+                AbilitySlot.AbilityIndicator.SetActive(true);
+                AbilitySlot.EnergyIndicator.SetActive(true);
+            }
+        }
+        if (currentState == StepState.WaitingForAbility || currentState == StepState.BattleIdle)
+        {
+            PhaseBattleController.Instance.SetRunning(true);
+        }
+    }
+
+    private void OnValidatedLateEnter()
+    {
+        
+    }
+
+    private void OnValidatedExit()
+    {
+        if (currentState == StepState.RobotEnergyConsumption)
+        {
+            if (AbilitySlot)
+                AbilitySlot.EnergyConsumptionIndicator.SetActive(false);
+        }
+        if (currentState == StepState.RobotUseAbility)
+        {
+            if (AbilitySlot)
+                AbilitySlot.AbilityIndicator.SetActive(false);
+        }
+        if (currentState == StepState.RobotUseAbility)
+        {
+            if (AbilitySlot)
+                AbilitySlot.EnergyIndicator.SetActive(false);
+        }
     }
 
     public void CheckInput(UnitController _unit)
@@ -275,8 +332,19 @@ private void Awake()
         {
             steps[(int)StepState.EndTurn].OnExit();
             currentState = StepState.ShopToBattle;
+        }
+    }
 
-            GameManager.Instance.TutorialStepState = StepState.ShopToBattle;
+    public void Check()
+    {
+        if (currentState == StepState.ShopToBattle)
+        {
+            PhaseBattleController.Instance.SetRunning(false);
+        }
+        if (currentState == StepState.WaitingForAbility)
+        {
+            SetNextStep();
+            PhaseBattleController.Instance.SetRunning(false);
         }
     }
 

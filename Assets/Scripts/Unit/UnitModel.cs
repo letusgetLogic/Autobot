@@ -292,13 +292,40 @@ public class UnitModel
     /// Updates the level and xp.
     /// </summary>
     /// <param name="xp"></param>
-    public void UpdateLevelXP()
+    public void UpdateLevelXP(bool _hasView)
     {
+        if (_hasView)
+        {
+            switch (Data.XP)
+            {
+                case 1:
+                    SetCurrentLevel(0);
+                    break;
+                case 2:
+                    SetCurrentLevel(0);
+                    break;
+                case 3:
+                    SetCurrentLevel(1);
+                    break;
+                case 4:
+                    SetCurrentLevel(1);
+                    break;
+                case 5:
+                    SetCurrentLevel(1);
+                    break;
+                case 6:
+                    SetCurrentLevel(2);
+                    break;
+            }
+
+            return;
+        }
+        // only set data
         switch (Data.XP)
         { 
             case 1:
                 CurrentLevel = SoUnit.Levels[0];
-                 break;
+                break;
             case 2:
                 CurrentLevel = SoUnit.Levels[0];
                 break;

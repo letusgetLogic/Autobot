@@ -1,5 +1,6 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
 
 public class RenameScriptableObject
 {
@@ -20,3 +21,4 @@ public class RenameScriptableObject
     }
 }
 
+#endif

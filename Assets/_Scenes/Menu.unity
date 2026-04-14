@@ -2715,7 +2715,6 @@ GameObject:
   - component: {fileID: 1314189523}
   - component: {fileID: 1314189527}
   - component: {fileID: 1314189526}
-  - component: {fileID: 1314189525}
   - component: {fileID: 1314189524}
   m_Layer: 5
   m_Name: Hover Area
@@ -2756,18 +2755,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textDisplay: {fileID: 1364187778}
---- !u!114 &1314189525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314189522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9147dedae6bd68448d175a15e898358, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1314189526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6786,7 +6773,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 409.9997, y: 0}
+  m_AnchoredPosition: {x: 409.99976, y: 0}
   m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2743168254355562531
@@ -11580,7 +11567,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -409.9997, y: 0}
+  m_AnchoredPosition: {x: -409.99976, y: 0}
   m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &8648378708553492167
