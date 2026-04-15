@@ -17,6 +17,8 @@ public class BattleOverState : StateBaseBattle
     {
         Debug.Log("--- BattleOverState ---");
 
+        EventManager.Instance.OnBattleDone?.Invoke();
+
         if (GameManager.Instance.Players.Count < 2)
         {
             Debug.LogWarning("Players.Count = " + GameManager.Instance.Players.Count);

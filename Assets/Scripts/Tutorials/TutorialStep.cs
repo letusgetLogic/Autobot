@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
@@ -15,6 +16,9 @@ public class TutorialStep : MonoBehaviour
     public GameObject[] HintsAFK;
 
     public UnityAction OnLabelPopup { get; set; }
+    /// <summary>
+    /// Make sure, all actions of current step are animated done, to go the next step.
+    /// </summary>
     public List<ScaleUpDown> ActiveActions { get; set; } = new();
     public UnityAction<ScaleUpDown> OnDone { get; set; }
 
@@ -24,6 +28,9 @@ public class TutorialStep : MonoBehaviour
     public List<Coroutine> Coroutines => coroutines;
     private List<Coroutine> coroutines = new();
     private float animTime;
+
+    [SerializeField] private float maxLagTime = 3.0f;
+    private float lagCount;
 
     private void OnDisable()
     {
@@ -35,7 +42,7 @@ public class TutorialStep : MonoBehaviour
 
     public void OnEnter()
     {
-        SetParent(true);
+        SetParentOfComponents(true);
 
         bool hasAnim = false;
         bool hasAnim1 = SetScaleUp(CoverPanels, true);
@@ -72,12 +79,19 @@ public class TutorialStep : MonoBehaviour
         SetActive(HintsAFK, true);
     }
 
+    public void OnUpdate(float _speed)
+    {
+        lagCount += _speed;
+    }
+
     public float OnExit()
     {
         SetActive(HintsAFK, false);
         SetActive(Labels, false);
         SetActive(Hints, false);
-        SetParent(false);
+        SetParentOfComponents(false);
+
+        lagCount = 0f;
 
         if (SetScaleUp(CoverPanelsToDeactivate, false))
         {
@@ -90,10 +104,24 @@ public class TutorialStep : MonoBehaviour
         return 0f;
     }
 
+    /// <summary>
+    /// Delays deactivation of cover panels after animation.
+    /// </summary>
+    /// <param name="_delay"></param>
+    /// <returns></returns>
     private IEnumerator DelayDeactivate(float _delay)
     {
         yield return new WaitForSeconds(_delay);
-        yield return new WaitUntil(() => ActiveActions.Count == 0);
+        yield return new WaitUntil(() =>
+        {
+            // If the time count was exceeded, continue.
+            if (lagCount > maxLagTime)
+            {
+                ActiveActions.Clear();
+            }
+
+            return ActiveActions.Count == 0;
+        });
 
         SetActive(CoverPanelsToDeactivate, false);
     }
@@ -148,7 +176,7 @@ public class TutorialStep : MonoBehaviour
         return isRunning;
     }
 
-    private void SetParent(bool _value)
+    private void SetParentOfComponents(bool _value)
     {
         if (TargetsToBeChild == null || TargetsToBeChild.Length == 0)
             return;

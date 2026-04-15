@@ -14,6 +14,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TutorialStep[] steps;
     public SoUnit[] BotsTurn1;
     public SoUnit[] ItemsTurn1;
+    [SerializeField] private float maxLagTime = 3.0f;
 
     public enum StepState
     {
@@ -88,6 +89,7 @@ public class TutorialManager : MonoBehaviour
     }
 
     private float countTime = 0f;
+    private float lagCount = 0f;
 
     private enum RunState { None, Start, Delay, Duration, DurationHide, AFK }
     private RunState runState = RunState.None;
@@ -161,13 +163,33 @@ public class TutorialManager : MonoBehaviour
         EventManager.Instance.OnEndTurnClick += () => currentAllowedInputs = new();
         EventManager.Instance.OnEndShop += () => CheckInput(InputKey.ClickButtonEndTurn);
         EventManager.Instance.OnInitDone += () => Check();
+        EventManager.Instance.OnBattleDone += () => Check();
     }
 
     private void Update()
     {
-        if (settings == null || (int)currentState >= settings.Length
-            || steps == null || (int)currentState >= steps.Length)
+        if (settings == null || steps == null)
+        {
             return;
+        }
+
+        if ((int)currentState >= settings.Length)
+        {
+            Debug.LogWarning("currentState " + currentState + " out of settings.length!");
+            return;
+        }
+        if ((int)currentState >= steps.Length)
+        {
+            Debug.LogWarning("currentState " + currentState + " out of steps.length!");
+            return;
+        }
+
+        if (lagCount < maxLagTime)
+            lagCount += Time.deltaTime;
+
+        if (steps[(int)currentState] &&
+            steps[(int)currentState].gameObject && steps[(int)currentState].gameObject.activeSelf)
+            steps[(int)currentState].OnUpdate(Time.deltaTime);
 
         if (countTime <= 0)
         {
@@ -184,7 +206,9 @@ public class TutorialManager : MonoBehaviour
                 case RunState.Delay:
                     Debug.Log($"{currentState}.OnEnter");
 
-                    steps[(int)currentState].OnEnter();
+                    if (steps[(int)currentState] && steps[(int)currentState].gameObject)
+                        steps[(int)currentState].OnEnter();
+
                     OnValidatedEnter();
 
                     currentAllowedInputs = settings[(int)currentState].AllowedInputs;
@@ -200,7 +224,9 @@ public class TutorialManager : MonoBehaviour
                     }
                     Debug.Log($"{currentState}.OnLateEnter");
 
-                    steps[(int)currentState].OnLateEnter();
+                    if (steps[(int)currentState] && steps[(int)currentState].gameObject)
+                        steps[(int)currentState].OnLateEnter();
+
                     OnValidatedLateEnter();
 
                     runState = RunState.AFK;
@@ -224,17 +250,23 @@ public class TutorialManager : MonoBehaviour
         countTime = 0f;
         float delay = 0f;
 
-        if (currentState >= 0 && steps[(int)currentState] != null)
+        if (currentState >= 0)
         {
             Debug.Log($"{currentState}.OnExit");
-            delay += steps[(int)currentState].OnExit();
+
+            if (steps[(int)currentState] != null && steps[(int)currentState].gameObject)
+                delay += steps[(int)currentState].OnExit();
+
             OnValidatedExit();
         }
 
         if (delay == 0f)
         {
-            if (steps[(int)currentState] != null && steps[(int)currentState].gameObject)
+            if (steps[(int)currentState] != null &&
+                steps[(int)currentState].gameObject && steps[(int)currentState].gameObject.activeSelf)
+            {
                 steps[(int)currentState].gameObject.SetActive(false);
+            }
 
             currentState++;
             runState = RunState.Start;
@@ -248,9 +280,22 @@ public class TutorialManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_delay);
 
-        yield return new WaitUntil(() => steps[(int)currentState].ActiveActions.Count == 0);
+        lagCount = 0f;
+        yield return new WaitUntil(() =>
+        {
+            if (lagCount >= maxLagTime)
+            {
+                steps[(int)currentState].ActiveActions.Clear();
+            }
+            return steps[(int)currentState] == null || steps[(int)currentState].ActiveActions.Count == 0;
+        });
 
-        steps[(int)currentState].gameObject.SetActive(false);
+        if (steps[(int)currentState] != null &&
+            steps[(int)currentState].gameObject && steps[(int)currentState].gameObject.activeSelf)
+        {
+            steps[(int)currentState].gameObject.SetActive(false);
+        }
+
         currentState++;
         runState = RunState.Start;
 
@@ -280,7 +325,7 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedLateEnter()
     {
-        
+
     }
 
     private void OnValidatedExit()
@@ -330,7 +375,9 @@ public class TutorialManager : MonoBehaviour
         }
         if (_inputKey == InputKey.ClickButtonEndTurn)
         {
-            steps[(int)StepState.EndTurn].OnExit();
+            if (steps[(int)StepState.EndTurn] != null && steps[(int)StepState.EndTurn].gameObject)
+                steps[(int)StepState.EndTurn].OnExit();
+
             currentState = StepState.ShopToBattle;
         }
     }
@@ -345,6 +392,10 @@ public class TutorialManager : MonoBehaviour
         {
             SetNextStep();
             PhaseBattleController.Instance.SetRunning(false);
+        }
+        if (currentState == StepState.BattleIdle)
+        {
+            SetNextStep();
         }
     }
 
