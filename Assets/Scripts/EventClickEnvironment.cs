@@ -53,6 +53,8 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
                 {
                     InputManager.Instance.BlocksInput = true;
                     replay.Switch(GameState.LoadScene);
+
+                    isChecking = false;
                     return;
                 }
 

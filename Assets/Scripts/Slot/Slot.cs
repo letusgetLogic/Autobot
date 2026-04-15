@@ -22,6 +22,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private Color defaultColor;
     public int Index { get; set; }
+    public SlotTutorial Tutorial { get; set; }
 
     public bool IsDroppable =>
         gameObject.CompareTag("Slot Team") ||
@@ -61,6 +62,8 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (indicator != null)
             indicator.enabled = false;
+
+        Tutorial = GetComponent<SlotTutorial>();
     }
 
     private void OnEnable()
@@ -70,6 +73,14 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         if (lighting != null)
             lighting.SetActive(false);
+
+        EventManager.Instance.OnAttachedUnit += (unit) =>
+        {
+            if (unit == null)
+            {
+                HideDescription();
+            }
+        };
     }
 
     private void OnDisable()

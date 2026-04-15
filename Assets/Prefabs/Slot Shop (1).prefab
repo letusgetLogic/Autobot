@@ -97,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5731142434893304905}
   - component: {fileID: 6862620880727480343}
+  - component: {fileID: 5642030257640495932}
   m_Layer: 0
   m_Name: Slot Shop (1)
   m_TagString: Slot Shop
@@ -147,6 +148,22 @@ MonoBehaviour:
   hintLight: {fileID: 0}
   lightenUpDown: {fileID: 0}
   lightenScale: {fileID: 0}
+--- !u!114 &5642030257640495932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573225990986924566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efbc40080d49c0e4bb65afb042790a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyConsumptionIndicator: {fileID: 0}
+  abilityIndicator: {fileID: 0}
+  energyIndicator: {fileID: 0}
+  hintArrow: {fileID: 5616836640079215065}
 --- !u!1 &1312488190855698129
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,10 +552,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5618882987698189574}
     m_Modifications:
-    - target: {fileID: 2421622153870702958, guid: c4f2d6d9e455a7047abe694017371a16, type: 3}
-      propertyPath: animTime
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 4031673746780728688, guid: c4f2d6d9e455a7047abe694017371a16, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -631,5 +644,10 @@ PrefabInstance:
 --- !u!224 &4095526864205643006 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4031673746780728688, guid: c4f2d6d9e455a7047abe694017371a16, type: 3}
+  m_PrefabInstance: {fileID: 1091377520515338638}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5616836640079215065 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4816134951382034519, guid: c4f2d6d9e455a7047abe694017371a16, type: 3}
   m_PrefabInstance: {fileID: 1091377520515338638}
   m_PrefabAsset: {fileID: 0}

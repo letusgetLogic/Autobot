@@ -1480,10 +1480,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7178445535778415135, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7561420934996691726, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_Name
       value: Tutorial
       objectReference: {fileID: 0}
+    - target: {fileID: 7687179960684108114, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1257326707}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

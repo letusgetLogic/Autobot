@@ -66,9 +66,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efbc40080d49c0e4bb65afb042790a03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnergyConsumptionIndicator: {fileID: 9077695151000944561}
-  AbilityIndicator: {fileID: 8209088063333577816}
-  EnergyIndicator: {fileID: 4332307452647655551}
+  energyConsumptionIndicator: {fileID: 9077695151000944561}
+  abilityIndicator: {fileID: 8209088063333577816}
+  energyIndicator: {fileID: 4332307452647655551}
+  hintArrow: {fileID: 0}
 --- !u!1 &4332307452647655551
 GameObject:
   m_ObjectHideFlags: 0

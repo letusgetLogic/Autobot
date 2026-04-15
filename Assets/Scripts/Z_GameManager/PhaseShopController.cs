@@ -586,7 +586,7 @@ public class PhaseShopController : MonoBehaviour
     public void Transport(UnitController _attached, Transform _dropSlot,
         bool _mouseRelease)
     {
-        HideDescriptionByTransport();
+        HideDescriptionOfUnits();
 
         if (_attached == null)
             return;
@@ -632,7 +632,7 @@ public class PhaseShopController : MonoBehaviour
     {
         IsSwapping = true;
 
-        HideDescriptionByTransport();
+        HideDescriptionOfUnits();
 
         var _unitTargetView = _unitTarget.GetComponent<UnitView>();
 
@@ -786,7 +786,7 @@ public class PhaseShopController : MonoBehaviour
     /// <summary>
     /// Hides the description of units on team slots while transporting.
     /// </summary>
-    private void HideDescriptionByTransport()
+    public void HideDescriptionOfUnits()
     {
         foreach (var slot in teamSlots)
         {

@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem.XR;
 
 [DisallowMultipleComponent]
 public class TutorialManager : MonoBehaviour
@@ -19,9 +17,10 @@ public class TutorialManager : MonoBehaviour
     public enum StepState
     {
         None = -1,
-        Idle = 0,
 
         // --- Turn 1 ---
+
+        Turn1 = 0,
         Welcome = 1,
         BuildTeam,
         ShowTeam,
@@ -47,11 +46,12 @@ public class TutorialManager : MonoBehaviour
         BattleIdle,
         WaitingEndBattle,
 
-        BattleToShop,
-
         // --- Turn 2 ---
+
+        Turn2,
         ClickRobotToRepair,
         RepairRobot,
+        TachiTachiPlayer,
         ClickRobotToSell,
         SellRobot,
         ClickRobotToFusion,
@@ -61,9 +61,11 @@ public class TutorialManager : MonoBehaviour
         ShopIdle,
         ShopToBattle2,
         BattleIdle2,
-        BattleToShop2,
+        WaitingEndBattle2,
 
         // --- Turn 3 ---
+
+        Turn3,
         UnlockTier,
         RepairToLevelUp,
         ClickRobotToLevelUp,
@@ -97,9 +99,12 @@ public class TutorialManager : MonoBehaviour
     public List<InputKey> CurrentAllowedInputs => currentAllowedInputs;
     private List<InputKey> currentAllowedInputs;
 
-    private Coroutine coroutine;
+    private Coroutine coroutineNextStep;
+    private Coroutine coroutineDeactivateArrow;
 
-    [HideInInspector] public SlotTutorial AbilitySlot;
+    public SlotTutorial AbilitySlot { get; set; }
+
+    private List<Slot> activeHints { get; set; }
 
 
     [ContextMenu("OnReset")]
@@ -157,13 +162,15 @@ public class TutorialManager : MonoBehaviour
             step.OnLabelPopup += () => SoundManager.Instance.PlayOneShot("Drop_Unit");
         }
 
-        EventManager.Instance.OnAttachedUnit += CheckInput;
+        EventManager.Instance.OnAttachedUnit += CheckClick;
         EventManager.Instance.OnCraft += (unit) => CheckInput(InputKey.DropSlotTeam);
         EventManager.Instance.OnLock += () => CheckInput(InputKey.ClickButtonLock);
         EventManager.Instance.OnEndTurnClick += () => currentAllowedInputs = new();
         EventManager.Instance.OnEndShop += () => CheckInput(InputKey.ClickButtonEndTurn);
         EventManager.Instance.OnInitDone += () => Check();
         EventManager.Instance.OnBattleDone += () => Check();
+        EventManager.Instance.OnRepair += () => CheckInput(InputKey.ClickButtonRepair);
+        EventManager.Instance.OnRecycle += () => CheckInput(InputKey.ClickButtonRecycle);
     }
 
     private void Update()
@@ -273,7 +280,7 @@ public class TutorialManager : MonoBehaviour
             return;
         }
 
-        coroutine = StartCoroutine(DelaySetNextStep(delay));
+        coroutineNextStep = StartCoroutine(DelaySetNextStep(delay));
     }
 
     private IEnumerator DelaySetNextStep(float _delay)
@@ -299,7 +306,7 @@ public class TutorialManager : MonoBehaviour
         currentState++;
         runState = RunState.Start;
 
-        coroutine = null;
+        coroutineNextStep = null;
     }
 
     private void OnValidatedEnter()
@@ -325,7 +332,51 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedLateEnter()
     {
+        if (currentState == StepState.ClickRobotToRepair)
+        {
+            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
+            {
+                activeHints = new();
+                foreach (var slot in PhaseShopController.Instance.TeamSlots())
+                {
+                    if (slot.Tutorial && slot.Tutorial.HasSmokingRobot())
+                    {
+                        slot.Tutorial.HintArrow.SetActive(true);
+                        activeHints.Add(slot);
+                    }
+                }
 
+                if (activeHints.Any())
+                {
+                    coroutineDeactivateArrow =
+                        StartCoroutine(DeactivateHintArrowSlot(currentState > StepState.RepairRobot));
+                }
+            }
+        }
+        if (currentState == StepState.ClickRobotToSell)
+        {
+            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
+            {
+                activeHints = new();
+                foreach (var slot in PhaseShopController.Instance.TeamSlots())
+                {
+                    var unit = slot.UnitController();
+                    if (slot.Tutorial && 
+                        unit && unit.Model.Data.UnitState == UnitState.InSlotTeam
+                        && (unit.Model.SoUnit.Name == "Gold Eye" || unit.Model.SoUnit.ModelID == "RC-BF-2R"))
+                    {
+                        slot.Tutorial.HintArrow.SetActive(true);
+                        activeHints.Add(slot);
+                    }
+                }
+
+                if (activeHints.Any())
+                {
+                    coroutineDeactivateArrow =
+                        StartCoroutine(DeactivateHintArrowSlot(currentState > StepState.ClickRobotToSell));
+                }
+            }
+        }
     }
 
     private void OnValidatedExit()
@@ -347,14 +398,17 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    public void CheckInput(UnitController _unit)
+    public void CheckClick(UnitController _unit)
     {
-        if (currentState == StepState.ClickRobot && _unit && _unit.Model.IsRobotInShop())
+        if (currentState == StepState.ClickRobot && _unit && _unit.Model.IsRobotInShop() ||
+            currentState == StepState.ShowFactoryReseted && _unit && _unit.Model.Data.UnitType == UnitType.Item ||
+            currentState == StepState.ClickRobotToRepair && _unit && _unit.Model.Data.UnitState == UnitState.InSlotTeam ||
+            currentState == StepState.ClickRobotToSell && _unit && _unit.Model.Data.UnitState == UnitState.InSlotTeam
+                && (_unit.Model.SoUnit.Name == "Gold Eye" || _unit.Model.SoUnit.ModelID == "RC-BF-2R"))
         {
-            SetNextStep();
-        }
-        if (currentState == StepState.ShowFactoryReseted && _unit && _unit.Model.Data.UnitType == UnitType.Item)
-        {
+            if (PhaseShopController.Instance)
+                 PhaseShopController.Instance.HideDescriptionOfUnits();
+
             SetNextStep();
         }
     }
@@ -380,6 +434,33 @@ public class TutorialManager : MonoBehaviour
 
             currentState = StepState.ShopToBattle;
         }
+        if (_inputKey == InputKey.ClickButtonRepair)
+        {
+            if (currentState == StepState.RepairRobot)
+            {
+                if (PhaseShopController.Instance && PhaseShopController.Instance.IsAnyRobotDamaged() == false)
+                    SetNextStep();
+                else
+                {
+                    foreach (var slot in activeHints)
+                    {
+                        var unit = slot.UnitController();
+                        if (unit != null && unit.Model.IsFullDurability())
+                        {
+                            slot.Tutorial.HintArrow.SetActive(false);
+                            activeHints.Remove(slot);
+                        }
+                    }
+                }
+            }
+        }
+        if (_inputKey == InputKey.ClickButtonRecycle)
+        {
+            if (currentState == StepState.SellRobot)
+            {
+                SetNextStep();
+            }
+        }
     }
 
     public void Check()
@@ -397,6 +478,12 @@ public class TutorialManager : MonoBehaviour
         {
             SetNextStep();
         }
+    }
+    private IEnumerator DeactivateHintArrowSlot(bool _case)
+    {
+        yield return new WaitUntil(() => _case);
+        activeHints.ForEach(slot => slot.Tutorial.HintArrow.SetActive(false));
+        coroutineDeactivateArrow = null;
     }
 
     /// <summary>
