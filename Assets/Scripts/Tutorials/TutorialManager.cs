@@ -96,6 +96,8 @@ public class TutorialManager : MonoBehaviour
     private enum RunState { None, Start, Delay, Duration, DurationHide, AFK }
     private RunState runState = RunState.None;
 
+    private TutorialStep currentStep => steps[(int)currentState];
+
     public List<InputKey> CurrentAllowedInputs => currentAllowedInputs;
     private List<InputKey> currentAllowedInputs;
 
@@ -163,14 +165,27 @@ public class TutorialManager : MonoBehaviour
         }
 
         EventManager.Instance.OnAttachedUnit += CheckClick;
-        EventManager.Instance.OnCraft += (unit) => CheckInput(InputKey.DropSlotTeam);
-        EventManager.Instance.OnLock += () => CheckInput(InputKey.ClickButtonLock);
-        EventManager.Instance.OnEndTurnClick += () => currentAllowedInputs = new();
-        EventManager.Instance.OnEndShop += () => CheckInput(InputKey.ClickButtonEndTurn);
-        EventManager.Instance.OnInitDone += () => Check();
-        EventManager.Instance.OnBattleDone += () => Check();
-        EventManager.Instance.OnRepair += () => CheckInput(InputKey.ClickButtonRepair);
-        EventManager.Instance.OnRecycle += () => CheckInput(InputKey.ClickButtonRecycle);
+        EventManager.Instance.OnCraft += CheckInput;
+        EventManager.Instance.OnLock += CheckInput;
+        EventManager.Instance.OnEndTurnClick += CheckInput;
+        EventManager.Instance.OnEndShop += Check;
+        EventManager.Instance.OnInitDone += Check;
+        EventManager.Instance.OnBattleDone += Check;
+        EventManager.Instance.OnRepair += CheckInput;
+        EventManager.Instance.OnRecycle += CheckInput;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnAttachedUnit -= CheckClick;
+        EventManager.Instance.OnCraft -= CheckInput;
+        EventManager.Instance.OnLock -= CheckInput;
+        EventManager.Instance.OnEndTurnClick -= CheckInput;
+        EventManager.Instance.OnEndShop -= Check;
+        EventManager.Instance.OnInitDone -= Check;
+        EventManager.Instance.OnBattleDone -= Check;
+        EventManager.Instance.OnRepair -= CheckInput;
+        EventManager.Instance.OnRecycle -= CheckInput;
     }
 
     private void Update()
@@ -194,9 +209,9 @@ public class TutorialManager : MonoBehaviour
         if (lagCount < maxLagTime)
             lagCount += Time.deltaTime;
 
-        if (steps[(int)currentState] &&
-            steps[(int)currentState].gameObject && steps[(int)currentState].gameObject.activeSelf)
-            steps[(int)currentState].OnUpdate(Time.deltaTime);
+        if (currentStep &&
+            currentStep.gameObject && currentStep.gameObject.activeSelf)
+            currentStep.OnUpdate(Time.deltaTime);
 
         if (countTime <= 0)
         {
@@ -213,8 +228,8 @@ public class TutorialManager : MonoBehaviour
                 case RunState.Delay:
                     Debug.Log($"{currentState}.OnEnter");
 
-                    if (steps[(int)currentState] && steps[(int)currentState].gameObject)
-                        steps[(int)currentState].OnEnter();
+                    if (currentStep && currentStep.gameObject)
+                        currentStep.OnEnter();
 
                     OnValidatedEnter();
 
@@ -231,8 +246,8 @@ public class TutorialManager : MonoBehaviour
                     }
                     Debug.Log($"{currentState}.OnLateEnter");
 
-                    if (steps[(int)currentState] && steps[(int)currentState].gameObject)
-                        steps[(int)currentState].OnLateEnter();
+                    if (currentStep && currentStep.gameObject)
+                        currentStep.OnLateEnter();
 
                     OnValidatedLateEnter();
 
@@ -240,6 +255,11 @@ public class TutorialManager : MonoBehaviour
                     break;
 
                 case RunState.AFK:
+                    if (currentState == StepState.WaitingEndBattle && 
+                        (currentAllowedInputs.Count == 0 || currentAllowedInputs.Contains(InputKey.ClickEnvironment) == false))
+                    {
+                        currentAllowedInputs.Add(InputKey.ClickEnvironment);
+                    }
                     break;
             }
         }
@@ -261,7 +281,7 @@ public class TutorialManager : MonoBehaviour
         {
             Debug.Log($"{currentState}.OnExit");
 
-            if (steps[(int)currentState] != null && steps[(int)currentState].gameObject)
+            if (currentStep != null && currentStep.gameObject)
                 delay += steps[(int)currentState].OnExit();
 
             OnValidatedExit();
@@ -269,10 +289,10 @@ public class TutorialManager : MonoBehaviour
 
         if (delay == 0f)
         {
-            if (steps[(int)currentState] != null &&
-                steps[(int)currentState].gameObject && steps[(int)currentState].gameObject.activeSelf)
+            if (currentStep != null &&
+                currentStep.gameObject && currentStep.gameObject.activeSelf)
             {
-                steps[(int)currentState].gameObject.SetActive(false);
+                currentStep.gameObject.SetActive(false);
             }
 
             currentState++;
@@ -292,15 +312,15 @@ public class TutorialManager : MonoBehaviour
         {
             if (lagCount >= maxLagTime)
             {
-                steps[(int)currentState].ActiveActions.Clear();
+                currentStep.ActiveActions.Clear();
             }
-            return steps[(int)currentState] == null || steps[(int)currentState].ActiveActions.Count == 0;
+            return currentStep == null || currentStep.ActiveActions.Count == 0;
         });
 
-        if (steps[(int)currentState] != null &&
-            steps[(int)currentState].gameObject && steps[(int)currentState].gameObject.activeSelf)
+        if (currentStep != null &&
+            currentStep.gameObject && currentStep.gameObject.activeSelf)
         {
-            steps[(int)currentState].gameObject.SetActive(false);
+            currentStep.gameObject.SetActive(false);
         }
 
         currentState++;
@@ -429,10 +449,7 @@ public class TutorialManager : MonoBehaviour
         }
         if (_inputKey == InputKey.ClickButtonEndTurn)
         {
-            if (steps[(int)StepState.EndTurn] != null && steps[(int)StepState.EndTurn].gameObject)
-                steps[(int)StepState.EndTurn].OnExit();
-
-            currentState = StepState.ShopToBattle;
+            currentAllowedInputs = new();
         }
         if (_inputKey == InputKey.ClickButtonRepair)
         {
@@ -465,6 +482,13 @@ public class TutorialManager : MonoBehaviour
 
     public void Check()
     {
+        if (currentState == StepState.EndTurn)
+        {
+            if (currentStep != null && currentStep.gameObject)
+                currentStep.OnExit();
+
+            currentState = StepState.ShopToBattle;
+        }
         if (currentState == StepState.ShopToBattle)
         {
             PhaseBattleController.Instance.SetRunning(false);

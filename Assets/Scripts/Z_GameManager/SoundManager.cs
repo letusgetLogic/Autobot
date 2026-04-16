@@ -48,13 +48,13 @@ public class SoundManager
 
         EventManager.Instance.OnRoll += () => PlayOneShot("Roll");
 
-        EventManager.Instance.OnCraft += unit => PlayOneShot("Buy");
-        EventManager.Instance.OnRecycle += () => PlayOneShot("Sell");
+        EventManager.Instance.OnCraft += inputKey => PlayOneShot("Buy");
+        EventManager.Instance.OnRecycle += inputKey => PlayOneShot("Sell");
 
-        EventManager.Instance.OnRepair += () => PlayOneShot("Repair");
+        EventManager.Instance.OnRepair += inputKey => PlayOneShot("Repair");
 
-        EventManager.Instance.OnLock += () => PlayOneShot("Lock");
-        EventManager.Instance.OnUnlock += () => PlayOneShot("Unlock");
+        EventManager.Instance.OnLock += inputKey => PlayOneShot("Lock");
+        EventManager.Instance.OnUnlock += inputKey => PlayOneShot("Unlock");
 
         EventManager.Instance.OnFusion += () => PlayOneShot("Fusion");
         EventManager.Instance.OnLevelUp += () => PlayOneShot("Level_Up");

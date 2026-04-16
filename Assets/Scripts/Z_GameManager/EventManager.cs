@@ -44,16 +44,16 @@ public class EventManager
     public UnityAction OnDropUnit { get; set; }
 
     public UnityAction OnRoll {  get; set; }
-    public UnityAction OnEndTurnClick{  get; set; }
+    public UnityAction<InputKey> OnEndTurnClick {  get; set; }
     public UnityAction OnEndShop {  get; set; }
 
-    public UnityAction<UnitController> OnCraft {  get; set; }
-    public UnityAction OnRecycle { get; set; }
+    public UnityAction<InputKey> OnCraft {  get; set; }
+    public UnityAction<InputKey> OnRecycle { get; set; }
 
-    public UnityAction OnRepair {  get; set; }
+    public UnityAction<InputKey> OnRepair {  get; set; }
 
-    public UnityAction OnLock {  get; set; }
-    public UnityAction OnUnlock {  get; set; }
+    public UnityAction<InputKey> OnLock {  get; set; }
+    public UnityAction<InputKey> OnUnlock {  get; set; }
 
     public UnityAction OnFusion { get; set; }
     public UnityAction OnLevelUp { get; set; }

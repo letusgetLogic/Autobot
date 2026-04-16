@@ -17,8 +17,6 @@ public class BattleOverState : StateBaseBattle
     {
         Debug.Log("--- BattleOverState ---");
 
-        EventManager.Instance.OnBattleDone?.Invoke();
-
         if (GameManager.Instance.Players.Count < 2)
         {
             Debug.LogWarning("Players.Count = " + GameManager.Instance.Players.Count);
@@ -89,6 +87,8 @@ public class BattleOverState : StateBaseBattle
         }
 
         _ctx.SetState(null);
+
+        EventManager.Instance.OnBattleDone?.Invoke();
     }
 
     public override void OnUpdate(I_FSM_Battle _ctx, float _speed)

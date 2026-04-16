@@ -195,7 +195,7 @@ public class PhaseShopUI : MonoBehaviour
             return;
 
         input.BlocksInput = true;
-        EventManager.Instance.OnEndTurnClick?.Invoke();
+        EventManager.Instance.OnEndTurnClick?.Invoke(InputKey.ClickButtonEndTurn);
         EventManager.Instance.OnButtonSound?.Invoke();
 
         bool hasEnoughCur = Player.Data.Nuts >= MinLeftNut || Player.Data.Tools > 0 && PhaseShopController.Instance.IsAnyRobotDamaged();
@@ -236,7 +236,7 @@ public class PhaseShopUI : MonoBehaviour
 
             SetButtonActive(unit);
 
-            EventManager.Instance.OnRepair?.Invoke();
+            EventManager.Instance.OnRepair?.Invoke(InputKey.ClickButtonRepair);
         }
     }
 
@@ -256,7 +256,7 @@ public class PhaseShopUI : MonoBehaviour
 
             SetButtonActive(unit);
 
-            EventManager.Instance.OnLock?.Invoke();
+            EventManager.Instance.OnLock?.Invoke(InputKey.ClickButtonLock);
         }
     }
 
@@ -276,7 +276,7 @@ public class PhaseShopUI : MonoBehaviour
 
             SetButtonActive(unit);
 
-            EventManager.Instance.OnUnlock?.Invoke();
+            EventManager.Instance.OnUnlock?.Invoke(InputKey.ClickButtonUnlock);
         }
     }
 
@@ -305,7 +305,7 @@ public class PhaseShopUI : MonoBehaviour
 
             PhaseShopController.Instance.SetAttachedGameObject(null);
 
-            EventManager.Instance.OnRecycle?.Invoke();
+            EventManager.Instance.OnRecycle?.Invoke(InputKey.ClickButtonRecycle);
         }
         else input.BlocksInput = false;
     }

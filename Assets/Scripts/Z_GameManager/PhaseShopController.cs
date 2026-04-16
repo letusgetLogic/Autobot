@@ -542,7 +542,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                      _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                EventManager.Instance.OnCraft?.Invoke(_purchased);
+                EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
 
                 Destroy(_purchased.gameObject);
             }
@@ -555,7 +555,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                      _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                EventManager.Instance.OnCraft?.Invoke(_purchased);
+                EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
 
                 Destroy(_purchased.gameObject);
             }
@@ -569,7 +569,7 @@ public class PhaseShopController : MonoBehaviour
 
                 Transport(_purchased, _targetSlot.transform, true);
 
-                EventManager.Instance.OnCraft?.Invoke(_purchased);
+                EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
 
                 _purchased.TriggerCraft();
             }
