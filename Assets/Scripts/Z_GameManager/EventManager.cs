@@ -1,4 +1,5 @@
-﻿using UnityEngine.Events;
+﻿using System;
+using UnityEngine.Events;
 
 public class EventManager
 {
@@ -42,7 +43,6 @@ public class EventManager
     public UnityAction<UnitController> OnAttachedUnit { get; set; }
     public UnityAction<UnitController> OnAttachedUnitCatalog { get; set; }
     public UnityAction OnDropUnit { get; set; }
-
     public UnityAction OnRoll {  get; set; }
     public UnityAction<InputKey> OnEndTurnClick {  get; set; }
     public UnityAction OnEndShop {  get; set; }

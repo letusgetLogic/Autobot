@@ -336,7 +336,7 @@ public class TutorialManager : MonoBehaviour
             if (AbilitySlot)
                 AbilitySlot.EnergyConsumptionIndicator.SetActive(true);
         }
-        if (currentState == StepState.RobotUseAbility)
+        else if (currentState == StepState.RobotUseAbility)
         {
             if (AbilitySlot)
             {
@@ -344,7 +344,7 @@ public class TutorialManager : MonoBehaviour
                 AbilitySlot.EnergyIndicator.SetActive(true);
             }
         }
-        if (currentState == StepState.WaitingForAbility || currentState == StepState.BattleIdle)
+        else if (currentState == StepState.WaitingForAbility || currentState == StepState.BattleIdle)
         {
             PhaseBattleController.Instance.SetRunning(true);
         }
@@ -352,7 +352,18 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedLateEnter()
     {
-        if (currentState == StepState.ClickRobotToRepair)
+        if (currentState == StepState.ShowFactoryReseted)
+        {
+            foreach (var slot in PhaseShopController.Instance.ShopItemSlots())
+            {
+                if (slot.Tutorial && slot.UnitController().Model.Data.UnitType == UnitType.Item)
+                {
+                    slot.Tutorial.HintArrow.SetActive(true);
+                    activeHints.Add(slot);
+                }
+            }
+        }
+        else if (currentState == StepState.ClickRobotToRepair)
         {
             if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
             {
@@ -373,7 +384,7 @@ public class TutorialManager : MonoBehaviour
                 }
             }
         }
-        if (currentState == StepState.ClickRobotToSell)
+        else if (currentState == StepState.ClickRobotToSell)
         {
             if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
             {
@@ -401,20 +412,22 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedExit()
     {
-        if (currentState == StepState.RobotEnergyConsumption)
+        if (currentState == StepState.ShowFactoryReseted)
+        {
+            activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
+        }
+        else if (currentState == StepState.RobotEnergyConsumption)
         {
             if (AbilitySlot)
                 AbilitySlot.EnergyConsumptionIndicator.SetActive(false);
         }
-        if (currentState == StepState.RobotUseAbility)
+        else if (currentState == StepState.RobotUseAbility)
         {
             if (AbilitySlot)
+            {
                 AbilitySlot.AbilityIndicator.SetActive(false);
-        }
-        if (currentState == StepState.RobotUseAbility)
-        {
-            if (AbilitySlot)
                 AbilitySlot.EnergyIndicator.SetActive(false);
+            }
         }
     }
 
@@ -442,16 +455,16 @@ public class TutorialManager : MonoBehaviour
                 currentState == StepState.PickBattery)
                 SetNextStep();
         }
-        if (_inputKey == InputKey.ClickButtonLock)
+        else if (_inputKey == InputKey.ClickButtonLock)
         {
             if (currentState == StepState.LockBattery)
                 SetNextStep();
         }
-        if (_inputKey == InputKey.ClickButtonEndTurn)
+        else if (_inputKey == InputKey.ClickButtonEndTurn)
         {
             currentAllowedInputs = new();
         }
-        if (_inputKey == InputKey.ClickButtonRepair)
+        else if (_inputKey == InputKey.ClickButtonRepair)
         {
             if (currentState == StepState.RepairRobot)
             {
@@ -471,7 +484,7 @@ public class TutorialManager : MonoBehaviour
                 }
             }
         }
-        if (_inputKey == InputKey.ClickButtonRecycle)
+        else if (_inputKey == InputKey.ClickButtonRecycle)
         {
             if (currentState == StepState.SellRobot)
             {
@@ -489,16 +502,16 @@ public class TutorialManager : MonoBehaviour
 
             currentState = StepState.ShopToBattle;
         }
-        if (currentState == StepState.ShopToBattle)
+        else if (currentState == StepState.ShopToBattle)
         {
             PhaseBattleController.Instance.SetRunning(false);
         }
-        if (currentState == StepState.WaitingForAbility)
+        else if (currentState == StepState.WaitingForAbility)
         {
             SetNextStep();
             PhaseBattleController.Instance.SetRunning(false);
         }
-        if (currentState == StepState.BattleIdle)
+        else if (currentState == StepState.BattleIdle)
         {
             SetNextStep();
         }
