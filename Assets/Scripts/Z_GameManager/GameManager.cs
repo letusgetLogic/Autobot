@@ -236,6 +236,12 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    [ContextMenu("Reload Shop")]
+    public void ReloadShop()
+    {
+        Switch(GameState.PlayCutSceneShop);
+        TutorialStepState = TutorialManager.StepState.Turn2;
+    }
 
     /// <summary>
     /// Switches the game state and performs actions based on the new state.

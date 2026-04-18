@@ -74,15 +74,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (lighting != null)
             lighting.SetActive(false);
 
-        EventManager.Instance.OnAttachedUnit += (unit) =>
-        {
-            if (unit == null)
-            {
-                HideDescription();
-            }
-        };
+        EventManager.Instance.OnAttachedUnit += HandleAttachedUnit;
     }
-
+  
     private void OnDisable()
     {
         if (hintLight != null)
@@ -90,6 +84,8 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         if (lighting != null)
             lighting.SetActive(false);
+
+        EventManager.Instance.OnAttachedUnit -= HandleAttachedUnit;
     }
 
     /// <summary>
@@ -298,4 +294,13 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (lighting != null)
             lighting.SetActive(_isActive);
     }
+
+    private void HandleAttachedUnit(UnitController _unit)
+    {
+        if (_unit == null)
+        {
+            HideDescription();
+        }
+    }
+
 }

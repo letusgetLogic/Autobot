@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PhaseShopController : MonoBehaviour
 {
@@ -601,8 +602,8 @@ public class PhaseShopController : MonoBehaviour
 
         if (model != null)
         {
-            model.SetDataView(_dropSlot.CompareTag("Slot Charge") 
-                ? UnitState.InSlotCharge 
+            model.SetDataView(_dropSlot.CompareTag("Slot Charge")
+                ? UnitState.InSlotCharge
                 : UnitState.InSlotTeam,
                 true);
         }
@@ -990,21 +991,36 @@ public class PhaseShopController : MonoBehaviour
         return game.Mode == GameMode.AI && player.Data.IsAI;
     }
 
+    public bool HasAllFullRobots()
+    {
+        int robots = 0;
+        int fullRobots = 0;
+
+        foreach (var slot in TeamSlots())
+        {
+            var unitController = slot.UnitController();
+            if (unitController != null)
+            {
+                robots++;
+                fullRobots += unitController.Model.IsFullDurability() ? 1 : 0;
+            }
+        }
+
+        return fullRobots == robots;
+    }
 
     public bool IsAnyRobotDamaged()
     {
         bool value = false;
 
-        foreach (var slot in teamSlots)
+        foreach (var slot in TeamSlots())
         {
-            if (slot.gameObject.activeSelf)
+            var unitController = slot.UnitController();
+            if (unitController != null)
             {
-                var unitController = slot.UnitController();
-                if (unitController != null)
-                {
-                    value = unitController.Model.IsFullDurability() == false;
-                }
+                value = unitController.Model.IsFullDurability() == false;
             }
+
         }
 
         return value;

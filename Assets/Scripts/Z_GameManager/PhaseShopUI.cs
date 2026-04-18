@@ -14,6 +14,7 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private PanelConfirmation panelLeftCurrency;
     [SerializeField] private GameObject hintLabel;
     [SerializeField] private TextMeshProUGUI hintLabelText;
+    [SerializeField] private GameObject energyBonusLabel;
 
     [Header("Player Infos Components")]
     [SerializeField] private TextMeshProUGUI nameLabel;
@@ -24,7 +25,6 @@ public class PhaseShopUI : MonoBehaviour
         nutLabel,
         toolLabel;
     [SerializeField] private Image nutBG, toolBG;
-    [SerializeField] private GameObject energyBonusLabel;
     [SerializeField] private RectTransform clockPointer;
 
     [Header("Roll Button")]
@@ -160,7 +160,7 @@ public class PhaseShopUI : MonoBehaviour
                 energyBonusLabel.SetActive(true);
                 break;
             case >= 2:
-                energyBonusLabel.SetActive(false);
+                energyBonusLabel.SetActive(true);
                 break;
         }
         energyText.text = "+" + PackManager.Instance.MyPack.ChargingEnergy.Value.ToString();

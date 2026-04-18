@@ -780,6 +780,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1125540049}
     m_Modifications:
+    - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
       value: Slot Shop (1)
@@ -3245,8 +3249,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1074870765}
     m_Modifications:
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6341117824451997600}
+    - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -5659,8 +5667,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1074870765}
     m_Modifications:
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6341117824451997600}
+    - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -5947,12 +5959,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1125540049}
     m_Modifications:
+    - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
       value: Slot Shop (2)
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1677250421964741108, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5731142434893304905, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
@@ -8073,6 +8093,7 @@ MonoBehaviour:
   panelLeftCurrency: {fileID: 346541079}
   hintLabel: {fileID: 596501450}
   hintLabelText: {fileID: 1741093535}
+  energyBonusLabel: {fileID: 7215813030263568300}
   nameLabel: {fileID: 1447329010790009410}
   turnLabel: {fileID: 2445531889082014764}
   heartLabel: {fileID: 9025784649223426839}
@@ -8080,7 +8101,6 @@ MonoBehaviour:
   toolLabel: {fileID: 2918110247195174373}
   nutBG: {fileID: 6316395741965184399}
   toolBG: {fileID: 6316395741890788082}
-  energyBonusLabel: {fileID: 7215813030263568300}
   clockPointer: {fileID: 1763511378}
   rollCostNut: {fileID: 6341657538504199756}
   rollCostTool: {fileID: 6341657538504199755}
@@ -8429,8 +8449,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1074870765}
     m_Modifications:
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6341117824451997600}
+    - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -14789,7 +14813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621927032496362458, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5500056419142655314, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: targetObject
@@ -14970,6 +14994,10 @@ PrefabInstance:
       propertyPath: 'Hints.Array.data[0]'
       value: 
       objectReference: {fileID: 120102550}
+    - target: {fileID: 7917707842360652564, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8005942056277312388, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: 'TargetsToBeChild.Array.data[0]'
       value: 
