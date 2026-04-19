@@ -80,8 +80,7 @@ public class UnitView : MonoBehaviour
         buffHealth,
         buffAttack,
         addEnergy,
-        consumEnergy,
-        shutdown;
+        consumEnergy;
 
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
@@ -106,6 +105,9 @@ public class UnitView : MonoBehaviour
         repairStepFillAtk1,
         repairStepFillAtk2,
         repairStepFillAtk3;
+
+    [Header("Feedback")]
+    [SerializeField] private GameObject shutdown;
 
     [Header("Settings")]
     [SerializeField] private Canvas canvasStats;
@@ -156,7 +158,7 @@ public class UnitView : MonoBehaviour
         if (damageFade) damageFade.sprite = _sprite;
         if (shadowSpriteRenderer) shadowSpriteRenderer.sprite = _sprite;
         if (doAbilitySpriteRenderer) doAbilitySpriteRenderer.sprite = _sprite;
-        if (getAbilitySpriteRenderer)getAbilitySpriteRenderer.sprite = _sprite;
+        if (getAbilitySpriteRenderer) getAbilitySpriteRenderer.sprite = _sprite;
         if (myName) myName.text = _name;
         gameObject.name = _id;
     }
@@ -442,7 +444,7 @@ public class UnitView : MonoBehaviour
     public void ShowDamage(int _damage, int _health)
     {
         health.text = _health.ToString();
-        shutdown.enabled = _health <= 0;
+        shutdown.SetActive(_health <= 0);
         damage.enabled = true;
         damage.text = _damage.ToString();
         damageFade.enabled = true;
@@ -459,7 +461,7 @@ public class UnitView : MonoBehaviour
         yield return new WaitForSeconds(settings.DurationShowDamage);
 
         damage.enabled = false;
-        shutdown.enabled = false;   
+        shutdown.SetActive(false);
     }
 
     /// <summary>

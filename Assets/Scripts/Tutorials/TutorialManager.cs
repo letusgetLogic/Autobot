@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -54,14 +54,12 @@ public class TutorialManager : MonoBehaviour
         Turn2,
         ClickRobotToRepair,
         RepairRobot,
-        Compliment,
+        RepairCompliment,
         ClickRobotToSell,
         SellRobot,
-        ShowRoll,
-        ShowFusion1,
-        ShowFusion2,
-        ShowChargingStation1,
-        ShowChargingStation2,
+        SellCompliment,
+        ShowFusion,
+        TryOut,
 
         ShopIdle,
         ShopToBattle2,
@@ -145,6 +143,38 @@ public class TutorialManager : MonoBehaviour
                 RenameScriptableObject.RenameAsset(setting, $"{i}_{(StepState)i}");
             }
         }
+    }
+    [ContextMenu("OnGetName")]
+    private void GetName()
+    {
+        foreach (var item in GetAssetNamesInFolder("Scriptable Objects/Tutorial Settings/"))
+        {
+            Debug.Log(item);
+        }
+    }
+    public static List<string> GetAssetNamesInFolder(string folderPath, string typeFilter = "")
+    {
+        // Ensure path starts with Assets/
+        if (!folderPath.StartsWith("Assets/"))
+            folderPath = "Assets/" + folderPath;
+
+        // Define the search filter (e.g., "t:ScriptableObject" or empty for all)
+        string filter = string.IsNullOrEmpty(typeFilter) ? "" : typeFilter;
+
+        // Find all assets in the specified folder
+        string[] guids = AssetDatabase.FindAssets(filter, new[] { folderPath });
+
+        List<string> assetNames = new List<string>();
+
+        foreach (string guid in guids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            // Extract the filename without extension
+            string name = System.IO.Path.GetFileNameWithoutExtension(assetPath);
+            assetNames.Add(name);
+        }
+
+        return assetNames;
     }
 #endif
 
@@ -354,6 +384,24 @@ public class TutorialManager : MonoBehaviour
         {
             PhaseBattleController.Instance.SetRunning(true);
         }
+        else if (currentState == StepState.RepairRobot)
+        {
+            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
+            {
+                foreach (var slot in PhaseShopController.Instance.TeamSlots())
+                {
+                    var unit = slot.UnitController();
+                    if (unit != null && unit.Model.IsFullDurability() == false)
+                    {
+                        if (slot.Tutorial)
+                        {
+                            slot.Tutorial.HintArrow.SetActive(true);
+                            activeHints.Add(slot);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void OnValidatedLateEnter()
@@ -382,7 +430,6 @@ public class TutorialManager : MonoBehaviour
                         if (slot.Tutorial)
                         {
                             slot.Tutorial.HintArrow.SetActive(true);
-                            activeHints.Add(slot);
                         }
                     }
                 }
@@ -488,7 +535,7 @@ public class TutorialManager : MonoBehaviour
             case InputKey.ClickButtonRecycle:
                 if (currentState == StepState.SellRobot)
                 {
-                    activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false)) ;
+                    activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
                     SetNextStep();
                 }
                 break;
@@ -498,26 +545,41 @@ public class TutorialManager : MonoBehaviour
 
     public void Check()
     {
-        if (currentState == StepState.EndTurn)
+        switch(currentState)
         {
-            if (currentStep != null && currentStep.gameObject)
-                currentStep.OnExit();
+            case StepState.EndTurn:
+                if (currentStep != null && currentStep.gameObject)
+                    currentStep.OnExit();
 
-            currentState = StepState.ShopToBattle;
+                currentState = StepState.ShopToBattle;
+                break;
+            case StepState.ShopToBattle:
+                PhaseBattleController.Instance.SetRunning(false);
+                break;
+            case StepState.WaitingForAbility:
+                SetNextStep();
+                PhaseBattleController.Instance.SetRunning(false);
+                break;
+            case StepState.BattleIdle:
+                SetNextStep();
+                break;
+            case StepState.ShopIdle:
+                SetNextStep();
+                break;
+            case StepState.ShopToBattle2:
+                SetNextStep();
+                break;
         }
-        else if (currentState == StepState.ShopToBattle)
+    }
+
+    public bool IsPreventingDrop()
+    {
+        if (currentState == StepState.RepairRobot)
         {
-            PhaseBattleController.Instance.SetRunning(false);
+            return true;
         }
-        else if (currentState == StepState.WaitingForAbility)
-        {
-            SetNextStep();
-            PhaseBattleController.Instance.SetRunning(false);
-        }
-        else if (currentState == StepState.BattleIdle)
-        {
-            SetNextStep();
-        }
+
+        return false;
     }
 
     private IEnumerator DeactivateHintArrowSlot(bool _case)
@@ -545,5 +607,18 @@ public class TutorialManager : MonoBehaviour
     public int Getint(string KeyName)
     {
         return PlayerPrefs.GetInt(KeyName);
+    }
+
+    public bool IsAbledToSetNextStep()
+    {
+        foreach (var allowedInput in currentAllowedInputs)
+        {
+            if (allowedInput == InputKey.All)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

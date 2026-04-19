@@ -7,7 +7,7 @@ public class ReplayBattleButton : MonoBehaviour
     /// </summary>
     public void OnReplay()
     {
-        if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonReplay))
+        if (GameManager.Instance.IsTutorialRunning || InputManager.Instance.IsBlockingInput(InputKey.ClickButtonReplay))
             return;
 
         if (GameManager.Instance.Replay != null)

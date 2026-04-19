@@ -66,7 +66,8 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
         }
 
         var tutorial = TutorialManager.Instance;
-        if (tutorial != null && GameManager.Instance.IsTutorialRunning)
+        if (GameManager.Instance.IsTutorialRunning && 
+            tutorial != null && tutorial.IsAbledToSetNextStep())
         {
             Debug.Log("SetNextStep " + GameManager.Instance.ClickIndex);
             tutorial.SetNextStep();

@@ -53,6 +53,10 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
             // Transports unit per click, only to slot team and slot charge.
             if (slot.IsDroppable)
             {
+                if (GameManager.Instance.IsTutorialRunning &&
+                    TutorialManager.Instance && TutorialManager.Instance.IsPreventingDrop())
+                    return;
+
                 PhaseShopController.Instance.ManageAttachedUnit(attached, slot, null);
                 PhaseShopController.Instance.SetAttachedGameObject(null);
             }

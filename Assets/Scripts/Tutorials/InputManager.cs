@@ -50,6 +50,12 @@
             {
                 foreach (var allowedInput in allowedInputs)
                 {
+                    if (allowedInput == InputKey.All)
+                    {
+                        isChecking = false;
+                        return isInputBlocked;
+                    }
+
                     if (allowedInput == _key)
                     {
                         isChecking = false;

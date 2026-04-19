@@ -1,6 +1,7 @@
 ﻿public enum InputKey
 {
-    None,
+    None = -1,
+    All = 0,
 
     AlwaysEnabled,
 
