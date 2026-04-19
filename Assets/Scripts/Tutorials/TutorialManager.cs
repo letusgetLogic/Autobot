@@ -32,6 +32,9 @@ public class TutorialManager : MonoBehaviour
         PickBattery,
         ShowFactoryReseted,
         LockBattery,
+        ShowTeamOrder,
+        ShowFightOrder,
+        ShowSwap,
         EndTurn,
 
         ShopToBattle,
@@ -51,12 +54,14 @@ public class TutorialManager : MonoBehaviour
         Turn2,
         ClickRobotToRepair,
         RepairRobot,
-        TachiTachiPlayer,
+        Compliment,
         ClickRobotToSell,
         SellRobot,
-        ClickRobotToFusion,
-        PickToFusion,
         ShowRoll,
+        ShowFusion1,
+        ShowFusion2,
+        ShowChargingStation1,
+        ShowChargingStation2,
 
         ShopIdle,
         ShopToBattle2,
@@ -114,6 +119,7 @@ public class TutorialManager : MonoBehaviour
     {
         GameManager.Instance.LoadGame(GameMode.Tutorial);
     }
+
 #if UNITY_EDITOR
     [ContextMenu("OnRename")]
     private void OnRename()
@@ -137,11 +143,11 @@ public class TutorialManager : MonoBehaviour
                     continue;
 
                 RenameScriptableObject.RenameAsset(setting, $"{i}_{(StepState)i}");
-                //setting.name = $"{i}_{(StepState)i}";
             }
         }
     }
 #endif
+
     private void Awake()
     {
         if (Instance != null)

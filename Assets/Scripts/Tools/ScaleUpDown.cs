@@ -12,6 +12,7 @@ public class ScaleUpDown : MonoBehaviour
         Up,
         Down,
         Manually,
+        AutomaticReset,
     }
 
     [Tooltip("Automatic - Scale up and down when component is enabled\n" +
@@ -74,6 +75,10 @@ public class ScaleUpDown : MonoBehaviour
 
             case RunState.Manually:
                 scaleState = Scale.None;
+                break;
+
+            case RunState.AutomaticReset:
+                scaleState = Scale.Up;
                 break;
         }
     }
@@ -142,6 +147,11 @@ public class ScaleUpDown : MonoBehaviour
                         if (isSetBackToScaleMin)
                             SetDefault();
                         break;
+
+                    case RunState.AutomaticReset:
+                        currentValue = 0f;
+                        scaleState = Scale.Up;
+                        break;
                 }
             }
 
@@ -184,6 +194,10 @@ public class ScaleUpDown : MonoBehaviour
                         OnRunningDone?.Invoke();
                         if (isSetBackToScaleMin)
                             SetDefault();
+                        break;
+
+                    case RunState.AutomaticReset:
+                        scaleState = Scale.None;
                         break;
                 }
             }
