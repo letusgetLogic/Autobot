@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -524,7 +525,26 @@ public class GameManager : MonoBehaviour
         {
             TutorialManager.Instance.SetNextStep();
         }
+    }
 
+    public int UnlockIndex { get; set; } = 0;
+    public void UnlockTier()
+    {
+        if (PhaseShopController.Instance &&
+            PhaseShopUI.Instance &&
+            CurrentPlayer != null)
+        {
+            bool isUnlocking = false;
+
+            if (CurrentPlayer.Data.Turn == UnlockIndex)
+            {
+                isUnlocking = true;
+            }
+
+            PhaseShopUI.Instance.SetUnlockedTier(isUnlocking, UnlockIndex);
+
+            UnlockIndex = 0;
+        }
     }
 
 }

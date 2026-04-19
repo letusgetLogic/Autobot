@@ -1206,6 +1206,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &104809612106593160
 MonoBehaviour:
@@ -1264,7 +1265,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -1277,6 +1277,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &6534991780183065843
@@ -1788,7 +1789,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &369656264935327143
@@ -2518,6 +2519,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &6717720057064527714
 MonoBehaviour:
@@ -2576,7 +2578,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -2589,6 +2590,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &3662663707324823341
@@ -3247,6 +3249,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &472902488049609547
 MonoBehaviour:
@@ -3305,7 +3308,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -3318,6 +3320,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &6826117542732405647
@@ -4876,7 +4879,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1112002107888098787
@@ -5038,7 +5041,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1120363213723705836
@@ -5386,7 +5389,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1272158336602475352
@@ -5444,6 +5447,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &6323503179462337961
 MonoBehaviour:
@@ -5502,7 +5506,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -5515,6 +5518,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &9017558053660633791
@@ -7796,7 +7800,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1877335545928373433
@@ -7883,7 +7887,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1907121190903240139
@@ -8983,7 +8987,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2073610187074563589
@@ -9128,6 +9132,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &4193489155755168321
 MonoBehaviour:
@@ -9186,7 +9191,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -9199,6 +9203,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &6868562808780866261
@@ -9724,7 +9729,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2192460173694793595
@@ -10161,6 +10166,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7689928789331688712
 MonoBehaviour:
@@ -10219,7 +10225,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -10232,6 +10237,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &2229695575537674133
@@ -11975,7 +11981,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2574453159449920218
@@ -13082,7 +13088,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2848415866261524199
@@ -13227,6 +13233,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7969831275885207100
 MonoBehaviour:
@@ -13285,7 +13292,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -13298,6 +13304,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &903759518497183578
@@ -13746,7 +13753,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2997532447070874587
@@ -14366,7 +14373,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3138211161584015804
@@ -14722,6 +14729,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &5154714955774111382
 MonoBehaviour:
@@ -14780,7 +14788,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -14793,6 +14800,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &9161487865086731856
@@ -14864,6 +14872,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &1784710921659874439
 MonoBehaviour:
@@ -14922,7 +14931,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -14935,6 +14943,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &1057156883752081652
@@ -15267,6 +15276,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &1631024669554904132
 MonoBehaviour:
@@ -15325,7 +15335,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -15338,6 +15347,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &523502868712883673
@@ -15409,6 +15419,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &8812109155952523697
 MonoBehaviour:
@@ -15467,7 +15478,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -15480,6 +15490,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &1700490424566449300
@@ -15754,7 +15765,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3298629304938765248
@@ -16365,7 +16376,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3438155815348694668
@@ -16626,7 +16637,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3586823961745525915
@@ -16791,6 +16802,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7607973673999130462
 MonoBehaviour:
@@ -16849,7 +16861,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -16862,6 +16873,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &2663589709401066263
@@ -17049,7 +17061,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3632600689448918609
@@ -19634,7 +19646,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4307123154302181317
@@ -20900,6 +20912,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &4394761186963484805
 MonoBehaviour:
@@ -20958,7 +20971,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -20971,6 +20983,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &3945113916731357909
@@ -21332,7 +21345,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4652931181061977159
@@ -22775,7 +22788,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4785551779771981301
@@ -22833,6 +22846,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &2540581268995253404
 MonoBehaviour:
@@ -22891,7 +22905,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -22904,6 +22917,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &7024296101451504704
@@ -23274,6 +23288,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &1910805602431593886
 MonoBehaviour:
@@ -23332,7 +23347,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -23345,6 +23359,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &8206614579944207087
@@ -24671,7 +24686,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5118459313367011521
@@ -25620,7 +25635,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5279786914982685123
@@ -26014,6 +26029,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &6199681457621373882
 MonoBehaviour:
@@ -26072,7 +26088,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -26085,6 +26100,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &8515356643542607081
@@ -26231,6 +26247,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &6700535270809652607
 MonoBehaviour:
@@ -26289,7 +26306,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -26302,6 +26318,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &6879337377828840175
@@ -26538,7 +26555,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5526154588158392610
@@ -28109,7 +28126,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5886626852811506529
@@ -28283,7 +28300,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5905598215425888343
@@ -28992,7 +29009,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5983083308304106906
@@ -29050,6 +29067,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &149206433736498831
 MonoBehaviour:
@@ -29108,7 +29126,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -29121,6 +29138,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &7414720722063069924
@@ -29453,6 +29471,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7503972624422860394
 MonoBehaviour:
@@ -29511,7 +29530,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -29524,6 +29542,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &1171730159161604831
@@ -33340,7 +33359,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6744487435410745365
@@ -33398,6 +33417,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &4814463179690020466
 MonoBehaviour:
@@ -33456,7 +33476,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -33469,6 +33488,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &6361597541888378115
@@ -34616,6 +34636,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &4304515115389749370
 MonoBehaviour:
@@ -34674,7 +34695,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -34687,6 +34707,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &2345512247803757745
@@ -34758,6 +34779,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7353784074822020813
 MonoBehaviour:
@@ -34816,7 +34838,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -34829,6 +34850,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &836320783216990365
@@ -35645,7 +35667,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7070618092272881827
@@ -36730,7 +36752,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7229114792610752099
@@ -38513,6 +38535,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7423627445007223924
 MonoBehaviour:
@@ -38571,7 +38594,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -38584,6 +38606,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &5072046048209553220
@@ -38684,7 +38707,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7665844298398235706
@@ -39429,7 +39452,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7817383073051436977
@@ -40283,6 +40306,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &240951251090892447
 MonoBehaviour:
@@ -40341,7 +40365,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -40354,6 +40377,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &4903858048033342183
@@ -40974,6 +40998,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &1754552087019395082
 MonoBehaviour:
@@ -41032,7 +41057,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -41045,6 +41069,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &8125465367753715015
@@ -43418,6 +43443,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &1284130899682061973
 MonoBehaviour:
@@ -43476,7 +43502,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -43489,6 +43514,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &3204179498900114041
@@ -43854,6 +43880,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &4376528385366792637
 MonoBehaviour:
@@ -43912,7 +43939,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -43925,6 +43951,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &7716957086560917515
@@ -44112,7 +44139,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &8681619661468954634
@@ -44778,6 +44805,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &3357284958895783599
 MonoBehaviour:
@@ -44836,7 +44864,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -44849,6 +44876,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &498938695280524007
@@ -45201,6 +45229,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &6597122372287033717
 MonoBehaviour:
@@ -45259,7 +45288,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -45272,6 +45300,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &5920497544781390557
@@ -45430,6 +45459,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7022577257551130922
 MonoBehaviour:
@@ -45488,7 +45518,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -45501,6 +45530,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &5517613044071401924
@@ -45688,7 +45718,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &8890659920834853356
@@ -45908,6 +45938,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &7099851410186190134
 MonoBehaviour:
@@ -45966,7 +45997,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -45979,6 +46009,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &6245320734459966996
@@ -47494,6 +47525,7 @@ MonoBehaviour:
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
+  editorHasView: 1
   editorDefinedPack: {fileID: 11400000, guid: 39400ac2af02b6c46b4dc93cca9db817, type: 2}
 --- !u!114 &6125643843493857156
 MonoBehaviour:
@@ -47552,7 +47584,6 @@ MonoBehaviour:
   buffAttack: {fileID: 0}
   addEnergy: {fileID: 0}
   consumEnergy: {fileID: 0}
-  shutdown: {fileID: 0}
   repairDisplayHp: {fileID: 0}
   repairPanelHp2: {fileID: 0}
   repairPanelHp3: {fileID: 0}
@@ -47565,6 +47596,7 @@ MonoBehaviour:
   repairStepFillAtk1: {fileID: 0}
   repairStepFillAtk2: {fileID: 0}
   repairStepFillAtk3: {fileID: 0}
+  shutdown: {fileID: 0}
   canvasStats: {fileID: 0}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
 --- !u!114 &6549396874430894734

@@ -42,10 +42,15 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             if (CompareTag("Slot Shop"))
             {
                 var unit = UnitController();
-                if (unit && unit.IsRobot(unit.Model.SoUnit.UnitType))
-                    return InputKey.HoverSlotShopBot;
-                else
-                    return InputKey.HoverSlotShopItem;
+                if (unit && 
+                    unit.Model != null && 
+                    unit.Model.SoUnit != null)
+                {
+                    if (unit.IsRobot(unit.Model.SoUnit.UnitType))
+                        return InputKey.HoverSlotShopBot;
+                    else
+                        return InputKey.HoverSlotShopItem;
+                }
             }
 
             if (CompareTag("Slot Random"))

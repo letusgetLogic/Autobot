@@ -122,26 +122,32 @@ public class PackManager : MonoBehaviour
 
         if (_turns == a)
         {
+            GameManager.Instance.UnlockIndex = _turns;
             AddUnits(MyPack.BotsTier1, MyPack.ItemsTier1);
         }
         if (_turns == b)
         {
+            GameManager.Instance.UnlockIndex = _turns;
             AddUnits(MyPack.BotsTier2, MyPack.ItemsTier2);
         }
         if (_turns == c)
         {
+            GameManager.Instance.UnlockIndex = _turns;
             AddUnits(MyPack.BotsTier3, MyPack.ItemsTier3);
         }
         if (_turns == d)
         {
+            GameManager.Instance.UnlockIndex = _turns;
             AddUnits(MyPack.BotsTier4, MyPack.ItemsTier4);
         }
         if (_turns == e)
         {
+            GameManager.Instance.UnlockIndex = _turns;
             AddUnits(MyPack.BotsTier5, MyPack.ItemsTier5);
         }
         if (_turns == f)
         {
+            GameManager.Instance.UnlockIndex = _turns;
             AddUnits(MyPack.BotsTier6, MyPack.ItemsTier6);
         }
     }
@@ -157,11 +163,19 @@ public class PackManager : MonoBehaviour
     {
         foreach (var unit in _botTier)
         {
-            Bots.Add(unit);
+            foreach (var item in Bots)
+            {
+                if (item != unit)
+                    Bots.Add(unit);
+            }
         }
         foreach (var unit in _itemTier)
         {
-            Items.Add(unit);
+            foreach (var item in Items)
+            {
+                if (item != unit)
+                    Items.Add(unit);
+            }
         }
     }
 

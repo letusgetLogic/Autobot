@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +11,11 @@ public class PhaseShopUI : MonoBehaviour
     [Header("Settings")]
     [SerializeField]
     private float durationCoinsRedDefault = 0.2f;
+
+    [Header("Unlock Tier")]
+    [SerializeField] private List<GameObject> unlockTierObjects;
+    [SerializeField] private GameObject tier2;
+    [SerializeField] private GameObject tier3;
 
     [Header("References")]
     [SerializeField] private PanelConfirmation panelLeftCurrency;
@@ -134,6 +141,13 @@ public class PhaseShopUI : MonoBehaviour
         Player.Data.Tools += _addTools;
         nutLabel.text = Player.Data.Nuts.ToString();
         toolLabel.text = Player.Data.Tools.ToString();
+    }
+
+    public void SetUnlockedTier(bool _active, int _index)
+    {
+        unlockTierObjects.ForEach(x => x.SetActive(_active));
+        tier2.SetActive(_index == 2);
+        tier3.SetActive(_index == 3);
     }
 
     /// <summary>
