@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhaseShopController : MonoBehaviour
@@ -992,6 +993,21 @@ public class PhaseShopController : MonoBehaviour
 
         return game.Mode == GameMode.AI && player.Data.IsAI;
     }
+
+    public SaveUnitData[] GetRandomShopBots()
+    {
+        SaveUnitData[] saveUnitDatas = new SaveUnitData[3];
+        for (int i = 0; i < 3; i++)
+        {
+            int randomNumber = Random.Range(0, PackManager.Instance.Bots.Count);
+            var soUnit = PackManager.Instance.Bots[randomNumber];
+            var unit = gameObject.AddComponent<UnitController>();
+            unit.Initialize(soUnit, randomNumber, null, UnitState.InSlotShop, true);
+            saveUnitDatas[i] = unit.Model.Data;
+        }
+        return saveUnitDatas;
+    }
+
 
     public bool HasAllFullRobots()
     {

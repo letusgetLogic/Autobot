@@ -1,15 +1,15 @@
-﻿public class AI_Idle : StateBaseBattle
+﻿public class AI_Idle : StateBaseAI
 {
-    public AI_Idle(float _maxTimeCount) : base(_maxTimeCount)
+    public AI_Idle() : base()
     {
     }
 
-    public override void OnEnter(I_FSM_Battle _ctx)
+    public override void OnEnter(I_FSM_AI _ctx)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
+    public override void OnUpdate(I_FSM_AI _ctx, float _speed)
     {
         throw new System.NotImplementedException();
     }

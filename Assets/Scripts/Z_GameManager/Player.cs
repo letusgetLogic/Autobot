@@ -21,30 +21,38 @@ public class Player
         Data.Turn++;
         PackManager.Instance.AssignList(Data.Turn);
         Data.TeamUnitDatas = new SaveUnitData[5];
-        if (Data.Turn == 1)
-        {
-            var shopBots = GetRandomShopBots();
-            for (int i = 0; i < shopBots.Length; i++)
-            {
-                Data.TeamUnitDatas[i] = shopBots[i];
-            }
-        }
+        BuildTeamByAI();
         GameManager.Instance.Switch(GameState.EndOfTurn);
     }
 
-    private SaveUnitData[] GetRandomShopBots()
+    private void BuildTeamByAI()
     {
-        SaveUnitData[] saveUnitDatas = new SaveUnitData[3];
-        for (int i = 0; i < 3; i++)
+        var shopBots = PhaseShopController.Instance.GetRandomShopBots();
+
+        switch(Data.Turn)
         {
-            int randomNumber = Random.Range(0, PackManager.Instance.Bots.Count);
-            var soUnit = PackManager.Instance.Bots[randomNumber];
-            var unit = PhaseShopController.Instance ? PhaseShopController.Instance.AddComponent<UnitController>()
-                : GameManager.Instance.AddComponent<UnitController>();
-            unit.Initialize(soUnit, randomNumber, null, UnitState.InSlotShop, true);
-            saveUnitDatas[i] = unit.Model.Data;
+            case 1:
+                for (int i = 0; i < shopBots.Length; i++)
+                {
+                    Data.TeamUnitDatas[i] = shopBots[i];
+                }
+                break;
+            case 2:
+                int index = 0;
+                int leader = Random.Range(0, Data.TeamUnitDatas.Length);
+                for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
+                {
+                    if (Data.TeamUnitDatas[i] == null)
+                    {
+                        Data.TeamUnitDatas[i] = shopBots[index];
+                        index++;
+                    }
+                }
+                (Data.TeamUnitDatas[0], Data.TeamUnitDatas[leader]) = (Data.TeamUnitDatas[leader], Data.TeamUnitDatas[0]);
+                break;
         }
-        return saveUnitDatas;
+        
+
     }
 
     /// <summary>
@@ -141,7 +149,7 @@ public class Player
     /// </summary>
     public void StartBattle()
     {
-        
+
     }
 
     /// <summary>
