@@ -486,7 +486,8 @@ public class UnitModel
 
         Data.SetEnergy(Data.Cur.ENG + _otherCurrent.ENG);
 
-        View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
+        if (View != null)
+            View.SetData(Data.FullHP, Data.FullATK, Data.Cur.HP, Data.Cur.ATK, Data.Cur.ENG);
     }
 
     /// <summary>
@@ -582,6 +583,9 @@ public class UnitModel
     public void SetRepairPanel()
     {
         if (Repair == null)
+            return;
+
+        if (View == null)
             return;
 
         View.SetRepairPanelActive(Data.FullHP >= 2, Data.FullHP >= 3);

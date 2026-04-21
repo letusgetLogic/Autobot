@@ -512,7 +512,7 @@ public class PhaseShopController : MonoBehaviour
                     // else fusion, if both are fusible.
                     if (IsFusible(_target, _attached))
                     {
-                        _target.UpdateLevel(_attached.Model, true);
+                        _target.UpdateLevel(_attached.Model.Data, true);
                         Destroy(_attached.gameObject);
                     }
                     else StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
@@ -550,7 +550,7 @@ public class PhaseShopController : MonoBehaviour
             // case: buy and bots are fusible.
             else if (IsFusible(_target, _purchased))
             {
-                _target.UpdateLevel(_purchased.Model, true);
+                _target.UpdateLevel(_purchased.Model.Data, true);
                 _target.TriggerCraft();
 
                 PhaseShopUI.Instance.UpdateCurrency(
@@ -994,20 +994,25 @@ public class PhaseShopController : MonoBehaviour
         return game.Mode == GameMode.AI && player.Data.IsAI;
     }
 
-    public SaveUnitData[] GetRandomShopBots()
+    public UnitController[] GetRandomShopBots()
     {
-        SaveUnitData[] saveUnitDatas = new SaveUnitData[3];
-        for (int i = 0; i < 3; i++)
+        UnitController[] controllers = new UnitController[ShopBotSlots().Length];
+        for (int i = 0; i < ShopBotSlots().Length; i++)
         {
             int randomNumber = Random.Range(0, PackManager.Instance.Bots.Count);
             var soUnit = PackManager.Instance.Bots[randomNumber];
-            var unit = gameObject.AddComponent<UnitController>();
-            unit.Initialize(soUnit, randomNumber, null, UnitState.InSlotShop, true);
-            saveUnitDatas[i] = unit.Model.Data;
+            var unit = AddUnitController(soUnit, randomNumber, null, UnitState.InSlotShop);
+            controllers[i] = unit;
         }
-        return saveUnitDatas;
+        return controllers;
     }
 
+    public UnitController AddUnitController(SoUnit _soUnit, int _index, SaveUnitData _unitData, UnitState _unitState)
+    {
+        var unit = gameObject.AddComponent<UnitController>();
+        unit.Initialize(_soUnit, _index, null, UnitState.InSlotShop, true);
+        return unit;
+    }
 
     public bool HasAllFullRobots()
     {

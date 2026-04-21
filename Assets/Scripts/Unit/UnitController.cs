@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 /// <summary>
 /// Creating and initializing components.
@@ -108,6 +107,12 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public bool HasView =>
+        (PhaseShopController.Instance && GameManager.Instance.CurrentPlayer.Data.IsAI == false)
+        || PhaseBattleController.Instance
+        || (Application.isPlaying == false && editorHasView);
+
+
     [ContextMenu("OnInitialize")]
     public void OnInit()
     {
@@ -149,8 +154,6 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(this, _soUnit, _data, isRepairActive ? new RepairSystem() : null);
         }
 
-        
-
         if (model.IsRobot() && model.Repair != null)
         {
             model.InitRepair();
@@ -158,25 +161,18 @@ public class UnitController : MonoBehaviour
 
         model.Data.IsTeamLeft = _isTeamLeft;
 
-        var shop = PhaseShopController.Instance;
-        var battle = PhaseBattleController.Instance;
-        bool hasView = 
-            (shop && GameManager.Instance.CurrentPlayer.Data.IsAI == false) 
-            || battle 
-            || (Application.isPlaying == false && editorHasView);
-
-        if (hasView)
+        if (HasView)
         {
             model.InitView(view);
 
             if (Application.isPlaying) 
                 StartCoroutine(model.UpdateLevelXPView(model.IsPhaseShop(model.Data.UnitState), false));
             else
-                model.UpdateLevelXP(hasView);
+                model.UpdateLevelXP(HasView);
         }
-        else model.UpdateLevelXP(hasView);
+        else model.UpdateLevelXP(HasView);
 
-        model.SetDataView(_unitState, hasView);
+        model.SetDataView(_unitState, HasView);
     }
 
     /// <summary>
@@ -319,16 +315,20 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Updates stats while fusioning.
     /// </summary>
-    public void UpdateLevel(UnitModel _draggingModel, bool _isPhaseShop)
+    public void UpdateLevel(SaveUnitData _draggingData, bool _isPhaseShop)
     {
         model.AddFusion(
-            new Attribute(_draggingModel.Data.XP, _draggingModel.Data.XP),
-            _draggingModel.Data.Buff,
-            _draggingModel.Data.TempBuff,
-            _draggingModel.Data.Cur,
-            _draggingModel.Data.Cur.HP == _draggingModel.Data.FullHP);
+            new Attribute(_draggingData.XP, _draggingData.XP),
+            _draggingData.Buff,
+            _draggingData.TempBuff,
+            _draggingData.Cur,
+            _draggingData.Cur.HP == _draggingData.FullHP);
 
-        model.Data.SetXP(model.Data.XP + _draggingModel.Data.XP);
+        model.Data.SetXP(model.Data.XP + _draggingData.XP);
+
+        if (HasView == false)
+            return;
+
         StartCoroutine(model.UpdateLevelXPView(_isPhaseShop, true));
 
         if (model.Repair != null)

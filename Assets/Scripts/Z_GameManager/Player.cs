@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Linq;
-using Unity.VisualScripting;
+﻿using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -19,39 +19,85 @@ public class Player
                                         PhaseShopController.Instance.ShopBotSlots().Length > 0);
 
         Data.Turn++;
+        SetDefault();
         PackManager.Instance.AssignList(Data.Turn);
-        Data.TeamUnitDatas = new SaveUnitData[5];
         BuildTeamByAI();
         GameManager.Instance.Switch(GameState.EndOfTurn);
     }
 
     private void BuildTeamByAI()
     {
+        if (Data.TeamUnitDatas == null)
+        {
+            Debug.LogWarning("Player.BuildTeamByAI - Data.TeamUnitDatas = null");
+            return;
+        }
+        List<int> fullDurPos = new List<int>();
+
+        // Repair
+        int repairTools = Data.Tools - PhaseShopController.Instance.ShopBotSlots().Length;
+
+        for (int j = 0; j < Data.TeamUnitDatas.Length; j++)
+        {
+            var unitData = Data.TeamUnitDatas[j];
+            if (unitData != null)
+            {
+                if (unitData.Durability < PackManager.Instance.MyPack.CurrencyData.LevelAmount)
+                {
+                    if (repairTools > 0)
+                    {
+                        unitData.Durability++;
+                        repairTools--;
+                    }
+                }
+                else fullDurPos.Add(j);
+            }
+        }
+
         var shopBots = PhaseShopController.Instance.GetRandomShopBots();
 
-        switch(Data.Turn)
+        switch (Data.Turn)
         {
             case 1:
                 for (int i = 0; i < shopBots.Length; i++)
                 {
-                    Data.TeamUnitDatas[i] = shopBots[i];
+                    Data.TeamUnitDatas[i] = shopBots[i].Model.Data;
+                    Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
                 }
                 break;
             case 2:
                 int index = 0;
-                int leader = Random.Range(0, Data.TeamUnitDatas.Length);
                 for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
                 {
                     if (Data.TeamUnitDatas[i] == null)
                     {
-                        Data.TeamUnitDatas[i] = shopBots[index];
+                        Data.TeamUnitDatas[i] = shopBots[index].Model.Data;
+                        Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
+                        fullDurPos.Add(i);
                         index++;
                     }
                 }
-                (Data.TeamUnitDatas[0], Data.TeamUnitDatas[leader]) = (Data.TeamUnitDatas[leader], Data.TeamUnitDatas[0]);
+                int leaderPos = fullDurPos[Random.Range(0, fullDurPos.Count)];
+                var leader = PhaseShopController.Instance.AddUnitController(
+                    null,
+                    Data.TeamUnitDatas[leaderPos].Index,
+                    Data.TeamUnitDatas[leaderPos],
+                    UnitState.InSlotTeam
+                    );
+
+                SoUnit soUnit = PackManager.Instance.Bots[Data.TeamUnitDatas[leaderPos].Index];
+                var leaderBase = PhaseShopController.Instance.AddUnitController(
+                   soUnit,
+                   Data.TeamUnitDatas[leaderPos].Index,
+                   null,
+                   UnitState.InSlotTeam
+                   );
+
+                leader.UpdateLevel(leaderBase.Model.Data, true);
+                (Data.TeamUnitDatas[0], Data.TeamUnitDatas[leaderPos]) = (Data.TeamUnitDatas[leaderPos], Data.TeamUnitDatas[0]);
                 break;
         }
-        
+
 
     }
 
