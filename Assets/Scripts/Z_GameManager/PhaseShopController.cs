@@ -158,13 +158,9 @@ public class PhaseShopController : MonoBehaviour
                     PackManager.Instance.AssignList(Player.Data.Turn);
 
                     if (ShouldFixedUnitsSpawned)
-                    {
                         SpawnFixedUnits();
-                    }
                     else
-                    {
                         SpawnShopUnits();
-                    }
 
                     SetStartTurn(StartTurnState.ChargeBot);
                 }
@@ -222,8 +218,8 @@ public class PhaseShopController : MonoBehaviour
                     continue;
                 Debug.Log("unitData.Index" + unitData.Index);
                 SpawnManager.Instance.Spawn(
-                    PackManager.Instance.GetSoUnit(unitData).soUnit,
-                    PackManager.Instance.GetSoUnit(unitData).index,
+                    PackManager.Instance.GetSoUnit(unitData),
+                    unitData.Index,
                     unitData,
                     UnitState.InSlotTeam,
                     teamSlots[i].transform);
@@ -1010,7 +1006,7 @@ public class PhaseShopController : MonoBehaviour
     public UnitController AddUnitController(SoUnit _soUnit, int _index, SaveUnitData _unitData, UnitState _unitState)
     {
         var unit = gameObject.AddComponent<UnitController>();
-        unit.Initialize(_soUnit, _index, null, UnitState.InSlotShop, true);
+        unit.Initialize(_soUnit, _index, _unitData, UnitState.InSlotShop, true);
         return unit;
     }
 

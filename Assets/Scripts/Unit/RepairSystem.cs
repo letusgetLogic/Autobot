@@ -78,13 +78,14 @@ public class RepairSystem
 
         int currentHp = model.Data.Cur.HP;
         int currentAtk = model.Data.Cur.ATK;
-    
+
         model.Data.SetHP(hp < currentHp ? currentHp : hp, model.SetRepairPanel);
         model.Data.SetATK(atk < currentAtk ? currentAtk : atk);
 
-        model.View.SetData(
-            model.Data.FullHP, model.Data.FullATK,
-            model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
+        if (model.View)
+            model.View.SetData(
+                 model.Data.FullHP, model.Data.FullATK,
+                 model.Data.Cur.HP, model.Data.Cur.ATK, model.Data.Cur.ENG);
     }
 
     /// <summary>
@@ -103,11 +104,13 @@ public class RepairSystem
         }
 
         SetStatsBasedDurability();
-        model.View.ShowDurability(model.Data.Durability);
+        if (model.View)
+            model.View.ShowDurability(model.Data.Durability);
 
         if (Application.isPlaying == false)
             return;
 
-        model.View.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
+        if (model.View)
+            model.View.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
     }
 }

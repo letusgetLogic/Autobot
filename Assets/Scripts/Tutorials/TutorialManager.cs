@@ -61,26 +61,26 @@ public class TutorialManager : MonoBehaviour
         ShowFusion,
         TryOut,
 
-        ShopIdle,
-        ShopToBattle2,
-        BattleIdle2,
-        WaitingEndBattle2,
+        //ShopIdle,
+        //ShopToBattle2,
+        //BattleIdle2,
+        //WaitingEndBattle2,
 
-        // --- Turn 3 ---
+        //// --- Turn 3 ---
 
-        Turn3,
-        UnlockTier,
-        RepairToLevelUp,
-        ClickRobotToLevelUp,
-        PickToLevelUp,
-        LevelUpEffect,
-        ShowChargingStation,
+        //Turn3,
+        //UnlockTier,
+        //RepairToLevelUp,
+        //ClickRobotToLevelUp,
+        //PickToLevelUp,
+        //LevelUpEffect,
+        //ShowChargingStation,
 
-        Reserve1,
-        Reserve2,
-        Reserve3,
-        Reserve4,
-        Reserve5,
+        //Reserve1,
+        //Reserve2,
+        //Reserve3,
+        //Reserve4,
+        //Reserve5,
 
         Done,
     }
@@ -191,13 +191,14 @@ public class TutorialManager : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
+
     }
 
     private void OnEnable()
     {
         foreach (var step in steps)
         {
-            step.OnLabelPopup += () => SoundManager.Instance.PlayOneShot("Drop_Unit");
+            step.OnLabelPopup += () => EventManager.Instance.OnPopUpSound?.Invoke();
         }
 
         EventManager.Instance.OnAttachedUnit += CheckClick;
@@ -222,6 +223,9 @@ public class TutorialManager : MonoBehaviour
         EventManager.Instance.OnBattleDone -= Check;
         EventManager.Instance.OnRepair -= CheckInput;
         EventManager.Instance.OnRecycle -= CheckInput;
+
+        Instance = null;
+
     }
 
     private void Update()
@@ -402,6 +406,11 @@ public class TutorialManager : MonoBehaviour
                 }
             }
         }
+        else if (currentState == StepState.Done)
+        {
+            GameManager.Instance.SetTutorialCompleted(true);
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnValidatedLateEnter()
@@ -545,7 +554,7 @@ public class TutorialManager : MonoBehaviour
 
     public void Check()
     {
-        switch(currentState)
+        switch (currentState)
         {
             case StepState.EndTurn:
                 if (currentStep != null && currentStep.gameObject)
@@ -561,12 +570,6 @@ public class TutorialManager : MonoBehaviour
                 PhaseBattleController.Instance.SetRunning(false);
                 break;
             case StepState.BattleIdle:
-                SetNextStep();
-                break;
-            case StepState.ShopIdle:
-                SetNextStep();
-                break;
-            case StepState.ShopToBattle2:
                 SetNextStep();
                 break;
         }

@@ -79,7 +79,7 @@ public class InitializeState : StateBaseBattle
     }
 
     /// <summary>
-    /// Instantiates and initializes the units.
+    /// Instantiates and initializes the units. in phase battle.
     /// </summary>
     private void SpawnUnits(Player _player, Slot[] _slots, bool _isLeft)
     {
@@ -101,8 +101,8 @@ public class InitializeState : StateBaseBattle
             if (unitData != null && unitData.Cur.HP > 0)
             {
                 var unitController = SpawnManager.Instance.Spawn(
-                    PackManager.Instance.GetSoUnit(unitData).soUnit,
-                    PackManager.Instance.GetSoUnit(unitData).index,
+                    PackManager.Instance.GetSoUnit(unitData),
+                    unitData.Index,
                     unitData,
                     UnitState.InPhaseBattle,
                     _slots[i].transform,
@@ -139,8 +139,8 @@ public class InitializeState : StateBaseBattle
             if (unitData != null && unitData.Cur.HP > 0)
             {
                 var unitController = SpawnManager.Instance.Spawn(
-                    PackManager.Instance.GetSoUnit(unitData).soUnit,
-                    PackManager.Instance.GetSoUnit(unitData).index,
+                    PackManager.Instance.GetSoUnit(unitData),
+                    unitData.Index,
                     unitData,
                     UnitState.InPhaseBattle,
                     _slots[i].transform,

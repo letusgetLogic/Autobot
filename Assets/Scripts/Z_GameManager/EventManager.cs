@@ -24,6 +24,7 @@ public class EventManager
 
 
     public UnityAction OnButtonSound { get; set; }
+    public UnityAction OnPopUpSound { get; set; }
 
     #region Menu
     public UnityAction OnIncreaseLives { get; set; }

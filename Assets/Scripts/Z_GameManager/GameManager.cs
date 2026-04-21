@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
@@ -121,12 +120,11 @@ public class GameManager : MonoBehaviour
     public ReplayManager Replay { get; set; }
 
     public TutorialManager.StepState TutorialStepState { get; set; }
+    public bool IsTutorialCompleted => isTutorialCompleted;
     public bool IsTutorialRunning => !isTutorialCompleted;
-    private bool isTutorialCompleted
-    {
-        get => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
-        set => PlayerPrefs.SetInt("TutorialCompleted", value ? 1 : 0);
-    }
+    private bool isTutorialCompleted => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
+    public void SetTutorialCompleted(bool _value) => PlayerPrefs.SetInt("TutorialCompleted", _value ? 1 : 0);
+
 
     public int RandomSeed
     {
@@ -165,8 +163,7 @@ public class GameManager : MonoBehaviour
             // this if-query is used to initialize instances once.
             // for example, button's sound wouldn't be triggered,
             // because until then no one has accessed/initalized SoundManager's instence.
-        }
-        ;
+        };
     }
 
     private void Start()
@@ -174,7 +171,10 @@ public class GameManager : MonoBehaviour
         PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
 
         if (!PlayerPrefs.HasKey("TutorialCompleted"))
-            isTutorialCompleted = false;
+        {
+            MainMenu.Instance.SetTutorialButton();
+            SetTutorialCompleted(false);
+        }
 
         // auto play in dev mode.
         if (IsModeDevelop)
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
 
             if (shouldPlayTutorial == false)
             {
-                isTutorialCompleted = true;
+                SetTutorialCompleted(true);
 
                 if (TestBattle)
                 {
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                isTutorialCompleted = false;
+                SetTutorialCompleted(false);
             }
         }
     }
@@ -218,7 +218,6 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameMode.Tutorial:
-                isTutorialCompleted = false;
                 PlayerLives = defaultTutorialLives;
                 InitTutorial();
                 Switch(GameState.StartScene);
@@ -462,7 +461,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
             PhaseShopIndex++;
 
-            if ((IsTutorialRunning || TestBattle) && CurrentPlayer.Data.IsAI)
+            if ((CurrentGame.Mode == GameMode.Tutorial ||
+                CurrentGame.Mode == GameMode.TestBattle ||
+                CurrentGame.Mode == GameMode.AI) 
+                && CurrentPlayer.Data.IsAI)
             {
                 if (TestBattle && PhaseShopIndex == 1)
                     LoadScene("PhaseShop");
@@ -521,7 +523,7 @@ public class GameManager : MonoBehaviour
 
     public void SetTutorialStartAtSceneStart()
     {
-        if (IsTutorialRunning)
+        if (IsTutorialRunning && (CurrentPlayer == null || CurrentPlayer.Data.Turn != UnlockIndex))
         {
             TutorialManager.Instance.SetNextStep();
         }
@@ -542,6 +544,8 @@ public class GameManager : MonoBehaviour
             }
 
             PhaseShopUI.Instance.SetUnlockedTier(isUnlocking, UnlockIndex);
+            if (isUnlocking)
+                EventManager.Instance.OnPopUpSound?.Invoke();
 
             UnlockIndex = 0;
         }

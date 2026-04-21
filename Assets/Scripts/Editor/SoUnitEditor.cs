@@ -1,8 +1,5 @@
-﻿using log4net.Core;
-using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 [CustomEditor(typeof(SoUnit))]
 class SoUnitEditor : Editor

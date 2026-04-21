@@ -24,6 +24,7 @@ public class SoundManager
     private SoundManager() 
     {
         EventManager.Instance.OnButtonSound += () => PlayOneShot("Button");
+        EventManager.Instance.OnPopUpSound += () => PlayOneShot("Drop_Unit");
 
         EventManager.Instance.OnIncreaseLives += () => PlayOneShot("Button");
         EventManager.Instance.OnDecreaseLives += () => PlayOneShot("Button");

@@ -27,11 +27,6 @@ public class PackManager : MonoBehaviour
         DebugID = 0;
     }
 
-    private void OnEnable()
-    {
-        Instance = this;
-    }
-
     /// <summary>
     /// Initializes the pack.
     /// </summary>
@@ -122,7 +117,6 @@ public class PackManager : MonoBehaviour
 
         if (_turns == a)
         {
-            GameManager.Instance.UnlockIndex = _turns;
             AddUnits(MyPack.BotsTier1, MyPack.ItemsTier1);
         }
         if (_turns == b)
@@ -163,19 +157,31 @@ public class PackManager : MonoBehaviour
     {
         foreach (var unit in _botTier)
         {
+            bool alreadyHasUnit = false;
             foreach (var item in Bots)
             {
-                if (item != unit)
-                    Bots.Add(unit);
+                if (item == unit)
+                {
+                    alreadyHasUnit = true;
+                    break;
+                }
             }
+            if (alreadyHasUnit == false)
+                Bots.Add(unit);
         }
         foreach (var unit in _itemTier)
         {
+            bool alreadyHasUnit = false;
             foreach (var item in Items)
             {
-                if (item != unit)
-                    Items.Add(unit);
+                if (item == unit)
+                {
+                    alreadyHasUnit = true;
+                    break;
+                }
             }
+            if (alreadyHasUnit == false)
+                Items.Add(unit);
         }
     }
 
@@ -184,14 +190,14 @@ public class PackManager : MonoBehaviour
     /// </summary>
     /// <param name="_data"></param>
     /// <returns></returns>
-    public (SoUnit soUnit, int index) GetSoUnit(SaveUnitData _data)
+    public SoUnit  GetSoUnit(SaveUnitData _data)
     {
         if (_data.UnitType == UnitType.SummonedRobot)
         {
             foreach (var bot in MyPack.SummonedBots)
             {
                 if (bot.ID == _data.Index)
-                    return (bot, _data.Index);
+                    return bot;
             }
         }
         if (_data.UnitType == UnitType.Item)
@@ -199,11 +205,11 @@ public class PackManager : MonoBehaviour
             foreach (var item in MyPack.TemporaryItems)
             {
                 if (item.ID == _data.Index)
-                    return (item, _data.Index);
+                    return item;
             }
         }
 
-        return (Bots[_data.Index], _data.Index);
+        return Bots[_data.Index];
     }
 }
 

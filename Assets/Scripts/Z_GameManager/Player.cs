@@ -28,10 +28,9 @@ public class Player
     private void BuildTeamByAI()
     {
         if (Data.TeamUnitDatas == null)
-        {
-            Debug.LogWarning("Player.BuildTeamByAI - Data.TeamUnitDatas = null");
-            return;
-        }
+            Data.TeamUnitDatas = new SaveUnitData[PhaseShopController.Instance.TeamSlots().Length];
+
+        UnitController[] teamUnits = new UnitController[Data.TeamUnitDatas.Length];
         List<int> fullDurPos = new List<int>();
 
         // Repair
@@ -42,11 +41,18 @@ public class Player
             var unitData = Data.TeamUnitDatas[j];
             if (unitData != null)
             {
+                teamUnits[j] = PhaseShopController.Instance.AddUnitController(
+                    PackManager.Instance.GetSoUnit(unitData),
+                    unitData.Index,
+                    unitData,
+                    UnitState.InSlotTeam
+                    );
+
                 if (unitData.Durability < PackManager.Instance.MyPack.CurrencyData.LevelAmount)
                 {
                     if (repairTools > 0)
                     {
-                        unitData.Durability++;
+                        teamUnits[j].Model.Repair?.RiseDurability();
                         repairTools--;
                     }
                 }
@@ -65,7 +71,7 @@ public class Player
                     Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
                 }
                 break;
-            case 2:
+            case int a when a > 2:
                 int index = 0;
                 for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
                 {
@@ -78,14 +84,8 @@ public class Player
                     }
                 }
                 int leaderPos = fullDurPos[Random.Range(0, fullDurPos.Count)];
-                var leader = PhaseShopController.Instance.AddUnitController(
-                    null,
-                    Data.TeamUnitDatas[leaderPos].Index,
-                    Data.TeamUnitDatas[leaderPos],
-                    UnitState.InSlotTeam
-                    );
-
-                SoUnit soUnit = PackManager.Instance.Bots[Data.TeamUnitDatas[leaderPos].Index];
+               
+                SoUnit soUnit = PackManager.Instance.GetSoUnit(Data.TeamUnitDatas[leaderPos]);
                 var leaderBase = PhaseShopController.Instance.AddUnitController(
                    soUnit,
                    Data.TeamUnitDatas[leaderPos].Index,
@@ -93,8 +93,39 @@ public class Player
                    UnitState.InSlotTeam
                    );
 
-                leader.UpdateLevel(leaderBase.Model.Data, true);
+                teamUnits[leaderPos].UpdateLevel(leaderBase.Model.Data, true);
                 (Data.TeamUnitDatas[0], Data.TeamUnitDatas[leaderPos]) = (Data.TeamUnitDatas[leaderPos], Data.TeamUnitDatas[0]);
+                break;
+            case 3:
+                //int index = 0;
+                //for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
+                //{
+                //    if (Data.TeamUnitDatas[i] == null)
+                //    {
+                //        Data.TeamUnitDatas[i] = shopBots[index].Model.Data;
+                //        Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
+                //        fullDurPos.Add(i);
+                //        index++;
+                //    }
+                //}
+                //int leaderPos = fullDurPos[Random.Range(0, fullDurPos.Count)];
+                //var leader = PhaseShopController.Instance.AddUnitController(
+                //    null,
+                //    Data.TeamUnitDatas[leaderPos].Index,
+                //    Data.TeamUnitDatas[leaderPos],
+                //    UnitState.InSlotTeam
+                //    );
+
+                //SoUnit soUnit = PackManager.Instance.Bots[Data.TeamUnitDatas[leaderPos].Index];
+                //var leaderBase = PhaseShopController.Instance.AddUnitController(
+                //   soUnit,
+                //   Data.TeamUnitDatas[leaderPos].Index,
+                //   null,
+                //   UnitState.InSlotTeam
+                //   );
+
+                //leader.UpdateLevel(leaderBase.Model.Data, true);
+                //(Data.TeamUnitDatas[0], Data.TeamUnitDatas[leaderPos]) = (Data.TeamUnitDatas[leaderPos], Data.TeamUnitDatas[0]);
                 break;
         }
 
