@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CutScene : MonoBehaviour
 {
@@ -57,7 +56,7 @@ public class CutScene : MonoBehaviour
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
-                EventManager.Instance.OnMoveHintClick?.Invoke();
+                EventManager.Instance.OnMoveHintClickSound?.Invoke();
             }
             else
             {
@@ -69,6 +68,11 @@ public class CutScene : MonoBehaviour
         {
             coverPanelClose.gameObject.SetActive(true);
         }
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 
     private void OnEnable()
@@ -94,7 +98,7 @@ public class CutScene : MonoBehaviour
         OpenPanel.ScaleUp(false);
 
 
-        EventManager.Instance.OnOpenScene?.Invoke();
+        EventManager.Instance.OnOpenSceneSound?.Invoke();
 
         //if (GameManager.Instance.SceneName == "PhaseShop")
         //    OpenPanel.OnRunningDone += () => GameManager.Instance.Replay = null;
@@ -123,14 +127,19 @@ public class CutScene : MonoBehaviour
 
         ClosePanel.ScaleUp(true);
 
-        if (GameManager.Instance.IsTutorialRunning == false)
-            EventManager.Instance.OnCloseScene?.Invoke();
+        var game = GameManager.Instance.CurrentGame;
+        if (game == null)
+            yield break;
 
-        if (GameManager.Instance.IsTutorialRunning)
+        if (game.Mode == GameMode.Tutorial ||
+            game.Mode == GameMode.AI ||
+            game.Mode == GameMode.TestBattle)
         {
             GameManager.Instance.Switch(GameState.LoadScene);
             yield break;
         }
+
+        EventManager.Instance.OnCloseSceneSound?.Invoke();
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
 
@@ -139,7 +148,7 @@ public class CutScene : MonoBehaviour
         if (hintClick != null)
         {
             hintClick.Trigger();
-            EventManager.Instance.OnMoveHintClick?.Invoke();
+            EventManager.Instance.OnMoveHintClickSound?.Invoke();
         }
     }
 
@@ -154,7 +163,7 @@ public class CutScene : MonoBehaviour
 
         ClosePanel.ScaleUp(true);
 
-        EventManager.Instance.OnCloseScene?.Invoke();
+        EventManager.Instance.OnCloseSceneSound?.Invoke();
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
 

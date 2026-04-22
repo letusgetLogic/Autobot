@@ -44,6 +44,11 @@ public class PhaseBattleView : MonoBehaviour
         collideVisual.enabled = false;
     }
 
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
     /// <summary>
     /// Initializes the players.
     /// </summary>

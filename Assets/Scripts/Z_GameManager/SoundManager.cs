@@ -30,9 +30,9 @@ public class SoundManager
         EventManager.Instance.OnDecreaseLives += () => PlayOneShot("Button");
 
         EventManager.Instance.OnInvalidInput += () => PlayOneShot("Invalid");
-        EventManager.Instance.OnCloseScene += () => PlayOneShot("Swap");
-        EventManager.Instance.OnMoveHintClick += () => PlayOneShot("Swap");
-        EventManager.Instance.OnOpenScene += () => PlayOneShot("Swap");
+        EventManager.Instance.OnCloseSceneSound += () => PlayOneShot("Swap");
+        EventManager.Instance.OnMoveHintClickSound += () => PlayOneShot("Swap");
+        EventManager.Instance.OnOpenSceneSound += () => PlayOneShot("Swap");
 
         EventManager.Instance.OnAttachedUnit += unit => 
         { 
@@ -58,7 +58,7 @@ public class SoundManager
         EventManager.Instance.OnUnlock += inputKey => PlayOneShot("Unlock");
 
         EventManager.Instance.OnFusion += () => PlayOneShot("Fusion");
-        EventManager.Instance.OnLevelUp += () => PlayOneShot("Level_Up");
+        EventManager.Instance.OnLevelUpSound += () => PlayOneShot("Level_Up");
 
         EventManager.Instance.OnSwap += () => PlayOneShot("Swap");
 

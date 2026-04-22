@@ -33,9 +33,9 @@ public class EventManager
     #endregion
 
 
-    public UnityAction OnCloseScene { get; set; }
-    public UnityAction OnMoveHintClick { get; set; }
-    public UnityAction OnOpenScene { get; set; }
+    public UnityAction OnCloseSceneSound { get; set; }
+    public UnityAction OnMoveHintClickSound { get; set; }
+    public UnityAction OnOpenSceneSound { get; set; }
 
     
 
@@ -58,6 +58,7 @@ public class EventManager
 
     public UnityAction OnFusion { get; set; }
     public UnityAction OnLevelUp { get; set; }
+    public UnityAction OnLevelUpSound { get; set; }
 
     public UnityAction OnSwap { get; set; }
 

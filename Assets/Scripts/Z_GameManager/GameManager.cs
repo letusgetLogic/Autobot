@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -25,11 +26,10 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Develop Settings")]
-    public bool IsModeDevelop;
-    [SerializeField] private bool shouldPlayTutorial;
+    [SerializeField] private bool isModeDevelop;
     [SerializeField] private bool isNotSavingGame;
-    [SerializeField] public bool IsRepairSystemActive;
-    [SerializeField] public bool TestBattle;
+    public bool IsRepairSystemActive;
+    public bool TestBattle;
     [SerializeField] private int defaultTutorialLives = 3;
     [SerializeField] private int devLives = 3;
     [SerializeField] private float timer = 90.0f;
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     public string Name1 { get; set; } = "Player 1";
     public string Name2 { get; set; } = "Player 2";
     public int PlayerLives { get; set; }
-    public int Timer { get; set; } = 0;
+    public int Timer { get; set; }
     //
 
     #region Reference Datas
@@ -114,16 +114,16 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
-    public string SceneName => SceneManager.GetActiveScene().name;
 
-    public bool IsCatalogActive { get; set; } = false;
+    public bool IsCatalogActive { get; set; }
     public ReplayManager Replay { get; set; }
 
     public TutorialManager.StepState TutorialStepState { get; set; }
-    public bool IsTutorialCompleted => isTutorialCompleted;
-    public bool IsTutorialRunning => !isTutorialCompleted;
-    private bool isTutorialCompleted => PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
-    public void SetTutorialCompleted(bool _value) => PlayerPrefs.SetInt("TutorialCompleted", _value ? 1 : 0);
+
+    public bool IsTutorialRunning => isTutorialRunning;
+    public void SetTutorialRunning(bool _value) => isTutorialRunning = _value;
+
+    private bool isTutorialRunning = false;
 
 
     public int RandomSeed
@@ -170,34 +170,24 @@ public class GameManager : MonoBehaviour
     {
         PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
 
-        if (!PlayerPrefs.HasKey("TutorialCompleted"))
-        {
-            MainMenu.Instance.SetTutorialButton();
-            SetTutorialCompleted(false);
-        }
-
         // auto play in dev mode.
-        if (IsModeDevelop)
+        if (isModeDevelop)
         {
             PlayerLives = devLives;
 
-            if (shouldPlayTutorial == false)
+            if (TestBattle)
             {
-                SetTutorialCompleted(true);
-
-                if (TestBattle)
-                {
-                    LoadGame(GameMode.TestBattle);
-                    return;
-                }
-
-                LoadGame(GameMode.Local1v1);
+                LoadGame(GameMode.TestBattle);
+                return;
             }
-            else
-            {
-                SetTutorialCompleted(false);
-            }
+
+            LoadGame(GameMode.Local1v1);
         }
+    }
+
+    private void Update()
+    {
+        
     }
 
     /// <summary>
@@ -463,7 +453,7 @@ public class GameManager : MonoBehaviour
 
             if ((CurrentGame.Mode == GameMode.Tutorial ||
                 CurrentGame.Mode == GameMode.TestBattle ||
-                CurrentGame.Mode == GameMode.AI) 
+                CurrentGame.Mode == GameMode.AI)
                 && CurrentPlayer.Data.IsAI)
             {
                 if (TestBattle && PhaseShopIndex == 1)
@@ -551,4 +541,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private Coroutine coroutine;
+    public void SetActiveCoroutine(GameObject _go, float _duration)
+    {
+        _go.SetActive(true);
+        coroutine = StartCoroutine(Deactivate(_go, _duration));
+    }
+    private IEnumerator Deactivate(GameObject _go, float _duration)
+    {
+        yield return new WaitForSeconds(_duration);
+        _go.SetActive(false);
+        coroutine = null;
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
 {
@@ -37,7 +38,7 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        switch (GameManager.Instance.SceneName)
+        switch (SceneManager.GetActiveScene().name)
         {
             case "PhaseShop":
                 var phaseShop = PhaseShopController.Instance;

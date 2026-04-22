@@ -2637,7 +2637,7 @@ GameObject:
   - component: {fileID: 7536081372862382615}
   - component: {fileID: 3974220964626247922}
   m_Layer: 5
-  m_Name: 31_SellRobot
+  m_Name: 31_RecycleRobot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2757,7 +2757,7 @@ GameObject:
   - component: {fileID: 3032118215214268243}
   - component: {fileID: 5726213385825362505}
   m_Layer: 5
-  m_Name: 32_SellCompliment
+  m_Name: 32_RecycleCompliment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3937,7 +3937,7 @@ GameObject:
   - component: {fileID: 7508509716434852892}
   - component: {fileID: 2818121939939185906}
   m_Layer: 5
-  m_Name: 30_ClickRobotToSell
+  m_Name: 30_ClickRobotToRecycle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5555,8 +5555,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: You can level up a (fully repaired!) robot by merging with the same
-        type
+      value: For leveling up a (fully repaired!) robot drag one with the same model
+        to it
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -6128,9 +6128,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: 'You have reached the end of the tutorial.
+      value: 'Alright, that was the tutorial.
 
-        Try it out!'
+        So, try it out!'
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -6579,7 +6579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: Strong!
+      value: Perfect!
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize

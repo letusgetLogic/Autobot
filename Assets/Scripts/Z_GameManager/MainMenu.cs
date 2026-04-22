@@ -9,7 +9,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject replayButton;
     [SerializeField] private GameObject tutorialButton;
 
-    private bool wasTutorialButtonSetted = false;
 
     private void Awake()
     {
@@ -38,29 +37,11 @@ public class MainMenu : MonoBehaviour
 
         GameManager.Instance.Replay = null;
         replayButton.SetActive(GameManager.Instance.CurrentRound != null);
-
-        if (wasTutorialButtonSetted == false)
-            tutorialButton.SetActive(GameManager.Instance.IsTutorialCompleted == false);
-    }
-
-    public void SetTutorialButton()
-    {
-        tutorialButton.SetActive(false);
-        wasTutorialButtonSetted = true;
-    }
-
-    public void OnPlay()
-    {
-        Debug.Log(PlayerPrefs.GetInt("TutorialCompleted", 0));
-        if (GameManager.Instance.IsTutorialCompleted == false)
-        {
-            GameManager.Instance.LoadGame(GameMode.Tutorial);
-        }
     }
 
     public void OnPlayTutorial()
     {
-        GameManager.Instance.SetTutorialCompleted(false);
+        GameManager.Instance.SetTutorialRunning(true);
         GameManager.Instance.LoadGame(GameMode.Tutorial);
     }
 }

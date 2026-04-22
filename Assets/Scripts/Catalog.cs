@@ -48,7 +48,7 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
     /// <summary>
     /// OnActivate method to set the catalog active in the GameManager when the catalog is activated.
     /// </summary>
-    public void OnActivate()
+    private void OnEnable()
     {
         GameManager.Instance.IsCatalogActive = true;
     }
@@ -56,7 +56,7 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
     /// <summary>
     /// OnDeactivate method to set the catalog inactive in the GameManager when the catalog is deactivated.
     /// </summary>
-    public void OnDeactivate()
+    private void OnDisable()
     {
         GameManager.Instance.IsCatalogActive = false;
     }

@@ -30,7 +30,9 @@ public class PhaseShopUI : MonoBehaviour
         turnLabel,
         heartLabel,
         nutLabel,
-        toolLabel;
+        toolLabel,
+        toolLabelAdding;
+    public TextMeshProUGUI ToolAdding => toolLabelAdding;
     [SerializeField] private Image nutBG, toolBG;
     [SerializeField] private RectTransform clockPointer;
 
@@ -97,6 +99,11 @@ public class PhaseShopUI : MonoBehaviour
     private void OnDisable()
     {
         EventManager.Instance.OnAttachedUnit -= SetButtonActive;
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 
     /// <summary>

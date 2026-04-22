@@ -382,8 +382,14 @@ public class UnitModel
                 View.SetXpStepActive("3", true, false, false, false, false, false, false, false);
                 break;
         }
-        if (IsLevelUp() && _isMakingSound)
+        if (IsLevelUp())
+        {
             EventManager.Instance.OnLevelUp?.Invoke();
+
+            if (_isMakingSound)
+                EventManager.Instance.OnLevelUpSound?.Invoke();
+        }
+            
     }
 
     /// <summary>

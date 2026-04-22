@@ -55,9 +55,9 @@ public class TutorialManager : MonoBehaviour
         ClickRobotToRepair,
         RepairRobot,
         RepairCompliment,
-        ClickRobotToSell,
-        SellRobot,
-        SellCompliment,
+        ClickRobotToRecycle,
+        RecycleRobot,
+        RecycleCompliment,
         ShowFusion,
         TryOut,
 
@@ -408,7 +408,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (currentState == StepState.Done)
         {
-            GameManager.Instance.SetTutorialCompleted(true);
+            GameManager.Instance.SetTutorialRunning(false);
             gameObject.SetActive(false);
         }
     }
@@ -444,7 +444,7 @@ public class TutorialManager : MonoBehaviour
                 }
             }
         }
-        else if (currentState == StepState.ClickRobotToSell)
+        else if (currentState == StepState.ClickRobotToRecycle)
         {
             if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
             {
@@ -497,7 +497,7 @@ public class TutorialManager : MonoBehaviour
 
             SetNextStep();
         }
-        else if (currentState == StepState.ClickRobotToSell && _unit && _unit.Model.Data.UnitState == UnitState.InSlotTeam
+        else if (currentState == StepState.ClickRobotToRecycle && _unit && _unit.Model.Data.UnitState == UnitState.InSlotTeam
                 && (_unit.Model.SoUnit.Name == "Gold Eye" || _unit.Model.SoUnit.ModelID == "RC-BF-2R"))
         {
             SetNextStep();
@@ -542,7 +542,7 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case InputKey.ClickButtonRecycle:
-                if (currentState == StepState.SellRobot)
+                if (currentState == StepState.RecycleRobot)
                 {
                     activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
                     SetNextStep();

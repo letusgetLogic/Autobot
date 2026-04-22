@@ -39,16 +39,19 @@ public abstract partial class AbilityBase
         Controller.View.ShowAbility(true);
 
         // Feature Tutorial
-        yield return new WaitUntil(() => TutorialManager.Instance);
-        if (GameManager.Instance.TutorialStepState == TutorialManager.StepState.WaitingForAbility)
+        if (GameManager.Instance.CurrentGame != null &&
+            GameManager.Instance.CurrentGame.Mode == GameMode.Tutorial)
         {
-            TutorialManager.Instance.AbilitySlot = Controller.Slot.GetComponent<SlotTutorial>();
-            TutorialManager.Instance.Check();
+            if (GameManager.Instance.TutorialStepState == TutorialManager.StepState.WaitingForAbility)
+            {
+                TutorialManager.Instance.AbilitySlot = Controller.Slot.GetComponent<SlotTutorial>();
+                TutorialManager.Instance.Check();
+            }
+            yield return new WaitUntil(() =>
+            GameManager.Instance.TutorialStepState < TutorialManager.StepState.WaitingForAbility ||
+            GameManager.Instance.TutorialStepState > TutorialManager.StepState.RobotUseAbility
+            );
         }
-        yield return new WaitUntil(() =>
-        GameManager.Instance.TutorialStepState < TutorialManager.StepState.WaitingForAbility ||
-        GameManager.Instance.TutorialStepState > TutorialManager.StepState.RobotUseAbility
-        );
         //
 
         if (CurrentLevel.ConsumedEnergy != null)

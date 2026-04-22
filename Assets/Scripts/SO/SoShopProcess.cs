@@ -30,4 +30,7 @@ public class SoShopProcess : ScriptableObject
     [Tooltip("Duration instantiate an unit")]
     [Range(0f, 2f)] public float DurationShootOut = 0.1f;
 
+    [Tooltip("Duration adding tool")]
+    [Range(0f, 2f)] public float DurationAddingTool = 0.5f;
+
 }

@@ -116,6 +116,11 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         EventManager.Instance.OnBattleDelayHintClick -= DelayHintClick;
     }
 
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
     /// <summary>
     /// Set index depend on draw order.
     /// </summary>
