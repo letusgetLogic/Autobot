@@ -30,7 +30,8 @@ public class Player
         if (Data.TeamUnitDatas == null)
             Data.TeamUnitDatas = new SaveUnitData[PhaseShopController.Instance.TeamSlots().Length];
 
-        UnitController[] teamUnits = new UnitController[Data.TeamUnitDatas.Length];
+        List<UnitController> teamUnits = new();
+        List<int> teamUnitsPos = new List<int>();
         List<int> fullDurPos = new List<int>();
 
         // Repair
@@ -41,18 +42,21 @@ public class Player
             var unitData = Data.TeamUnitDatas[j];
             if (unitData != null)
             {
-                teamUnits[j] = PhaseShopController.Instance.AddUnitController(
+                var unit = PhaseShopController.Instance.AddUnitController(
                     PackManager.Instance.GetSoUnit(unitData),
                     unitData.Index,
                     unitData,
                     UnitState.InSlotTeam
                     );
 
-                if (unitData.Durability < PackManager.Instance.MyPack.CurrencyData.LevelAmount)
+                teamUnits.Add(unit);
+                teamUnitsPos.Add(j);
+
+                if (unit.Model.IsFullDurability() == false)
                 {
                     if (repairTools > 0)
                     {
-                        teamUnits[j].Model.Repair?.RiseDurability();
+                        unit.Model.Repair?.RiseDurability();
                         repairTools--;
                     }
                 }
@@ -71,7 +75,7 @@ public class Player
                     Data.TeamUnitDatas[i].UnitState = UnitState.InSlotTeam;
                 }
                 break;
-            case int a when a > 2:
+            case int a when a >= 2:
                 int index = 0;
                 for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
                 {
@@ -83,18 +87,20 @@ public class Player
                         index++;
                     }
                 }
-                int leaderPos = fullDurPos[Random.Range(0, fullDurPos.Count)];
-               
-                SoUnit soUnit = PackManager.Instance.GetSoUnit(Data.TeamUnitDatas[leaderPos]);
+                int leaderInTemp = Random.Range(0, teamUnits.Count);
+
                 var leaderBase = PhaseShopController.Instance.AddUnitController(
-                   soUnit,
-                   Data.TeamUnitDatas[leaderPos].Index,
-                   null,
+                   teamUnits[leaderInTemp].Model.SoUnit,
+                   teamUnits[leaderInTemp].Model.Data.Index,
+                   teamUnits[leaderInTemp].Model.Data,
                    UnitState.InSlotTeam
                    );
 
-                teamUnits[leaderPos].UpdateLevel(leaderBase.Model.Data, true);
-                (Data.TeamUnitDatas[0], Data.TeamUnitDatas[leaderPos]) = (Data.TeamUnitDatas[leaderPos], Data.TeamUnitDatas[0]);
+                teamUnits[leaderInTemp].UpdateLevel(leaderBase.Model.Data, true);
+
+                int leaderPosInTeam = teamUnitsPos[leaderInTemp];
+                (Data.TeamUnitDatas[0], Data.TeamUnitDatas[leaderPosInTeam]) = 
+                    (Data.TeamUnitDatas[leaderPosInTeam], Data.TeamUnitDatas[0]);
                 break;
             case 3:
                 //int index = 0;
@@ -129,7 +135,9 @@ public class Player
                 break;
         }
 
-
+        // charge at end of shop
+        foreach (var unit in Data.TeamUnitDatas)
+            unit.SetEnergy(unit.Cur.ENG + 1);
     }
 
     /// <summary>

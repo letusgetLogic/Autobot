@@ -768,7 +768,7 @@ public class PhaseShopController : MonoBehaviour
         if (_onSlot.Model.IsMaxed || _onDrag.Model.IsMaxed)
             return false;
 
-        if (_onSlot.Model.IsFullDurability())
+        if (_onSlot.Model.IsFullDurability() == false)
             return false;
 
         if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name &&

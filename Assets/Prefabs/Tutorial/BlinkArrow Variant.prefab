@@ -104,6 +104,30 @@ PrefabInstance:
       propertyPath: scaleMin.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4622463104116474563, guid: 55903f5477c3afb449bd3c584fb145c7, type: 3}
+      propertyPath: animCurve.m_Curve.Array.data[0].inSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4622463104116474563, guid: 55903f5477c3afb449bd3c584fb145c7, type: 3}
+      propertyPath: animCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4622463104116474563, guid: 55903f5477c3afb449bd3c584fb145c7, type: 3}
+      propertyPath: animCurve.m_Curve.Array.data[0].outSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4622463104116474563, guid: 55903f5477c3afb449bd3c584fb145c7, type: 3}
+      propertyPath: animCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4622463104116474563, guid: 55903f5477c3afb449bd3c584fb145c7, type: 3}
+      propertyPath: animCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4622463104116474563, guid: 55903f5477c3afb449bd3c584fb145c7, type: 3}
+      propertyPath: animCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

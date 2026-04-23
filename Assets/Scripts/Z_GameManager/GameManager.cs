@@ -519,7 +519,9 @@ public class GameManager : MonoBehaviour
         bool isUnlocking = false;
         if (PackManager.Instance != null && PhaseShopUI.Instance && CurrentPlayer != null)
         {
-            isUnlocking = PackManager.Instance.IsUnlockingTier(CurrentPlayer.Data.Turn).Item1;
+            isUnlocking =
+                PackManager.Instance.IsUnlockingTier(CurrentPlayer.Data.Turn).Item1 &&
+                PackManager.Instance.IsUnlockingTier(CurrentPlayer.Data.Turn).Item2 > 1;
         }
 
         if (IsTutorialRunning && isUnlocking == false)
@@ -533,9 +535,11 @@ public class GameManager : MonoBehaviour
         if (PackManager.Instance != null && PhaseShopUI.Instance && CurrentPlayer != null)
         {
             (bool isUnlocking, int index) = PackManager.Instance.IsUnlockingTier(CurrentPlayer.Data.Turn);
-            PhaseShopUI.Instance.SetUnlockedTier(isUnlocking, index);
 
-            if (isUnlocking)
+            bool showUnlock = isUnlocking && index > 1;
+            PhaseShopUI.Instance.SetUnlockedTier(showUnlock, index);
+
+            if (showUnlock)
                 EventManager.Instance.OnPopUpSound?.Invoke();
         }
     }

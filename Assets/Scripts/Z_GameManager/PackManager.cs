@@ -108,11 +108,11 @@ public class PackManager : MonoBehaviour
     /// <param name="_turns">The current turn number. Determines which tier of units will be added.</param>
     private void AddUnitsByTier(int _turn)
     {
-        (bool isUnlocking, int index) = IsUnlockingTier(_turn);
+        (bool isUnlocking, int tier) = IsUnlockingTier(_turn);
 
         if (isUnlocking)
         {
-            AddUnits(MyPack.Bots[index], MyPack.Items[index]);
+            AddUnits(MyPack.Bots[tier - 1], MyPack.Items[tier - 1]);
         }
     }
 

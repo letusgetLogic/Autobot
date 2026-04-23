@@ -47,7 +47,7 @@ public class CutScene : MonoBehaviour
 
         if (hintClickClose)
         {
-            if (GameManager.Instance.Replay == null && GameManager.Instance.IsMode1P)
+            if (GameManager.Instance.Replay == null && GameManager.Instance.IsMode1P == false)
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
@@ -122,21 +122,15 @@ public class CutScene : MonoBehaviour
 
         ClosePanel.ScaleUp(true);
 
-        var game = GameManager.Instance.CurrentGame;
-        if (game == null)
-            yield break;
+        EventManager.Instance.OnCloseSceneSound?.Invoke();
 
-        if (game.Mode == GameMode.Tutorial ||
-            game.Mode == GameMode.AI ||
-            game.Mode == GameMode.TestBattle)
+        yield return new WaitForSeconds(ClosePanel.AnimTime);
+
+        if (GameManager.Instance.IsMode1P)
         {
             GameManager.Instance.Switch(GameState.LoadScene);
             yield break;
         }
-
-        EventManager.Instance.OnCloseSceneSound?.Invoke();
-
-        yield return new WaitForSeconds(ClosePanel.AnimTime);
 
         GameManager.Instance.Switch(GameState.WaitingCutScene);
 
@@ -161,9 +155,6 @@ public class CutScene : MonoBehaviour
         EventManager.Instance.OnCloseSceneSound?.Invoke();
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
-
-        if (GameManager.Instance.Replay == null)
-            GameManager.Instance.Replay = new ReplayManager();
 
         GameManager.Instance.Replay.Switch(GameState.LoadScene);
     }

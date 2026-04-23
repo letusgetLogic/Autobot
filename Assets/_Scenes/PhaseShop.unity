@@ -5742,7 +5742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.250979, g: 0.32082027, b: 0.3773585, a: 0.8}
+  m_Color: {r: 0.061320752, g: 0.16037738, b: 0.24528301, a: 0.8}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15732,6 +15732,10 @@ PrefabInstance:
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 1829035575}
+    - target: {fileID: 6824372298371614196, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7178445535778415135, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15756,6 +15760,10 @@ PrefabInstance:
       propertyPath: 'Hints.Array.data[4]'
       value: 
       objectReference: {fileID: 1055231691}
+    - target: {fileID: 7415111974804868485, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7561420934996691726, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_Name
       value: Tutorial

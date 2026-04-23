@@ -104,6 +104,7 @@ public class RepairSystem
         }
 
         SetStatsBasedDurability();
+
         if (model.View)
             model.View.ShowDurability(model.Data.Durability);
 
