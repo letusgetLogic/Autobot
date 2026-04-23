@@ -37,12 +37,7 @@ public class CutScene : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
-
-        if (GameManager.Instance == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
-            return;
-        }
+        Debug.Log(this.name + ".Awake:");
 
         if (coverPanelOpen != null)
         {
@@ -52,7 +47,7 @@ public class CutScene : MonoBehaviour
 
         if (hintClickClose)
         {
-            if (GameManager.Instance.Replay == null && GameManager.Instance.IsTutorialRunning == false)
+            if (GameManager.Instance.Replay == null && GameManager.Instance.IsMode1P)
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();

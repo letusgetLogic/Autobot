@@ -48,5 +48,25 @@ public class SoPack : ScriptableObject
 
     [Header("Temporary Objects")]
     public SoUnit[] TemporaryItems;
+
+    public SoUnit[][] Bots => new SoUnit[][]
+    {
+        BotsTier1,
+        BotsTier2,
+        BotsTier3,
+        BotsTier4,
+        BotsTier5,
+        BotsTier6,
+    };
+
+    public SoUnit[][] Items => new SoUnit[][]
+    {
+        ItemsTier1,
+        ItemsTier2,
+        ItemsTier3,
+        ItemsTier4,
+        ItemsTier5,
+        ItemsTier6,
+    };
 }
 

@@ -126,6 +126,11 @@ public class GameManager : MonoBehaviour
     private bool isTutorialRunning = false;
 
 
+    public bool IsMode1P =>
+        currentGame.Mode == GameMode.Tutorial ||
+        currentGame.Mode == GameMode.AI ||
+        currentGame.Mode == GameMode.TestBattle;
+
     public int RandomSeed
     {
         get
@@ -163,7 +168,8 @@ public class GameManager : MonoBehaviour
             // this if-query is used to initialize instances once.
             // for example, button's sound wouldn't be triggered,
             // because until then no one has accessed/initalized SoundManager's instence.
-        };
+        }
+        ;
     }
 
     private void Start()
@@ -187,7 +193,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        
+
     }
 
     /// <summary>
@@ -451,10 +457,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
             PhaseShopIndex++;
 
-            if ((CurrentGame.Mode == GameMode.Tutorial ||
-                CurrentGame.Mode == GameMode.TestBattle ||
-                CurrentGame.Mode == GameMode.AI)
-                && CurrentPlayer.Data.IsAI)
+            if (IsMode1P && CurrentPlayer.Data.IsAI)
             {
                 if (TestBattle && PhaseShopIndex == 1)
                     LoadScene("PhaseShop");
@@ -513,33 +516,30 @@ public class GameManager : MonoBehaviour
 
     public void SetTutorialStartAtSceneStart()
     {
-        if (IsTutorialRunning && (CurrentPlayer == null || CurrentPlayer.Data.Turn != UnlockIndex))
+        bool isUnlocking = false;
+        if (PackManager.Instance != null && PhaseShopUI.Instance && CurrentPlayer != null)
+        {
+            isUnlocking = PackManager.Instance.IsUnlockingTier(CurrentPlayer.Data.Turn).Item1;
+        }
+
+        if (IsTutorialRunning && isUnlocking == false)
         {
             TutorialManager.Instance.SetNextStep();
         }
     }
 
-    public int UnlockIndex { get; set; } = 0;
     public void UnlockTier()
     {
-        if (PhaseShopController.Instance &&
-            PhaseShopUI.Instance &&
-            CurrentPlayer != null)
+        if (PackManager.Instance != null && PhaseShopUI.Instance && CurrentPlayer != null)
         {
-            bool isUnlocking = false;
+            (bool isUnlocking, int index) = PackManager.Instance.IsUnlockingTier(CurrentPlayer.Data.Turn);
+            PhaseShopUI.Instance.SetUnlockedTier(isUnlocking, index);
 
-            if (CurrentPlayer.Data.Turn == UnlockIndex)
-            {
-                isUnlocking = true;
-            }
-
-            PhaseShopUI.Instance.SetUnlockedTier(isUnlocking, UnlockIndex);
             if (isUnlocking)
                 EventManager.Instance.OnPopUpSound?.Invoke();
-
-            UnlockIndex = 0;
         }
     }
+
 
     private Coroutine coroutine;
     public void SetActiveCoroutine(GameObject _go, float _duration)

@@ -30,9 +30,9 @@ public class PhaseShopUI : MonoBehaviour
         turnLabel,
         heartLabel,
         nutLabel,
-        toolLabel,
-        toolLabelAdding;
-    public TextMeshProUGUI ToolAdding => toolLabelAdding;
+        toolLabel;
+    [SerializeField] private GameObject toolLabelAdding;
+    public GameObject ToolAdding => toolLabelAdding;
     [SerializeField] private Image nutBG, toolBG;
     [SerializeField] private RectTransform clockPointer;
 

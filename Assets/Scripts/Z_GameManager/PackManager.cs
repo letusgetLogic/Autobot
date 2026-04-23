@@ -90,10 +90,10 @@ public class PackManager : MonoBehaviour
     /// <summary>
     /// Assigns the list when being loaded from saved data.
     /// </summary>
-    /// <param name="_turns"></param>
-    public void AssignList(int _turns)
+    /// <param name="_turn"></param>
+    public void AssignList(int _turn)
     {
-        for (int i = 1; i <= _turns; i++)
+        for (int i = 1; i <= _turn; i++)
         {
             AddUnitsByTier(i);
         }
@@ -106,7 +106,17 @@ public class PackManager : MonoBehaviour
     /// thresholds. If the specified turn matches the availability turn for a particular tier, the corresponding units
     /// are added. If no match is found, no units are added.</remarks>
     /// <param name="_turns">The current turn number. Determines which tier of units will be added.</param>
-    private void AddUnitsByTier(int _turns)
+    private void AddUnitsByTier(int _turn)
+    {
+        (bool isUnlocking, int index) = IsUnlockingTier(_turn);
+
+        if (isUnlocking)
+        {
+            AddUnits(MyPack.Bots[index], MyPack.Items[index]);
+        }
+    }
+
+    public (bool, int) IsUnlockingTier(int _turn)
     {
         int a = MyPack.Tier1AvaiableAtTurn.Value;
         int b = MyPack.Tier2AvaiableAtTurn.Value;
@@ -115,36 +125,27 @@ public class PackManager : MonoBehaviour
         int e = MyPack.Tier5AvaiableAtTurn.Value;
         int f = MyPack.Tier6AvaiableAtTurn.Value;
 
-        if (_turns == a)
-        {
-            AddUnits(MyPack.BotsTier1, MyPack.ItemsTier1);
-        }
-        if (_turns == b)
-        {
-            GameManager.Instance.UnlockIndex = _turns;
-            AddUnits(MyPack.BotsTier2, MyPack.ItemsTier2);
-        }
-        if (_turns == c)
-        {
-            GameManager.Instance.UnlockIndex = _turns;
-            AddUnits(MyPack.BotsTier3, MyPack.ItemsTier3);
-        }
-        if (_turns == d)
-        {
-            GameManager.Instance.UnlockIndex = _turns;
-            AddUnits(MyPack.BotsTier4, MyPack.ItemsTier4);
-        }
-        if (_turns == e)
-        {
-            GameManager.Instance.UnlockIndex = _turns;
-            AddUnits(MyPack.BotsTier5, MyPack.ItemsTier5);
-        }
-        if (_turns == f)
-        {
-            GameManager.Instance.UnlockIndex = _turns;
-            AddUnits(MyPack.BotsTier6, MyPack.ItemsTier6);
-        }
+        if (_turn == a)
+            return (true, 1);
+
+        if (_turn == b)
+            return (true, 2);
+
+        if (_turn == c)
+            return (true, 3);
+
+        if (_turn == d)
+            return (true, 4);
+
+        if (_turn == e)
+            return (true, 5);
+
+        if (_turn == f)
+            return (true, 6);
+
+        return (false, 0);
     }
+
 
     /// <summary>
     /// Adds the specified units to the game's unit collection.
@@ -190,7 +191,7 @@ public class PackManager : MonoBehaviour
     /// </summary>
     /// <param name="_data"></param>
     /// <returns></returns>
-    public SoUnit  GetSoUnit(SaveUnitData _data)
+    public SoUnit GetSoUnit(SaveUnitData _data)
     {
         if (_data.UnitType == UnitType.SummonedRobot)
         {

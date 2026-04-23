@@ -111,7 +111,7 @@ public class PhaseShopController : MonoBehaviour
     {
         Player.Data.Tools++;
         GameManager.Instance.SetActiveCoroutine(
-            PhaseShopUI.Instance.ToolAdding.gameObject, process.DurationAddingTool);
+            PhaseShopUI.Instance.ToolAdding, process.DurationAddingTool);
     }
 
     /// <summary>
@@ -768,10 +768,11 @@ public class PhaseShopController : MonoBehaviour
         if (_onSlot.Model.IsMaxed || _onDrag.Model.IsMaxed)
             return false;
 
-        if (_onSlot.Model.Data.Durability < _onSlot.Model.Pack.CurrencyData.HealthPortion)
+        if (_onSlot.Model.IsFullDurability())
             return false;
 
-        if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name)
+        if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name &&
+            _onSlot.Model.IsFullDurability() && _onDrag.Model.IsFullDurability())
             return true;
 
         return false;
