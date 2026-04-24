@@ -87,7 +87,7 @@ public class LerpMovement : MonoBehaviour
     /// Moves to the target position and returns the animation time.
     /// </summary>
     /// <param name="_target"></param>
-    /// <param name="_targetTf"></param>
+    /// <param name="_targetTf"> It can be passed as parameter through delegate to be parent.</param>
     /// <returns></returns>
     public float MoveTo(Vector3 _target, Transform _targetTf)
     {

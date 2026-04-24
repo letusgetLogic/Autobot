@@ -92,26 +92,17 @@ public class PhaseShopController : MonoBehaviour
 
         EventManager.Instance.OnTriggerAbility += TriggerAbility;
         EventManager.Instance.OnShutdown += DestroyUnit;
-        EventManager.Instance.OnLevelUp += AddToolByLevelUp;
     }
 
     private void OnDisable()
     {
         EventManager.Instance.OnTriggerAbility -= TriggerAbility;
         EventManager.Instance.OnShutdown -= DestroyUnit;
-        EventManager.Instance.OnLevelUp -= AddToolByLevelUp;
     }
 
     private void OnDestroy()
     {
         Instance = null;
-    }
-
-    private void AddToolByLevelUp()
-    {
-        Player.Data.Tools++;
-        GameManager.Instance.SetActiveCoroutine(
-            PhaseShopUI.Instance.ToolAdding, process.DurationAddingTool);
     }
 
     /// <summary>

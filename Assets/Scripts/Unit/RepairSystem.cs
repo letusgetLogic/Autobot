@@ -45,22 +45,32 @@ public class RepairSystem
         {
             float value = model.Data.FullATK * portionHp;
             int atk = Mathf.RoundToInt(value);
+            // prevent 0/1 atk/hp
+            if (atk == 0 && model.Data.Cur.HP > 0)
+                atk = 1;
+
             model.Data.SetATK(atk);
         }
 
+        // dur = hp if hp < portion
         if (model.Data.FullHP <= model.Pack.CurrencyData.HealthPortion)
             return model.Data.Cur.HP;
 
+        // max HP => max durability
         if (model.Data.Cur.HP == model.Data.FullHP)
             return model.Pack.CurrencyData.HealthPortion;
 
         for (int i = model.Pack.CurrencyData.HealthPortion; i > 0; i--)
         {
-            float portionShiftingRelativeToDurability = portionSize / 2;
+            float portionShiftingRelativeToDurability = portionSize * 0.5f;
             float portionLowerLimit = (portionSize * i) - portionShiftingRelativeToDurability;
             if (portionHp > portionLowerLimit)
                 return i;
         }
+
+        // hp > 0 => dur > 0
+        if (model.Data.Cur.HP > 0)
+            return 1;
 
         return 0;
     }

@@ -288,132 +288,22 @@ public class UnitModel
     #region Update Level
 
     /// <summary>
-    /// Updates the level and xp.
-    /// </summary>
-    /// <param name="xp"></param>
-    public void UpdateLevelXP(bool _hasView)
-    {
-        if (_hasView)
-        {
-            switch (Data.XP)
-            {
-                case 1:
-                    SetCurrentLevel(0);
-                    break;
-                case 2:
-                    SetCurrentLevel(0);
-                    break;
-                case 3:
-                    SetCurrentLevel(1);
-                    break;
-                case 4:
-                    SetCurrentLevel(1);
-                    break;
-                case 5:
-                    SetCurrentLevel(1);
-                    break;
-                case 6:
-                    SetCurrentLevel(2);
-                    break;
-            }
-
-            return;
-        }
-        // only set data
-        switch (Data.XP)
-        { 
-            case 1:
-                CurrentLevel = SoUnit.Levels[0];
-                break;
-            case 2:
-                CurrentLevel = SoUnit.Levels[0];
-                break;
-            case 3:
-                CurrentLevel = SoUnit.Levels[1];
-                break;
-            case 4:
-                CurrentLevel = SoUnit.Levels[1];
-                break;
-            case 5:
-                CurrentLevel = SoUnit.Levels[1];
-                break;
-            case 6:
-                CurrentLevel = SoUnit.Levels[2];
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Updates the level and xp.
-    /// </summary>
-    /// <param name="xp"></param>
-    public IEnumerator UpdateLevelXPView(bool _isPhaseShop, bool _isMakingSound)
-    {
-        switch (Data.XP)
-        {//                        level  box1   box2  step1  step2  box3  step3  step4  step5  
-            case 1:
-                View.SetXpStepActive("1", false, true, false, false, false, false, false, false);
-                SetCurrentLevel(0);
-                break;
-            case 2:
-                View.SetXpStepActive("1", false, true, true, false, false, false, false, false);
-                SetCurrentLevel(0);
-                break;
-            case 3:
-                View.SetXpStepActive("1", false, true, true, true, false, false, false, false);
-                SetCurrentLevel(1);
-
-                yield return new WaitForSeconds(_isPhaseShop ? View.DelayUpdateLevel : 0f);
-                View.SetXpStepActive("2", false, false, false, false, true, false, false, false);
-                break;
-            case 4:
-                View.SetXpStepActive("2", false, false, false, false, true, true, false, false);
-                SetCurrentLevel(1);
-                break;
-            case 5:
-                View.SetXpStepActive("2", false, false, false, false, true, true, true, false);
-                SetCurrentLevel(1);
-                break;
-            case 6:
-                View.SetXpStepActive("2", false, false, false, false, true, true, true, true);
-                SetCurrentLevel(2);
-
-                yield return new WaitForSeconds(_isPhaseShop ? View.DelayUpdateLevel : 0f);
-                View.SetXpStepActive("3", true, false, false, false, false, false, false, false);
-                break;
-        }
-        if (IsLevelUp())
-        {
-            EventManager.Instance.OnLevelUp?.Invoke();
-
-            if (_isMakingSound)
-                EventManager.Instance.OnLevelUpSound?.Invoke();
-        }
-            
-    }
-
-    /// <summary>
-    /// Return boolean IsLevelUp.
-    /// </summary>
-    /// <returns></returns>
-    private bool IsLevelUp()
-    {
-        return Data.XP switch
-        {
-            3 => true,
-            6 => true,
-            _ => false
-        };
-    }
-
-    /// <summary>
     /// Sets the current level and index for saving data.
     /// </summary>
-    /// <param name="_index"></param>
-    private void SetCurrentLevel(int _index)
+    public void UpdateLevelXP()
     {
+        int _index = Data.XP switch
+        {
+            1 => 0,
+            2 => 0,
+            3 => 1,
+            4 => 1,
+            5 => 1,
+            6 => 2,
+            _ => -1
+        };
+
         CurrentLevel = SoUnit.Levels[_index];
-        View.SetAbility(CurrentLevel.Description, CurrentLevel.ConsumedEnergy != null ? CurrentLevel.ConsumedEnergy.Value : 0);
     }
 
     #endregion

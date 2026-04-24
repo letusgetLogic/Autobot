@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
 public class EventManager
 {
@@ -50,6 +49,7 @@ public class EventManager
 
     public UnityAction<InputKey> OnCraft {  get; set; }
     public UnityAction<InputKey> OnRecycle { get; set; }
+    public UnityAction<InputKey> OnRecycleSound { get; set; }
 
     public UnityAction<InputKey> OnRepair {  get; set; }
 
@@ -57,7 +57,7 @@ public class EventManager
     public UnityAction<InputKey> OnUnlock {  get; set; }
 
     public UnityAction OnFusion { get; set; }
-    public UnityAction OnLevelUp { get; set; }
+    public UnityAction<UnityEngine.Vector3> OnLevelUpPos { get; set; }
     public UnityAction OnLevelUpSound { get; set; }
 
     public UnityAction OnSwap { get; set; }

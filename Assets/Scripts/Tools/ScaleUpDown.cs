@@ -51,7 +51,7 @@ public class ScaleUpDown : MonoBehaviour
 
     private void OnEnable()
     {
-        GetDefault();
+        GetSetDefault();
         currentValue = 0f;
         switch (runState)
         {
@@ -237,7 +237,7 @@ public class ScaleUpDown : MonoBehaviour
         transform.localScale = _scaleValue;
     }
 
-    private void GetDefault()
+    private void GetSetDefault()
     {
         var rect = GetComponent<RectTransform>();
         if (rect != null)

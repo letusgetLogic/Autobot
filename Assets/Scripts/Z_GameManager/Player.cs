@@ -137,7 +137,8 @@ public class Player
 
         // charge at end of shop
         foreach (var unit in Data.TeamUnitDatas)
-            unit.SetEnergy(unit.Cur.ENG + 1);
+            if(unit != null)
+                 unit.SetEnergy(unit.Cur.ENG + 1);
     }
 
     /// <summary>

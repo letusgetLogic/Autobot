@@ -59,6 +59,7 @@ public class TutorialManager : MonoBehaviour
         RecycleRobot,
         RecycleCompliment,
         ShowFusion,
+        ShowChargingStation,
         TryOut,
 
         //ShopIdle,
@@ -74,7 +75,6 @@ public class TutorialManager : MonoBehaviour
         //ClickRobotToLevelUp,
         //PickToLevelUp,
         //LevelUpEffect,
-        //ShowChargingStation,
 
         //Reserve1,
         //Reserve2,
@@ -295,11 +295,6 @@ public class TutorialManager : MonoBehaviour
                     break;
 
                 case RunState.AFK:
-                    //if (currentState == StepState.WaitingEndBattle && 
-                    //    (currentAllowedInputs.Count == 0 || currentAllowedInputs.Contains(InputKey.ClickEnvironment) == false))
-                    //{
-                    //    currentAllowedInputs.Add(InputKey.ClickEnvironment);
-                    //}
                     break;
             }
         }
@@ -337,6 +332,7 @@ public class TutorialManager : MonoBehaviour
 
             currentState++;
             runState = RunState.Start;
+            countTime = 0f;
             return;
         }
 
@@ -365,6 +361,7 @@ public class TutorialManager : MonoBehaviour
 
         currentState++;
         runState = RunState.Start;
+        countTime = 0f;
 
         coroutineNextStep = null;
     }

@@ -160,17 +160,15 @@ public class UnitController : MonoBehaviour
         }
 
         model.Data.IsTeamLeft = _isTeamLeft;
+        model.UpdateLevelXP();
 
         if (HasView)
         {
             model.InitView(view);
 
-            if (Application.isPlaying) 
-                StartCoroutine(model.UpdateLevelXPView(model.IsPhaseShop(model.Data.UnitState), false));
-            else
-                model.UpdateLevelXP(HasView);
+            if (Application.isPlaying)
+                updateLevelCoroutine = StartCoroutine(UpdateLevelView(false));
         }
-        else model.UpdateLevelXP(HasView);
 
         model.SetDataView(_unitState, HasView);
     }
@@ -312,10 +310,12 @@ public class UnitController : MonoBehaviour
 
     #region PhaseShop
 
+    private Coroutine updateLevelCoroutine;
+
     /// <summary>
     /// Updates stats while fusioning.
     /// </summary>
-    public void UpdateLevel(SaveUnitData _draggingData, bool _isPhaseShop)
+    public void UpdateLevel(SaveUnitData _draggingData, bool _isAnimating)
     {
         model.AddFusion(
             new Attribute(_draggingData.XP, _draggingData.XP),
@@ -325,19 +325,68 @@ public class UnitController : MonoBehaviour
             _draggingData.Cur.HP == _draggingData.FullHP);
 
         model.Data.SetXP(model.Data.XP + _draggingData.XP);
-
-        if (HasView == false)
-            return;
-
-        StartCoroutine(model.UpdateLevelXPView(_isPhaseShop, true));
+        model.UpdateLevelXP();
 
         if (model.Repair != null)
         {
             model.Data.Durability = model.Repair.GetDurabilityFromHealth(false);
-            view.ShowDurability(model.Data.Durability);
         }
 
+        if (HasView == false)
+            return;
+
+        View.SetAbility(
+                model.CurrentLevel.Description,
+                model.CurrentLevel.ConsumedEnergy != null ? model.CurrentLevel.ConsumedEnergy.Value : 0);
+
+        updateLevelCoroutine = StartCoroutine(UpdateLevelView(_isAnimating));
+        view.ShowDurability(model.Data.Durability);
+
         EventManager.Instance.OnFusion?.Invoke();
+    }
+
+    /// <summary>
+    /// Updates level up view.
+    /// </summary>
+    private IEnumerator UpdateLevelView(bool _isAnimating)
+    {
+        switch (model.Data.XP)
+        {//                        level  box1   box2  step1  step2  box3  step3  step4  step5  
+            case 1:
+                View.SetXpStepActive("1", false, true, false, false, false, false, false, false);
+                break;
+            case 2:
+                View.SetXpStepActive("1", false, true, true, false, false, false, false, false);
+                break;
+            case 3:
+                if (_isAnimating)
+                {
+                    View.SetXpStepActive("1", false, true, true, true, false, false, false, false);
+                    yield return new WaitForSeconds(View.DelayUpdateLevel);
+                    EventManager.Instance.OnLevelUpSound?.Invoke();
+                    EventManager.Instance.OnLevelUpPos?.Invoke(transform.position);
+                }
+                View.SetXpStepActive("2", false, false, false, false, true, false, false, false);
+                break;
+            case 4:
+                View.SetXpStepActive("2", false, false, false, false, true, true, false, false);
+                break;
+            case 5:
+                View.SetXpStepActive("2", false, false, false, false, true, true, true, false);
+                break;
+            case 6:
+                if (_isAnimating)
+                {
+                    View.SetXpStepActive("2", false, false, false, false, true, true, true, true);
+                    yield return new WaitForSeconds(View.DelayUpdateLevel);
+                    EventManager.Instance.OnLevelUpSound?.Invoke();
+                    EventManager.Instance.OnLevelUpPos?.Invoke(transform.position);
+                }
+                View.SetXpStepActive("3", true, false, false, false, false, false, false, false);
+                break;
+        }
+
+        updateLevelCoroutine = null;
     }
 
     /// <summary>

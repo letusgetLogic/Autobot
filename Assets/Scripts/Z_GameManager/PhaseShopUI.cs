@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,8 +30,7 @@ public class PhaseShopUI : MonoBehaviour
         heartLabel,
         nutLabel,
         toolLabel;
-    [SerializeField] private GameObject toolLabelAdding;
-    public GameObject ToolAdding => toolLabelAdding;
+    [SerializeField] private WrenchLevelUp toolAdding;
     [SerializeField] private Image nutBG, toolBG;
     [SerializeField] private RectTransform clockPointer;
 
@@ -94,11 +92,15 @@ public class PhaseShopUI : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Instance.OnAttachedUnit += SetButtonActive;
+        EventManager.Instance.OnLevelUpPos += AddToolByLevelUp;
+        toolAdding.OnPosition += AddTool;
     }
 
     private void OnDisable()
     {
         EventManager.Instance.OnAttachedUnit -= SetButtonActive;
+        EventManager.Instance.OnLevelUpPos -= AddToolByLevelUp;
+        toolAdding.OnPosition -= AddTool;
     }
 
     private void OnDestroy()
@@ -121,13 +123,26 @@ public class PhaseShopUI : MonoBehaviour
         SetButtonActive(null);
     }
 
+    private void AddToolByLevelUp(Vector3 _pos)
+    {
+        toolAdding.SetPosition(_pos + Vector3.up, toolLabel.transform.position);
+        toolAdding.transform.position = _pos;
+        toolAdding.gameObject.SetActive(true);
+
+    }
+
+    private void AddTool()
+    {
+        UpdateCurrency(0, 1);
+    }
+
     /// <summary>
     /// Updates template.
     /// </summary>
     public void UpdateUI(bool _isTutorial, Player _player)
     {
         Player = _player;
-        nameLabel.text = _isTutorial ?  "Tutorial Mode" : Player.Data.Name;
+        nameLabel.text = _isTutorial ? "Tutorial Mode" : Player.Data.Name;
         nutLabel.text = Player.Data.Nuts.ToString();
         toolLabel.text = Player.Data.Tools.ToString();
         heartLabel.text = Player.Data.Lives.ToString();
@@ -211,9 +226,10 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnEndTurn()
     {
-        Debug.Log("End Turn Button Clicked");
         if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonEndTurn))
             return;
+
+        Debug.Log("End Turn Button Clicked");
 
         input.BlocksInput = true;
         EventManager.Instance.OnEndTurnClick?.Invoke(InputKey.ClickButtonEndTurn);
@@ -327,6 +343,9 @@ public class PhaseShopUI : MonoBehaviour
             PhaseShopController.Instance.SetAttachedGameObject(null);
 
             EventManager.Instance.OnRecycle?.Invoke(InputKey.ClickButtonRecycle);
+
+            if (unit.Model.Sell.Nut > 0 || unit.Model.Sell.Tool > 0)
+                EventManager.Instance.OnRecycleSound?.Invoke(InputKey.ClickButtonRecycle);
         }
         else input.BlocksInput = false;
     }
