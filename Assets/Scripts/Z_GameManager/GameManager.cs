@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.DebugUI;
 
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
@@ -343,6 +341,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.BattlePhase:
+                InputManager.Instance.BlocksInput = false;
                 break;
 
             case GameState.EndOfBattle:
@@ -459,7 +458,7 @@ public class GameManager : MonoBehaviour
 
             if (IsMode1P && CurrentPlayer.Data.IsAI)
             {
-                if (TestBattle && PhaseShopIndex == 1)
+                if (TestBattle)
                     LoadScene("PhaseShop");
 
                 StartCoroutine(CurrentPlayer.ExecuteByTutorialAI());
@@ -556,5 +555,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(_duration);
         _go.SetActive(false);
         coroutine = null;
+    }
+
+    public void Log(string _text)
+    {
+        Debug.Log(_text);
     }
 }

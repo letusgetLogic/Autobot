@@ -100,8 +100,8 @@ public class UnitModel
         {
             debug = PackManager.Instance.DebugID++.ToString() + "_";
         }
-        Data.ID = debug + SoUnit.Name;
-        Debug.Log(Data.ID + " new created.");
+        Data._ID = debug + SoUnit.Name;
+        Debug.Log(Data._ID + " new created.");
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public class UnitModel
         SoUnit = _soUnit;
         Data = _data;
 
-        Debug.Log(Data.ID + " loaded.");
+        Debug.Log(Data._ID + " loaded.");
     }
 
     public void InitRepair()
@@ -169,7 +169,7 @@ public class UnitModel
         }
 
         if (SoUnit)
-            View.SetData(SoUnit.Sprite, SoUnit.Name, SoUnit.ModelID, Data.ID);
+            View.SetData(SoUnit.Sprite, SoUnit.Name, SoUnit.ModelID, Data._ID);
         else
             View.SetData(null, "", "", "");
     }
@@ -285,14 +285,20 @@ public class UnitModel
     }
 
 
-    #region Update Level
+    #region Level
 
     /// <summary>
     /// Sets the current level and index for saving data.
     /// </summary>
     public void UpdateLevelXP()
     {
-        int _index = Data.XP switch
+        int _index = LevelIndex(Data.XP);
+        CurrentLevel = SoUnit.Levels[_index];
+    }
+
+    public int LevelIndex(int _xp)
+    {
+        int _index = _xp switch
         {
             1 => 0,
             2 => 0,
@@ -302,8 +308,7 @@ public class UnitModel
             6 => 2,
             _ => -1
         };
-
-        CurrentLevel = SoUnit.Levels[_index];
+        return _index;
     }
 
     #endregion

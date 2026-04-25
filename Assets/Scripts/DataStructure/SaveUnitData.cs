@@ -6,7 +6,7 @@
 [Serializable]
 public class SaveUnitData
 {
-    public string ID { get; set; }
+    public string _ID { get; set; }
     public int Index { get; set; }
     public UnitType UnitType { get; set; }
 
@@ -58,6 +58,18 @@ public class SaveUnitData
     public SaveUnitData()
     {
     }
+    
+    /// <summary>
+    /// Constructor for updating level without model
+    /// </summary>
+    public SaveUnitData(int _xp, Attribute _cur, Attribute _basis, Attribute _buff, Attribute _tempBuff)
+    {
+        xp = _xp;
+        current = _cur;
+        basis = _basis;
+        buff = _buff;
+        temporaryBuff = _tempBuff;
+    }
 
     /// <summary>
     /// Makes a copy of the reference.
@@ -65,7 +77,7 @@ public class SaveUnitData
     /// <param name="_other"></param>
     public SaveUnitData(SaveUnitData _other)
     {
-        ID = _other.ID;
+        _ID = _other._ID;
         Index = _other.Index;
         UnitType = _other.UnitType;
         Max = _other.Max;

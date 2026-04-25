@@ -63,7 +63,7 @@ public class Debuff : AbilityBase
     /// <param name="_rnd">The random number generator used to select enemy units.</param>
     private void DebuffRandomEnemy(Random _rnd)
     {
-        List<UnitController> teams = AllBotsIn(enemySlots);
+        List<UnitController> teams = AllEnemyIn(enemySlots);
 
         for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
         {

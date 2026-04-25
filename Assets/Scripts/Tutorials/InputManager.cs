@@ -1,4 +1,6 @@
-﻿public class InputManager
+﻿using System.Diagnostics;
+
+public class InputManager
 {
     #region Instance Lazy Loading
     public static InputManager Instance
@@ -17,7 +19,7 @@
     private static InputManager _Instance;
     #endregion
 
-    public bool BlocksInput { set { isInputBlocked = value; } }
+    public bool BlocksInput { set { isInputBlocked = value; GameManager.Instance.Log(isInputBlocked + "isInputBlocked");  } }
 
     private bool isInputBlocked = true;
     private bool isChecking = false;

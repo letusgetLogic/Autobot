@@ -148,6 +148,11 @@ public class UnitView : MonoBehaviour
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
     }
 
+    private void OnDisable()
+    {
+        coroutineHide = null;
+    }
+
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
@@ -510,6 +515,8 @@ public class UnitView : MonoBehaviour
         addEnergy.enabled = false;
     }
 
+    private Coroutine coroutineHide;
+
     /// <summary>
     /// Shows the consumed energy.
     /// </summary>
@@ -519,7 +526,7 @@ public class UnitView : MonoBehaviour
         consumEnergy.text = _energy.ToString();
         consumEnergy.enabled = _energy < 0;
 
-        StartCoroutine(HideConsum());
+        coroutineHide = StartCoroutine(HideConsum());
     }
 
     /// <summary>

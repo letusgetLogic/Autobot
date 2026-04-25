@@ -171,6 +171,28 @@ public abstract partial class AbilityBase
     }
 
     /// <summary>
+    /// Retrieves all unit controllers in the specified slots except the current controller.
+    /// </summary>
+    /// <param name="_slots">An array of slots to search for unit controllers.</param>
+    /// <returns>A list of unit controllers found in the provided slots, excluding the current controller.</returns>
+    protected virtual List<UnitController> AllEnemyIn(Slot[] _slots)
+    {
+        List<UnitController> teamUnitControllers = new List<UnitController>();
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            var teamUnitController = _slots[i].UnitController();
+            if (teamUnitController != null && teamUnitController != Controller
+                && teamUnitController.Model.Data.Cur.HP > 0)
+            {
+                teamUnitControllers.Add(teamUnitController);
+            }
+        }
+
+        return teamUnitControllers;
+    }
+
+    /// <summary>
     /// Finds and returns the nearest unit controller in the specified direction relative to the current unit.
     /// </summary>
     /// <param name="_toWho">Specifies the direction in which to search for the nearest unit.</param>

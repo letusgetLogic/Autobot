@@ -80,16 +80,22 @@ public class RepairSystem
     /// </summary>
     private void SetStatsBasedDurability()
     {
+        // true value HP
         float floatHP = model.Data.FullHP * model.Data.DurabilityRatio;
         int hp = Mathf.RoundToInt(floatHP);
 
+        // true value ATK
         float floatATK = model.Data.FullATK * model.Data.DurabilityRatio;
         int atk = Mathf.RoundToInt(floatATK);
 
         int currentHp = model.Data.Cur.HP;
         int currentAtk = model.Data.Cur.ATK;
 
+        // true values should be close to current -> takes the greatest value
         model.Data.SetHP(hp < currentHp ? currentHp : hp, model.SetRepairPanel);
+
+        if (atk == 0 && model.Data.Cur.HP > 0)
+            atk = 1;
         model.Data.SetATK(atk < currentAtk ? currentAtk : atk);
 
         if (model.View)
