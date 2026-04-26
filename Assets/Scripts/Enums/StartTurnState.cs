@@ -2,7 +2,10 @@
 { 
     None, 
     Init, 
-    ShowingTurn, 
+    WaitingOpenScene,
+    OpenSceneEnd, 
+    WaitingClick,
+    ClickPanelUnlock,
     ChargeBot, 
     Done 
 }

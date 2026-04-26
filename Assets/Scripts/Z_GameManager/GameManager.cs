@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -331,6 +332,7 @@ public class GameManager : MonoBehaviour
                 CurrentGame.CurrentPlayerIndex++;
                 SaveSystem.SaveGame(CurrentGame);
                 Switch(GameState.StartScene);
+                coroutine = null;
                 break;
 
             case GameState.StartOfBattle:
@@ -441,6 +443,8 @@ public class GameManager : MonoBehaviour
         //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
 
+    private Coroutine coroutine;
+
     /// <summary>
     /// Starts scene.
     /// </summary>
@@ -453,7 +457,7 @@ public class GameManager : MonoBehaviour
         {
             CurrentPlayer = players[CurrentGame.CurrentPlayerIndex];
 
-            Debug.Log("--------------- Phase Shop " + PhaseShopIndex + "----------------");
+            Debug.Log("--------------- Phase Shop " + PhaseShopIndex + " / " + CurrentPlayer.Data.Name + " ----------------");
             PhaseShopIndex++;
 
             if (IsMode1P && CurrentPlayer.Data.IsAI)
@@ -461,7 +465,7 @@ public class GameManager : MonoBehaviour
                 if (TestBattle)
                     LoadScene("PhaseShop");
 
-                StartCoroutine(CurrentPlayer.ExecuteByTutorialAI());
+                coroutine = StartCoroutine(CurrentPlayer.ExecuteByTutorialAI());
                 return;
             }
 
@@ -531,34 +535,28 @@ public class GameManager : MonoBehaviour
 
     public void UnlockTier()
     {
-        if (PackManager.Instance != null && PhaseShopUI.Instance && CurrentPlayer != null)
+        if (currentGame.Mode != GameMode.TestBattle &&
+            PackManager.Instance != null && 
+            PhaseShopController.Instance && 
+            PhaseShopUI.Instance && 
+            CurrentPlayer != null)
         {
-            (bool isUnlocking, int index) = PackManager.Instance.IsUnlockingTier(CurrentPlayer.Data.Turn);
-
-            bool showUnlock = isUnlocking && index > 1;
-            PhaseShopUI.Instance.SetUnlockedTier(showUnlock, index);
-
-            if (showUnlock)
-                EventManager.Instance.OnPopUpSound?.Invoke();
+            PhaseShopController.Instance.SetStartTurn(StartTurnState.OpenSceneEnd);
         }
-    }
-
-
-    private Coroutine coroutine;
-    public void SetActiveCoroutine(GameObject _go, float _duration)
-    {
-        _go.SetActive(true);
-        coroutine = StartCoroutine(Deactivate(_go, _duration));
-    }
-    private IEnumerator Deactivate(GameObject _go, float _duration)
-    {
-        yield return new WaitForSeconds(_duration);
-        _go.SetActive(false);
-        coroutine = null;
     }
 
     public void Log(string _text)
     {
         Debug.Log(_text);
+    }
+
+    public void LogWarning(string _text)
+    {
+        Debug.LogWarning(_text);
+    }
+
+    public void LogError(string _text)
+    {
+        Debug.LogError(_text);
     }
 }

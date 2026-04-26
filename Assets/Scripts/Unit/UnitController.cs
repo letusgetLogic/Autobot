@@ -315,7 +315,7 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Updates stats while fusioning.
     /// </summary>
-    public void UpdateLevel(SaveUnitData _draggingData, bool _isAnimating)
+    public bool UpdateLevel(SaveUnitData _draggingData, bool _isAnimating)
     {
         model.AddFusion(
             new Attribute(_draggingData.XP, _draggingData.XP),
@@ -331,9 +331,9 @@ public class UnitController : MonoBehaviour
         {
             model.Data.Durability = model.Repair.GetDurabilityFromHealth(false);
         }
-
+     
         if (HasView == false)
-            return;
+            return model.Data.XP == 3 || model.Data.XP == 6;
 
         View.SetAbility(
                 model.CurrentLevel.Description,
@@ -343,6 +343,7 @@ public class UnitController : MonoBehaviour
         view.ShowDurability(model.Data.Durability);
 
         EventManager.Instance.OnFusion?.Invoke();
+        return model.Data.XP == 3 || model.Data.XP == 6;
     }
 
     /// <summary>
@@ -366,6 +367,7 @@ public class UnitController : MonoBehaviour
                     EventManager.Instance.OnLevelUpSound?.Invoke();
                     EventManager.Instance.OnLevelUpPos?.Invoke(transform.position);
                 }
+                EventManager.Instance.OnLevelUp?.Invoke();
                 View.SetXpStepActive("2", false, false, false, false, true, false, false, false);
                 break;
             case 4:
@@ -382,6 +384,7 @@ public class UnitController : MonoBehaviour
                     EventManager.Instance.OnLevelUpSound?.Invoke();
                     EventManager.Instance.OnLevelUpPos?.Invoke(transform.position);
                 }
+                EventManager.Instance.OnLevelUp?.Invoke();
                 View.SetXpStepActive("3", true, false, false, false, false, false, false, false);
                 break;
         }

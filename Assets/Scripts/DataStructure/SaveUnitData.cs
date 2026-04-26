@@ -6,7 +6,7 @@
 [Serializable]
 public class SaveUnitData
 {
-    public string _ID { get; set; }
+    public string ID { get; set; }
     public int Index { get; set; }
     public UnitType UnitType { get; set; }
 
@@ -77,7 +77,7 @@ public class SaveUnitData
     /// <param name="_other"></param>
     public SaveUnitData(SaveUnitData _other)
     {
-        _ID = _other._ID;
+        ID = _other.ID;
         Index = _other.Index;
         UnitType = _other.UnitType;
         Max = _other.Max;

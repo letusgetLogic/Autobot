@@ -9,7 +9,7 @@ public class PanelUnlock : MonoBehaviour, IPointerClickHandler
         if (wasClicked) 
             return;
 
-        PhaseShopUI.Instance.SetUnlockedTier(false, 0);
+        PhaseShopController.Instance.SetStartTurn(StartTurnState.ClickPanelUnlock);
         if (GameManager.Instance.IsTutorialRunning)
         {
             TutorialManager.Instance.SetNextStep();

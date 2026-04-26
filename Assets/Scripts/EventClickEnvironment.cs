@@ -50,7 +50,7 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
             case "PhaseBattle":
                 var replay = GameManager.Instance.Replay;
                 if (replay != null && 
-                    replay.State == GameState.WaitingEndOfBattle || game.State == GameState.WaitingEndOfGame)
+                    (replay.State == GameState.WaitingEndOfBattle || game.State == GameState.WaitingEndOfGame))
                 {
                     InputManager.Instance.BlocksInput = true;
                     replay.Switch(GameState.LoadScene);

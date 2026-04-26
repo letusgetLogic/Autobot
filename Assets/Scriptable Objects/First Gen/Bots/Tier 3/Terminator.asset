@@ -26,8 +26,7 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Start of battle \u2192 Convert all energy to attack until end of
-      battle."
+    Description: "Start of battle \u2192 Convert all energy to attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
     TriggerType: 21
@@ -37,7 +36,7 @@ MonoBehaviour:
     FromWho: 1
     ToWho: 1
     ToWhoCount: 0
-    AbilityDuration: 1
+    AbilityDuration: 2
     Buff:
       HP: 0
       ATK: 1
@@ -53,8 +52,7 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 1
-    Description: "Start of battle \u2192 Convert all energy to attack until end of
-      battle."
+    Description: "Start of battle \u2192 Convert all energy to attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
     TriggerType: 21
@@ -64,7 +62,7 @@ MonoBehaviour:
     FromWho: 1
     ToWho: 1
     ToWhoCount: 0
-    AbilityDuration: 1
+    AbilityDuration: 2
     Buff:
       HP: 0
       ATK: 1
@@ -80,8 +78,7 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 2
-    Description: "Start of battle \u2192 Convert all energy to attack until end of
-      battle."
+    Description: "Start of battle \u2192 Convert all energy to attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
     TriggerType: 21
@@ -91,7 +88,7 @@ MonoBehaviour:
     FromWho: 1
     ToWho: 1
     ToWhoCount: 0
-    AbilityDuration: 1
+    AbilityDuration: 2
     Buff:
       HP: 0
       ATK: 1

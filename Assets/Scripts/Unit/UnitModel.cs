@@ -100,8 +100,8 @@ public class UnitModel
         {
             debug = PackManager.Instance.DebugID++.ToString() + "_";
         }
-        Data._ID = debug + SoUnit.Name;
-        Debug.Log(Data._ID + " new created.");
+        Data.ID = debug + SoUnit.Name;
+        Debug.Log(Data.ID + " new created.");
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public class UnitModel
         SoUnit = _soUnit;
         Data = _data;
 
-        Debug.Log(Data._ID + " loaded.");
+        Debug.Log(Data.ID + " loaded.");
     }
 
     public void InitRepair()
@@ -169,7 +169,7 @@ public class UnitModel
         }
 
         if (SoUnit)
-            View.SetData(SoUnit.Sprite, SoUnit.Name, SoUnit.ModelID, Data._ID);
+            View.SetData(SoUnit.Sprite, SoUnit.Name, SoUnit.ModelID, Data.ID);
         else
             View.SetData(null, "", "", "");
     }
@@ -236,7 +236,7 @@ public class UnitModel
             case UnitState.InPhaseBattle:
                 View.HideObjectsDuringBattle();
                 View.SetBuyOrSell(Currency(_unitState), false, Data.UnitType);
-                View.SetShopView(false, false, false, IsRobot() && Data.Cur.HP <= 0);
+                View.SetShopView(false, true, false, IsRobot() && Data.Cur.HP <= 0);
                 break;
         }
 
@@ -300,12 +300,12 @@ public class UnitModel
     {
         int _index = _xp switch
         {
-            1 => 0,
+            1 => 0, // lv1
             2 => 0,
-            3 => 1,
+            3 => 1, // lv2
             4 => 1,
             5 => 1,
-            6 => 2,
+            6 => 2, // lv3
             _ => -1
         };
         return _index;

@@ -57,6 +57,7 @@ public class EventManager
     public UnityAction<InputKey> OnUnlock {  get; set; }
 
     public UnityAction OnFusion { get; set; }
+    public UnityAction OnLevelUp { get; set; }
     public UnityAction<UnityEngine.Vector3> OnLevelUpPos { get; set; }
     public UnityAction OnLevelUpSound { get; set; }
 

@@ -19,6 +19,7 @@ public class RepairSystem
             return model.Pack.CurrencyData.HealthPortion;
         }
     }
+    public int RepairAmount => PortionAmount - model.Data.Durability;
 
     /// <summary>
     /// Initializes the references.
@@ -107,7 +108,7 @@ public class RepairSystem
     /// <summary>
     /// Rises the durability value.
     /// </summary>
-    public void RiseDurability()
+    public int RiseDurability()
     {
         model.Data.DurabilityRatio += portionSize;
         model.Data.Durability++;
@@ -125,9 +126,11 @@ public class RepairSystem
             model.View.ShowDurability(model.Data.Durability);
 
         if (Application.isPlaying == false)
-            return;
+            return 0;
 
         if (model.View)
             model.View.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
+
+        return 1;
     }
 }

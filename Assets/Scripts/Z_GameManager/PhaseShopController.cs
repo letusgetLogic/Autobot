@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Multiplayer.Playmode;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -144,7 +145,7 @@ public class PhaseShopController : MonoBehaviour
     /// Set start turn state.
     /// </summary>
     /// <param name="_state"></param>
-    private void SetStartTurn(StartTurnState _state)
+    public void SetStartTurn(StartTurnState _state)
     {
         startTurn = _state;
         switch (startTurn)
@@ -167,17 +168,40 @@ public class PhaseShopController : MonoBehaviour
                     else
                         SpawnShopUnits();
 
-                    SetStartTurn(StartTurnState.ChargeBot);
+                    SetStartTurn(StartTurnState.WaitingOpenScene);
                 }
-                else
-                {
-                    SetStartTurn(StartTurnState.Done);
-                }
+                else SetStartTurn(StartTurnState.Done);
 
                 Player.UpdateUnitData();
                 break;
 
-            case StartTurnState.ShowingTurn:
+            case StartTurnState.WaitingOpenScene:
+                break;
+
+            case StartTurnState.OpenSceneEnd:
+                if (GameManager.Instance.Replay != null)
+                    return;
+
+                (bool isUnlocking, int index) = PackManager.Instance.IsUnlockingTier(Player.Data.Turn);
+
+                bool showUnlock = isUnlocking && index > 1;
+                PhaseShopUI.Instance.SetUnlockedTier(showUnlock, index);
+
+                if (showUnlock)
+                {
+                    EventManager.Instance.OnPopUpSound?.Invoke();
+                    SetStartTurn(StartTurnState.WaitingClick);
+                }
+                else
+                    SetStartTurn(StartTurnState.ChargeBot);
+                break;
+
+            case StartTurnState.WaitingClick:
+                break;
+
+            case StartTurnState.ClickPanelUnlock:
+                PhaseShopUI.Instance.SetUnlockedTier(false, 0);
+                SetStartTurn(StartTurnState.ChargeBot);
                 break;
 
             case StartTurnState.ChargeBot:
@@ -996,15 +1020,15 @@ public class PhaseShopController : MonoBehaviour
         return game.Mode == GameMode.AI && player.Data.IsAI;
     }
 
-    public UnitController[] GetRandomShopBots()
+    public List<UnitController> GetRandomShopBots()
     {
-        UnitController[] controllers = new UnitController[ShopBotSlots().Length];
+        List<UnitController> controllers = new();
         for (int i = 0; i < ShopBotSlots().Length; i++)
         {
             int randomNumber = Random.Range(0, PackManager.Instance.Bots.Count);
             var soUnit = PackManager.Instance.Bots[randomNumber];
             var unit = AddUnitController(soUnit, randomNumber, null, UnitState.InSlotShop);
-            controllers[i] = unit;
+            controllers.Add(unit);
         }
         return controllers;
     }

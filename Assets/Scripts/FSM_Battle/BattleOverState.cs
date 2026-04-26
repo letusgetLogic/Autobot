@@ -83,7 +83,14 @@ public class BattleOverState : StateBaseBattle
         }
         else // go out of the replay, waiting of input click to load the current play scene 
         {
-            GameManager.Instance.Replay.Switch(GameState.EndOfBattle);
+            if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
+            {
+                GameManager.Instance.Replay.Switch(GameState.EndOfBattle);
+            }
+            else // end the game, when one of them has 0 lives.
+            {
+                GameManager.Instance.Replay.Switch(GameState.EndOfGame);
+            }
         }
 
         _ctx.SetState(null);
