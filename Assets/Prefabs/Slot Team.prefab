@@ -677,7 +677,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3722615455089316458}
   - component: {fileID: 5655546721470776391}
-  - component: {fileID: 2376410853746507087}
   - component: {fileID: 4299567717994658052}
   m_Layer: 0
   m_Name: Slot Team
@@ -732,14 +731,6 @@ MonoBehaviour:
   hintLight: {fileID: 2213838051074973382}
   lightenUpDown: {fileID: 595244970458298620}
   lightenScale: {fileID: 8879341769714474662}
---- !u!222 &2376410853746507087
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3849827548910932321}
-  m_CullTransparentMesh: 1
 --- !u!114 &4299567717994658052
 MonoBehaviour:
   m_ObjectHideFlags: 0

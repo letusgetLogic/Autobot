@@ -60,6 +60,17 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     public bool IsStopped { get; set; } = false;
     public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
 
+    public List<Coroutine> Coroutines
+    {
+        get
+        {
+            if (coroutines == null)
+                coroutines = new();
+            return coroutines;
+        }
+    }
+    private List<Coroutine> coroutines;
+    
 
     private void Awake()
     {
@@ -246,4 +257,12 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         StartCoroutine(PhaseBattleView.Instance.ShowClick(Process.WaitForClickShow));
     }
 
+    public void StopRoutine()
+    {
+        Coroutines.ForEach(x => 
+        { 
+            if (x != null) 
+                StopCoroutine(x); 
+        });
+    }
 }
