@@ -235,7 +235,8 @@ public class PhaseShopUI : MonoBehaviour
         EventManager.Instance.OnEndTurnClick?.Invoke(InputKey.ClickButtonEndTurn);
         EventManager.Instance.OnButtonSound?.Invoke();
 
-        bool hasEnoughCur = Player.Data.Nuts >= MinLeftNut || Player.Data.Tools > 0 && PhaseShopController.Instance.IsAnyRobotDamaged();
+        bool hasEnoughCur = (Player.Data.Nuts >= MinLeftNut || Player.Data.Tools > 0)
+            && PhaseShopController.Instance.IsAnyRobotDamaged;
 
         panelLeftCurrency.gameObject.SetActive(hasEnoughCur);
 

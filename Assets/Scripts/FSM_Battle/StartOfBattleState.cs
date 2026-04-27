@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 public class StartOfBattleState : StateBaseBattle
 {
@@ -16,8 +17,8 @@ public class StartOfBattleState : StateBaseBattle
 
         int trigger = 0;
 
-        trigger += TriggerAbility(PhaseBattleController.Instance.Slots1());
-        trigger += TriggerAbility(PhaseBattleController.Instance.Slots2());
+        trigger += TriggerAbility(PhaseBattleController.Instance.Slots1);
+        trigger += TriggerAbility(PhaseBattleController.Instance.Slots2);
 
         if (trigger > 0)
             _ctx.SetState(new HandleAbilityState(0));
@@ -43,7 +44,7 @@ public class StartOfBattleState : StateBaseBattle
     /// Triggers the ability before attacking.
     /// </summary>
     /// <param name="_slots"></param>
-    private int TriggerAbility(Slot[] _slots)
+    private int TriggerAbility(List<Slot> _slots)
     {
         int hasTrigger = 0;
 

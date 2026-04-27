@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InsertState : StateBaseBattle
@@ -14,8 +15,8 @@ public class InsertState : StateBaseBattle
     public override void OnEnter(I_FSM_Battle _ctx)
     {
         Debug.Log("--- InsertState");
-        PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots1()));
-        PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots2()));
+        PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots1.ToArray()));
+        PhaseBattleController.Instance.StartCoroutine(MoveCloserToCenter(PhaseBattleController.Instance.Slots2.ToArray()));
         EventManager.Instance.OnSwap?.Invoke();
     }
 
@@ -76,13 +77,13 @@ public class InsertState : StateBaseBattle
     /// </summary>
     /// <param name="_slots">An array of Slot objects to search for available space and move units.</param>
     /// <returns>A tuple containing the animation time for the move and a value indicating whether a move was possible.</returns>
-    public static (float AnimTime, bool CanMove) MakeSpaceAtMostFront(Slot[] _slots)
+    public static (float AnimTime, bool CanMove) MakeSpaceAtMostFront(List<Slot> _slots)
     {
         float animTime = 0f;
         bool canMove = false;
         int searchEmpty = 1;
 
-        while (searchEmpty > 0 && searchEmpty < _slots.Length)
+        while (searchEmpty > 0 && searchEmpty < _slots.Count)
         {
             Debug.Log("searchEmpty " + searchEmpty);
             if (canMove == false && _slots[searchEmpty].Unit())

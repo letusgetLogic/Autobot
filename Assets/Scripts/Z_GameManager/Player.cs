@@ -56,11 +56,11 @@ public class Player
     private void BuildTeamByAI()
     {
         List<UnitController> teamUnits = new();
-        int repairTools = Data.Tools - PhaseShopController.Instance.ShopBotSlots().Length;
+        int repairTools = Data.Tools - PhaseShopController.Instance.ShopBotSlots.Count;
 
         if (Data.TeamUnitDatas == null)
         {
-            Data.TeamUnitDatas = new SaveUnitData[PhaseShopController.Instance.TeamSlots().Length];
+            Data.TeamUnitDatas = new SaveUnitData[PhaseShopController.Instance.TeamSlots.Count];
             DebugTeamUnit("BuildTeamByAI");
         }
         else
@@ -99,7 +99,7 @@ public class Player
             case 2:
                 // shuffle / set priority based on position
                 teamUnits.Shuffle();
-                Data.TeamUnitDatas = new SaveUnitData[PhaseShopController.Instance.TeamSlots().Length];
+                Data.TeamUnitDatas = new SaveUnitData[PhaseShopController.Instance.TeamSlots.Count];
                 for (int i = 0; i < teamUnits.Count; i++)
                     Data.TeamUnitDatas[i] = teamUnits[i].Model.Data;
 
@@ -177,17 +177,20 @@ public class Player
                                 if (repairTools >= needRepair) // repair both
                                 {
                                     DebugUnit("repair: ", i, target.Model.Data);
-                                    while (target.Model.Repair.RepairAmount > 0) { repairTools -= target.Model.Repair.RiseDurability(); }
+                                    while (target.Model.Repair.RepairAmount > 0) 
+                                    { repairTools -= target.Model.Repair.RiseDurability(); }
                                     DebugUnit("repair: ", i, target.Model.Data);
                                     DebugUnit("repair: ", j, search.Model.Data);
-                                    while (search.Model.Repair.RepairAmount > 0) { repairTools -= search.Model.Repair.RiseDurability(); }
+                                    while (search.Model.Repair.RepairAmount > 0) 
+                                    { repairTools -= search.Model.Repair.RiseDurability(); }
                                     DebugUnit("repair: ", j, search.Model.Data);
                                 }
                                 else // fusion target with shop if possible
                                 {
                                     if (repairTools >= target.Model.Repair.RepairAmount && sameInShop.Count > 0) // repair target
                                     {
-                                        while (target.Model.Repair.RepairAmount == 0) { repairTools -= target.Model.Repair.RiseDurability(); }
+                                        while (target.Model.Repair.RepairAmount == 0) 
+                                        { repairTools -= target.Model.Repair.RiseDurability(); }
                                         DebugUnit("target: ", i, target.Model.Data);
                                         for (int k = 0; k < sameInShop.Count && shopBots.Count > EmptySlots(); k++)
                                         {
@@ -386,47 +389,30 @@ public class Player
     /// </summary>
     public void UpdateUnitData()
     {
-        var shopBotSlots = PhaseShopController.Instance.ShopBotSlots();
-        Data.ShopBotDatas = new SaveUnitData[shopBotSlots.Length];
-        for (int i = 0; i < Data.ShopBotDatas.Length; i++)
+        var shopBotSlots = PhaseShopController.Instance.ShopBotSlots;
+        Data.ShopBotDatas = shopBotSlots.Select(x =>
         {
-            var unit = shopBotSlots[i].UnitController();
-            if (unit == null)
-                continue;
-
-            Data.ShopBotDatas[i] = unit.Model.Data;
-        }
-
-        var shopItemSlots = PhaseShopController.Instance.ShopItemSlots();
-        Data.ShopItemDatas = new SaveUnitData[shopItemSlots.Length];
-        for (int i = 0; i < Data.ShopItemDatas.Length; i++)
+            var unit = x.UnitController();
+            return unit == null ? null : unit.Model.Data;
+        }).ToArray();
+       
+        var shopItemSlots = PhaseShopController.Instance.ShopItemSlots;
+        Data.ShopItemDatas = shopItemSlots.Select(x =>
         {
-            var unit = shopItemSlots[i].UnitController();
-            if (unit == null)
-                continue;
+            var item = x.UnitController();
+            return item == null ? null : item.Model.Data;
+        }).ToArray();
 
-            Data.ShopItemDatas[i] = unit.Model.Data;
-        }
-
-        var teamSlots = PhaseShopController.Instance.TeamSlots();
-        Data.TeamUnitDatas = new SaveUnitData[teamSlots.Length];
-        for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
+        var teamSlots = PhaseShopController.Instance.TeamSlots;
+        Data.TeamUnitDatas = teamSlots.Select(x =>
         {
-            var unit = teamSlots[i].UnitController();
-            if (unit == null)
-                continue;
+            var unit = x.UnitController();
+                        return unit == null ? null : unit.Model.Data;
+        }).ToArray();
 
-            Data.TeamUnitDatas[i] = unit.Model.Data;
-        }
-
-        Data.ChargeUnitData = default;
         var chargeUnit = PhaseShopController.Instance.ChargeSlot.UnitController();
-        if (chargeUnit != null)
-        {
-            Data.ChargeUnitData = chargeUnit.Model.Data;
-        }
-        //if (GameManager.Instance.CurrentRound != null)
-        //Debug.Log("currentRound.SavedPlayerData1.TeamUnitDatas[0].HP " + GameManager.Instance.CurrentRound.SavedPlayerData1.TeamUnitDatas[0].Cur.HP);
+        Data.ChargeUnitData = chargeUnit == null ? null : chargeUnit.Model.Data;
+
         SaveSystem.SaveGame(GameManager.Instance.CurrentGame);
     }
 
@@ -475,7 +461,7 @@ public class Player
     private int EmptySlots()
     {
         if (Data.TeamUnitDatas == null)
-            return PhaseShopController.Instance.TeamSlots().Length;
+            return PhaseShopController.Instance.TeamSlots.Count;
 
         int count = 0;
         for (int i = 0; i < Data.TeamUnitDatas.Length; i++)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Multiplayer.Playmode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,28 +11,30 @@ public class PhaseShopController : MonoBehaviour
 
     [Header("References")]
     [Header("Slots")]
-    [SerializeField] private Slot[] teamSlots;
+    [SerializeField] private List<Slot> teamSlots;
     [SerializeField] private Slot chargeSlot;
-    [SerializeField] private Slot[] shopBotSlots;
-    [SerializeField] private Slot[] shopItemSlots;
+    [SerializeField] private List<Slot> shopBotSlots;
+    [SerializeField] private List<Slot> shopItemSlots;
     [SerializeField] private Slot itemRandomnessDropSlot;
 
     public Slot ChargeSlot => chargeSlot;
+    public List<Slot> TeamSlots => teamSlots.Where(x => x.gameObject.activeSelf).ToList();
+    public List<Slot> ShopBotSlots => shopBotSlots.Where(x => x.gameObject.activeSelf).ToList();
+    public List<Slot> ShopItemSlots => shopItemSlots.Where(x => x.gameObject.activeSelf).ToList();
 
     [Header("Settings")]
     [SerializeField] private SoShopProcess process;
     [SerializeField] private SoLerpMovementSettings unitSwapSettings;
+
     public SoShopProcess Process => process;
-
     public Player Player { get; private set; }
-
     public UnitController AttachedController { get; private set; }
 
     /// <summary>
     /// Blocks hover and drop events in team slots and charge slots. 
     /// When an item has randomness ability and being attached, only the drop slot for it can being hovered.
     /// </summary>
-    private bool isRandomnessItemAttached { get; set; } = false;
+    private bool isRandomnessItemAttached = false;
 
     /// <summary>
     /// To enable some actions when player is dragging something.
@@ -39,8 +42,15 @@ public class PhaseShopController : MonoBehaviour
     /// To prevent end drag when set IsDragging = false while units are swapping.
     /// </summary>
     public bool IsDragging { get; set; } = false;
-
     public bool IsSwapping { get; private set; } = false;
+
+    public bool HasAnyBotInShop => ShopBotSlots.Any(slot => slot.UnitController() != null);
+
+    public bool IsAnyRobotDamaged => TeamSlots.Any(x =>
+    {
+        var unitController = x.UnitController();
+        return unitController != null ? !unitController.Model.IsFullDurability() : false;
+    });
 
     private StartTurnState startTurn = StartTurnState.None;
     private InputManager input => InputManager.Instance;
@@ -56,33 +66,12 @@ public class PhaseShopController : MonoBehaviour
         Instance = this;
 
         Time.timeScale = 1f;
-
-        if (GameManager.Instance == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
-            return;
-        }
-
-        var game = GameManager.Instance.CurrentGame;
-        if (game == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: CurrentGame not found in GameManager.");
-            return;
-        }
-
-        var player = GameManager.Instance.CurrentPlayer;
-        if (player == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: CurrentPlayer not found in GameManager.");
-            return;
-        }
     }
 
     private void Start()
     {
-        SetIndex(teamSlots);
-        SetIndex(shopBotSlots);
-
+        TeamSlots.ForEach(x => x.Index = TeamSlots.IndexOf(x));
+        ShopBotSlots.ForEach(x => x.Index = ShopBotSlots.IndexOf(x));
         GameManager.Instance.Switch(GameState.StartOfTurn);
     }
 
@@ -104,15 +93,6 @@ public class PhaseShopController : MonoBehaviour
     private void OnDestroy()
     {
         Instance = null;
-    }
-
-    /// <summary>
-    /// Set index depend on draw order.
-    /// </summary>
-    private void SetIndex(Slot[] _slots)
-    {
-        for (int i = 0; i < _slots.Length; i++)
-            _slots[i].Index = i;
     }
 
     /// <summary>
@@ -309,14 +289,9 @@ public class PhaseShopController : MonoBehaviour
     /// </summary>
     public void SpawnShopUnits()
     {
-        // Spawn shop bots
-        for (int i = 0; i < shopBotSlots.Length; i++)
+        var shopBotSlots = ShopBotSlots;
+        for (int i = 0; i < shopBotSlots.Count; i++)
         {
-            if (shopBotSlots[i].gameObject.activeSelf == false)
-            {
-                continue;
-            }
-
             var unitController = shopBotSlots[i].UnitController();
             if (unitController != null)
             {
@@ -340,14 +315,9 @@ public class PhaseShopController : MonoBehaviour
                 shopBotSlots[i].transform);
         }
 
-        // Spwan shop items
-        for (int i = 0; i < shopItemSlots.Length; i++)
+        var shopItemSlots = ShopItemSlots;
+        for (int i = 0; i < shopItemSlots.Count; i++)
         {
-            if (shopItemSlots[i].gameObject.activeSelf == false)
-            {
-                continue;
-            }
-
             var unitController = shopItemSlots[i].UnitController();
             if (unitController != null)
             {
@@ -374,55 +344,33 @@ public class PhaseShopController : MonoBehaviour
 
     private void SpawnFixedUnits()
     {
-        for (int i = 0; i < shopBotSlots.Length; i++)
+        var shopBotSlots = ShopBotSlots;
+        for (int i = 0; i < shopBotSlots.Count; i++)
         {
-            if (shopBotSlots[i].gameObject.activeSelf == false)
-                continue;
-
             var units = TutorialManager.Instance.BotsTurn1;
             if (i >= units.Length)
                 continue;
-
-            int index = -1;
-            for (int j = 0; j < PackManager.Instance.Bots.Count; j++)
-            {
-                if (PackManager.Instance.Bots[j] == units[i])
-                {
-                    index = j;
-                    break;
-                }
-            }
-
+            
+            var bots = PackManager.Instance.Bots;
             SpawnManager.Instance.Spawn(
                 units[i],
-                index,
+                bots.IndexOf(bots.FirstOrDefault(bot => bot == units[i])),
                 null,
                 UnitState.InSlotShop,
                 shopBotSlots[i].transform);
         }
 
-        for (int i = 0; i < shopItemSlots.Length; i++)
+        var shopItemSlots = ShopItemSlots;
+        for (int i = 0; i < shopItemSlots.Count; i++)
         {
-            if (shopItemSlots[i].gameObject.activeSelf == false)
-                continue;
-
             var units = TutorialManager.Instance.ItemsTurn1;
             if (i >= units.Length)
                 continue;
 
-            int index = -1;
-            for (int j = 0; j < PackManager.Instance.Items.Count; j++)
-            {
-                if (PackManager.Instance.Items[j] == units[i])
-                {
-                    index = j;
-                    break;
-                }
-            }
-
+            var items = PackManager.Instance.Items;
             SpawnManager.Instance.Spawn(
                 units[i],
-                index,
+                items.IndexOf(items.FirstOrDefault(item => item == units[i])),
                 null,
                 UnitState.InSlotShop,
                 shopItemSlots[i].transform);
@@ -609,8 +557,7 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_dropSlot"></param>
     /// <param name="_mouseRelease"> unitView.BeingReleased(null); </param>
     /// <param name="_disableShadow">  unitView.Shadow.enabled = false;</param>
-    public void Transport(UnitController _attached, Transform _dropSlot,
-        bool _mouseRelease)
+    public void Transport(UnitController _attached, Transform _dropSlot, bool _mouseRelease)
     {
         HideDescriptionOfUnits();
 
@@ -654,7 +601,9 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_unitDragged"></param>
     /// <param name="_slotTarget"></param>
     /// <returns></returns>
-    public IEnumerator Swap(UnitController _unitTarget, Transform _slotDragged, UnitController _unitDragged, Transform _slotTarget)
+    public IEnumerator Swap(
+        UnitController _unitTarget, Transform _slotDragged, 
+        UnitController _unitDragged, Transform _slotTarget)
     {
         IsSwapping = true;
 
@@ -710,10 +659,10 @@ public class PhaseShopController : MonoBehaviour
         // Search index is on next slot in the defined direction.
         int search = _target + _direction;
 
-        var teamSlots = TeamSlots();
+        var teamSlots = TeamSlots;
 
         // Search empty slot and push the other to it.
-        while (search >= 0 && search < teamSlots.Length)
+        while (search >= 0 && search < teamSlots.Count)
         {
             if (teamSlots[search].UnitController() != null &&
                 teamSlots[search].UnitController() != AttachedController) // slot is occupied
@@ -909,51 +858,6 @@ public class PhaseShopController : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns only active shop bot slots.
-    /// </summary>
-    /// <returns></returns>
-    public Slot[] ShopBotSlots()
-    {
-        List<Slot> activeSlots = new List<Slot>();
-        foreach (var slot in shopBotSlots)
-        {
-            if (slot.gameObject.activeSelf)
-                activeSlots.Add(slot);
-        }
-        return activeSlots.ToArray();
-    }
-
-    /// <summary>
-    /// Returns only active shop item slots.
-    /// </summary>
-    /// <returns></returns>
-    public Slot[] ShopItemSlots()
-    {
-        List<Slot> activeSlots = new List<Slot>();
-        foreach (var slot in shopItemSlots)
-        {
-            if (slot.gameObject.activeSelf)
-                activeSlots.Add(slot);
-        }
-        return activeSlots.ToArray();
-    }
-
-    /// <summary>
-    /// Returns only active team slots.
-    /// </summary>
-    /// <returns></returns>
-    public Slot[] TeamSlots()
-    {
-        List<Slot> activeSlots = new List<Slot>();
-        foreach (var slot in teamSlots)
-        {
-            if (slot.gameObject.activeSelf)
-                activeSlots.Add(slot);
-        }
-        return activeSlots.ToArray();
-    }
-
-    /// <summary>
     /// Is blocking inputs by randomness item being attached?
     /// </summary>
     /// <param name="_slot"></param>
@@ -994,36 +898,17 @@ public class PhaseShopController : MonoBehaviour
 
     public bool IsTurnAI()
     {
-        if (GameManager.Instance == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
-            return false;
-        }
-
         var game = GameManager.Instance.CurrentGame;
-        if (game == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: CurrentGame not found in GameManager.");
-            return false;
-        }
-
-        if (game.Mode == GameMode.TestBattle)
-            return true;
-
         var player = GameManager.Instance.CurrentPlayer;
-        if (player == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: CurrentPlayer not found in GameManager.");
-            return false;
-        }
 
-        return game.Mode == GameMode.AI && player.Data.IsAI;
+        return game == null ? false : game.Mode == GameMode.AI && 
+            player == null ? false : player.Data.IsAI;
     }
 
     public List<UnitController> GetRandomShopBots()
     {
         List<UnitController> controllers = new();
-        for (int i = 0; i < ShopBotSlots().Length; i++)
+        for (int i = 0; i < ShopBotSlots.Count; i++)
         {
             int randomNumber = Random.Range(0, PackManager.Instance.Bots.Count);
             var soUnit = PackManager.Instance.Bots[randomNumber];
@@ -1045,7 +930,7 @@ public class PhaseShopController : MonoBehaviour
         int robots = 0;
         int fullRobots = 0;
 
-        foreach (var slot in TeamSlots())
+        foreach (var slot in TeamSlots)
         {
             var unitController = slot.UnitController();
             if (unitController != null)
@@ -1058,30 +943,4 @@ public class PhaseShopController : MonoBehaviour
         return fullRobots == robots;
     }
 
-    public bool IsAnyRobotDamaged()
-    {
-        bool value = false;
-
-        foreach (var slot in TeamSlots())
-        {
-            var unitController = slot.UnitController();
-            if (unitController != null)
-            {
-                value = unitController.Model.IsFullDurability() == false;
-            }
-
-        }
-
-        return value;
-    }
-
-    public bool HasAnyBotInShop()
-    {
-        foreach (var slot in ShopBotSlots())
-        {
-            if (slot.UnitController() != null)
-                return true;
-        }
-        return false;
-    }
 }

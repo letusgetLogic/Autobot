@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 /// <summary>
 /// Creating and initializing components.
@@ -54,58 +56,40 @@ public class UnitController : MonoBehaviour
     }
     private Queue<UnitController> targets;
 
-    public Slot[] TeamSlots
+    public List<Slot> TeamSlots
     {
         get
         {
             if (PhaseBattleController.Instance != null)
             {
-                return model.Data.IsTeamLeft ?
-                    PhaseBattleController.Instance.Slots1() :
-                    PhaseBattleController.Instance.Slots2();
+                return model.Data.IsTeamLeft
+                    ? PhaseBattleController.Instance.Slots1
+                    : PhaseBattleController.Instance.Slots2;
             }
-            else return PhaseShopController.Instance.TeamSlots();
+            else return PhaseShopController.Instance.TeamSlots;
         }
     }
-
-    public Slot[] EnemySlots
+    public List<Slot> EnemySlots
     {
         get
         {
             if (PhaseBattleController.Instance != null)
             {
-                return model.Data.IsTeamLeft ?
-                    PhaseBattleController.Instance.Slots2() :
-                    PhaseBattleController.Instance.Slots1();
+                return model.Data.IsTeamLeft
+                    ? PhaseBattleController.Instance.Slots2
+                    : PhaseBattleController.Instance.Slots1;
             }
             else return null;
         }
     }
 
-    public Slot Slot
-    {
-        get
-        {
-            var parent = transform.parent;
-            if (parent != null)
-            {
-                return parent.GetComponent<Slot>();
-            }
-            return null;
-        }
-    }
+    public List<UnitController> AllMates => TeamSlots.Select(s => s.UnitController()).
+            Where(u => u != null && u != this && u.Model.Data.Cur.HP > 0).ToList();
 
-    public bool IsTurnAI
-    {
-        get
-        {
-            if (PhaseShopController.Instance && PhaseShopController.Instance.Player.Data.IsAI)
-            {
-                return true;
-            }
-            return false;
-        }
-    }
+    public List<UnitController> AllEnemies => EnemySlots.Select(s => s.UnitController()).
+            Where(u => u != null && u.Model.Data.Cur.HP > 0).ToList();
+
+    public Slot Slot => transform.parent.GetComponent<Slot>();
 
     public bool HasView =>
         (PhaseShopController.Instance && GameManager.Instance.CurrentPlayer.Data.IsAI == false)
@@ -180,16 +164,11 @@ public class UnitController : MonoBehaviour
     /// <returns></returns>
     public AbilityBase TriggerAbility(TriggerType _triggerType)
     {
-        int consumedEnergy = 0;
-
-        // Initialize consumed energy with the absolute value of scriptable object negative value.
-        if (model.CurrentLevel.ConsumedEnergy != null)
-        {
-            consumedEnergy = Mathf.Abs(model.CurrentLevel.ConsumedEnergy.Value);
-        }
+        var consum = model.CurrentLevel.ConsumedEnergy;
+        int consumENG = consum != null ? Mathf.Abs(consum.Value) : 0;
 
         // Doesn't have enough energy to trigger the ability.
-        if (model.Data.Cur.ENG < consumedEnergy)
+        if (model.Data.Cur.ENG < consumENG)
             return null;
 
         // All conditions are satisfied, return the ability.
@@ -509,6 +488,7 @@ public class UnitController : MonoBehaviour
     }
 
     #endregion
+
 
 
 

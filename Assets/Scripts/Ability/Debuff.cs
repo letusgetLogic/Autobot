@@ -4,20 +4,15 @@ using System.Collections.Generic;
 
 public class Debuff : AbilityBase
 {
-    private readonly Slot[] teamSlots;
-    private readonly Slot[] enemySlots;
-
     /// <summary>
     /// Constructor of Debuff.
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
-    /// <param name="_teamSlots"></param>
+    /// <param name="_seed"></param>
     public Debuff(UnitController _controller, Level _currentLevel, int _seed)
         : base(_controller, _currentLevel, _seed)
     {
-        teamSlots = _controller.TeamSlots;
-        enemySlots = _controller.EnemySlots;
     }
 
     protected override IEnumerator Activate()
@@ -33,20 +28,6 @@ public class Debuff : AbilityBase
             case ToWho.RandomEnemy:
                 DebuffRandomEnemy(rand);
                 break;
-
-                // not used yet
-
-            //case var a when a == ToWho.NearestMateAhead:
-            //    BuffNearest(GetNearest(a, CurrentLevel.ToWhoCount));
-            //    break;
-
-            //case var b when b == ToWho.NearestMateBehind:
-            //    BuffNearest(GetNearest(b, CurrentLevel.ToWhoCount));
-            //    break;
-
-            //case ToWho.AllMates:
-            //    BuffAllMates();
-            //    break;
         }
 
         if (CurrentLevel.ToWho != ToWho.None)
@@ -63,17 +44,17 @@ public class Debuff : AbilityBase
     /// <param name="_rnd">The random number generator used to select enemy units.</param>
     private void DebuffRandomEnemy(Random _rnd)
     {
-        List<UnitController> teams = AllEnemyIn(enemySlots);
+        List<UnitController> enemies = Controller.AllEnemies;
 
         for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
         {
-            if (teams.Count == 0)
+            if (enemies.Count == 0)
                 return;
 
-            var unit = teams[_rnd.Next(0, teams.Count)];
+            var unit = enemies[_rnd.Next(0, enemies.Count)];
 
             if (DebuffUnit(unit))
-                teams.Remove(unit);
+                enemies.Remove(unit);
         }
     }
 

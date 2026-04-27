@@ -4,18 +4,15 @@ using System.Collections.Generic;
 
 public class Buff : AbilityBase
 {
-    private readonly Slot[] teamSlots;
-
     /// <summary>
     /// Constructor of Buff.
     /// </summary>
     /// <param name="_controller"></param>
     /// <param name="_currentLevel"></param>
-    /// <param name="_teamSlots"></param>
+    /// <param name="_seed"></param>
     public Buff(UnitController _controller, Level _currentLevel, int _seed)
         : base(_controller, _currentLevel, _seed)
     {
-        teamSlots = _controller.TeamSlots;
     }
 
     protected override IEnumerator Activate()
@@ -41,15 +38,15 @@ public class Buff : AbilityBase
                 break;
 
             case var a when a == ToWho.NearestMateAhead:
-                BuffNearest(GetNearest(a, CurrentLevel.ToWhoCount));
+                NearestUnits(a, CurrentLevel.ToWhoCount).ForEach(x => BuffUnit(x));
                 break;
 
             case var b when b == ToWho.NearestMateBehind:
-                BuffNearest(GetNearest(b, CurrentLevel.ToWhoCount));
+                NearestUnits(b, CurrentLevel.ToWhoCount).ForEach(x => BuffUnit(x));
                 break;
 
             case ToWho.AllMates:
-                BuffAllMates();
+                Controller.AllMates.ForEach(x => BuffUnit(x));
                 break;
         }
 
@@ -67,17 +64,14 @@ public class Buff : AbilityBase
     /// <param name="_rnd">The random number generator used to select units.</param>
     private void BuffRandomMate(Random _rnd)
     {
-        List<UnitController> teams = AllBotsIn(teamSlots);
+        var mates = Controller.AllMates;
 
-        for (int i = 0; i < CurrentLevel.ToWhoCount; i++)
+        for (int i = 0; i < CurrentLevel.ToWhoCount && mates.Count > 0; i++)
         {
-            if (teams.Count == 0)
-                return;
-
-            var unit = teams[_rnd.Next(0, teams.Count)];
+            var unit = mates[_rnd.Next(0, mates.Count)];
 
             if (BuffUnit(unit))
-                teams.Remove(unit);
+                mates.Remove(unit);
         }
     }
 
@@ -91,34 +85,6 @@ public class Buff : AbilityBase
 
         var unit = Targets.Dequeue();
         BuffUnit(unit);
-    }
-
-    /// <summary>
-    /// Applies a buff to each unit in the specified list.
-    /// </summary>
-    /// <param name="_units">The list of units to buff.</param>
-    private void BuffNearest(List<UnitController> _units)
-    {
-        if (_units.Count == 0)
-            return;
-
-        for (int i = 0; i < _units.Count; i++)
-        {
-            BuffUnit(_units[i]);
-        }
-    }
-
-    /// <summary>
-    /// Applies a buff to all allied units in the current team slots.
-    /// </summary>
-    private void BuffAllMates()
-    {
-        List<UnitController> teams = AllBotsIn(teamSlots);
-
-        for (int i = 0; i < teams.Count; i++)
-        {
-            BuffUnit(teams[i]);
-        }
     }
 
     /// <summary>

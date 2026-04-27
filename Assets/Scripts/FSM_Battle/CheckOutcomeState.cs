@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class CheckOutcomeState : StateBaseBattle
 {
@@ -48,8 +49,8 @@ public class CheckOutcomeState : StateBaseBattle
         }
         else
         {
-            if (NeedInsert(PhaseBattleController.Instance.Slots1(), amountOfActiveUnits1) ||
-                     NeedInsert(PhaseBattleController.Instance.Slots2(), amountOfActiveUnits2))
+            if (NeedInsert(PhaseBattleController.Instance.Slots1.ToArray(), amountOfActiveUnits1) ||
+                     NeedInsert(PhaseBattleController.Instance.Slots2.ToArray(), amountOfActiveUnits2))
             {
                 _ctx.SetState(new InsertState(
                     PhaseBattleController.Instance.Process.DurationInsert));
@@ -77,11 +78,11 @@ public class CheckOutcomeState : StateBaseBattle
     /// <returns></returns>
     private bool CheckOutcome(Player _player1, Player _player2)
     {
-        var slots1 = PhaseBattleController.Instance.Slots1();
-        var slots2 = PhaseBattleController.Instance.Slots2();
+        var slots1 = PhaseBattleController.Instance.Slots1;
+        var slots2 = PhaseBattleController.Instance.Slots2;
 
-        amountOfActiveUnits1 = IsAnyoneIn(slots1, null);
-        amountOfActiveUnits2 = IsAnyoneIn(slots2, null);
+        amountOfActiveUnits1 = slots1.Count(n => n.Unit() != null);
+        amountOfActiveUnits2 = slots2.Count(n => n.Unit() != null);
 
         if (amountOfActiveUnits1 > 0)
         {
@@ -111,29 +112,6 @@ public class CheckOutcomeState : StateBaseBattle
             //PhaseBattleView.Instance.SetSpeedButton(false);
             return true;
         }
-    }
-
-    /// <summary>
-    /// Checks if any unit is in slots.
-    /// </summary>
-    /// <param name="_slots"></param>
-    /// <param name="_exclusiveSlot"> The reference of Slot, which shouldn't be checked.</param>
-    /// <returns></returns>
-    public static int IsAnyoneIn(Slot[] _slots, Slot _exclusiveSlot)
-    {
-        int count = 0;
-
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            if (_slots[i].Unit() != null)
-            {
-                if (_exclusiveSlot != null && _exclusiveSlot == _slots[i])
-                    continue;
-
-                count++;
-            }
-        }
-        return count;
     }
 
     /// <summary>

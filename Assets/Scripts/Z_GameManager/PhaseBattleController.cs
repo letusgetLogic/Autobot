@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
 
 public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
@@ -13,10 +13,11 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     public SoBattleProcess Process => process;
 
     [Header("Slots")]
-    [SerializeField]
-    private Slot[] slots1;
-    [SerializeField]
-    private Slot[] slots2;
+    [SerializeField] private List<Slot> slots1;
+    [SerializeField] private List<Slot> slots2;
+
+    public List<Slot> Slots1 => slots1.Where(x => x.gameObject.activeSelf).ToList();
+    public List<Slot> Slots2 => slots2.Where(x => x.gameObject.activeSelf).ToList();
 
     private StateBaseBattle state { get; set; }
 
@@ -70,12 +71,6 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
 
         Time.timeScale = 1f;
 
-        if (GameManager.Instance == null)
-        {
-            Debug.LogWarning(this.name + ".Awake: GameManager instance not found.");
-            return;
-        }
-
         if (GameManager.Instance.Replay != null)
             GameManager.Instance.Replay.Switch(GameState.StartOfBattle);
         else
@@ -98,8 +93,8 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     private void Start()
     {
         PhaseBattleView.Instance.SetRunningButton();
-        SetIndex(slots1);
-        SetIndex(slots2);
+        Slots1.ForEach(x => x.Index = Slots1.IndexOf(x));
+        Slots2.ForEach(x => x.Index = Slots2.IndexOf(x));
     }
 
     private void OnEnable()
@@ -120,16 +115,6 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     {
         Instance = null;
     }
-
-    /// <summary>
-    /// Set index depend on draw order.
-    /// </summary>
-    private void SetIndex(Slot[] _slots)
-    {
-        for (int i = 0; i < _slots.Length; i++)
-            _slots[i].Index = i;
-    }
-
 
     #region Finite State Machine
 
@@ -250,45 +235,6 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         ShutdownUnits.Enqueue(unit);
         Debug.Log($"{unit.gameObject.name} enqueue");
         Debug.Log($"{shutdownUnits.Count} ShutdownUnits");
-    }
-
-    /// <summary>
-    /// Set the detect click active or not.
-    /// </summary>
-    /// <param name="_value"></param>
-    public void SetDetectClickActive(bool _value)
-    {
-        //detectClickEnviroment.SetActive(_value);
-    }
-
-    /// <summary>
-    /// Returns only active slots.
-    /// </summary>
-    /// <returns></returns>
-    public Slot[] Slots1()
-    {
-        List<Slot> activeSlots = new List<Slot>();
-        foreach (var slot in slots1)
-        {
-            if (slot.gameObject.activeSelf)
-                activeSlots.Add(slot);
-        }
-        return activeSlots.ToArray();
-    }
-
-    /// <summary>
-    /// Returns only active slots.
-    /// </summary>
-    /// <returns></returns>
-    public Slot[] Slots2()
-    {
-        List<Slot> activeSlots = new List<Slot>();
-        foreach (var slot in slots2)
-        {
-            if (slot.gameObject.activeSelf)
-                activeSlots.Add(slot);
-        }
-        return activeSlots.ToArray();
     }
 
     /// <summary>

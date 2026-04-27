@@ -387,9 +387,9 @@ public class TutorialManager : MonoBehaviour
         }
         else if (currentState == StepState.RepairRobot)
         {
-            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
+            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots.Count > 0)
             {
-                foreach (var slot in PhaseShopController.Instance.TeamSlots())
+                foreach (var slot in PhaseShopController.Instance.TeamSlots)
                 {
                     var unit = slot.UnitController();
                     if (unit != null && unit.Model.IsFullDurability() == false)
@@ -414,7 +414,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (currentState == StepState.ShowFactoryReseted)
         {
-            foreach (var slot in PhaseShopController.Instance.ShopItemSlots())
+            foreach (var slot in PhaseShopController.Instance.ShopItemSlots)
             {
                 if (slot.Tutorial &&
                     slot.UnitController() && slot.UnitController().Model.Data.UnitType == UnitType.Item)
@@ -426,9 +426,9 @@ public class TutorialManager : MonoBehaviour
         }
         else if (currentState == StepState.ClickRobotToRepair)
         {
-            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
+            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots.Count > 0)
             {
-                foreach (var slot in PhaseShopController.Instance.TeamSlots())
+                foreach (var slot in PhaseShopController.Instance.TeamSlots)
                 {
                     var unit = slot.UnitController();
                     if (unit != null && unit.Model.IsFullDurability() == false)
@@ -443,9 +443,9 @@ public class TutorialManager : MonoBehaviour
         }
         else if (currentState == StepState.ClickRobotToRecycle)
         {
-            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots().Length > 0)
+            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots.Count > 0)
             {
-                foreach (var slot in PhaseShopController.Instance.TeamSlots())
+                foreach (var slot in PhaseShopController.Instance.TeamSlots)
                 {
                     var unit = slot.UnitController();
                     if (slot.Tutorial &&
@@ -507,7 +507,7 @@ public class TutorialManager : MonoBehaviour
         {
             case InputKey.DropSlotTeam:
                 if (currentState == StepState.PickRobot ||
-               currentState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop() == false ||
+               currentState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop == false ||
                currentState == StepState.PickBattery)
                     SetNextStep();
                 break;

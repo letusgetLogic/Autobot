@@ -1,25 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class ShootOut : AbilityBase
 {
-    private readonly UnitModel model;
-    private readonly Slot[] teamSlots;
-    private readonly SoUnit[] craftedUnits;
-    private int slotIndex;
-    private float duration
-    {
-        get
-        {
-            if (PhaseShopController.Instance != null)
-                return PhaseShopController.Instance.Process.DurationShootOut;
-            if (PhaseBattleController.Instance != null)
-                return PhaseBattleController.Instance.Process.DurationShootOut;
-
-            return 0f;
-        }
-    }
-
     /// <summary>
     ///  Constructor of ShootOut.
     /// </summary>
@@ -30,14 +14,17 @@ public class ShootOut : AbilityBase
     public ShootOut(UnitController _controller, Level _currentLevel, int _seed)
         : base(_controller, _currentLevel, _seed)
     {
-        model = _controller.Model;
-        teamSlots = _controller.TeamSlots;
-        craftedUnits = CurrentLevel.SummonUnits;
-        slotIndex = _controller.Slot.Index;
+       
+        
     }
 
     protected override IEnumerator Activate()
     {
+        var model = Controller.Model;
+        var teamSlots = Controller.TeamSlots;
+        var craftedUnits = CurrentLevel.SummonUnits;
+        int slotIndex = Controller.Slot.Index;
+
         if (CurrentLevel.TriggerType == TriggerType.Shutdown)
         {
             Controller.StartCoroutine(Controller.Deactivate(DurationDescription));

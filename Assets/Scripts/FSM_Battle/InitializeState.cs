@@ -62,8 +62,8 @@ public class InitializeState : StateBaseBattle
         if (GameManager.Instance.Replay == null)
         {
             PhaseBattleView.Instance.Initialize(player1.Data, player2.Data);
-            SpawnUnits(player1, PhaseBattleController.Instance.Slots1(), true);
-            SpawnUnits(player2, PhaseBattleController.Instance.Slots2(), false);
+            SpawnUnits(player1, PhaseBattleController.Instance.Slots1.ToArray(), true);
+            SpawnUnits(player2, PhaseBattleController.Instance.Slots2.ToArray(), false);
         }
         else
         {
@@ -71,8 +71,8 @@ public class InitializeState : StateBaseBattle
             var data2 = new PlayerData(GameManager.Instance.CurrentRound.SavedPlayerData2);
 
             PhaseBattleView.Instance.Initialize(data1, data2);
-            SpawnUnitsByReplay(data1, PhaseBattleController.Instance.Slots1(), true);
-            SpawnUnitsByReplay(data2, PhaseBattleController.Instance.Slots2(), false);
+            SpawnUnitsByReplay(data1, PhaseBattleController.Instance.Slots1.ToArray(), true);
+            SpawnUnitsByReplay(data2, PhaseBattleController.Instance.Slots2.ToArray(), false);
         }
 
         EventManager.Instance.OnInitDone?.Invoke();

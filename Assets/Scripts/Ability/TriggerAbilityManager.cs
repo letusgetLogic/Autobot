@@ -110,7 +110,7 @@
     /// <returns>true if the ability was registered or the trigger condition was met; otherwise, false.</returns>
     public bool RegisterFriendAhead(UnitController _friendAhead, TriggerType _triggerType)
     {
-        for (int i = 1; i < _friendAhead.TeamSlots.Length; i++)
+        for (int i = 1; i < _friendAhead.TeamSlots.Count; i++)
         {
             var target = _friendAhead.TeamSlots[i].UnitController();
             if (target == null || target == _friendAhead)

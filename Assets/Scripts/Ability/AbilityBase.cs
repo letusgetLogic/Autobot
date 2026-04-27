@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract partial class AbilityBase
+public abstract class AbilityBase
 {
     public UnitController Controller { get; private set; }
     protected Level CurrentLevel { get; private set; }
@@ -101,7 +101,7 @@ public abstract partial class AbilityBase
                     _level.ToWho == ToWho.RandomMate ||
                     _level.ToWho == ToWho.NearestMateBehind ||
                     _level.ToWho == ToWho.AllMates)
-                    && CheckOutcomeState.IsAnyoneIn(_controller.TeamSlots, _controller.Slot) == 0)
+                    && _controller.AllMates.Count <= 0)
                     return null;
 
                 return new Buff(_controller, _level, _seed);
@@ -149,48 +149,6 @@ public abstract partial class AbilityBase
         return false;
     }
 
-    /// <summary>
-    /// Retrieves all unit controllers in the specified slots except the current controller.
-    /// </summary>
-    /// <param name="_slots">An array of slots to search for unit controllers.</param>
-    /// <returns>A list of unit controllers found in the provided slots, excluding the current controller.</returns>
-    protected virtual List<UnitController> AllBotsIn(Slot[] _slots)
-    {
-        List<UnitController> teamUnitControllers = new List<UnitController>();
-
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            var teamUnitController = _slots[i].UnitController();
-            if (teamUnitController != null && teamUnitController != Controller)
-            {
-                teamUnitControllers.Add(teamUnitController);
-            }
-        }
-
-        return teamUnitControllers;
-    }
-
-    /// <summary>
-    /// Retrieves all unit controllers in the specified slots except the current controller.
-    /// </summary>
-    /// <param name="_slots">An array of slots to search for unit controllers.</param>
-    /// <returns>A list of unit controllers found in the provided slots, excluding the current controller.</returns>
-    protected virtual List<UnitController> AllEnemyIn(Slot[] _slots)
-    {
-        List<UnitController> teamUnitControllers = new List<UnitController>();
-
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            var teamUnitController = _slots[i].UnitController();
-            if (teamUnitController != null && teamUnitController != Controller
-                && teamUnitController.Model.Data.Cur.HP > 0)
-            {
-                teamUnitControllers.Add(teamUnitController);
-            }
-        }
-
-        return teamUnitControllers;
-    }
 
     /// <summary>
     /// Finds and returns the nearest unit controller in the specified direction relative to the current unit.
@@ -209,7 +167,7 @@ public abstract partial class AbilityBase
         var index = Controller.Slot.Index;
         int target = index + dir;
 
-        if (target < 0 && target >= Controller.TeamSlots.Length && target != index)
+        if (target < 0 && target >= Controller.TeamSlots.Count && target != index)
             return null;
         else
             return Controller.TeamSlots[target].UnitController();
@@ -221,7 +179,7 @@ public abstract partial class AbilityBase
     /// <param name="_toWho">Specifies the direction to search for nearby units.</param>
     /// <param name="_amount">The number of nearest units to retrieve.</param>
     /// <returns>A list of the nearest unit controllers in the specified direction.</returns>
-    protected virtual List<UnitController> GetNearest(ToWho _toWho, int _amount)
+    protected virtual List<UnitController> NearestUnits(ToWho _toWho, int _amount)
     {
         var units = new List<UnitController>();
 
@@ -239,7 +197,7 @@ public abstract partial class AbilityBase
         {
             target += dir;
 
-            if (target < 0 && target >= Controller.TeamSlots.Length)
+            if (target < 0 && target >= Controller.TeamSlots.Count)
                 continue;
             else
             {

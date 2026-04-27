@@ -152,6 +152,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log(this.name + ".Awake()");
+
         if (_Instance != null)
         {
             Destroy(gameObject);
