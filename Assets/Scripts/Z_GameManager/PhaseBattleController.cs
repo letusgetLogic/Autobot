@@ -201,6 +201,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     {
         IsStopped = !value;
         IsRunning = value ? 1f : 0f;
+        Time.timeScale = value ? 1f : 0f;
 
         PhaseBattleView.Instance.SetRunningButton();
     }
@@ -255,14 +256,5 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     public void DelayHintClick()
     {
         StartCoroutine(PhaseBattleView.Instance.ShowClick(Process.WaitForClickShow));
-    }
-
-    public void StopRoutine()
-    {
-        Coroutines.ForEach(x => 
-        { 
-            if (x != null) 
-                StopCoroutine(x); 
-        });
     }
 }

@@ -52,12 +52,14 @@ public class HandleAbilityState : StateBaseBattle
             Debug.Log($"{ability.ToString()} dequeue/activate");
             Debug.Log($"{PhaseBattleController.Instance.UnitAbilities.Count} UnitAbilities left");
 
-            PhaseBattleController.Instance.StartCoroutine(ability.Handle(
+            var routine = PhaseBattleController.Instance.StartCoroutine(ability.Handle(
                 PhaseBattleController.Instance.Process.DurationShowDescription, false));
 
             yield return new WaitForSeconds(PhaseBattleController.Instance.Process.DurationHandleEachAbility);
 
             yield return new WaitUntil(() => ability.IsDone);
+
+            routine = null;
         }
 
         IsDone = true;

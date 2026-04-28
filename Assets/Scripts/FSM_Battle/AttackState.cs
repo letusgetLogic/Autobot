@@ -94,8 +94,10 @@ public class AttackState : StateBaseBattle
         // Animation
         unit1.MoveWhileAttacking();
         float animDelay = unit2.MoveWhileAttacking();
-        PhaseBattleController.Instance.StartCoroutine(ShowCollide(animDelay));
 
+        yield return new WaitForSeconds(animDelay);
+
+        ShowCollide();
         // Logic
         unit1.TakeDamage(unit2.TriggerAttack());
         unit2.TakeDamage(unit1.TriggerAttack());
@@ -106,14 +108,10 @@ public class AttackState : StateBaseBattle
     }
 
     /// <summary>
-    /// Displays the collision visual after a specified delay and schedules it to be hidden after a set duration.
+    /// Displays the collision visual and schedules it to be hidden after a set duration.
     /// </summary>
-    /// <param name="_delay">The time, in seconds, to wait before showing the collision visual.</param>
-    /// <returns>An enumerator for coroutine execution.</returns>
-    private IEnumerator ShowCollide(float _delay)
+    private void ShowCollide()
     {
-        yield return new WaitForSeconds(_delay);
-
         PhaseBattleView.Instance.ShowCollideVisual();
 
         PhaseBattleController.Instance.StartCoroutine(

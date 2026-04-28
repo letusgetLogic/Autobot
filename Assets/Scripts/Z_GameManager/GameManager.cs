@@ -255,6 +255,7 @@ public class GameManager : MonoBehaviour
         var prevState = CurrentGame.State;
         CurrentGame.State = _state;
         Debug.Log(_state.ToString());
+
         switch (_state)
         {
             case GameState.None:
@@ -277,20 +278,8 @@ public class GameManager : MonoBehaviour
 
             case GameState.WaitingCutScene:
                 input.BlocksInput = false;
-                // Waiting for player input
+                // Waiting for player input to switch in load scene
                 CurrentGame.State = prevState;
-                break;
-
-            case GameState.WaitingEndOfBattle:
-                input.BlocksInput = false;
-                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
-                // Waiting for player input
-                break;
-
-            case GameState.WaitingEndOfGame:
-                input.BlocksInput = false;
-                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
-                // Waiting for player input
                 break;
 
             case GameState.LoadScene:
@@ -355,10 +344,22 @@ public class GameManager : MonoBehaviour
                 Switch(GameState.WaitingEndOfBattle);
                 break;
 
+            case GameState.WaitingEndOfBattle:
+                input.BlocksInput = false;
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
+                // Waiting for player input
+                break;
+
             case GameState.EndOfGame:
                 SaveSystem.SaveGame(CurrentGame);
 
                 Switch(GameState.WaitingEndOfGame);
+                break;
+
+            case GameState.WaitingEndOfGame:
+                input.BlocksInput = false;
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
+                // Waiting for player input
                 break;
         }
     }
@@ -535,7 +536,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UnlockTier()
+    public void SetByOpenSceneEnd()
     {
         if (currentGame.Mode != GameMode.TestBattle &&
             PackManager.Instance != null && 
@@ -544,6 +545,11 @@ public class GameManager : MonoBehaviour
             CurrentPlayer != null)
         {
             PhaseShopController.Instance.SetStartTurn(StartTurnState.OpenSceneEnd);
+        }
+
+        if (PhaseBattleView.Instance)
+        {
+            InputManager.Instance.BlocksInput = false;
         }
     }
 

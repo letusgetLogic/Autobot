@@ -12,6 +12,7 @@ public abstract class AbilityBase
     public bool IsDone { get; private set; } = false;
     protected float DurationDescription { get; private set; }
     protected int RandomSeed { get; private set; }
+    protected float Countdown { get; private set; }
 
     /// <summary>
     /// Base constructor with the given parameters. 
@@ -69,7 +70,6 @@ public abstract class AbilityBase
 
         if (_isDestroying)
             EventManager.Instance.OnShutdown?.Invoke(Controller);
-
 
         yield return new WaitUntil(() => Coroutine == null);
 

@@ -77,7 +77,7 @@ public class CutScene : MonoBehaviour
             if (GameManager.Instance.IsTutorialRunning)
                 OpenPanel.OnRunningDone += GameManager.Instance.SetTutorialStartAtSceneStart;
 
-            OpenPanel.OnRunningDone += GameManager.Instance.UnlockTier;
+            OpenPanel.OnRunningDone += GameManager.Instance.SetByOpenSceneEnd;
         }
             
     }
@@ -92,11 +92,7 @@ public class CutScene : MonoBehaviour
 
         OpenPanel.ScaleUp(false);
 
-
         EventManager.Instance.OnOpenSceneSound?.Invoke();
-
-        //if (GameManager.Instance.SceneName == "PhaseShop")
-        //    OpenPanel.OnRunningDone += () => GameManager.Instance.Replay = null;
     }
 
     /// <summary>

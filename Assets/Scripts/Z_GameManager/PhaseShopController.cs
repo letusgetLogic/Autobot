@@ -177,6 +177,7 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.WaitingClick:
+                // wait for clicking unlock panel
                 break;
 
             case StartTurnState.ClickPanelUnlock:
@@ -185,23 +186,29 @@ public class PhaseShopController : MonoBehaviour
                 break;
 
             case StartTurnState.ChargeBot:
+               
                 if (IsTurnAI())
                 {
                     ChargeBotAtStartShop();
                 }
                 else
+                {
+                    InputManager.Instance.BlocksInput = false;
                     StartCoroutine(DelayChargeBotsAtStartShop());
+                }
                 break;
 
             case StartTurnState.Done:
-                if (IsTurnAI() == false)
+
+                if (IsTurnAI())
+                {
+                    gameObject.AddComponent<AI>();
+                }
+                else
                 {
                     GameManager.Instance.Switch(GameState.ShopPhase);
                 }
                 SetStartTurn(StartTurnState.None);
-
-                if (IsTurnAI())
-                    gameObject.AddComponent<AI>();
                 break;
 
         }

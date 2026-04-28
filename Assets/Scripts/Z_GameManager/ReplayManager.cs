@@ -56,18 +56,6 @@ public class ReplayManager
                 }
                 break;
 
-            case GameState.WaitingEndOfBattle:
-                input.BlocksInput = false;
-                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
-                // Waiting for player input
-                break;
-
-            case GameState.WaitingEndOfGame:
-                input.BlocksInput = false;
-                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
-                // Waiting for player input
-                break;
-
             case GameState.StartOfBattle:
                 PhaseBattleController.Instance.Run(
                     GameManager.Instance.Players[0],
@@ -82,12 +70,25 @@ public class ReplayManager
                 Switch(GameState.WaitingEndOfBattle);
                 break;
 
+            case GameState.WaitingEndOfBattle:
+                input.BlocksInput = false;
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
+                // Waiting for player input
+                break;
+
             case GameState.EndOfGame:
                 Switch(GameState.WaitingEndOfGame);
                 break;
+
+            case GameState.WaitingEndOfGame:
+                input.BlocksInput = false;
+                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
+                // Waiting for player input
+                break;
+
         }
 
-        
+
     }
 
 
