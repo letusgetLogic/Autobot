@@ -131,7 +131,7 @@ class SoUnitEditor : Editor
     /// </summary>
     private void DrawLevel(ref Level _level, int _i)
     {
-        showLevelSections[_i] = EditorGUILayout.Foldout(showLevelSections[_i], $"Level {_i + 1}");
+        showLevelSections[_i] = EditorGUILayout.Foldout(showLevelSections[_i], $"Level {_i + 1} ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         if (!showLevelSections[_i])
             return;
 

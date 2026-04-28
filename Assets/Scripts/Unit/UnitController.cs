@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 /// <summary>
 /// Creating and initializing components.
@@ -106,11 +105,13 @@ public class UnitController : MonoBehaviour
     private void OnEnable()
     {
         if (toNextSlotMover) toNextSlotMover.OnPosition += SetParent;
+        EventManager.Instance.OnEndShop +=  TriggerEndTurn;
     }
 
     private void OnDisable()
     {
         if (toNextSlotMover) toNextSlotMover.OnPosition -= SetParent;
+        EventManager.Instance.OnEndShop -=  TriggerEndTurn;
     }
 
     /// <summary>
@@ -191,8 +192,9 @@ public class UnitController : MonoBehaviour
         if (ability != null)
         {
             EventManager.Instance.OnTriggerAbility?.Invoke(ability, true);
+            // It will invoke shutdown event after executing the ability.
         }
-        else
+        else 
         {
             EventManager.Instance.OnShutdown?.Invoke(this);
         }
@@ -225,6 +227,15 @@ public class UnitController : MonoBehaviour
         {
             InputManager.Instance.BlocksInput = false;
             Destroy(gameObject);
+        }
+    }
+
+    public void TriggerEndTurn()
+    {
+        var ability = TriggerAbility(TriggerType.EndTurn);
+        if (ability != null)
+        {
+            EventManager.Instance.OnTriggerAbility?.Invoke(ability, false);
         }
     }
 

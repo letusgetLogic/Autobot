@@ -26,10 +26,10 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Start of battle \u2192 Convert all energy to attack."
+    Description: "End turn \u2192 Convert all energy to attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
-    TriggerType: 21
+    TriggerType: 20
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 6
@@ -52,10 +52,10 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 1
-    Description: "Start of battle \u2192 Convert all energy to attack."
+    Description: "End turn \u2192 Convert all energy to attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
-    TriggerType: 21
+    TriggerType: 20
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 6
@@ -78,10 +78,10 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 2
-    Description: "Start of battle \u2192 Convert all energy to attack."
+    Description: "End turn \u2192 Convert all energy to attack."
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
-    TriggerType: 21
+    TriggerType: 20
     TriggerTimes: 0
     TriggerTimesLimit: 0
     DoType: 6

@@ -33,7 +33,7 @@ public class SettingsButton : MonoBehaviour
             }
         }
 
-        Time.timeScale = isSettingsOpen ? 0 : 1;
+        Time.timeScale = isSettingsOpen ? 0f : (PhaseBattleController.Instance.IsStopped ? 0f : 1f);
 
         OnChangedTimeScale?.Invoke();
     }

@@ -22,6 +22,9 @@ public class PhaseShopController : MonoBehaviour
     public List<Slot> ShopBotSlots => shopBotSlots.Where(x => x.gameObject.activeSelf).ToList();
     public List<Slot> ShopItemSlots => shopItemSlots.Where(x => x.gameObject.activeSelf).ToList();
 
+    [Header("Panels")]
+    [SerializeField] private GameObject coverPanelPreventButtonClick;
+
     [Header("Settings")]
     [SerializeField] private SoShopProcess process;
     [SerializeField] private SoLerpMovementSettings unitSwapSettings;
@@ -54,6 +57,8 @@ public class PhaseShopController : MonoBehaviour
 
     private StartTurnState startTurn = StartTurnState.None;
     private InputManager input => InputManager.Instance;
+
+    private List<AbilityBase> abilities = new List<AbilityBase>();
 
     private void Awake()
     {
@@ -155,10 +160,16 @@ public class PhaseShopController : MonoBehaviour
                 Player.UpdateUnitData();
                 break;
 
+
+
             case StartTurnState.WaitingOpenScene:
                 break;
 
+
+
             case StartTurnState.OpenSceneEnd:
+                coverPanelPreventButtonClick.SetActive(false);
+
                 if (GameManager.Instance.Replay != null)
                     return;
 
@@ -176,14 +187,21 @@ public class PhaseShopController : MonoBehaviour
                     SetStartTurn(StartTurnState.ChargeBot);
                 break;
 
+
+
+
             case StartTurnState.WaitingClick:
                 // wait for clicking unlock panel
                 break;
+
+
 
             case StartTurnState.ClickPanelUnlock:
                 PhaseShopUI.Instance.SetUnlockedTier(false, 0);
                 SetStartTurn(StartTurnState.ChargeBot);
                 break;
+
+
 
             case StartTurnState.ChargeBot:
                
@@ -198,15 +216,13 @@ public class PhaseShopController : MonoBehaviour
                 }
                 break;
 
+
+
             case StartTurnState.Done:
 
                 if (IsTurnAI())
                 {
                     gameObject.AddComponent<AI>();
-                }
-                else
-                {
-                    GameManager.Instance.Switch(GameState.ShopPhase);
                 }
                 SetStartTurn(StartTurnState.None);
                 break;
@@ -557,6 +573,8 @@ public class PhaseShopController : MonoBehaviour
         }
     }
 
+    #region Transport Unit
+
     /// <summary>
     /// Transports the attached game object to the drop slot in Phase Shop.
     /// </summary>
@@ -706,6 +724,20 @@ public class PhaseShopController : MonoBehaviour
         }
     }
 
+    #endregion
+
+    /// <summary>
+    /// Starts the coroutine of handling the ability.
+    /// </summary>
+    /// <param name="_ability"></param>
+    /// <param name="_isDestroyingUnit"></param>
+    private void TriggerAbility(AbilityBase _ability, bool _isDestroyingUnit)
+    {
+        abilities.Add(_ability);
+        StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
+        Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
+    }
+
     /// <summary>
     /// Handles the ability coroutine.
     /// </summary>
@@ -721,33 +753,42 @@ public class PhaseShopController : MonoBehaviour
         input.BlocksInput = false;
     }
 
+    #region End shop
+
     /// <summary>
-    /// Checks fusible between 2 units.
+    /// Ends the phase shop.
     /// </summary>
-    /// <param name="_onSlot"></param>
-    /// <param name="_onDrag"></param>
-    /// <returns></returns>
-    public bool IsFusible(UnitController _onSlot, UnitController _onDrag)
+    public void EndShop()
     {
-        if (_onDrag == _onSlot)
-            return false;
+        EventManager.Instance.OnEndShop?.Invoke();
+        SetAttachedGameObject(null);
+        coverPanelPreventButtonClick.SetActive(true);
 
-        if (_onSlot.Model.IsRobot() == false ||
-            _onDrag.Model.IsRobot() == false)
-            return false;
+        ChargeTeamBots();
 
-        if (_onSlot.Model.IsMaxed || _onDrag.Model.IsMaxed)
-            return false;
-
-        if (_onSlot.Model.IsFullDurability() == false)
-            return false;
-
-        if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name &&
-            _onSlot.Model.IsFullDurability() && _onDrag.Model.IsFullDurability())
-            return true;
-
-        return false;
+        float delay = Process.DurationCharging + Process.DelayStartBattleAfterEndTurn;
+        endShopCoroutine = StartCoroutine(DelayEndShop(delay));
     }
+    private Coroutine endShopCoroutine;
+
+    /// <summary>
+    /// Delays ending the shop phase for charging units at turn 1.
+    /// </summary>
+    /// <param name="_delay"></param>
+    /// <returns></returns>
+    private IEnumerator DelayEndShop(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+
+        // If any ability is not null and not done, wait.
+        yield return new WaitUntil(() => abilities.Any(x => x != null && x.IsDone == false) == false);
+
+        Player.UpdateUnitData();
+        GameManager.Instance.Switch(GameState.EndOfTurn);
+        endShopCoroutine = null;
+    }
+
+    #endregion
 
     /// <summary>
     /// Sets attached game object being clicked or dragged.
@@ -854,17 +895,6 @@ public class PhaseShopController : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts the coroutine of handling the ability.
-    /// </summary>
-    /// <param name="_ability"></param>
-    /// <param name="_isDestroyingUnit"></param>
-    private void TriggerAbility(AbilityBase _ability, bool _isDestroyingUnit)
-    {
-        StartCoroutine(HandleAbility(_ability, _isDestroyingUnit));
-        Debug.Log(EventManager.Instance.OnTriggerAbility + " sub");
-    }
-
-    /// <summary>
     /// Is blocking inputs by randomness item being attached?
     /// </summary>
     /// <param name="_slot"></param>
@@ -901,6 +931,34 @@ public class PhaseShopController : MonoBehaviour
     public void DestroyUnit(UnitController _unit)
     {
         _unit.DestroyObject();
+    }
+
+    /// <summary>
+    /// Checks fusible between 2 units.
+    /// </summary>
+    /// <param name="_onSlot"></param>
+    /// <param name="_onDrag"></param>
+    /// <returns></returns>
+    public bool IsFusible(UnitController _onSlot, UnitController _onDrag)
+    {
+        if (_onDrag == _onSlot)
+            return false;
+
+        if (_onSlot.Model.IsRobot() == false ||
+            _onDrag.Model.IsRobot() == false)
+            return false;
+
+        if (_onSlot.Model.IsMaxed || _onDrag.Model.IsMaxed)
+            return false;
+
+        if (_onSlot.Model.IsFullDurability() == false)
+            return false;
+
+        if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name &&
+            _onSlot.Model.IsFullDurability() && _onDrag.Model.IsFullDurability())
+            return true;
+
+        return false;
     }
 
     public bool IsTurnAI()

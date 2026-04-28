@@ -545,11 +545,13 @@ public class GameManager : MonoBehaviour
             CurrentPlayer != null)
         {
             PhaseShopController.Instance.SetStartTurn(StartTurnState.OpenSceneEnd);
+            Switch(GameState.ShopPhase);
         }
 
         if (PhaseBattleView.Instance)
         {
             InputManager.Instance.BlocksInput = false;
+            PhaseBattleView.Instance.OnOpenSceneEnd();
         }
     }
 

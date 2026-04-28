@@ -27,6 +27,11 @@ public class LerpMovement : MonoBehaviour
     private Transform targetTransform;
     private SoLerpMovementSettings mySettings;
 
+    private void Start()
+    {
+        SetDefault();
+    }
+
     private void OnEnable()
     {
         SetDefault();
@@ -44,6 +49,7 @@ public class LerpMovement : MonoBehaviour
     private void SetDefault()
     {
         currentValue = 0f;
+
         defaultPosition = transform.position;
 
         if (definedTargetTransform)

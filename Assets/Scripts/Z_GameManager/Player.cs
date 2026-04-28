@@ -290,45 +290,6 @@ public class Player
     }
 
     /// <summary>
-    /// Ends the phase shop.
-    /// </summary>
-    public void EndShop()
-    {
-        EventManager.Instance.OnEndShop?.Invoke();
-
-        var phaseShop = PhaseShopController.Instance;
-        if (phaseShop == null)
-        {
-            Debug.LogError("PhaseShop is null");
-            return;
-        }
-
-        phaseShop.SetAttachedGameObject(null);
-
-        float delay = 0f;
-
-        delay = phaseShop.Process.DurationCharging + phaseShop.Process.DelayStartBattleAfterEndTurn;
-        phaseShop.ChargeTeamBots();
-
-        endShopCoroutine = phaseShop.StartCoroutine(DelayEndShop(delay));
-    }
-    private Coroutine endShopCoroutine;
-
-    /// <summary>
-    /// Delays ending the shop phase for charging units at turn 1.
-    /// </summary>
-    /// <param name="_delay"></param>
-    /// <returns></returns>
-    private IEnumerator DelayEndShop(float _delay)
-    {
-        yield return new WaitForSeconds(_delay);
-
-        UpdateUnitData();
-        GameManager.Instance.Switch(GameState.EndOfTurn);
-        endShopCoroutine = null;
-    }
-
-    /// <summary>
     /// Saves the data of units from shop phase for replaying the battle phase. This is used for replaying the battle phase after watching the replay of the battle phase.
     /// </summary>
     public void SaveDataByReplay()

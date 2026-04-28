@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InitializeState : StateBaseBattle
@@ -71,8 +73,8 @@ public class InitializeState : StateBaseBattle
             var data2 = new PlayerData(GameManager.Instance.CurrentRound.SavedPlayerData2);
 
             PhaseBattleView.Instance.Initialize(data1, data2);
-            SpawnUnitsByReplay(data1, PhaseBattleController.Instance.Slots1.ToArray(), true);
-            SpawnUnitsByReplay(data2, PhaseBattleController.Instance.Slots2.ToArray(), false);
+            SpawnUnitsByData(data1, PhaseBattleController.Instance.Slots1.ToArray(), true);
+            SpawnUnitsByData(data2, PhaseBattleController.Instance.Slots2.ToArray(), false);
         }
 
         EventManager.Instance.OnInitDone?.Invoke();
@@ -119,19 +121,21 @@ public class InitializeState : StateBaseBattle
     /// <param name="_data"></param>
     /// <param name="_slots"></param>
     /// <param name="_isLeft"></param>
-    private void SpawnUnitsByReplay(PlayerData _data, Slot[] _slots, bool _isLeft)
+    public List<UnitController> SpawnUnitsByData(PlayerData _data, Slot[] _slots, bool _isLeft)
     {
         if (_data.TeamUnitDatas == null)
         {
             Debug.LogWarning($"{_data.Name} TeamUnitDatas is null");
-            return;
+            return null;
         }
 
         if (_data.TeamUnitDatas.Length < _slots.Length)
         {
             Debug.LogWarning($"{_data.Name} TeamUnitDatas.Length < Slots.Length");
-            return;
+            return null;
         }
+        
+        var team = new List<UnitController>();
 
         for (int i = 0; i < _slots.Length; i++)
         {
@@ -145,7 +149,11 @@ public class InitializeState : StateBaseBattle
                     UnitState.InPhaseBattle,
                     _slots[i].transform,
                     _isLeft);
+
+                team.Add(unitController);
             }
+            team.Add(null);
         }
+        return team;
     }
 }

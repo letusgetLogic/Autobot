@@ -7,6 +7,9 @@ public class PhaseBattleView : MonoBehaviour
 {
     public static PhaseBattleView Instance { get; private set; }
 
+    [Header("Panel")]
+    [SerializeField] private LerpMovement bottomPanel;
+
     [Header("Player left")]
     [SerializeField] private TextMeshProUGUI name1;
     [SerializeField] private TextMeshProUGUI turn1, wins1, lives1;
@@ -15,9 +18,10 @@ public class PhaseBattleView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI name2;
     [SerializeField] private TextMeshProUGUI turn2, wins2, lives2;
 
-    [Header("Labels")]
+    [Header("End Screen")]
+    [SerializeField] private LightenUpDown coverPanel;
+    [SerializeField] private GameObject clickText;
     [SerializeField] private TextMeshProUGUI label;
-    [SerializeField] private TextMeshProUGUI clickText;
 
     // This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
     //[Header("Speed Controller")]
@@ -42,6 +46,7 @@ public class PhaseBattleView : MonoBehaviour
         Instance = this;
 
         collideVisual.enabled = false;
+        label.enabled = false;
     }
 
     private void OnDestroy()
@@ -72,6 +77,32 @@ public class PhaseBattleView : MonoBehaviour
         //ShowSpeedMult();
     }
 
+    public void OnOpenSceneEnd()
+    {
+        ShowPanelText(false);
+        bottomPanel.Trigger();
+        bottomPanel.OnPosition += ShowText; 
+    }
+
+    private void ShowText(Transform _tf)
+    {
+        ShowPanelText(true);
+        bottomPanel.OnPosition -= ShowText;
+    }
+
+    private void ShowPanelText(bool _value)
+    {
+        name1.enabled = _value;
+        if (turn1) turn1.enabled = _value;
+        if (wins1) wins1.enabled = _value;
+        if (lives1) lives1.enabled = _value;
+
+        name2.enabled = _value;
+        if (turn2) turn2.enabled = _value;
+        if (wins2) wins2.enabled = _value;
+        if (lives2) lives2.enabled = _value;
+    }
+
     /// <summary>
     /// Updates lives of both players.
     /// </summary>
@@ -88,8 +119,12 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     /// <param name="_winner"></param>
     /// <param name="_isGameOver"></param>
-    public void ShowWinner(bool _isDraw, string _winner, bool _isGameOver)
+    public IEnumerator ShowWinner(bool _isDraw, string _winner, bool _isGameOver)
     {
+        coverPanel.gameObject.SetActive(true);
+        float animTime = coverPanel.SwitchOn(true);
+        yield return new WaitForSeconds(animTime);
+
         playButton.SetActive(false);
 
         string text = _isDraw ? "Draw!" 
@@ -184,6 +219,6 @@ public class PhaseBattleView : MonoBehaviour
     {
         yield return new WaitForSeconds(_duration);
 
-        clickText.gameObject.SetActive(true);
+        clickText.SetActive(true);
     }
 }

@@ -36,6 +36,7 @@ public class MainMenu : MonoBehaviour
         yield return new WaitUntil(() => GameManager.Instance != null);
 
         GameManager.Instance.Replay = null;
+        GameManager.Instance.SetTutorialRunning(false);
         replayButton.SetActive(GameManager.Instance.CurrentRound != null);
     }
 

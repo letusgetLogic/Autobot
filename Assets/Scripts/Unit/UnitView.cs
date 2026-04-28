@@ -442,6 +442,18 @@ public class UnitView : MonoBehaviour
         var pos = levelDisplay.transform.localPosition;
         levelDisplay.transform.localPosition = new Vector3(pos.x * -1, pos.y, pos.z);
     }
+    public void ShowByGameOver()
+    {
+        damageFade.enabled = false;
+        temporaryItemSpriteRenderer.enabled = false;
+        doAbilitySpriteRenderer.enabled = false;
+        getAbilitySpriteRenderer.enabled = false;
+
+        dragSpriteRenderer.sortingLayerName = "UI";
+        dragSpriteRenderer.sortingOrder = 21;
+
+        transform.localScale *= 1.5f;
+    }
 
     /// <summary>
     /// Shows damage and update health.

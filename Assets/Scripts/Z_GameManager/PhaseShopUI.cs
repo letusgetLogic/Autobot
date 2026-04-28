@@ -67,8 +67,6 @@ public class PhaseShopUI : MonoBehaviour
     private Currency rollCost => PackManager.Instance.MyPack.CurrencyData.RollCost;
     private InputManager input => InputManager.Instance;
 
-    public static readonly int MinLeftTool = 1, MinLeftNut = 5;
-
     private void Awake()
     {
         Debug.Log(this.name + ".Awake()");
@@ -86,7 +84,6 @@ public class PhaseShopUI : MonoBehaviour
         }
 
         Settings();
-
     }
 
     private void OnEnable()
@@ -235,19 +232,20 @@ public class PhaseShopUI : MonoBehaviour
         EventManager.Instance.OnEndTurnClick?.Invoke(InputKey.ClickButtonEndTurn);
         EventManager.Instance.OnButtonSound?.Invoke();
 
-        bool hasEnoughCur = (Player.Data.Nuts >= MinLeftNut || Player.Data.Tools > 0)
-            && PhaseShopController.Instance.IsAnyRobotDamaged;
+        bool hasEnoughCur = Player.Data.Nuts > 0
+            // Player has 0 Nuts and some tools, he can still repair if the are damaged units
+            || (Player.Data.Tools > 0 && PhaseShopController.Instance.IsAnyRobotDamaged);
 
         panelLeftCurrency.gameObject.SetActive(hasEnoughCur);
 
         if (hasEnoughCur == false)
         {
-            Player.EndShop();
+            PhaseShopController.Instance.EndShop();
         }
         else
         {
             panelLeftCurrency.SetData(Player.Data.Tools, Player.Data.Nuts);
-            // wait for panelLeftCurrency.Confirm calls PhaseShopUI.Instance.Player.EndShop();
+            // wait for panelLeftCurrency.Confirm calls PhaseShopController.Instance.EndShop();
         }
     }
 

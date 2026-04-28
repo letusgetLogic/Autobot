@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class LightenUpDown : MonoBehaviour
 {
@@ -47,9 +48,10 @@ public class LightenUpDown : MonoBehaviour
     /// Switches the lighten on or off.
     /// </summary>
     /// <param name="_isOn"></param>
-    public void SwitchOn(bool _isOn)
+    public float SwitchOn(bool _isOn)
     {
         lightenState = _isOn ? Lighten.Up : Lighten.Down;
+        return animTime;
     }
 
     /// <summary>
@@ -112,7 +114,12 @@ public class LightenUpDown : MonoBehaviour
     private void SetAlpha(float _dimValue)
     {
         var renderer = gameObject.GetComponent<SpriteRenderer>();
-        renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, _dimValue);
+        if (renderer)
+            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, _dimValue);
+
+        var image = GetComponent<Image>();
+        if (image)
+            image.color = new Color(image.color.r, image.color.g, image.color.b, _dimValue);
     }
 }
 

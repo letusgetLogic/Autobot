@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public static class MyList
+public static class ListShuffle
 {
     private static System.Random rng = new System.Random();
 

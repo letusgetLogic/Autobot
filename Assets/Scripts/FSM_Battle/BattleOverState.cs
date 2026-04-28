@@ -30,6 +30,8 @@ public class BattleOverState : StateBaseBattle
         var data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
         var data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
 
+        PlayerData winnerData = null;
+
         switch (outcome)
         {
             case -1: // Left Wins
@@ -41,7 +43,10 @@ public class BattleOverState : StateBaseBattle
                 else
                     PhaseBattleView.Instance.UpdateLives(data1.Lives, data2.Lives - 1);
 
-                PhaseBattleView.Instance.ShowWinner(false, player1.Data.Name, player2.Data.Lives == 0);
+                PhaseBattleController.Instance.StartCoroutine(
+                    PhaseBattleView.Instance.ShowWinner(false, player1.Data.Name, player2.Data.Lives == 0));
+
+                winnerData = player1.Data;
                 break;
 
             case 0: // Draw
@@ -49,7 +54,8 @@ public class BattleOverState : StateBaseBattle
                 {
                     GameManager.Instance.UpdatePlayerStats(0);
                 }
-                PhaseBattleView.Instance.ShowWinner(true, "Nobody", false);
+                PhaseBattleController.Instance.StartCoroutine(
+                    PhaseBattleView.Instance.ShowWinner(true, "Nobody", false));
                 break;
 
             case 1: // Right wins
@@ -61,7 +67,10 @@ public class BattleOverState : StateBaseBattle
                 else
                     PhaseBattleView.Instance.UpdateLives(data1.Lives - 1, data2.Lives);
 
-                PhaseBattleView.Instance.ShowWinner(false, player2.Data.Name, player1.Data.Lives == 0);
+                PhaseBattleController.Instance.StartCoroutine(
+                    PhaseBattleView.Instance.ShowWinner(false, player2.Data.Name, player1.Data.Lives == 0));
+
+                winnerData = player2.Data;
                 break;
         }
 
@@ -79,6 +88,7 @@ public class BattleOverState : StateBaseBattle
             {
                 EventManager.Instance.OnGameOver?.Invoke();
                 GameManager.Instance.Switch(GameState.EndOfGame);
+                ShowWinnerTeam(winnerData);
             }
         }
         else // go out of the replay, waiting of input click to load the current play scene 
@@ -90,10 +100,9 @@ public class BattleOverState : StateBaseBattle
             else // end the game, when one of them has 0 lives.
             {
                 GameManager.Instance.Replay.Switch(GameState.EndOfGame);
+                ShowWinnerTeam(winnerData);
             }
         }
-
-        _ctx.SetState(null);
 
         EventManager.Instance.OnBattleDone?.Invoke();
     }
@@ -104,6 +113,14 @@ public class BattleOverState : StateBaseBattle
         {
             TimeCount += _speed;
         }
+    }
+
+    private void ShowWinnerTeam(PlayerData _data)
+    {
+        var init = new InitializeState(0f);
+        var team = init.SpawnUnitsByData(_data, PhaseBattleController.Instance.Slots1.ToArray(), true);
+
+        PhaseBattleController.Instance.ShowWinnerTeam(team);
     }
 }
 

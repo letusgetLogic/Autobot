@@ -55,7 +55,7 @@ public class PanelConfirmation : MonoBehaviour
         switch (type)
         {
             case Type.LeftCurrency:
-                PhaseShopUI.Instance.Player.EndShop();
+                PhaseShopController.Instance.EndShop();
                 break;
             case Type.ToMenu:
                 if (GameManager.Instance.CurrentGame != null)
