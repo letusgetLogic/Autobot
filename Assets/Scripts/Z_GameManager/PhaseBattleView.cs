@@ -88,10 +88,14 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     /// <param name="_winner"></param>
     /// <param name="_isGameOver"></param>
-    public void ShowWinner(string _winner, bool _isGameOver)
+    public void ShowWinner(bool _isDraw, string _winner, bool _isGameOver)
     {
         playButton.SetActive(false);
-        label.text = $"{_winner} won this {(_isGameOver ? "game" : "battle")}!";
+
+        string text = _isDraw ? "Draw!" 
+            : _isGameOver ? $"{_winner} won the game!"
+            : $"{_winner} won!";
+        label.text = text;
         label.enabled = true;
     }
 

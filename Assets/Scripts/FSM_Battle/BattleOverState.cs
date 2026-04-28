@@ -41,7 +41,7 @@ public class BattleOverState : StateBaseBattle
                 else
                     PhaseBattleView.Instance.UpdateLives(data1.Lives, data2.Lives - 1);
 
-                PhaseBattleView.Instance.ShowWinner(player1.Data.Name, player2.Data.Lives == 0);
+                PhaseBattleView.Instance.ShowWinner(false, player1.Data.Name, player2.Data.Lives == 0);
                 break;
 
             case 0: // Draw
@@ -49,7 +49,7 @@ public class BattleOverState : StateBaseBattle
                 {
                     GameManager.Instance.UpdatePlayerStats(0);
                 }
-                PhaseBattleView.Instance.ShowWinner("Nobody", false);
+                PhaseBattleView.Instance.ShowWinner(true, "Nobody", false);
                 break;
 
             case 1: // Right wins
@@ -61,7 +61,7 @@ public class BattleOverState : StateBaseBattle
                 else
                     PhaseBattleView.Instance.UpdateLives(data1.Lives - 1, data2.Lives);
 
-                PhaseBattleView.Instance.ShowWinner(player2.Data.Name, player1.Data.Lives == 0);
+                PhaseBattleView.Instance.ShowWinner(false, player2.Data.Name, player1.Data.Lives == 0);
                 break;
         }
 
