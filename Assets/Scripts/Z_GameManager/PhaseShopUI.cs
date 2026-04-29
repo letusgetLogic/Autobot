@@ -229,7 +229,7 @@ public class PhaseShopUI : MonoBehaviour
         Debug.Log("End Turn Button Clicked");
 
         input.BlocksInput = true;
-        EventManager.Instance.OnEndTurnClick?.Invoke(InputKey.ClickButtonEndTurn);
+        EventManager.Instance.OnEndTurnButton?.Invoke(InputKey.ClickButtonEndTurn);
         EventManager.Instance.OnButtonSound?.Invoke();
 
         bool hasEnoughCur = Player.Data.Nuts > 0

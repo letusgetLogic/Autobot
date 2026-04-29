@@ -760,12 +760,12 @@ public class PhaseShopController : MonoBehaviour
     /// </summary>
     public void EndShop()
     {
-        EventManager.Instance.OnEndShop?.Invoke();
+        EventManager.Instance.OnEndTurnAccepted?.Invoke();
         SetAttachedGameObject(null);
         coverPanelPreventButtonClick.SetActive(true);
 
         ChargeTeamBots();
-
+        EventManager.Instance.OnEndTurnCharged?.Invoke();
         float delay = Process.DurationCharging + Process.DelayStartBattleAfterEndTurn;
         endShopCoroutine = StartCoroutine(DelayEndShop(delay));
     }
@@ -784,7 +784,9 @@ public class PhaseShopController : MonoBehaviour
         yield return new WaitUntil(() => abilities.Any(x => x != null && x.IsDone == false) == false);
 
         Player.UpdateUnitData();
+
         GameManager.Instance.Switch(GameState.EndOfTurn);
+       
         endShopCoroutine = null;
     }
 

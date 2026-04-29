@@ -47,6 +47,7 @@ public class PhaseBattleView : MonoBehaviour
 
         collideVisual.enabled = false;
         label.enabled = false;
+        ShowPanelText(false);
     }
 
     private void OnDestroy()
@@ -79,12 +80,12 @@ public class PhaseBattleView : MonoBehaviour
 
     public void OnOpenSceneEnd()
     {
-        ShowPanelText(false);
+        coverPanel.gameObject.SetActive(false);
         bottomPanel.Trigger();
         bottomPanel.OnPosition += ShowText; 
     }
 
-    private void ShowText(Transform _tf)
+    private void ShowText()
     {
         ShowPanelText(true);
         bottomPanel.OnPosition -= ShowText;

@@ -44,8 +44,9 @@ public class EventManager
     public UnityAction<UnitController> OnAttachedUnitCatalog { get; set; }
     public UnityAction OnDropUnit { get; set; }
     public UnityAction OnRoll {  get; set; }
-    public UnityAction<InputKey> OnEndTurnClick {  get; set; }
-    public UnityAction OnEndShop {  get; set; }
+    public UnityAction<InputKey> OnEndTurnButton {  get; set; }
+    public UnityAction OnEndTurnAccepted {  get; set; }
+    public UnityAction OnEndTurnCharged {  get; set; }
 
     public UnityAction<InputKey> OnCraft {  get; set; }
     public UnityAction<InputKey> OnRecycle { get; set; }

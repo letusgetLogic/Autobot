@@ -31,12 +31,12 @@ public class WrenchLevelUp : MonoBehaviour
         addingAnim.OnPosition -= Deactivate;
     }
 
-    private void MoveNext(Transform _tf)
+    private void MoveNext()
     {
         addingAnim.MoveTo(addingEnd, null);
     }
 
-    private void Deactivate(Transform _tf)
+    private void Deactivate()
     {
         OnPosition?.Invoke();
         gameObject.SetActive(false);

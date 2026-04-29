@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [ExecuteAlways]
 public class LerpMovement : MonoBehaviour
@@ -11,7 +12,8 @@ public class LerpMovement : MonoBehaviour
     [Header("Editor Settings")]
     [SerializeField] private Transform definedTargetTransform;
 
-    public Action<Transform> OnPosition {  get; set; }
+    public Action OnPosition { get; set; }
+    public Action<Transform> OnSetParent {  get; set; }
 
     private enum Direction
     {
@@ -170,7 +172,8 @@ public class LerpMovement : MonoBehaviour
                 else
                 {
                     moveState = Direction.None;
-                    OnPosition?.Invoke(targetTransform);
+                    OnPosition?.Invoke();
+                    OnSetParent?.Invoke(targetTransform);
                 }
                 return;
             }
@@ -190,7 +193,8 @@ public class LerpMovement : MonoBehaviour
             if (currentValue == 0f)
             {
                 moveState = Direction.None;
-                OnPosition?.Invoke(targetTransform);
+                OnPosition?.Invoke();
+                OnSetParent?.Invoke(targetTransform);
                 return;
             }
 

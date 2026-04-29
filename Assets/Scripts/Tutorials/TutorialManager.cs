@@ -204,8 +204,8 @@ public class TutorialManager : MonoBehaviour
         EventManager.Instance.OnAttachedUnit += CheckClick;
         EventManager.Instance.OnCraft += CheckInput;
         EventManager.Instance.OnLock += CheckInput;
-        EventManager.Instance.OnEndTurnClick += CheckInput;
-        EventManager.Instance.OnEndShop += Check;
+        EventManager.Instance.OnEndTurnButton += CheckInput;
+        EventManager.Instance.OnEndTurnAccepted += Check;
         EventManager.Instance.OnInitDone += Check;
         EventManager.Instance.OnBattleDone += Check;
         EventManager.Instance.OnRepair += CheckInput;
@@ -217,8 +217,8 @@ public class TutorialManager : MonoBehaviour
         EventManager.Instance.OnAttachedUnit -= CheckClick;
         EventManager.Instance.OnCraft -= CheckInput;
         EventManager.Instance.OnLock -= CheckInput;
-        EventManager.Instance.OnEndTurnClick -= CheckInput;
-        EventManager.Instance.OnEndShop -= Check;
+        EventManager.Instance.OnEndTurnButton -= CheckInput;
+        EventManager.Instance.OnEndTurnAccepted -= Check;
         EventManager.Instance.OnInitDone -= Check;
         EventManager.Instance.OnBattleDone -= Check;
         EventManager.Instance.OnRepair -= CheckInput;

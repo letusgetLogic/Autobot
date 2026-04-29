@@ -104,14 +104,14 @@ public class UnitController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (toNextSlotMover) toNextSlotMover.OnPosition += SetParent;
-        EventManager.Instance.OnEndShop +=  TriggerEndTurn;
+        if (toNextSlotMover) toNextSlotMover.OnSetParent += SetParent;
+        EventManager.Instance.OnEndTurnCharged +=  TriggerEndTurn;
     }
 
     private void OnDisable()
     {
-        if (toNextSlotMover) toNextSlotMover.OnPosition -= SetParent;
-        EventManager.Instance.OnEndShop -=  TriggerEndTurn;
+        if (toNextSlotMover) toNextSlotMover.OnSetParent -= SetParent;
+        EventManager.Instance.OnEndTurnCharged -=  TriggerEndTurn;
     }
 
     /// <summary>

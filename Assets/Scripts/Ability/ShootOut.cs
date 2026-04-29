@@ -51,6 +51,8 @@ public class ShootOut : AbilityBase
                      PhaseShopController.Instance != null ? true : model.Data.IsTeamLeft);
 
                 EventManager.Instance.OnShootOut?.Invoke(unit);
+
+                yield return new WaitUntil(() => teamSlots[0].Unit() != null);
             }
         }
 
