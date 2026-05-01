@@ -154,7 +154,7 @@ public class UnitView : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the data for the unit view.
+    /// Sets the data for sprites, name & id.
     /// </summary>
     public void SetData(Sprite _sprite, string _name, string _modelID, string _id)
     {
@@ -194,7 +194,7 @@ public class UnitView : MonoBehaviour
     /// <summary>
     /// Sets the data for the unit view.
     /// </summary>
-    public void SetAbility(string _description, int _energy)
+    public void SetDesccription(string _description, int _energy)
     {
         if (_description != null)
         {
@@ -291,8 +291,14 @@ public class UnitView : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, 10f));
 
-        dragSpriteRenderer.gameObject.transform.position = worldPosition + settings.OffsetDragOverOther;
-        canvasStats.transform.position = worldPosition + settings.OffsetDragOverOther;
+        bool isMobile = GameManager.Instance.IsMobile;
+        Vector3 offset = new Vector3(
+            isMobile ? settings.OffsetDragOverOther.x : 0f,
+            isMobile ? settings.OffsetDragOverOther.y : 0f,
+            settings.OffsetDragOverOther.z
+            );
+        dragSpriteRenderer.gameObject.transform.position = worldPosition + offset;
+        canvasStats.transform.position = worldPosition + offset;
     }
 
     /// <summary>

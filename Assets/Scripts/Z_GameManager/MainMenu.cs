@@ -1,9 +1,15 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
     public static MainMenu Instance { get; private set; }
+
+    [Header("Layouts")]
+    [SerializeField] private List<MenuLayout> layouts;
+    public List<MenuLayout> Layouts => layouts;
+
 
     [Header("Replay Button")]
     [SerializeField] private GameObject replayButton;

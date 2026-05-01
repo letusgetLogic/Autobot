@@ -83,7 +83,11 @@ public class UnitController : MonoBehaviour
     }
 
     public List<UnitController> AllMates => TeamSlots.Select(s => s.UnitController()).
-            Where(u => u != null && u != this && u.Model.Data.Cur.HP > 0).ToList();
+        Where(u => 
+        u != null && 
+        u != this && 
+        PhaseShopController.Instance != null || u.Model.Data.Cur.HP > 0 // Return bots with HP = 0 too and bots on battle > 0 HP only
+        ).ToList();
 
     public List<UnitController> AllEnemies => EnemySlots.Select(s => s.UnitController()).
             Where(u => u != null && u.Model.Data.Cur.HP > 0).ToList();
@@ -325,7 +329,7 @@ public class UnitController : MonoBehaviour
         if (HasView == false)
             return model.Data.XP == 3 || model.Data.XP == 6;
 
-        View.SetAbility(
+        View.SetDesccription(
                 model.CurrentLevel.Description,
                 model.CurrentLevel.ConsumedEnergy != null ? model.CurrentLevel.ConsumedEnergy.Value : 0);
 

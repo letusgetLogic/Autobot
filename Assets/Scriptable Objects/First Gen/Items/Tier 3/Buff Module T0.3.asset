@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Buff Module T0.3
   m_EditorClassIdentifier: 
   UnitType: 3
-  Sprite: {fileID: 21300000, guid: f9169c92de0220f4bb9ed2000e0f109d, type: 3}
+  Sprite: {fileID: -4062769898107646306, guid: ae0e9d3f46318e0449603a706748d8ff, type: 3}
   ID: 0
   Name: Buff Module
-  ModelID: T0.3
+  ModelID: T0.4
   Health: 0
   Attack: 0
   Energy: {fileID: 0}
@@ -26,7 +26,7 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 06ffd89a1c9b4d943a71e38c14009b51, type: 2}
   Levels:
   - Index: 0
-    Description: Give one robot +3 health.
+    Description: Give one robot +4 health.
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
     TriggerType: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
     ToWhoCount: 0
     AbilityDuration: 2
     Buff:
-      HP: 3
+      HP: 4
       ATK: 0
       ENG: 0
       HasValue: 0

@@ -111,6 +111,11 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
+    public bool IsMobile => isMobile;
+    public void SetIsMobile(bool _value) => isMobile = _value;
+
+    private bool isMobile = false;
+
 
     public bool IsCatalogActive { get; set; }
     public ReplayManager Replay { get; set; }

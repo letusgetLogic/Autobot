@@ -294,6 +294,10 @@ public class UnitModel
     {
         int _index = LevelIndex(Data.XP);
         CurrentLevel = SoUnit.Levels[_index];
+
+        View.SetDesccription(
+                CurrentLevel.Description,
+                CurrentLevel.ConsumedEnergy != null ? CurrentLevel.ConsumedEnergy.Value : 0);
     }
 
     public int LevelIndex(int _xp)
