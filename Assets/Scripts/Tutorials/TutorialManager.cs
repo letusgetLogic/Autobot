@@ -383,7 +383,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (currentState == StepState.WaitingForAbility || currentState == StepState.BattleIdle)
         {
-            PhaseBattleController.Instance.SetRunning(true);
+            PhaseBattleController.Instance.SetRunning(true, false);
         }
         else if (currentState == StepState.RepairRobot)
         {
@@ -559,12 +559,12 @@ public class TutorialManager : MonoBehaviour
 
                 currentState = StepState.ShopToBattle;
                 break;
-            case StepState.ShopToBattle:
-                PhaseBattleController.Instance.SetRunning(false);
+            case StepState.ShopToBattle: // set speed in battle 0 but not timeScale to show tutorial
+                PhaseBattleController.Instance.SetRunning(false, false);
                 break;
-            case StepState.WaitingForAbility:
+            case StepState.WaitingForAbility: // set speed in battle 0 but not timeScale to show tutorial
                 SetNextStep();
-                PhaseBattleController.Instance.SetRunning(false);
+                PhaseBattleController.Instance.SetRunning(false, false);
                 break;
             case StepState.BattleIdle:
                 SetNextStep();

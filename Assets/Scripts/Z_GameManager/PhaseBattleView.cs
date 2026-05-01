@@ -182,7 +182,7 @@ public class PhaseBattleView : MonoBehaviour
         if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonPlayInBattle))
             return;
 
-        PhaseBattleController.Instance.SetRunning(PhaseBattleController.Instance.IsStopped);
+        PhaseBattleController.Instance.SetRunning(PhaseBattleController.Instance.IsStopped, true);
     }
 
     /// <summary>

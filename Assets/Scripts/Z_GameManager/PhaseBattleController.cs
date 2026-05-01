@@ -197,11 +197,13 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     /// <summary>
     /// Set boolean IsRunning.
     /// </summary>
-    public void SetRunning(bool value)
+    public void SetRunning(bool value, bool _affectTimeScale)
     {
         IsStopped = !value;
         IsRunning = value ? 1f : 0f;
-        Time.timeScale = value ? 1f : 0f;
+
+        if (_affectTimeScale)
+            Time.timeScale = value ? 1f : 0f;
 
         PhaseBattleView.Instance.SetRunningButton();
     }

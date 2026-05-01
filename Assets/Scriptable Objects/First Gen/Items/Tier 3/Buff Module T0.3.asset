@@ -16,7 +16,7 @@ MonoBehaviour:
   Sprite: {fileID: 21300000, guid: f9169c92de0220f4bb9ed2000e0f109d, type: 3}
   ID: 0
   Name: Buff Module
-  ModelID: R2.2.2
+  ModelID: T0.3
   Health: 0
   Attack: 0
   Energy: {fileID: 0}
@@ -26,7 +26,7 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 06ffd89a1c9b4d943a71e38c14009b51, type: 2}
   Levels:
   - Index: 0
-    Description: Give two random robots +2 attack and +2 health.
+    Description: Give one robot +3 health.
     HasAbility: 1
     ConsumedEnergy: {fileID: 0}
     TriggerType: 1
@@ -34,12 +34,12 @@ MonoBehaviour:
     TriggerTimesLimit: 0
     DoType: 1
     FromWho: 0
-    ToWho: 3
-    ToWhoCount: 2
+    ToWho: 10
+    ToWhoCount: 0
     AbilityDuration: 2
     Buff:
-      HP: 2
-      ATK: 2
+      HP: 3
+      ATK: 0
       ENG: 0
       HasValue: 0
     Debuff:
