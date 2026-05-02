@@ -598,6 +598,7 @@ public class PhaseShopController : MonoBehaviour
         input.BlocksInput = false;
     }
 
+
     #region Transport Unit
 
     /// <summary>
@@ -1050,17 +1051,17 @@ public class PhaseShopController : MonoBehaviour
         return false;
     }
 
-    public bool CanRecycleNotTrigger(UnitController _unit)
+    public bool CanRecycleTrigger(UnitController _unit)
     {
         if (_unit.Model.CurrentLevel.TriggerType == TriggerType.Recycle)
         {
             if (_unit.Model.CurrentLevel.ConsumedEnergy == null)
-                return false;
+                return true;
 
             if(_unit.Model.Data.Cur.ENG >= _unit.Model.CurrentLevel.ConsumedEnergy.Value)
-                return false;
+                return true;
         }
 
-        return true;
+        return false;
     }
 }

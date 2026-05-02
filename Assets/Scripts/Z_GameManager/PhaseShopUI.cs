@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+
 
 public class PhaseShopUI : MonoBehaviour
 {
@@ -19,6 +22,7 @@ public class PhaseShopUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private PanelConfirmation panelLeftCurrency;
     [SerializeField] private PanelConfirmation panelLackOfEnergy;
+    [SerializeField] private PanelConfirmation panelRecycleNotTrigger;
     [SerializeField] private GameObject hintLabel;
     [SerializeField] private TextMeshProUGUI hintLabelText;
     [SerializeField] private GameObject energyBonusLabel;
@@ -341,23 +345,46 @@ public class PhaseShopUI : MonoBehaviour
                 input.BlocksInput = false;
                 return;
             }
-            if (PhaseShopController.Instance.CanRecycleNotTrigger(unit))
-            { 
 
+            UnityAction recycle = () =>
+            {
+                unit.GetSelled();
+                UpdateCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool);
+
+                PhaseShopController.Instance.SetAttachedGameObject(null);
+
+                EventManager.Instance.OnRecycle?.Invoke(InputKey.ClickButtonRecycle);
+
+                if (unit.Model.Sell.Nut > 0 || unit.Model.Sell.Tool > 0)
+                    EventManager.Instance.OnRecycleSound?.Invoke(InputKey.ClickButtonRecycle);
+            };
+
+            if (PhaseShopController.Instance.CanRecycleTrigger(unit))
+            {
+                panelRecycleNotTrigger.gameObject.SetActive(true);
+                recycleCoroutine = StartCoroutine(RecycleByConfirmation(recycle));
             }
-
-
-            unit.GetSelled();
-            UpdateCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool);
-
-            PhaseShopController.Instance.SetAttachedGameObject(null);
-
-            EventManager.Instance.OnRecycle?.Invoke(InputKey.ClickButtonRecycle);
-
-            if (unit.Model.Sell.Nut > 0 || unit.Model.Sell.Tool > 0)
-                EventManager.Instance.OnRecycleSound?.Invoke(InputKey.ClickButtonRecycle);
+            else
+            {
+                recycle.Invoke();
+            }
         }
         else input.BlocksInput = false;
+    }
+
+    private Coroutine recycleCoroutine;
+    private IEnumerator RecycleByConfirmation(UnityAction _action)
+    {
+        yield return new WaitUntil(() =>
+                           panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed ||
+                           panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Declined);
+        
+        if (panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed)
+        {
+            _action.Invoke();
+        }
+
+        recycleCoroutine = null;
     }
 
     /// <summary>

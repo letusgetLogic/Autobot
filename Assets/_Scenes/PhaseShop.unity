@@ -10227,6 +10227,7 @@ MonoBehaviour:
   tier2: {fileID: 394188988}
   tier3: {fileID: 734977734}
   panelLeftCurrency: {fileID: 346541079}
+  panelLackOfEnergy: {fileID: 0}
   hintLabel: {fileID: 596501450}
   hintLabelText: {fileID: 1741093535}
   energyBonusLabel: {fileID: 7215813030263568300}
@@ -12427,30 +12428,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1277334543815271236, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1541168981437079381, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 1541168981437079381, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 3302626270392545464, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
-      propertyPath: m_fontStyle
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3302626270392545464, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
-      propertyPath: m_lineSpacing
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3302626270392545464, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
-    - target: {fileID: 3302626270392545464, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
-      propertyPath: m_paragraphSpacing
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8658174349459309319, guid: 5ba90ce222535a54cbf019f74cce897e, type: 3}
