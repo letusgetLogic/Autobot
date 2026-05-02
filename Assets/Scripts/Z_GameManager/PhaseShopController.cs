@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.Multiplayer.Playmode;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class PhaseShopController : MonoBehaviour
 {
@@ -53,7 +54,8 @@ public class PhaseShopController : MonoBehaviour
     {
         var unitController = x.UnitController();
         return unitController != null ? !unitController.Model.IsFullDurability() : false;
-    });
+    }) // charge slot
+        || (ChargeSlot != null && ChargeSlot.UnitController() != null && !ChargeSlot.UnitController().Model.IsFullDurability());
 
     private StartTurnState startTurn = StartTurnState.None;
     private InputManager input => InputManager.Instance;
@@ -204,14 +206,14 @@ public class PhaseShopController : MonoBehaviour
 
 
             case StartTurnState.ChargeBot:
-               
+
                 if (IsTurnAI())
                 {
                     ChargeBotAtStartShop();
                 }
                 else
                 {
-                    InputManager.Instance.BlocksInput = false;
+                    input.BlocksInput = false;
                     StartCoroutine(DelayChargeBotsAtStartShop());
                 }
                 break;
@@ -373,7 +375,7 @@ public class PhaseShopController : MonoBehaviour
             var units = TutorialManager.Instance.BotsTurn1;
             if (i >= units.Length)
                 continue;
-            
+
             var bots = PackManager.Instance.Bots;
             SpawnManager.Instance.Spawn(
                 units[i],
@@ -474,6 +476,8 @@ public class PhaseShopController : MonoBehaviour
 
     #endregion
 
+    private Coroutine buyCoroutine;
+
     /// <summary>
     ///  Manages the attached unit.
     /// </summary>
@@ -491,7 +495,7 @@ public class PhaseShopController : MonoBehaviour
                 _attached.Model.Cost.Nut, _attached.Model.Cost.Tool, true))
             {
                 // then buy.
-                Buy(_attached, _targetSlot, _target);
+                buyCoroutine = StartCoroutine(Buy(_attached, _targetSlot, _target));
             }
         }
         // If unit is in the team and
@@ -526,13 +530,33 @@ public class PhaseShopController : MonoBehaviour
     /// Checks if it's purchasable, then buy the attached object.
     /// </summary>
     /// <param name="_targetedSlot"></param>
-    private void Buy(UnitController _purchased, Slot _targetSlot, UnitController _target)
+    private IEnumerator Buy(UnitController _purchased, Slot _targetSlot, UnitController _target)
     {
         if (_target != null || _purchased.Model.IsItemDoRandomness) // on drop, not on click
         {
-            // case: buy & destroy item
             if (_purchased.Model.Data.UnitType == UnitType.Item)
             {
+                // case: virus wouldn't trigger ability
+                if (IsBuyingItemNotUseful(_purchased, _target))
+                {
+                    var panel = PhaseShopUI.Instance.PanelLackOfEnergy;
+                    if (panel != null)
+                    {
+                        panel.gameObject.SetActive(true);
+                        yield return new WaitUntil(() =>
+                            panel.MyResult == PanelConfirmation.Result.Confirmed ||
+                            panel.MyResult == PanelConfirmation.Result.Declined);
+                      
+                        if (panel.MyResult == PanelConfirmation.Result.Declined)
+                        {
+                            input.BlocksInput = false;
+                            buyCoroutine = null;
+                            yield break;
+                        }
+                    }
+                }
+
+                // case: buy & destroy item
                 _purchased.Targets.Enqueue(_target);
                 _purchased.TriggerCraft();
 
@@ -571,6 +595,7 @@ public class PhaseShopController : MonoBehaviour
                 _purchased.TriggerCraft();
             }
         }
+        input.BlocksInput = false;
     }
 
     #region Transport Unit
@@ -627,7 +652,7 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_slotTarget"></param>
     /// <returns></returns>
     public IEnumerator Swap(
-        UnitController _unitTarget, Transform _slotDragged, 
+        UnitController _unitTarget, Transform _slotDragged,
         UnitController _unitDragged, Transform _slotTarget)
     {
         IsSwapping = true;
@@ -786,7 +811,7 @@ public class PhaseShopController : MonoBehaviour
         Player.UpdateUnitData();
 
         GameManager.Instance.Switch(GameState.EndOfTurn);
-       
+
         endShopCoroutine = null;
     }
 
@@ -968,7 +993,7 @@ public class PhaseShopController : MonoBehaviour
         var game = GameManager.Instance.CurrentGame;
         var player = GameManager.Instance.CurrentPlayer;
 
-        return game == null ? false : game.Mode == GameMode.AI && 
+        return game == null ? false : game.Mode == GameMode.AI &&
             player == null ? false : player.Data.IsAI;
     }
 
@@ -1010,4 +1035,32 @@ public class PhaseShopController : MonoBehaviour
         return fullRobots == robots;
     }
 
+    public bool IsBuyingItemNotUseful(UnitController _item, UnitController _target)
+    {
+        if (_item.Model.CurrentLevel.DoType == DoType.ShutDown &&
+            _target.Model.CurrentLevel.TriggerType == TriggerType.Shutdown)
+        {
+            if (_target.Model.CurrentLevel.ConsumedEnergy == null)
+                return false;
+
+            if (_target.Model.Data.Cur.ENG < _target.Model.CurrentLevel.ConsumedEnergy.Value)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool CanRecycleNotTrigger(UnitController _unit)
+    {
+        if (_unit.Model.CurrentLevel.TriggerType == TriggerType.Recycle)
+        {
+            if (_unit.Model.CurrentLevel.ConsumedEnergy == null)
+                return false;
+
+            if(_unit.Model.Data.Cur.ENG >= _unit.Model.CurrentLevel.ConsumedEnergy.Value)
+                return false;
+        }
+
+        return true;
+    }
 }

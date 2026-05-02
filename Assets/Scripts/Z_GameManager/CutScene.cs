@@ -39,6 +39,9 @@ public class CutScene : MonoBehaviour
         Instance = this;
         Debug.Log(this.name + ".Awake:");
 
+        if (GameManager.Instance == null)
+            return;
+
         if (coverPanelOpen != null)
         {
             coverPanelOpen.gameObject.SetActive(true);
@@ -72,6 +75,12 @@ public class CutScene : MonoBehaviour
 
     private void OnEnable()
     {
+        if (GameManager.Instance == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         if (OpenPanel != null)
         {
             if (GameManager.Instance.IsTutorialRunning)
@@ -166,11 +175,10 @@ public class CutScene : MonoBehaviour
         {
             if (_shouldBothWatch)
             {
-                hintClickCloseText.text = "Both players should watch. Click to continue!";
+                hintClickCloseText.text = "Click to continue!";
                 return;
             }
-            hintClickCloseText.text = $"{_playerIsTurn} should click to continue and" +
-                $"\r\nthe other player should look away!";
+            hintClickCloseText.text = $"{_playerIsTurn} should click to continue!";
         }
     }
 
@@ -185,11 +193,10 @@ public class CutScene : MonoBehaviour
         {
             if (_shouldBothWatch)
             {
-                hintClickText.text = "Both players should watch. Click to continue!";
+                hintClickText.text = "Click to continue!";
                 return;
             }
-            hintClickText.text = $"{_playerIsTurn} should click to continue and" +
-              $"\r\nthe other player should look away!";
+            hintClickText.text = $"{_playerIsTurn} should click to continue!";
         }
     }
 }

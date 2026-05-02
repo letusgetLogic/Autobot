@@ -18,9 +18,12 @@ public class PhaseShopUI : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private PanelConfirmation panelLeftCurrency;
+    [SerializeField] private PanelConfirmation panelLackOfEnergy;
     [SerializeField] private GameObject hintLabel;
     [SerializeField] private TextMeshProUGUI hintLabelText;
     [SerializeField] private GameObject energyBonusLabel;
+
+    public PanelConfirmation PanelLackOfEnergy => panelLackOfEnergy;
 
     [Header("Player Infos Components")]
     [SerializeField] private TextMeshProUGUI nameLabel;
@@ -334,7 +337,15 @@ public class PhaseShopUI : MonoBehaviour
             var unit = PhaseShopController.Instance.AttachedController;
 
             if (!HasEnoughCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool, true))
+            {
+                input.BlocksInput = false;
                 return;
+            }
+            if (PhaseShopController.Instance.CanRecycleNotTrigger(unit))
+            { 
+
+            }
+
 
             unit.GetSelled();
             UpdateCurrency(unit.Model.Sell.Nut, unit.Model.Sell.Tool);

@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
         {
             if (_Instance == null)
             {
-                if (Application.isPlaying)
-                    SceneManager.LoadScene("Menu");
+                //if (Application.isPlaying)
+                //    SceneManager.LoadScene("Menu");
 
                 Debug.LogWarning("GameManager instance is null.");
             }

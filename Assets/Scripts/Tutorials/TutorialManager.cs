@@ -186,6 +186,12 @@ public class TutorialManager : MonoBehaviour
         }
         Instance = this;
 
+        if (GameManager.Instance == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         if (GameManager.Instance.IsTutorialRunning == false)
         {
             gameObject.SetActive(false);
@@ -230,8 +236,13 @@ public class TutorialManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance == null)
+            return;
+
         if (settings == null || steps == null)
         {
+            Debug.LogWarning("settings is " + (settings == null ? "null" : "not null"));
+            Debug.LogWarning("steps is " + (steps == null ? "null" : "not null"));
             return;
         }
 

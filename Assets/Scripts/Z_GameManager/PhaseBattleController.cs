@@ -82,6 +82,9 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
 
         Time.timeScale = 1f;
 
+        if (GameManager.Instance == null)
+            return;
+
         if (GameManager.Instance.Replay != null)
             GameManager.Instance.Replay.Switch(GameState.StartOfBattle);
         else

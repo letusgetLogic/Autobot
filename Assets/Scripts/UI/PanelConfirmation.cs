@@ -11,6 +11,14 @@ public class PanelConfirmation : MonoBehaviour
         LeftCurrency,
         ToMenu
     }
+    public enum Result
+    {
+        None,
+        Running,
+        Declined,
+        Confirmed
+    }
+    public Result MyResult { get; private set; } = Result.None;
 
     public Button OnContinueDeclined;
     public Button OnContinueConfirmed;
@@ -24,6 +32,9 @@ public class PanelConfirmation : MonoBehaviour
 
     private void OnEnable()
     {
+        InputManager.Instance.BlocksInput = true;
+        MyResult = Result.Running;
+
         leftCurrencyComponents.ForEach(x => x.SetActive(type == Type.LeftCurrency));
         toMenuComponents.ForEach(x => x.SetActive(type == Type.ToMenu));
 
@@ -33,6 +44,11 @@ public class PanelConfirmation : MonoBehaviour
         OnContinueConfirmed.onClick.AddListener(Confirm);
     }
 
+    private void OnDisable()
+    {
+        InputManager.Instance.BlocksInput = false;
+        MyResult = Result.None;
+    }
 
     public void SetData(int _tool, int _nut)
     {
@@ -42,6 +58,8 @@ public class PanelConfirmation : MonoBehaviour
 
     private void Decline()
     {
+        MyResult = Result.Declined;
+
         OnContinueDeclined.interactable = false;
         gameObject.SetActive(false);
         InputManager.Instance.BlocksInput = false;
@@ -49,6 +67,8 @@ public class PanelConfirmation : MonoBehaviour
 
     private void Confirm()
     {
+        MyResult = Result.Confirmed;
+
         OnContinueConfirmed.interactable = false;
         gameObject.SetActive(false);
 

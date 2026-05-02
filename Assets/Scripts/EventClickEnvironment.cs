@@ -13,6 +13,12 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (GameManager.Instance == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         int a = GameManager.Instance.ClickIndex++;
         Debug.Log("Click " + a);
         if (isChecking)
