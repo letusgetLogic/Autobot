@@ -29,7 +29,7 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
 
         var game = GameManager.Instance.CurrentGame;
         if (game != null && 
-            game.State == GameState.PlayCutSceneShop || game.State == GameState.PlayCutSceneBattle)
+            (game.State == GameState.PlayCutSceneShop || game.State == GameState.PlayCutSceneBattle))
         {
             InputManager.Instance.BlocksInput = true;
             GameManager.Instance.Switch(GameState.LoadScene);

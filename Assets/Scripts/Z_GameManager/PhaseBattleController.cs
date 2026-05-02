@@ -70,7 +70,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         }
     }
     private List<Coroutine> coroutines;
-    
+
 
     private void Awake()
     {
@@ -259,13 +259,16 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     {
         StartCoroutine(PhaseBattleView.Instance.ShowClick(Process.WaitForClickShow));
     }
-    
+
     public void ShowWinnerTeam(List<UnitController> team)
     {
         foreach (var unit in team)
         {
-            unit.transform.SetParent(null, true);
-            unit.View.ShowByGameOver();
+            if (unit != null)
+            {
+                unit.transform.SetParent(null, true);
+                unit.View.ShowByGameOver();
+            }
         }
     }
 }

@@ -76,12 +76,12 @@ public class BattleOverState : StateBaseBattle
 
         if (GameManager.Instance.Replay == null)
         {
-            player1.EndBattle();
-            player2.EndBattle();
-
             // continue the game, when both have more than 0 lives.
             if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
             {
+                player1.EndBattle();
+                player2.EndBattle();
+
                 GameManager.Instance.Switch(GameState.EndOfBattle);
             }
             else // end the game, when one of them has 0 lives.

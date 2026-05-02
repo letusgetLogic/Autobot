@@ -86,7 +86,7 @@ public class UnitController : MonoBehaviour
         Where(u => 
         u != null && 
         u != this && 
-        PhaseShopController.Instance != null || u.Model.Data.Cur.HP > 0 // Return bots with HP = 0 too and bots on battle > 0 HP only
+        (PhaseShopController.Instance != null || u.Model.Data.Cur.HP > 0) // Return bots with HP = 0 too and bots on battle > 0 HP only
         ).ToList();
 
     public List<UnitController> AllEnemies => EnemySlots.Select(s => s.UnitController()).
@@ -143,6 +143,8 @@ public class UnitController : MonoBehaviour
             model = new UnitModel(this, _soUnit, _data, isRepairActive ? new RepairSystem() : null);
         }
 
+        // ---v Both models above need to be initialized following v---
+
         if (model.IsRobot() && model.Repair != null)
         {
             model.InitRepair();
@@ -154,6 +156,10 @@ public class UnitController : MonoBehaviour
         if (HasView)
         {
             model.InitView(view);
+
+            View.SetDesccription(
+                    model.CurrentLevel.Description,
+                    model.CurrentLevel.ConsumedEnergy != null ? model.CurrentLevel.ConsumedEnergy.Value : 0);
 
             if (Application.isPlaying)
                 updateLevelCoroutine = StartCoroutine(UpdateLevelView(false));
