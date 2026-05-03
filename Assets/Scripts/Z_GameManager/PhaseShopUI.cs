@@ -21,13 +21,13 @@ public class PhaseShopUI : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private PanelConfirmation panelLeftCurrency;
-    [SerializeField] private PanelConfirmation panelLackOfEnergy;
+    [SerializeField] private PanelConfirmation panelShutdownNotTrigger;
     [SerializeField] private PanelConfirmation panelRecycleNotTrigger;
     [SerializeField] private GameObject hintLabel;
     [SerializeField] private TextMeshProUGUI hintLabelText;
     [SerializeField] private GameObject energyBonusLabel;
 
-    public PanelConfirmation PanelLackOfEnergy => panelLackOfEnergy;
+    public PanelConfirmation PanelShutdownNotTrigger => panelShutdownNotTrigger;
 
     [Header("Player Infos Components")]
     [SerializeField] private TextMeshProUGUI nameLabel;

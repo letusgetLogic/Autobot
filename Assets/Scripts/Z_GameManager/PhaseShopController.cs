@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Multiplayer.Playmode;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class PhaseShopController : MonoBehaviour
 {
@@ -539,7 +536,7 @@ public class PhaseShopController : MonoBehaviour
                 // case: virus wouldn't trigger ability
                 if (IsBuyingItemNotUseful(_purchased, _target))
                 {
-                    var panel = PhaseShopUI.Instance.PanelLackOfEnergy;
+                    var panel = PhaseShopUI.Instance.PanelShutdownNotTrigger;
                     if (panel != null)
                     {
                         panel.gameObject.SetActive(true);

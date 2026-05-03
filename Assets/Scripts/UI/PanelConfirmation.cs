@@ -23,10 +23,12 @@ public class PanelConfirmation : MonoBehaviour
     public Button OnContinueDeclined;
     public Button OnContinueConfirmed;
 
+    // you can use type to define each panel display and outcome handling,
+    // if type is default (None), the panel can return the event or/and result. 
     [SerializeField] private Type type;
     [SerializeField] private TextMeshProUGUI tool, nut;
     [SerializeField] private List<GameObject> leftCurrencyComponents;
-    [SerializeField] private List<GameObject> toMenuComponents;
+    [SerializeField] private List<GameObject> defaultComponents;
 
    
 
@@ -36,7 +38,7 @@ public class PanelConfirmation : MonoBehaviour
         MyResult = Result.Running;
 
         leftCurrencyComponents.ForEach(x => x.SetActive(type == Type.LeftCurrency));
-        toMenuComponents.ForEach(x => x.SetActive(type == Type.ToMenu));
+        defaultComponents.ForEach(x => x.SetActive(type == Type.ToMenu || type == Type.None));
 
         OnContinueDeclined.interactable = true;
         OnContinueDeclined.onClick.AddListener(Decline);

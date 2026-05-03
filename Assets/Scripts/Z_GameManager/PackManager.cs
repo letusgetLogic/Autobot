@@ -125,22 +125,22 @@ public class PackManager : MonoBehaviour
         int e = MyPack.Tier5AvaiableAtTurn.Value;
         int f = MyPack.Tier6AvaiableAtTurn.Value;
 
-        if (_turn == a)
+        if (_turn == a && MyPack.BotsTier1 != null && MyPack.BotsTier1.Length > 0)
             return (true, 1);
 
-        if (_turn == b)
+        if (_turn == b && MyPack.BotsTier2 != null && MyPack.BotsTier2.Length > 0)
             return (true, 2);
 
-        if (_turn == c)
+        if (_turn == c && MyPack.BotsTier3 != null && MyPack.BotsTier3.Length > 0)
             return (true, 3);
 
-        if (_turn == d)
+        if (_turn == d && MyPack.BotsTier4 != null && MyPack.BotsTier4.Length > 0)
             return (true, 4);
 
-        if (_turn == e)
+        if (_turn == e && MyPack.BotsTier5 != null && MyPack.BotsTier5.Length > 0)
             return (true, 5);
 
-        if (_turn == f)
+        if (_turn == f && MyPack.BotsTier6 != null && MyPack.BotsTier6.Length > 0)
             return (true, 6);
 
         return (false, 0);
