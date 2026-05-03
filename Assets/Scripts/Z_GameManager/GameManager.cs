@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            LoadGame(GameMode.Local1v1);
+            LoadGame(GameMode.PvP);
         }
     }
 
@@ -207,35 +207,81 @@ public class GameManager : MonoBehaviour
     {
         Mode = _mode;
 
+        players = new List<Player>();
+
+        // Initialize player instances.
+        players.Add(new Player());
+        players.Add(new Player());
+
+        //// Load saved game.
+        //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
+        // if (savedGame != null)
+        // {
+        //     players[0].Data = savedGame.PlayerData1;
+        //     players[1].Data = savedGame.PlayerData2;
+        //     CurrentGame = savedGame;
+        //     return;
+        // }
+
         switch (Mode)
         {
             case GameMode.None:
                 break;
 
             case GameMode.TestBattle:
-                InitTest();
+
+                // Create a new game.
+                players[0].Data = new PlayerData(AI.Name + " 1", PlayerLives, 0, true);
+                players[1].Data = new PlayerData(AI.Name + " 2", PlayerLives, 0, true);
+
+                currentGame = new Game(Mode, 2, Timer, PlayerLives, 0,GameState.None);
+
                 Switch(GameState.StartScene);
                 break;
 
             case GameMode.Tutorial:
                 PlayerLives = defaultTutorialLives;
-                InitTutorial();
+
+                // Create a new game.
+                players[0].Data = new PlayerData("You", PlayerLives, 0);
+                players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
+
+                currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
+
                 Switch(GameState.StartScene);
                 break;
 
-            case GameMode.Local1v1:
-                InitPvP();
+            case GameMode.PvP:
+
+                // Create a new game.
+                players[0].Data = new PlayerData(Name1, PlayerLives, 0);
+                players[1].Data = new PlayerData(Name2, PlayerLives, 0);
+
+                currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
+
                 Switch(GameState.StartScene);
                 break;
 
             case GameMode.AI:
-                // Load AI game mode
+
+                // Create a new game.
+                players[0].Data = new PlayerData(Name1, PlayerLives, 0);
+                players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
+
+                currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
+
+                Switch(GameState.StartScene);
                 break;
+
             case GameMode.Friends:
-                // Load Versus game mode
+                // Load Online Versus game mode
                 break;
         }
+
+        // Set default speed multiplier for phase battle
+        //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
+
     [ContextMenu("Reload Shop")]
     public void ReloadShop()
     {
@@ -365,88 +411,6 @@ public class GameManager : MonoBehaviour
                 // Waiting for player input
                 break;
         }
-    }
-
-    private void InitTutorial()
-    {
-        players = new List<Player>();
-
-        // Initialize player instances.
-        players.Add(new Player());
-        players.Add(new Player());
-
-        // Create a new game.
-        players[0].Data = new PlayerData("You", PlayerLives, 0);
-        players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
-
-        currentGame = new Game(
-               Mode,
-               2,
-               Timer,
-               PlayerLives,
-               0,
-               GameState.None
-               );
-    }
-
-    private void InitTest()
-    {
-        players = new List<Player>();
-
-        // Initialize player instances.
-        players.Add(new Player());
-        players.Add(new Player());
-
-        // Create a new game.
-        players[0].Data = new PlayerData(AI.Name + " 1", PlayerLives, 0, true);
-        players[1].Data = new PlayerData(AI.Name + " 2", PlayerLives, 0, true);
-
-        currentGame = new Game(
-               Mode,
-               2,
-               Timer,
-               PlayerLives,
-               0,
-               GameState.None
-               );
-    }
-
-    /// <summary>
-    /// Initialize game with mode PvP.
-    /// </summary>
-    private void InitPvP()
-    {
-        players = new List<Player>();
-
-        // Initialize player instances.
-        players.Add(new Player());
-        players.Add(new Player());
-
-        //// Load saved game.
-        //var savedGame = SaveSystem.LoadGame(isNotSavingGame, GameMode.Local1v1);
-        // if (savedGame != null)
-        // {
-        //     players[0].Data = savedGame.PlayerData1;
-        //     players[1].Data = savedGame.PlayerData2;
-        //     CurrentGame = savedGame;
-        //     return;
-        // }
-
-        // Create a new game.
-        players[0].Data = new PlayerData(Name1, PlayerLives, 0);
-        players[1].Data = new PlayerData(Name2, PlayerLives, 0);
-
-        currentGame = new Game(
-                Mode,
-                2,
-                Timer,
-                PlayerLives,
-                0,
-                GameState.None
-                );
-
-        // Set default speed multiplier for phase battle
-        //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
     }
 
     private Coroutine coroutine;

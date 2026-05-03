@@ -111,6 +111,8 @@ public class TutorialManager : MonoBehaviour
 
     private List<Slot> activeHints { get; set; } = new();
 
+    private bool isSettingInput;
+
 
     [ContextMenu("OnReset")]
     private void Reset()
@@ -284,7 +286,7 @@ public class TutorialManager : MonoBehaviour
 
                     OnValidatedEnter();
 
-                    currentAllowedInputs = settings[(int)currentState].AllowedInputs;
+                    isSettingInput = true;
                     countTime = settings[(int)currentState].Duration;
                     runState = RunState.Duration;
                     break;
@@ -308,6 +310,12 @@ public class TutorialManager : MonoBehaviour
                 case RunState.AFK:
                     break;
             }
+        }
+
+        if (countTime < settings[(int)currentState].Duration - 1f && isSettingInput)
+        {
+            currentAllowedInputs = settings[(int)currentState].AllowedInputs;
+            isSettingInput = false;
         }
 
         if (countTime > 0)

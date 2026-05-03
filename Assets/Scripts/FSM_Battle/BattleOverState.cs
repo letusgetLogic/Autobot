@@ -46,7 +46,7 @@ public class BattleOverState : StateBaseBattle
                 PhaseBattleController.Instance.StartCoroutine(
                     PhaseBattleView.Instance.ShowWinner(false, player1.Data.Name, player2.Data.Lives == 0));
 
-                winnerData = player1.Data;
+                winnerData = data1;
                 break;
 
             case 0: // Draw
@@ -70,7 +70,7 @@ public class BattleOverState : StateBaseBattle
                 PhaseBattleController.Instance.StartCoroutine(
                     PhaseBattleView.Instance.ShowWinner(false, player2.Data.Name, player1.Data.Lives == 0));
 
-                winnerData = player2.Data;
+                winnerData = data2;
                 break;
         }
 

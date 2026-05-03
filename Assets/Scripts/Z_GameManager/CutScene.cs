@@ -54,7 +54,7 @@ public class CutScene : MonoBehaviour
             {
                 hintClickClose.gameObject.SetActive(true);
                 hintClickClose.Trigger();
-                EventManager.Instance.OnMoveHintClickSound?.Invoke();
+                //EventManager.Instance.OnMoveHintClickSound?.Invoke();
             }
             else
             {
@@ -142,7 +142,7 @@ public class CutScene : MonoBehaviour
         if (hintClick != null)
         {
             hintClick.Trigger();
-            EventManager.Instance.OnMoveHintClickSound?.Invoke();
+            //EventManager.Instance.OnMoveHintClickSound?.Invoke();
         }
     }
 

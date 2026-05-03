@@ -16200,6 +16200,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 950492287689778439, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: Labels.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950492287689778439, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: HintsAFK.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950492287689778439, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: 'CoverPanels.Array.data[0]'
       value: 
       objectReference: {fileID: 1179202467}
@@ -16207,6 +16215,14 @@ PrefabInstance:
       propertyPath: 'CoverPanels.Array.data[1]'
       value: 
       objectReference: {fileID: 1179202466}
+    - target: {fileID: 950492287689778439, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: CoverPanelsToDeactivate.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185577665881107741, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: Each robot has an unique ability!
+      objectReference: {fileID: 0}
     - target: {fileID: 1763559078301091301, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: steps.Array.size
       value: 37
@@ -16443,6 +16459,29 @@ PrefabInstance:
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 1055231691}
+    - target: {fileID: 2587847142321015457, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: In the battle phase the robots in both teams will automatically fight
+        each other.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788943131048603168, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: 'We have a robot whose ability could be useful from recycling:'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083824165683473661, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: Let's repair all teammates!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3244918204368885757, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: 'Alright, that was the tutorial!
+
+        Good luck!'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3569501882137013556, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: You can level up a robot with the same model only by full repaired!
+      objectReference: {fileID: 0}
     - target: {fileID: 3719666478238432298, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: targetObject
       value: 
@@ -16464,9 +16503,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4730392666988927522, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: Labels.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730392666988927522, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: HintsAFK.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730392666988927522, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: 'Labels.Array.data[4]'
       value: 
       objectReference: {fileID: 7917588789874242741}
+    - target: {fileID: 4730392666988927522, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: CoverPanelsToDeactivate.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4730392666988927522, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: 'CoverPanelsToDeactivate.Array.data[1]'
       value: 
@@ -16478,6 +16529,15 @@ PrefabInstance:
     - target: {fileID: 5059494664316139560, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5251785406550773694, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: As you can see, there is some smoke. It shows the robots have to be
+        repaired!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5406255172372849665, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: You can pause the battle by clicking the button.
       objectReference: {fileID: 0}
     - target: {fileID: 5439303396999400962, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: 'CoverPanelsToDeactivate.Array.data[2]'
@@ -16587,6 +16647,10 @@ PrefabInstance:
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 1829035575}
+    - target: {fileID: 6928947911235913561, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: Most abilities consume energy!
+      objectReference: {fileID: 0}
     - target: {fileID: 7178445535778415135, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -16611,6 +16675,14 @@ PrefabInstance:
       propertyPath: 'Hints.Array.data[4]'
       value: 
       objectReference: {fileID: 1055231691}
+    - target: {fileID: 7364192781923745406, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: If you need more energy, I will give you more energy!
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371394053475657998, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
+      propertyPath: m_text
+      value: Otherwise they cannot go to the battle!
+      objectReference: {fileID: 0}
     - target: {fileID: 7561420934996691726, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_Name
       value: Tutorial

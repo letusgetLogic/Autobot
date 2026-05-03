@@ -4,7 +4,7 @@
 
     Tutorial,
 
-    Local1v1,
+    PvP,
     AI,
     Friends,
 

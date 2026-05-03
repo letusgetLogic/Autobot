@@ -11,7 +11,8 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI showLives;
     [SerializeField] private Pack[] packs;
     [SerializeField] private TMP_InputField inputName1;
-    [SerializeField] private TMP_InputField inputName2;
+    [SerializeField] private TMP_InputField inputPvpName1;
+    [SerializeField] private TMP_InputField inputPvpName2;
     [SerializeField] private TextMeshProUGUI hint;
     [SerializeField] private Button startButton;
 
@@ -39,11 +40,30 @@ public class GameSettings : MonoBehaviour
     }
 
     /// <summary>
+    /// Button click calls. set game mode to AI.
+    /// </summary>
+    public void OnModeAI()
+    {
+        GameManager.Instance.Mode = GameMode.AI;
+        PackManager.Instance.InitPack(packs[0].SoPack);
+
+        if (GameManager.Instance.PlayerLives == default)
+        {
+            GameManager.Instance.PlayerLives = defaultLives;
+            showLives.text = defaultLives.ToString();
+        }
+        else
+        {
+            showLives.text = GameManager.Instance.PlayerLives.ToString();
+        }
+    }
+
+    /// <summary>
     /// Button click calls. set game mode to local 1v1.
     /// </summary>
     public void OnModeLocal1v1()
     {
-        GameManager.Instance.Mode = GameMode.Local1v1;
+        GameManager.Instance.Mode = GameMode.PvP;
         PackManager.Instance.InitPack(packs[0].SoPack);
 
         if (GameManager.Instance.PlayerLives == default)
@@ -121,7 +141,16 @@ public class GameSettings : MonoBehaviour
 
         switch (GameManager.Instance.Mode)
         {
-            case GameMode.Local1v1:
+            case GameMode.AI:
+
+                if (inputName1.text != "")
+                    GameManager.Instance.Name1 = inputPvpName1.text;
+
+                startButton.interactable = false;
+                GameManager.Instance.LoadGame(GameMode.AI);
+                break;
+
+            case GameMode.PvP:
 
                 //if (PackManager.Instance.MyPack == null)
                 //{
@@ -132,15 +161,14 @@ public class GameSettings : MonoBehaviour
                 //    return;
                 //}
 
-                if (inputName1.text != "")
-                    GameManager.Instance.Name1 = inputName1.text;
+                if (inputPvpName1.text != "")
+                    GameManager.Instance.Name1 = inputPvpName1.text;
 
-                if (inputName2.text != "")
-                    GameManager.Instance.Name2 = inputName2.text;
+                if (inputPvpName2.text != "")
+                    GameManager.Instance.Name2 = inputPvpName2.text;
 
                 startButton.interactable = false;
-                GameManager.Instance.LoadGame(GameMode.Local1v1);
-
+                GameManager.Instance.LoadGame(GameMode.PvP);
                 break;
         }
     }

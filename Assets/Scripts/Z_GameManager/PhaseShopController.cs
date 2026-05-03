@@ -540,6 +540,7 @@ public class PhaseShopController : MonoBehaviour
                     if (panel != null)
                     {
                         panel.gameObject.SetActive(true);
+                        _target.View.SetDescriptionActive(true);
                         yield return new WaitUntil(() =>
                             panel.MyResult == PanelConfirmation.Result.Confirmed ||
                             panel.MyResult == PanelConfirmation.Result.Declined);
@@ -774,6 +775,7 @@ public class PhaseShopController : MonoBehaviour
         yield return new WaitForSeconds(Process.DelayHideDescription);
 
         input.BlocksInput = false;
+        abilities.Remove(_ability);
     }
 
     #region End shop
@@ -1038,10 +1040,10 @@ public class PhaseShopController : MonoBehaviour
         if (_item.Model.CurrentLevel.DoType == DoType.ShutDown &&
             _target.Model.CurrentLevel.TriggerType == TriggerType.Shutdown)
         {
-            if (_target.Model.CurrentLevel.ConsumedEnergy == null)
-                return false;
+            var consum = _target.Model.CurrentLevel.ConsumedEnergy;
+            int consumENG = consum != null ? Mathf.Abs(consum.Value) : 0;
 
-            if (_target.Model.Data.Cur.ENG < _target.Model.CurrentLevel.ConsumedEnergy.Value)
+            if (_target.Model.Data.Cur.ENG < consumENG)
                 return true;
         }
 
@@ -1052,10 +1054,10 @@ public class PhaseShopController : MonoBehaviour
     {
         if (_unit.Model.CurrentLevel.TriggerType == TriggerType.Recycle)
         {
-            if (_unit.Model.CurrentLevel.ConsumedEnergy == null)
-                return true;
+            var consum = _unit.Model.CurrentLevel.ConsumedEnergy;
+            int consumENG = consum != null ? Mathf.Abs(consum.Value) : 0;
 
-            if(_unit.Model.Data.Cur.ENG >= _unit.Model.CurrentLevel.ConsumedEnergy.Value)
+            if (_unit.Model.Data.Cur.ENG >= consumENG)
                 return true;
         }
 

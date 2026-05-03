@@ -1712,7 +1712,7 @@ GameObject:
   - component: {fileID: 7138909915134298955}
   - component: {fileID: 2430184383772424111}
   m_Layer: 5
-  m_Name: Panel ShowTeam2 (1)
+  m_Name: Panel ShowTeam2 in Battle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2177,7 +2177,7 @@ GameObject:
   - component: {fileID: 8959713994995262290}
   - component: {fileID: 2530539153800251273}
   m_Layer: 5
-  m_Name: Panel ShowTeam1 (1)
+  m_Name: Panel ShowTeam1 in Battle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2354,11 +2354,12 @@ GameObject:
   m_Component:
   - component: {fileID: 9023045598574097076}
   - component: {fileID: 4672125005898476667}
+  - component: {fileID: 5336668436006901540}
   - component: {fileID: 7289676419430355095}
   - component: {fileID: 3914790436333567020}
   - component: {fileID: 4272936669146713620}
   m_Layer: 5
-  m_Name: Panel ShowTeam1 (2)
+  m_Name: Panel ShowTeam1 in Battle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2391,6 +2392,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5832135086478373965}
   m_CullTransparentMesh: 1
+--- !u!114 &5336668436006901540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832135086478373965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5b5e17126da624db18959303adb2b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameObject: {fileID: 0}
 --- !u!114 &7289676419430355095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3400,11 +3414,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3347769036424239687}
   - component: {fileID: 7503891339487145228}
+  - component: {fileID: 549902676245392507}
   - component: {fileID: 8675608971909092684}
   - component: {fileID: 8497272979416861181}
   - component: {fileID: 5637328546107659215}
   m_Layer: 5
-  m_Name: Panel ShowTeam2 (2)
+  m_Name: Panel ShowTeam2 in Battle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3437,6 +3452,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8066269447918999517}
   m_CullTransparentMesh: 1
+--- !u!114 &549902676245392507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8066269447918999517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5b5e17126da624db18959303adb2b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameObject: {fileID: 0}
 --- !u!114 &8675608971909092684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4589,7 +4617,7 @@ PrefabInstance:
       value: 'To craft a team, you should have enough wrenchs and nuts.
 
         They
-        are reseted for each round'
+        are reseted for each round.'
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -5748,7 +5776,7 @@ PrefabInstance:
       value: 'They will attack one after the other
 
         only on the most front
-        slot'
+        slot.'
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -6034,7 +6062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: Let click a robot
+      value: Let click a robot!
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -6165,7 +6193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: "First, you need to build \na team of robots"
+      value: "First, you need to build \na team of robots!"
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -7771,7 +7799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: Drag it or click on a slot to put it in the team
+      value: Drag it or click on a slot to put it in the team!
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -7910,7 +7938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: They will be placed in these slots
+      value: They will be placed in these slots!
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize
@@ -8065,7 +8093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_text
-      value: "To change position, you can click or \ndrag the robot to a slot"
+      value: "To change position, you can click or \ndrag the robot to a slot."
       objectReference: {fileID: 0}
     - target: {fileID: 8760196855926061956, guid: 515dd6e424a085b45adc9b7e7612d5ec, type: 3}
       propertyPath: m_fontSize

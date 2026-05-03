@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AI : MonoBehaviour, I_FSM_AI
 {
-    public static readonly string Name = "Octobot";
+    public static readonly string Name = "Father of Robotics";
 
     private StateBaseAI state;
 

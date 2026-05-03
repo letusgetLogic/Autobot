@@ -361,12 +361,13 @@ public class PhaseShopUI : MonoBehaviour
 
             if (PhaseShopController.Instance.CanRecycleTrigger(unit))
             {
-                panelRecycleNotTrigger.gameObject.SetActive(true);
-                recycleCoroutine = StartCoroutine(RecycleByConfirmation(recycle));
+                recycle.Invoke();
             }
             else
             {
-                recycle.Invoke();
+                panelRecycleNotTrigger.gameObject.SetActive(true);
+                unit.View.SetDescriptionActive(true);
+                recycleCoroutine = StartCoroutine(RecycleByConfirmation(recycle));
             }
         }
         else input.BlocksInput = false;
