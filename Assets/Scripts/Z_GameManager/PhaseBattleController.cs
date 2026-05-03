@@ -274,4 +274,39 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
             }
         }
     }
+
+
+    /// <summary>
+    /// Checks the outcome of battle.
+    /// </summary>
+    /// <returns></returns>
+    public bool HasOutcome()
+    {
+        int amountOfActiveUnits1 = Slots1.Count(n => n.Unit() != null);
+        int amountOfActiveUnits2 = Slots2.Count(n => n.Unit() != null);
+
+        if (amountOfActiveUnits1 > 0)
+        {
+            if (amountOfActiveUnits2 > 0)
+            {
+                return false; // Continue battle
+            }
+            else
+            {
+                return true; // Left wins
+            }
+        }
+        else
+        {
+            if (amountOfActiveUnits2 > 0)
+            {
+                return true; // Right wins
+            }
+            else
+            {
+                return true; // Draw
+            }
+        }
+    }
+
 }

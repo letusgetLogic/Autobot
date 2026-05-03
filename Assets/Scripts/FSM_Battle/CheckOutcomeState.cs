@@ -31,7 +31,7 @@ public class CheckOutcomeState : StateBaseBattle
         var player1 = GameManager.Instance.Players[0];
         var player2 = GameManager.Instance.Players[1];
 
-        hasOutcomeOfBattle = CheckOutcome(player1, player2);
+        hasOutcomeOfBattle = CheckOutcome();
 
         // Necessary for jumping directly on next state, which isn't BattleOverState
         if (hasOutcomeOfBattle)
@@ -76,7 +76,7 @@ public class CheckOutcomeState : StateBaseBattle
     /// Checks the outcome of battle.
     /// </summary>
     /// <returns></returns>
-    private bool CheckOutcome(Player _player1, Player _player2)
+    private bool CheckOutcome()
     {
         var slots1 = PhaseBattleController.Instance.Slots1;
         var slots2 = PhaseBattleController.Instance.Slots2;

@@ -8,7 +8,8 @@ public class GameSettings : MonoBehaviour
     public static GameSettings Instance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private TextMeshProUGUI showLives;
+    [SerializeField] private TextMeshProUGUI showLivesAI;
+    [SerializeField] private TextMeshProUGUI showLivesPvP;
     [SerializeField] private Pack[] packs;
     [SerializeField] private TMP_InputField inputName1;
     [SerializeField] private TMP_InputField inputPvpName1;
@@ -50,11 +51,11 @@ public class GameSettings : MonoBehaviour
         if (GameManager.Instance.PlayerLives == default)
         {
             GameManager.Instance.PlayerLives = defaultLives;
-            showLives.text = defaultLives.ToString();
+            showLivesAI.text = defaultLives.ToString();
         }
         else
         {
-            showLives.text = GameManager.Instance.PlayerLives.ToString();
+            showLivesAI.text = GameManager.Instance.PlayerLives.ToString();
         }
     }
 
@@ -69,11 +70,11 @@ public class GameSettings : MonoBehaviour
         if (GameManager.Instance.PlayerLives == default)
         {
             GameManager.Instance.PlayerLives = defaultLives;
-            showLives.text = defaultLives.ToString();
+            showLivesPvP.text = defaultLives.ToString();
         }
         else
         {
-            showLives.text = GameManager.Instance.PlayerLives.ToString();
+            showLivesPvP.text = GameManager.Instance.PlayerLives.ToString();
         }
     }
 
@@ -94,7 +95,8 @@ public class GameSettings : MonoBehaviour
         }
 
         GameManager.Instance.PlayerLives = choice;
-        showLives.text = choice.ToString();
+        showLivesAI.text = choice.ToString();
+        showLivesPvP.text = choice.ToString();
 
         EventManager.Instance.OnIncreaseLives?.Invoke();
     }
@@ -116,7 +118,8 @@ public class GameSettings : MonoBehaviour
         }
 
         GameManager.Instance.PlayerLives = choice;
-        showLives.text = choice.ToString();
+        showLivesAI.text = choice.ToString();
+        showLivesPvP.text = choice.ToString();
 
         EventManager.Instance.OnDecreaseLives?.Invoke();
     }
@@ -197,7 +200,4 @@ public class GameSettings : MonoBehaviour
         yield return new WaitForSeconds(_delay);
         _target.enabled = false;
     }
-
-
 }
-

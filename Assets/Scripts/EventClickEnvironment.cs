@@ -21,9 +21,12 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
 
         int a = GameManager.Instance.ClickIndex++;
         Debug.Log("Click " + a);
-        if (isChecking)
+
+        if (GameManager.Instance.IsClickable == false)
             return;
 
+        if (isChecking)
+            return;
       
         isChecking = true;
 

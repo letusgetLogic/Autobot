@@ -216,11 +216,11 @@ RectTransform:
   m_Children:
   - {fileID: 2188022005793180893}
   - {fileID: 4367843752635862710}
+  - {fileID: 138261054}
   - {fileID: 7905163149713085263}
   - {fileID: 1596178380}
   - {fileID: 2078058738}
   - {fileID: 9005524188019180421}
-  - {fileID: 138261054}
   - {fileID: 2263041969851674600}
   - {fileID: 1942519825103798928}
   - {fileID: 1508818515}
@@ -400,6 +400,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4367843752635862710}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Settings Button
@@ -487,6 +507,10 @@ PrefabInstance:
     - target: {fileID: 4742173569558774161, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_text
       value: Settings
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
@@ -3281,7 +3305,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your Name
+  m_text: Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -5047,6 +5071,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1596178380}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Mode PvP Button
@@ -5134,6 +5178,10 @@ PrefabInstance:
     - target: {fileID: 4742173569558774161, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_text
       value: Player vs Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
@@ -6272,6 +6320,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3723931608326872497, guid: cb240e1559577ba4695ca950eb5258f8, type: 3}
+      propertyPath: rotateTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3723931608326872497, guid: cb240e1559577ba4695ca950eb5258f8, type: 3}
       propertyPath: doSomethingAfterClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -6850,6 +6902,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1596178380}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Back Button
@@ -6941,9 +7013,13 @@ PrefabInstance:
 '
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
       value: 
-      objectReference: {fileID: 3901248307410389656}
+      objectReference: {fileID: 3870053547140411367}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToDeactivate
       value: 
@@ -7237,6 +7313,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3758175165183793247, guid: 07b5c5ae53a98db4896294966ec5906f, type: 3}
   m_PrefabInstance: {fileID: 1344954363}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1358876652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1358876654}
+  - component: {fileID: 1358876653}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1358876653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358876652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 231d23509d845824989cee5bac5ae60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultVolumeValue: 0.3
+--- !u!4 &1358876654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358876652}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8829884, y: 0.62212217, z: -2.5468228}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1364187778 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4768353860669752469, guid: 55fb337cfe56930418465939585701c0, type: 3}
@@ -7485,7 +7606,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9fdfc6a6a73734589f9b086c656e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
-  showLives: {fileID: 739353367}
+  showLivesAI: {fileID: 571067025}
+  showLivesPvP: {fileID: 739353367}
   packs:
   - {fileID: 8954728998705801363}
   inputName1: {fileID: 1869551793}
@@ -8333,6 +8455,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1596178380}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Mode AI Button
@@ -8422,6 +8564,10 @@ PrefabInstance:
       value: Player vs AI
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
       value: 
       objectReference: {fileID: 2078058736}
@@ -8447,7 +8593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: doSomethingAfterClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnModeLocal1v1
+      value: OnModeAI
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: doSomethingAfterClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -8684,8 +8830,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 1793262729}
   buttons:
+  - {fileID: 1873847914}
   - {fileID: 1074568423}
-  - {fileID: 0}
   - {fileID: 1341727431}
 --- !u!224 &1596178380
 RectTransform:
@@ -9476,6 +9622,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2078058738}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Back Button
@@ -9607,9 +9773,13 @@ PrefabInstance:
       value: 290
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
       value: 
-      objectReference: {fileID: 3870053547140411367}
+      objectReference: {fileID: 1596178378}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToDeactivate
       value: 
@@ -10415,6 +10585,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869551791}
   m_CullTransparentMesh: 1
+--- !u!114 &1873847914 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9132580950475491939, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+  m_PrefabInstance: {fileID: 1542495698}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &1874983161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10423,9 +10604,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4367843752635862710}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
-      value: Play Tutorial Button (1)
+      value: Tutorial Button
       objectReference: {fileID: 0}
     - target: {fileID: 4178065572505202731, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Pivot.x
@@ -10510,6 +10711,10 @@ PrefabInstance:
     - target: {fileID: 4742173569558774161, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_text
       value: Tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
@@ -12038,7 +12243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2078058737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13006,6 +13211,26 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 1682770564449433139, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -13113,6 +13338,10 @@ PrefabInstance:
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
@@ -13236,6 +13465,30 @@ PrefabInstance:
     - target: {fileID: 639146250469040273, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
       propertyPath: hexColorHover
       value: '#966B67'
+      objectReference: {fileID: 0}
+    - target: {fileID: 812459732557202395, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 812459732557202395, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 812459732557202395, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 812459732557202395, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 812459732557202395, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
+    - target: {fileID: 3924199547761612404, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7373842401644673410, guid: dd3878d4e82c5f446a8cecb9b6786f85, type: 3}
       propertyPath: m_Color.b
@@ -14428,7 +14681,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 409.99976, y: 0}
+  m_AnchoredPosition: {x: 409.9997, y: 0}
   m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2743168254355562531
@@ -15451,7 +15704,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &3947300329349311614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17554,6 +17807,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7905163149713085263}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Back Button
@@ -17643,6 +17916,10 @@ PrefabInstance:
       value: 'Back
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
@@ -18514,6 +18791,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3723931608326872497, guid: cb240e1559577ba4695ca950eb5258f8, type: 3}
+      propertyPath: rotateTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3723931608326872497, guid: cb240e1559577ba4695ca950eb5258f8, type: 3}
       propertyPath: doSomethingAfterClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -18717,6 +18998,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4367843752635862710}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Play Button
@@ -18800,6 +19101,10 @@ PrefabInstance:
     - target: {fileID: 4178065572505202731, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
@@ -19771,7 +20076,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -409.99976, y: 0}
+  m_AnchoredPosition: {x: -409.9997, y: 0}
   m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &8648378708553492167
@@ -19920,6 +20225,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9005524188019180421}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Back Button
@@ -20051,9 +20376,13 @@ PrefabInstance:
       value: 290
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
       value: 
-      objectReference: {fileID: 3870053547140411367}
+      objectReference: {fileID: 1596178378}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToDeactivate
       value: 
@@ -20435,6 +20764,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7905163149713085263}
     m_Modifications:
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -244711772
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1140229009
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1907026355
+      objectReference: {fileID: 0}
+    - target: {fileID: 361966178820669357, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -310500793
+      objectReference: {fileID: 0}
     - target: {fileID: 2548454221267903682, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_Name
       value: Mode Local Button
@@ -20522,6 +20871,10 @@ PrefabInstance:
     - target: {fileID: 4742173569558774161, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: m_text
       value: Local
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
+      propertyPath: rotateTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9020251040374922489, guid: 048ed6514be0a3a4084beba946bfa96e, type: 3}
       propertyPath: layoutToActivate
@@ -20742,11 +21095,19 @@ PrefabInstance:
       objectReference: {fileID: 1793262729}
     - target: {fileID: 1661843595382157939, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
       propertyPath: m_Name
-      value: 'Panel Settings '
+      value: '- Panel Settings '
       objectReference: {fileID: 0}
     - target: {fileID: 1661843595382157939, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347849003993528756, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.765
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347849003993528756, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5393843928422847993, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
       propertyPath: m_Pivot.x
@@ -20848,6 +21209,22 @@ PrefabInstance:
       propertyPath: doSomethingAfterClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1435448137}
+    - target: {fileID: 6337872808195268564, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
+      propertyPath: EventPlayTrigger
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7201643499593139005, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.765
+      objectReference: {fileID: 0}
+    - target: {fileID: 7201643499593139005, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7201643499593139005, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.765
+      objectReference: {fileID: 0}
     - target: {fileID: 8593139172959197845, guid: c9a294f0fe6b78746b95bf282c47f6cc, type: 3}
       propertyPath: layoutToActivate
       value: 
@@ -21003,3 +21380,4 @@ SceneRoots:
   - {fileID: 1397424692}
   - {fileID: 508185754}
   - {fileID: 746226109}
+  - {fileID: 1358876654}

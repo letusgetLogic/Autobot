@@ -31,6 +31,28 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int devLives = 3;
     [SerializeField] private float timer = 90.0f;
 
+    [Header("Global Settings")]
+    [SerializeField] private float clickCooldown = 0.2f;
+
+    private float lastClickTime = 0f;
+    public bool IsClickable
+    {
+        get
+        {
+            if (canRegisterClick)
+            {
+                // Register the click and start the cooldown.
+                lastClickTime = Time.time;
+                canRegisterClick = false;
+                return true;
+            }
+
+            // Still in cooldown, ignore the click.
+            return false;
+        }
+    }
+    private bool canRegisterClick = true;
+
     // This code block or the time scaling feature is disabled,
     // because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
     //
@@ -105,7 +127,6 @@ public class GameManager : MonoBehaviour
     //public bool IsCatalogActive { get; set; } = false;
 
     // Lazy Loading is initialized once to create and hold an instance.
-    private SoundManager sound => SoundManager.Instance;
     private InputManager input => InputManager.Instance;
 
     #endregion
@@ -167,13 +188,10 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        if (sound != null && input != null)
+        if (input != null)
         {
             // this if-query is used to initialize instances once.
-            // for example, button's sound wouldn't be triggered,
-            // because until then no one has accessed/initalized SoundManager's instence.
-        }
-        ;
+        };
     }
 
     private void Start()
@@ -197,7 +215,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
+        // Check if the cooldown has passed.
+        if (Time.time - lastClickTime >= clickCooldown)
+        {
+            canRegisterClick = true; // Reset the clickable state after cooldown.
+        }
     }
 
     /// <summary>
@@ -234,7 +256,7 @@ public class GameManager : MonoBehaviour
                 players[0].Data = new PlayerData(AI.Name + " 1", PlayerLives, 0, true);
                 players[1].Data = new PlayerData(AI.Name + " 2", PlayerLives, 0, true);
 
-                currentGame = new Game(Mode, 2, Timer, PlayerLives, 0,GameState.None);
+                currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
 
                 Switch(GameState.StartScene);
                 break;
@@ -506,9 +528,9 @@ public class GameManager : MonoBehaviour
     public void SetByOpenSceneEnd()
     {
         if (currentGame.Mode != GameMode.TestBattle &&
-            PackManager.Instance != null && 
-            PhaseShopController.Instance && 
-            PhaseShopUI.Instance && 
+            PackManager.Instance != null &&
+            PhaseShopController.Instance &&
+            PhaseShopUI.Instance &&
             CurrentPlayer != null)
         {
             PhaseShopController.Instance.SetStartTurn(StartTurnState.OpenSceneEnd);

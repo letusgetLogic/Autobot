@@ -533,7 +533,10 @@ public class TutorialManager : MonoBehaviour
 
             case InputKey.ClickButtonLock:
                 if (currentState == StepState.LockBattery)
+                {
+                    PhaseShopUI.Instance.SetButtonActive(null);
                     SetNextStep();
+                }
                 break;
 
             case InputKey.ClickButtonEndTurn:
@@ -633,11 +636,12 @@ public class TutorialManager : MonoBehaviour
         foreach (var allowedInput in currentAllowedInputs)
         {
             if (allowedInput == InputKey.All)
-            {
                 return false;
-            }
+
+            if (allowedInput == InputKey.ClickEnvironment)
+                return true;
         }
 
-        return true;
+        return false;
     }
 }
