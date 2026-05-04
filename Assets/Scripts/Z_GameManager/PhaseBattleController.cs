@@ -269,7 +269,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         {
             if (unit != null)
             {
-                unit.transform.SetParent(null, true);
+                unit.transform.SetParent(PhaseBattleView.Instance.Canvas1.transform, true);
                 unit.View.ShowByGameOver();
             }
         }

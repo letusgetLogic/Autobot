@@ -26,8 +26,8 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private GameObject hintLabel;
     [SerializeField] private TextMeshProUGUI hintLabelText;
     [SerializeField] private GameObject energyBonusLabel;
-
     public PanelConfirmation PanelShutdownNotTrigger => panelShutdownNotTrigger;
+
 
     [Header("Player Infos Components")]
     [SerializeField] private TextMeshProUGUI nameLabel;

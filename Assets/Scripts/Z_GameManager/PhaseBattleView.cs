@@ -22,6 +22,11 @@ public class PhaseBattleView : MonoBehaviour
     [SerializeField] private LightenUpDown coverPanel;
     [SerializeField] private GameObject clickText;
     [SerializeField] private TextMeshProUGUI label;
+    [SerializeField] private GameObject winnerPanel;
+
+    [Header("Canvases")]
+    [SerializeField] private GameObject canvas1;
+    public GameObject Canvas1 => canvas1;
 
     // This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
     //[Header("Speed Controller")]

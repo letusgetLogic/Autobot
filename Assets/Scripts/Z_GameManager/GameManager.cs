@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float timer = 90.0f;
 
     [Header("Global Settings")]
-    [SerializeField] private float clickCooldown = 0.2f;
+    [SerializeField] private float clickCooldown = 0.5f;
 
     private float lastClickTime = 0f;
     public bool IsClickable
