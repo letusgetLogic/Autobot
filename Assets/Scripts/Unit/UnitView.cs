@@ -458,7 +458,7 @@ public class UnitView : MonoBehaviour
         dragSpriteRenderer.sortingLayerName = "UI";
         dragSpriteRenderer.sortingOrder = 21;
 
-        transform.localScale *= 1.5f;
+        transform.localScale *= 1.2f;
     }
 
     /// <summary>

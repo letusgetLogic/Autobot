@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PhaseBattleView : MonoBehaviour
@@ -21,8 +23,10 @@ public class PhaseBattleView : MonoBehaviour
     [Header("End Screen")]
     [SerializeField] private LightenUpDown coverPanel;
     [SerializeField] private GameObject clickText;
-    [SerializeField] private TextMeshProUGUI label;
+    [SerializeField] private TextMeshProUGUI labelWinner;
+    [SerializeField] private TextMeshProUGUI labelContent;
     [SerializeField] private GameObject winnerPanel;
+    public GameObject WinnerPanel => winnerPanel;
 
     [Header("Canvases")]
     [SerializeField] private GameObject canvas1;
@@ -51,7 +55,9 @@ public class PhaseBattleView : MonoBehaviour
         Instance = this;
 
         collideVisual.enabled = false;
-        label.enabled = false;
+        labelWinner.enabled = false;
+        labelContent.enabled = false;
+        winnerPanel.SetActive(false);
         ShowPanelText(false);
     }
 
@@ -87,7 +93,7 @@ public class PhaseBattleView : MonoBehaviour
     {
         coverPanel.gameObject.SetActive(false);
         bottomPanel.Trigger();
-        bottomPanel.OnPosition += ShowText; 
+        bottomPanel.OnPosition += ShowText;
     }
 
     private void ShowText()
@@ -120,12 +126,7 @@ public class PhaseBattleView : MonoBehaviour
         if (lives2) lives2.text = _player2.ToString();
     }
 
-    /// <summary>
-    /// Shows the winner.
-    /// </summary>
-    /// <param name="_winner"></param>
-    /// <param name="_isGameOver"></param>
-    public IEnumerator ShowWinner(bool _isDraw, string _winner, bool _isGameOver)
+    public IEnumerator ShowWinnerAtEndOfBattle(bool _isDraw, string _winner)
     {
         coverPanel.gameObject.SetActive(true);
         float animTime = coverPanel.SwitchOn(true);
@@ -133,13 +134,79 @@ public class PhaseBattleView : MonoBehaviour
 
         playButton.SetActive(false);
 
-        string text = _isDraw ? "Draw!" 
-            : _isGameOver ? $"{_winner} won the game!"
-            : $"{_winner} won!";
-        label.text = text;
-        label.enabled = true;
+        if (_isDraw)
+        {
+            labelWinner.enabled = false;
+            labelContent.text = "Draw!";
+            labelContent.enabled = true;
+            yield break;
+        }
+
+        labelWinner.enabled = false;
+        labelContent.text = $"{_winner} won!";
+        labelContent.enabled = true;
+        yield break;
+
     }
 
+    public IEnumerator ShowWinnerAtEndOfGame(string _winner, PlayerData _winnerData, UnityAction actionEndOfGame)
+    {
+        coverPanel.gameObject.SetActive(true);
+        float animTime = coverPanel.SwitchOn(true);
+        yield return new WaitForSeconds(animTime);
+
+        playButton.SetActive(false);
+
+        var game = GameManager.Instance.CurrentGame;
+        if (game != null)
+        {
+            if (game.Mode == GameMode.Tutorial)
+            {
+                labelWinner.enabled = false;
+                labelContent.text = $"{_winner} won the game!";
+                labelContent.enabled = true;
+            }
+        }
+
+        string[] congrats = new string[]
+            {
+                $" won the game!",
+                $" is the best!",
+                $" is unbeatable!",
+                $" has the strongest team!",
+                $" is the Scientist of Robotics!",
+        };
+        int index = new System.Random().Next(congrats.Length);
+
+        labelWinner.text = _winner;
+        labelWinner.enabled = true;
+        labelContent.text = congrats[index];
+        labelContent.enabled = true;
+
+        WinnerPanel.SetActive(true);
+        ShowWinnerTeam(_winnerData);
+        EventManager.Instance.OnPopUpSound?.Invoke();
+
+        yield return new WaitForSeconds(1f);
+
+        actionEndOfGame?.Invoke();
+    }
+
+    private void ShowWinnerTeam(PlayerData _data)
+    {
+        var init = new InitializeState(0f);
+        var team = init.SpawnUnitsByData(_data, PhaseBattleController.Instance.WinnerSlots, true);
+
+        foreach (var unit in team)
+        {
+            if (unit != null)
+            {
+                unit.transform.SetParent(Canvas1.transform, true);
+                unit.View.ShowByGameOver();
+            }
+        }
+
+    }
 
     #region Speed Controller - This code block or the time scaling feature is disabled, because it cause inaccuracy, because the time from start coroutine wasn't scaled too.
 

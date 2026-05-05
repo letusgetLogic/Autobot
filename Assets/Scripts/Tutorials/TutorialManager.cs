@@ -516,6 +516,7 @@ public class TutorialManager : MonoBehaviour
         else if (currentState == StepState.ClickRobotToRecycle && _unit && _unit.Model.Data.UnitState == UnitState.InSlotTeam
                 && (_unit.Model.SoUnit.Name == "Gold Eye" || _unit.Model.SoUnit.ModelID == "RC-BF-2R"))
         {
+            _unit.View.SetDescriptionActive(false);
             SetNextStep();
         }
     }

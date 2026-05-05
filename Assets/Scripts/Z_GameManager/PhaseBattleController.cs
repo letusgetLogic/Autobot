@@ -15,9 +15,11 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     [Header("Slots")]
     [SerializeField] private List<Slot> slots1;
     [SerializeField] private List<Slot> slots2;
+    [SerializeField] private Transform[] winnerSlots;
 
     public List<Slot> Slots1 => slots1.Where(x => x.gameObject.activeSelf).ToList();
     public List<Slot> Slots2 => slots2.Where(x => x.gameObject.activeSelf).ToList();
+    public Transform[] WinnerSlots => winnerSlots;
 
     private StateBaseBattle state { get; set; }
 
@@ -262,19 +264,6 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     {
         StartCoroutine(PhaseBattleView.Instance.ShowClick(Process.WaitForClickShow));
     }
-
-    public void ShowWinnerTeam(List<UnitController> team)
-    {
-        foreach (var unit in team)
-        {
-            if (unit != null)
-            {
-                unit.transform.SetParent(PhaseBattleView.Instance.Canvas1.transform, true);
-                unit.View.ShowByGameOver();
-            }
-        }
-    }
-
 
     /// <summary>
     /// Checks the outcome of battle.

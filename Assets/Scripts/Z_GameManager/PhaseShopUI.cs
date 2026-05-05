@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 
 public class PhaseShopUI : MonoBehaviour
@@ -367,14 +368,14 @@ public class PhaseShopUI : MonoBehaviour
             {
                 panelRecycleNotTrigger.gameObject.SetActive(true);
                 unit.View.SetDescriptionActive(true);
-                recycleCoroutine = StartCoroutine(RecycleByConfirmation(recycle));
+                recycleCoroutine = StartCoroutine(RecycleByConfirmation(recycle, unit));
             }
         }
         else input.BlocksInput = false;
     }
 
     private Coroutine recycleCoroutine;
-    private IEnumerator RecycleByConfirmation(UnityAction _action)
+    private IEnumerator RecycleByConfirmation(UnityAction _action, UnitController _unit)
     {
         yield return new WaitUntil(() =>
                            panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed ||
@@ -383,6 +384,10 @@ public class PhaseShopUI : MonoBehaviour
         if (panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed)
         {
             _action.Invoke();
+        }
+        if (panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Declined)
+        {
+            _unit.View.SetDescriptionActive(false);
         }
 
         recycleCoroutine = null;

@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class CheckOutcomeState : StateBaseBattle
 {
-    private int outcome = -2;  // 0 = draw, 1 = right wins, -1 = left wins.
+    /// <summary>
+    ///  -1 = team 1 wins / 0 = draw / 1 = team 2 wins.
+    /// </summary>
+    private int outcome = -2;
     private bool hasOutcomeOfBattle;
     private int amountOfActiveUnits1;
     private int amountOfActiveUnits2;

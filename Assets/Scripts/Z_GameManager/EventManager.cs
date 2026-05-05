@@ -97,7 +97,7 @@ public class EventManager
 
     public UnityAction OnMatchOver { get; set; }
     public UnityAction OnBattleDelayHintClick { get; set; }
-    public UnityAction OnGameOver { get; set; }
+    public UnityAction OnGameOverSound { get; set; }
     #endregion
 }
 

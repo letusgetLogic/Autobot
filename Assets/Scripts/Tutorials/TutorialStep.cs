@@ -126,6 +126,8 @@ public class TutorialStep : MonoBehaviour
 
     private void SetActive(GameObject[] _objectArray, bool _active)
     {
+        bool playSound = false;
+
         if (_objectArray != null)
         {
             for (int i = 0; i < _objectArray.Length; i++)
@@ -134,13 +136,16 @@ public class TutorialStep : MonoBehaviour
                 if (obj != null && obj.activeSelf != _active)
                 {
                     obj.SetActive(_active);
+
                     if (_active && _objectArray == Labels)
                     {
-                        OnLabelPopup?.Invoke();
+                        playSound = true;
                     }
                 }
             }
         }
+        if (playSound)
+            OnLabelPopup?.Invoke();
     }
 
     private bool SetScaleUp(GameObject[] _objectArray, bool _up)

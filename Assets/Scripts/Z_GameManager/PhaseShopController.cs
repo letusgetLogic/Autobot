@@ -547,6 +547,7 @@ public class PhaseShopController : MonoBehaviour
                       
                         if (panel.MyResult == PanelConfirmation.Result.Declined)
                         {
+                            _target.View.SetDescriptionActive(false);
                             input.BlocksInput = false;
                             buyCoroutine = null;
                             yield break;

@@ -156,4 +156,46 @@ public class InitializeState : StateBaseBattle
         }
         return team;
     }
+
+    /// <summary>
+    ///  Instantiates and initializes the units by replay.
+    /// </summary>
+    /// <param name="_data"></param>
+    /// <param name="_slots"></param>
+    /// <param name="_isLeft"></param>
+    public List<UnitController> SpawnUnitsByData(PlayerData _data, Transform[] _slots, bool _isLeft)
+    {
+        if (_data.TeamUnitDatas == null)
+        {
+            Debug.LogWarning($"{_data.Name} TeamUnitDatas is null");
+            return null;
+        }
+
+        if (_data.TeamUnitDatas.Length < _slots.Length)
+        {
+            Debug.LogWarning($"{_data.Name} TeamUnitDatas.Length < Slots.Length");
+            return null;
+        }
+        
+        var team = new List<UnitController>();
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            var unitData = _data.TeamUnitDatas[i];
+            if (unitData != null && unitData.Cur.HP > 0)
+            {
+                var unitController = SpawnManager.Instance.Spawn(
+                    PackManager.Instance.GetSoUnit(unitData),
+                    unitData.Index,
+                    unitData,
+                    UnitState.InPhaseBattle,
+                    _slots[i],
+                    _isLeft);
+
+                team.Add(unitController);
+            }
+            team.Add(null);
+        }
+        return team;
+    }
 }

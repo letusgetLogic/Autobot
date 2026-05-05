@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class BattleOverState : StateBaseBattle
 {
-    private int outcome; // 0 = draw, 1 = right wins, -1 = left wins.
+    /// <summary>
+    /// -1 = team 1 wins / 0 = draw / 1 = team 2 wins.
+    /// </summary>
+    private int outcome;
 
     /// <summary>
     /// Constructor of BattleOverState
@@ -30,81 +34,81 @@ public class BattleOverState : StateBaseBattle
         var data1 = GameManager.Instance.CurrentRound.SavedPlayerData1;
         var data2 = GameManager.Instance.CurrentRound.SavedPlayerData2;
 
-        PlayerData winnerData = null;
+        
 
-        switch (outcome)
+        bool isReplay = GameManager.Instance.Replay != null;
+
+        // First the lives were calculated and showed.
+
+        if (isReplay)
         {
-            case -1: // Left Wins
-                if (GameManager.Instance.Replay == null)
-                {
-                    GameManager.Instance.UpdatePlayerStats(-1);
-                    PhaseBattleView.Instance.UpdateLives(player1.Data.Lives, player2.Data.Lives);
-                }
-                else
-                    PhaseBattleView.Instance.UpdateLives(data1.Lives, data2.Lives - 1);
-
-                PhaseBattleController.Instance.StartCoroutine(
-                    PhaseBattleView.Instance.ShowWinner(false, player1.Data.Name, player2.Data.Lives == 0));
-
-                winnerData = data1;
-                break;
-
-            case 0: // Draw
-                if (GameManager.Instance.Replay == null)
-                {
-                    GameManager.Instance.UpdatePlayerStats(0);
-                }
-                PhaseBattleController.Instance.StartCoroutine(
-                    PhaseBattleView.Instance.ShowWinner(true, "Nobody", false));
-                break;
-
-            case 1: // Right wins
-                if (GameManager.Instance.Replay == null)
-                {
-                    GameManager.Instance.UpdatePlayerStats(1);
-                    PhaseBattleView.Instance.UpdateLives(player1.Data.Lives, player2.Data.Lives);
-                }
-                else
-                    PhaseBattleView.Instance.UpdateLives(data1.Lives - 1, data2.Lives);
-
-                PhaseBattleController.Instance.StartCoroutine(
-                    PhaseBattleView.Instance.ShowWinner(false, player2.Data.Name, player1.Data.Lives == 0));
-
-                winnerData = data2;
-                break;
+            int lives1 = outcome switch
+            {
+                1 => data1.Lives - 1,
+                _ => data1.Lives
+            };
+            int lives2 = outcome switch
+            {
+                -1 => data2.Lives - 1,
+                _ => data2.Lives
+            };
+            PhaseBattleView.Instance.UpdateLives(lives1, lives2);
+        }
+        else // is not replay
+        {
+            GameManager.Instance.UpdatePlayerStats(outcome);
+            PhaseBattleView.Instance.UpdateLives(player1.Data.Lives, player2.Data.Lives);
         }
 
-        if (GameManager.Instance.Replay == null)
+        // Then define the winner.
+
+        string winner = outcome switch
         {
-            // continue the game, when both have more than 0 lives.
-            if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
+            1 => player2.Data.Name,
+            -1 => player1.Data.Name,
+            _ => ""
+        };
+        PlayerData winnerData = outcome switch
+        {
+            1 => data2,
+            -1 => data1,
+            _ => null
+        };
+
+        // Then check end battle or end game.
+        // If end game, it shows the animation and then set state to end game.
+
+        if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
+        {
+            PhaseBattleController.Instance.StartCoroutine(
+               PhaseBattleView.Instance.ShowWinnerAtEndOfBattle(outcome == 0, winner));
+
+            if (isReplay)
+                GameManager.Instance.Replay.Switch(GameState.EndOfBattle);
+            else
             {
                 player1.EndBattle();
                 player2.EndBattle();
-
                 GameManager.Instance.Switch(GameState.EndOfBattle);
             }
-            else // end the game, when one of them has 0 lives.
-            {
-                EventManager.Instance.OnGameOver?.Invoke();
-                GameManager.Instance.Switch(GameState.EndOfGame);
-                ShowWinnerTeam(winnerData);
-            }
+            EventManager.Instance.OnBattleDone?.Invoke();
         }
-        else // go out of the replay, waiting of input click to load the current play scene 
+        else // one of them has 0 lives, game over
         {
-            if (player1.Data.Lives > 0 && player2.Data.Lives > 0)
+            UnityAction action = () =>
             {
-                GameManager.Instance.Replay.Switch(GameState.EndOfBattle);
-            }
-            else // end the game, when one of them has 0 lives.
-            {
-                GameManager.Instance.Replay.Switch(GameState.EndOfGame);
-                ShowWinnerTeam(winnerData);
-            }
-        }
+                EventManager.Instance.OnGameOverSound?.Invoke();
+                EventManager.Instance.OnBattleDone?.Invoke();
 
-        EventManager.Instance.OnBattleDone?.Invoke();
+                if (isReplay)
+                    GameManager.Instance.Replay.Switch(GameState.EndOfGame);
+                else
+                    GameManager.Instance.Switch(GameState.EndOfGame);
+            };
+
+            PhaseBattleController.Instance.StartCoroutine(
+                PhaseBattleView.Instance.ShowWinnerAtEndOfGame(winner, winnerData, action));
+        }
     }
 
     public override void OnUpdate(I_FSM_Battle _ctx, float _speed)
@@ -113,14 +117,6 @@ public class BattleOverState : StateBaseBattle
         {
             TimeCount += _speed;
         }
-    }
-
-    private void ShowWinnerTeam(PlayerData _data)
-    {
-        var init = new InitializeState(0f);
-        var team = init.SpawnUnitsByData(_data, PhaseBattleController.Instance.Slots1.ToArray(), true);
-
-        PhaseBattleController.Instance.ShowWinnerTeam(team);
     }
 }
 

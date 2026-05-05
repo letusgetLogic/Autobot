@@ -82,7 +82,6 @@ public class ReplayManager
 
             case GameState.WaitingEndOfGame:
                 input.BlocksInput = false;
-                EventManager.Instance.OnBattleDelayHintClick?.Invoke();
                 // Waiting for player input
                 break;
 
