@@ -1051,14 +1051,14 @@ public class PhaseShopController : MonoBehaviour
         return false;
     }
 
-    public bool CanRecycleTrigger(UnitController _unit)
+    public bool IsLackOfEnergyToTriggerRecycle(UnitController _unit)
     {
         if (_unit.Model.CurrentLevel.TriggerType == TriggerType.Recycle)
         {
             var consum = _unit.Model.CurrentLevel.ConsumedEnergy;
             int consumENG = consum != null ? Mathf.Abs(consum.Value) : 0;
 
-            if (_unit.Model.Data.Cur.ENG >= consumENG)
+            if (_unit.Model.Data.Cur.ENG < consumENG)
                 return true;
         }
 

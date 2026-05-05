@@ -298,6 +298,8 @@ public class PhaseShopUI : MonoBehaviour
 
             unit.Model.SetDataView(UnitState.Freezed, true);
 
+            EventManager.Instance.OnHideDescription?.Invoke(null); // Tutorial set next step set attached to null
+
             SetButtonActive(unit);
 
             EventManager.Instance.OnLock?.Invoke(InputKey.ClickButtonLock);
@@ -360,7 +362,7 @@ public class PhaseShopUI : MonoBehaviour
                     EventManager.Instance.OnRecycleSound?.Invoke(InputKey.ClickButtonRecycle);
             };
 
-            if (PhaseShopController.Instance.CanRecycleTrigger(unit))
+            if (PhaseShopController.Instance.IsLackOfEnergyToTriggerRecycle(unit))
             {
                 recycle.Invoke();
             }

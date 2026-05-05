@@ -61,6 +61,22 @@ public class PhaseBattleView : MonoBehaviour
         ShowPanelText(false);
     }
 
+    private bool isGameOverSceneRunning = false;
+    private void ShowWinnerPanel() => winnerPanel.SetActive(true);
+    private void HideWinnerPanel() { if (isGameOverSceneRunning == false) winnerPanel.SetActive(false); }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.OnSettingsButtonOpen += HideWinnerPanel;
+        EventManager.Instance.OnSettingsButtonClose += ShowWinnerPanel;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnSettingsButtonOpen -= HideWinnerPanel;
+        EventManager.Instance.OnSettingsButtonClose -= ShowWinnerPanel;
+    }
+
     private void OnDestroy()
     {
         Instance = null;
@@ -151,6 +167,8 @@ public class PhaseBattleView : MonoBehaviour
 
     public IEnumerator ShowWinnerAtEndOfGame(string _winner, PlayerData _winnerData, UnityAction actionEndOfGame)
     {
+        isGameOverSceneRunning = true;
+
         coverPanel.gameObject.SetActive(true);
         float animTime = coverPanel.SwitchOn(true);
         yield return new WaitForSeconds(animTime);
@@ -190,6 +208,8 @@ public class PhaseBattleView : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         actionEndOfGame?.Invoke();
+
+        isGameOverSceneRunning = false;
     }
 
     private void ShowWinnerTeam(PlayerData _data)

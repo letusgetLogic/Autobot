@@ -55,6 +55,7 @@ public class EventManager
     public UnityAction<InputKey> OnRepair {  get; set; }
 
     public UnityAction<InputKey> OnLock {  get; set; }
+    public UnityAction<UnitController> OnHideDescription {  get; set; }
     public UnityAction<InputKey> OnUnlock {  get; set; }
 
     public UnityAction OnFusion { get; set; }
@@ -98,6 +99,9 @@ public class EventManager
     public UnityAction OnMatchOver { get; set; }
     public UnityAction OnBattleDelayHintClick { get; set; }
     public UnityAction OnGameOverSound { get; set; }
+
+    public UnityAction OnSettingsButtonOpen { get; set; }
+    public UnityAction OnSettingsButtonClose { get; set; }
     #endregion
 }
 

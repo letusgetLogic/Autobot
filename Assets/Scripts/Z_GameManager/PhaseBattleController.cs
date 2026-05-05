@@ -271,8 +271,18 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     /// <returns></returns>
     public bool HasOutcome()
     {
-        int amountOfActiveUnits1 = Slots1.Count(n => n.Unit() != null);
-        int amountOfActiveUnits2 = Slots2.Count(n => n.Unit() != null);
+        int amountOfActiveUnits1 = Slots1.Count(n =>
+        {
+            var unit = n.UnitController();
+            return unit != null && unit.Model.Data.Cur.HP > 0;
+        }
+        );
+        int amountOfActiveUnits2 = Slots2.Count(n =>
+        {
+            var unit = n.UnitController();
+            return unit != null && unit.Model.Data.Cur.HP > 0;
+        }
+        );
 
         if (amountOfActiveUnits1 > 0)
         {

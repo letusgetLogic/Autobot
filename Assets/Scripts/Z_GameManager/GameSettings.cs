@@ -124,6 +124,21 @@ public class GameSettings : MonoBehaviour
         EventManager.Instance.OnDecreaseLives?.Invoke();
     }
 
+    public void OnRandomName1()
+    {
+        inputName1.text = NameList.GetRandomName();
+    }
+
+    public void OnRandomPvpName1()
+    {
+        inputPvpName1.text = NameList.GetRandomExclusive(new[] { inputPvpName2.text } );
+    }
+
+    public void OnRandomPvpName2()
+    {
+        inputPvpName2.text = NameList.GetRandomExclusive(new[] { inputPvpName1.text } );
+    }
+
     ///// <summary>
     ///// Unchecks all packs.
     ///// </summary>
@@ -145,9 +160,11 @@ public class GameSettings : MonoBehaviour
         switch (GameManager.Instance.Mode)
         {
             case GameMode.AI:
-
+                
                 if (inputName1.text != "")
-                    GameManager.Instance.Name1 = inputPvpName1.text;
+                    GameManager.Instance.Name1 = inputName1.text;
+                else
+                    GameManager.Instance.Name1 = "Player 1";
 
                 startButton.interactable = false;
                 GameManager.Instance.LoadGame(GameMode.AI);
@@ -166,9 +183,13 @@ public class GameSettings : MonoBehaviour
 
                 if (inputPvpName1.text != "")
                     GameManager.Instance.Name1 = inputPvpName1.text;
+                else
+                    GameManager.Instance.Name1 = "Player 1";
 
                 if (inputPvpName2.text != "")
                     GameManager.Instance.Name2 = inputPvpName2.text;
+                else
+                    GameManager.Instance.Name2 = "Player 2";
 
                 startButton.interactable = false;
                 GameManager.Instance.LoadGame(GameMode.PvP);

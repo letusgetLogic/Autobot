@@ -148,6 +148,16 @@ public class UnitView : MonoBehaviour
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
     }
 
+    private void OnEnable()
+    {
+        if (PhaseShopController.Instance)
+            EventManager.Instance.OnAttachedUnit += (unit) =>
+            {
+                if (unit == null)
+                    SetDescriptionActive(false);
+            };
+    }
+
     private void OnDisable()
     {
         coroutineHide = null;

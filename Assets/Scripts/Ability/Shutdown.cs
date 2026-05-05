@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// Only items trigger Shutdown.
@@ -24,6 +25,9 @@ public class Shutdown : AbilityBase
                 if (Targets.Count > 0)
                 {
                     var unit = Targets.Dequeue();
+                    unit.View.SetShutdown();
+
+                    yield return new WaitForSeconds(0.5f);
                     unit.TriggerShutdown();
                 }
                 break;

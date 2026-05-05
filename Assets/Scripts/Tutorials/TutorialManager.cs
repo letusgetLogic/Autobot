@@ -111,7 +111,8 @@ public class TutorialManager : MonoBehaviour
 
     private List<Slot> activeHints { get; set; } = new();
 
-    private bool isSettingInput;
+    // Conflict by SoTutorialSettings.Duration = 0s, countTime stop by reached 0, so "duration - 1f" is never true. 
+    //private bool isSettingInput;
 
 
     [ContextMenu("OnReset")]
@@ -286,7 +287,8 @@ public class TutorialManager : MonoBehaviour
 
                     OnValidatedEnter();
 
-                    isSettingInput = true;
+                    //isSettingInput = true;
+                    currentAllowedInputs = settings[(int)currentState].AllowedInputs;
                     countTime = settings[(int)currentState].Duration;
                     runState = RunState.Duration;
                     break;
@@ -312,11 +314,12 @@ public class TutorialManager : MonoBehaviour
             }
         }
 
-        if (countTime < settings[(int)currentState].Duration - 1f && isSettingInput)
-        {
-            currentAllowedInputs = settings[(int)currentState].AllowedInputs;
-            isSettingInput = false;
-        }
+        // Conflict by SoTutorialSettings.Duration = 0s, countTime stop by reached 0, so "duration - 1f" is never true. 
+        //if (countTime < settings[(int)currentState].Duration - 1f && isSettingInput)
+        //{
+        //    currentAllowedInputs = settings[(int)currentState].AllowedInputs;
+        //    isSettingInput = false;
+        //}
 
         if (countTime > 0)
         {
@@ -387,7 +390,11 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedEnter()
     {
-        if (currentState == StepState.RobotEnergyConsumption)
+        if (currentState == StepState.LockBattery)
+        {
+            EventManager.Instance.OnHideDescription += PhaseShopController.Instance.SetAttachedGameObject;
+        }
+        else if (currentState == StepState.RobotEnergyConsumption)
         {
             if (AbilitySlot)
                 AbilitySlot.EnergyConsumptionIndicator.SetActive(true);
@@ -481,7 +488,11 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedExit()
     {
-        if (currentState == StepState.ShowFactoryReseted)
+        if (currentState == StepState.LockBattery)
+        {
+            EventManager.Instance.OnHideDescription -= PhaseShopController.Instance.SetAttachedGameObject;
+        }
+        else if(currentState == StepState.ShowFactoryReseted)
         {
             activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
         }

@@ -7,7 +7,7 @@ public class ContinueButton : MonoBehaviour
     /// </summary>
     public void OnButtonClick()
     {
-        Time.timeScale = 1f;
+        
     }
 }
 

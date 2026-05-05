@@ -253,8 +253,10 @@ public class GameManager : MonoBehaviour
             case GameMode.TestBattle:
 
                 // Create a new game.
-                players[0].Data = new PlayerData(AI.Name + " 1", PlayerLives, 0, true);
-                players[1].Data = new PlayerData(AI.Name + " 2", PlayerLives, 0, true);
+                var name1 = NameList.GetRandomName();
+                var name2 = NameList.GetRandomExclusive(new[] { name1 });
+                players[0].Data = new PlayerData(name1, PlayerLives, 0, true);
+                players[1].Data = new PlayerData(name2, PlayerLives, 0, true);
 
                 currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
 
@@ -266,7 +268,7 @@ public class GameManager : MonoBehaviour
 
                 // Create a new game.
                 players[0].Data = new PlayerData("You", PlayerLives, 0);
-                players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
+                players[1].Data = new PlayerData(NameList.GetRandomName(), PlayerLives, 0, true);
 
                 currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
 
@@ -288,7 +290,7 @@ public class GameManager : MonoBehaviour
 
                 // Create a new game.
                 players[0].Data = new PlayerData(Name1, PlayerLives, 0);
-                players[1].Data = new PlayerData(AI.Name, PlayerLives, 0, true);
+                players[1].Data = new PlayerData(NameList.GetRandomExclusive(new [] {Name1}), PlayerLives, 0, true);
 
                 currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
 
