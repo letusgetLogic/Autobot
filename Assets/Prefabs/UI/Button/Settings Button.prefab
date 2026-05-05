@@ -296,11 +296,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1277334543815271236}
   - component: {fileID: 2894369446194639582}
+  - component: {fileID: 8658174349459309319}
   - component: {fileID: 6976273717991774049}
   - component: {fileID: 346414467383106589}
   - component: {fileID: 7994565953370112610}
   - component: {fileID: 5594820714228919558}
-  - component: {fileID: 8658174349459309319}
   - component: {fileID: 9187487761148959067}
   m_Layer: 5
   m_Name: Settings Button
@@ -339,6 +339,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8999737051941285315}
   m_CullTransparentMesh: 1
+--- !u!114 &8658174349459309319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8999737051941285315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6307098228c8b654abac9b4a5135c3b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsPanel: {fileID: 0}
+  rewatchButton: {fileID: 0}
+  deactivateButtons: []
+  outline: {fileID: 7994565953370112610}
 --- !u!114 &6976273717991774049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,21 +471,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8658174349459309319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8999737051941285315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6307098228c8b654abac9b4a5135c3b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settingsPanel: {fileID: 0}
-  rewatchButton: {fileID: 0}
-  deactivateButtons: []
 --- !u!114 &9187487761148959067
 MonoBehaviour:
   m_ObjectHideFlags: 0

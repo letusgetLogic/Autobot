@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SettingsButton : MonoBehaviour
@@ -10,7 +9,7 @@ public class SettingsButton : MonoBehaviour
     [SerializeField] private List<GameObject> deactivateButtons;
     [SerializeField] private Image outline;
     private Color defaultOutlineColor => new Color(0, 0, 0);
-    private Color backOutlineColor => new Color(0.9568627f, 0.4862745f, 0.4823529f);
+    private Color backOutlineColor => new Color(0.5215687f, 0.7215686f, 0.8039216f);
 
     private bool isSettingsOpen = false;
 
@@ -28,9 +27,15 @@ public class SettingsButton : MonoBehaviour
         settingsPanel.SetActive(isSettingsOpen);
 
         if (isSettingsOpen)
+        {
+            EventManager.Instance.OnSettingsButtonOpen?.Invoke();
             outline.color = backOutlineColor;
+        }
         else
+        {
+            EventManager.Instance.OnSettingsButtonClose?.Invoke();
             outline.color = defaultOutlineColor;
+        }
 
         if (deactivateButtons != null && deactivateButtons.Count > 0)
         {
@@ -40,6 +45,6 @@ public class SettingsButton : MonoBehaviour
             }
         }
 
-        Time.timeScale = isSettingsOpen ? 0f : (PhaseBattleController.Instance.IsStopped ? 0f : 1f);
+        Time.timeScale = isSettingsOpen ? 0f : (GameManager.Instance.IsStopped ? 0f : 1f);
     }
 }

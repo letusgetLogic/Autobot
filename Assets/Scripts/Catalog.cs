@@ -54,7 +54,7 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
             return;
 
         EventManager.Instance.OnSettingsButtonOpen?.Invoke();
-        SetActive(true);
+        GameManager.Instance.SetActive(this, true);
         GameManager.Instance.IsCatalogActive = true;
         Time.timeScale = 0f;
     }
@@ -62,11 +62,10 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
     /// <summary>
     /// OnDeactivate method to set the catalog inactive in the GameManager when the catalog is deactivated.
     /// </summary>
-    public void OnDeactivate()
+    private void OnDisable()
     {
+        Time.timeScale = GameManager.Instance.IsStopped ? 0f : 1f;
         GameManager.Instance.IsCatalogActive = false;
-        Time.timeScale = PhaseBattleController.Instance.IsStopped ? 0f : 1f;
-        SetActive(false);
         EventManager.Instance.OnSettingsButtonClose?.Invoke();
     }
 

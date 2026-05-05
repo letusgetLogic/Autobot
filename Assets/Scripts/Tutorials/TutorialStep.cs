@@ -188,6 +188,7 @@ public class TutorialStep : MonoBehaviour
         {
             Stack<Transform> stackChilds = new Stack<Transform>();
 
+            // the targets are be stacked first in, last out. <- 1, 2
             for (int i = 0; i < TargetsToBeChild.Length; i++)
             {
                 var target = TargetsToBeChild[i];
@@ -199,7 +200,7 @@ public class TutorialStep : MonoBehaviour
                   
                 }
             }
-            while (stackChilds.Count > 0)
+            while (stackChilds.Count > 0) // <- 2, 1
             {
                 var child = stackChilds.Pop();
                 child.SetParent(transform.parent, true);
@@ -209,7 +210,7 @@ public class TutorialStep : MonoBehaviour
         {
             Stack<Transform> stackChilds = new Stack<Transform>();
 
-            for (int i = 0; i < TargetsToBeChild.Length; i++)
+            for (int i = 0; i < TargetsToBeChild.Length; i++) // <- 1, 2
             {
                 var target = TargetsToBeChild[i];
                 if (target != null)
@@ -217,12 +218,18 @@ public class TutorialStep : MonoBehaviour
                     stackChilds.Push(target);
                 }
             }
-            while (stackChilds.Count > 0)
+            while (stackChilds.Count > 0)  // <- 2, 1
             {
                 var child = stackChilds.Pop();
+
+                if (targetParents.Count == 0)
+                    continue;
                 var parent = targetParents.Pop();
-                var index = posInParent.Pop();
                 child.SetParent(parent, true);
+
+                if (posInParent.Count == 0)
+                    continue;
+                var index = posInParent.Pop();
                 child.SetSiblingIndex(index);
             }
         }

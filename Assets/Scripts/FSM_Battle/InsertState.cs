@@ -24,8 +24,7 @@ public class InsertState : StateBaseBattle
     {
         if (IsDone)
         {
-            if (GameManager.Instance.CurrentGame.State == GameState.StartOfBattle ||
-                GameManager.Instance.Replay != null && GameManager.Instance.Replay.State == GameState.StartOfBattle)
+            if (GameManager.Instance.CurrentGame.State == GameState.StartOfBattle)
             {
                 _ctx.SetState(new StartOfBattleState(0));
             }

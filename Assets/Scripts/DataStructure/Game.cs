@@ -8,7 +8,19 @@ public class Game
     public float Timer { get; set; }
     public int Lives { get; set; }
     public int WinCondition { get; set; }
-    public GameState State { get; set; }
+    public GameState State 
+    { 
+        get
+        {
+            if (GameManager.Instance && GameManager.Instance.Replay != null)
+            {
+                return GameManager.Instance.Replay.State;
+            }
+            return state;
+        }
+        set => state = value;
+    }
+    private GameState state;
     public int CurrentPlayerIndex { get; set; }
     public List<SavedRoundData> SavedRounds { get; set; }
 

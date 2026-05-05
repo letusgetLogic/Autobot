@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
     }
     private bool canRegisterClick = true;
 
+    public bool IsGameOverSceneRunning { get; set; }
+
     // This code block or the time scaling feature is disabled,
     // because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
     //
@@ -140,6 +142,9 @@ public class GameManager : MonoBehaviour
 
     public bool IsCatalogActive { get; set; }
     public ReplayManager Replay { get; set; }
+
+    public bool IsStopped { get; set; } = false;
+    public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
 
     public TutorialManager.StepState TutorialStepState { get; set; }
 
@@ -425,8 +430,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.EndOfGame:
                 SaveSystem.SaveGame(CurrentGame);
-
-                Switch(GameState.WaitingEndOfGame);
+                input.BlocksInput = true;
                 break;
 
             case GameState.WaitingEndOfGame:
@@ -543,6 +547,12 @@ public class GameManager : MonoBehaviour
             InputManager.Instance.BlocksInput = false;
             PhaseBattleView.Instance.OnOpenSceneEnd();
         }
+    }
+
+    public void SetActive(Component _comp, bool _active)
+    {
+        if (_comp != null)
+            _comp.gameObject.SetActive(_active);
     }
 
     public void Log(string _text)

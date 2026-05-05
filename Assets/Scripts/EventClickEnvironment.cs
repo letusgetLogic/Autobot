@@ -27,7 +27,9 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
 
         if (isChecking)
             return;
-      
+
+        Debug.Log("Click " + GameManager.Instance.ClickIndex + " -> Execute");
+
         isChecking = true;
 
         if (InputManager.Instance.IsBlockingInput(inputKey))
@@ -83,7 +85,7 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
             tutorial.SetNextStep();
         }
 
-        Debug.Log("Click " + GameManager.Instance.ClickIndex + " -> Execute");
+ 
 
         isChecking = false;
     }

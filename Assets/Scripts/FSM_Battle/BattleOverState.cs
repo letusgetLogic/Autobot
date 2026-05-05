@@ -95,15 +95,20 @@ public class BattleOverState : StateBaseBattle
         }
         else // one of them has 0 lives, game over
         {
+            if (isReplay)
+                GameManager.Instance.Replay.Switch(GameState.EndOfGame);
+            else
+                GameManager.Instance.Switch(GameState.EndOfGame);
+
             UnityAction action = () =>
             {
                 EventManager.Instance.OnGameOverSound?.Invoke();
                 EventManager.Instance.OnBattleDone?.Invoke();
 
                 if (isReplay)
-                    GameManager.Instance.Replay.Switch(GameState.EndOfGame);
+                    GameManager.Instance.Replay.Switch(GameState.WaitingEndOfGame);
                 else
-                    GameManager.Instance.Switch(GameState.EndOfGame);
+                    GameManager.Instance.Switch(GameState.WaitingEndOfGame);
             };
 
             PhaseBattleController.Instance.StartCoroutine(

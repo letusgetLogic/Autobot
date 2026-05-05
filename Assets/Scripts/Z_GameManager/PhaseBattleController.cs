@@ -59,9 +59,6 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     }
     private Queue<UnitController> shutdownUnits;
 
-    public bool IsStopped { get; set; } = false;
-    public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
-
     public List<Coroutine> Coroutines
     {
         get
@@ -139,7 +136,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         if (state == null)
             return;
 
-        float speed = IsRunning * Time.deltaTime/* * GameManager.Instance.CurrentSpeedMultiplier*/;
+        float speed = GameManager.Instance.IsRunning * Time.deltaTime/* * GameManager.Instance.CurrentSpeedMultiplier*/;
         state.OnUpdate(this, speed);
 
         if (SubState != null)
@@ -202,13 +199,13 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     /// <summary>
     /// Set boolean IsRunning.
     /// </summary>
-    public void SetRunning(bool value, bool _affectTimeScale)
+    public void SetRunning(bool _value, bool _affectTimeScale)
     {
-        IsStopped = !value;
-        IsRunning = value ? 1f : 0f;
+        GameManager.Instance.IsStopped = !_value;
+        GameManager.Instance.IsRunning = _value ? 1f : 0f;
 
         if (_affectTimeScale)
-            Time.timeScale = value ? 1f : 0f;
+            Time.timeScale = _value ? 1f : 0f;
 
         PhaseBattleView.Instance.SetRunningButton();
     }

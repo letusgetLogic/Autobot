@@ -99,7 +99,7 @@ public class TutorialManager : MonoBehaviour
     private enum RunState { None, Start, Delay, Duration, DurationHide, AFK }
     private RunState runState = RunState.None;
 
-    private TutorialStep currentStep => steps[(int)currentState];
+    private TutorialStep currentStep => (int)currentState < 0 ? null : steps[(int)currentState];
 
     public List<InputKey> CurrentAllowedInputs => currentAllowedInputs;
     private List<InputKey> currentAllowedInputs;

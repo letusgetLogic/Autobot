@@ -61,8 +61,7 @@ public class CheckOutcomeState : StateBaseBattle
             else
             {
                 var gameManager = GameManager.Instance;
-                if (gameManager.CurrentGame.State == GameState.StartOfBattle ||
-                    gameManager.Replay != null && gameManager.Replay.State == GameState.StartOfBattle)
+                if (gameManager.CurrentGame.State == GameState.StartOfBattle)
                 {
                     _ctx.SetState(new StartOfBattleState(0));
                 }

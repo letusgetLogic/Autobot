@@ -61,10 +61,6 @@ public class PhaseBattleView : MonoBehaviour
         ShowPanelText(false);
     }
 
-    private bool isGameOverSceneRunning = false;
-    private void ShowWinnerPanel() => winnerPanel.SetActive(true);
-    private void HideWinnerPanel() { if (isGameOverSceneRunning == false) winnerPanel.SetActive(false); }
-
     private void OnEnable()
     {
         EventManager.Instance.OnSettingsButtonOpen += HideWinnerPanel;
@@ -75,7 +71,15 @@ public class PhaseBattleView : MonoBehaviour
     {
         EventManager.Instance.OnSettingsButtonOpen -= HideWinnerPanel;
         EventManager.Instance.OnSettingsButtonClose -= ShowWinnerPanel;
+        GameManager.Instance.IsGameOverSceneRunning = false;
     }
+
+    private void ShowWinnerPanel()
+    {
+        if (GameManager.Instance.CurrentGame.State == GameState.WaitingEndOfGame)
+            winnerPanel.SetActive(true);
+    }
+    private void HideWinnerPanel() => winnerPanel.SetActive(false);
 
     private void OnDestroy()
     {
@@ -167,7 +171,7 @@ public class PhaseBattleView : MonoBehaviour
 
     public IEnumerator ShowWinnerAtEndOfGame(string _winner, PlayerData _winnerData, UnityAction actionEndOfGame)
     {
-        isGameOverSceneRunning = true;
+        GameManager.Instance.IsGameOverSceneRunning = true;
 
         coverPanel.gameObject.SetActive(true);
         float animTime = coverPanel.SwitchOn(true);
@@ -184,22 +188,24 @@ public class PhaseBattleView : MonoBehaviour
                 labelContent.text = $"{_winner} won the game!";
                 labelContent.enabled = true;
             }
-        }
-
-        string[] congrats = new string[]
+            else
             {
+                string[] congrats = new string[]
+                    {
                 $" won the game!",
                 $" is the best!",
                 $" is unbeatable!",
                 $" has the strongest team!",
                 $" is the Scientist of Robotics!",
-        };
-        int index = new System.Random().Next(congrats.Length);
+                };
+                int index = new System.Random().Next(congrats.Length);
 
-        labelWinner.text = _winner;
-        labelWinner.enabled = true;
-        labelContent.text = congrats[index];
-        labelContent.enabled = true;
+                labelWinner.text = _winner;
+                labelWinner.enabled = true;
+                labelContent.text = congrats[index];
+                labelContent.enabled = true;
+            }
+        }
 
         WinnerPanel.SetActive(true);
         ShowWinnerTeam(_winnerData);
@@ -207,9 +213,8 @@ public class PhaseBattleView : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        GameManager.Instance.IsGameOverSceneRunning = false;
         actionEndOfGame?.Invoke();
-
-        isGameOverSceneRunning = false;
     }
 
     private void ShowWinnerTeam(PlayerData _data)
@@ -274,7 +279,7 @@ public class PhaseBattleView : MonoBehaviour
         if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonPlayInBattle))
             return;
 
-        PhaseBattleController.Instance.SetRunning(PhaseBattleController.Instance.IsStopped, true);
+        PhaseBattleController.Instance.SetRunning(GameManager.Instance.IsStopped, true);
     }
 
     /// <summary>
@@ -282,8 +287,8 @@ public class PhaseBattleView : MonoBehaviour
     /// </summary>
     public void SetRunningButton()
     {
-        play.SetActive(!PhaseBattleController.Instance.IsStopped);
-        stop.SetActive(PhaseBattleController.Instance.IsStopped);
+        play.SetActive(!GameManager.Instance.IsStopped);
+        stop.SetActive(GameManager.Instance.IsStopped);
     }
 
     /// <summary>
