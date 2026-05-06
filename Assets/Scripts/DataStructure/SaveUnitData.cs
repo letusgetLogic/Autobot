@@ -38,7 +38,14 @@ public class SaveUnitData
     public Attribute TempBuff => temporaryBuff;
     private Attribute temporaryBuff;
 
+    /// <summary>
+    /// Basis.HP + Buff.HP + TempBuff.HP
+    /// </summary>
     public int FullHP => Basis.HP + Buff.HP + TempBuff.HP;
+
+    /// <summary>
+    /// Basis.ATK + Buff.ATK + TempBuff.ATK
+    /// </summary>
     public int FullATK => Basis.ATK + Buff.ATK + TempBuff.ATK;
 
     public int XP => xp;

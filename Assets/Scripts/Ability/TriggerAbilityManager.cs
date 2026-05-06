@@ -1,4 +1,6 @@
-﻿public class TriggerAbilityManager
+﻿using System;
+
+public class TriggerAbilityManager
 {
     #region Instance 
     public static TriggerAbilityManager Instance
@@ -51,7 +53,7 @@
                         int consumENG = _unit1.Model.CurrentLevel.ConsumedEnergy.Value;
                         int stolenENG = Steal.StolenEnergy(_unit1, _unit2);
 
-                        if (targetENG + stolenENG >= consumENG)
+                        if (targetENG + stolenENG >= Math.Abs(consumENG))
                         {
                             EventManager.Instance.OnTriggerAbility.Invoke(ability1, false);
                             return 2;
@@ -73,7 +75,7 @@
                         int consumENG = _unit2.Model.CurrentLevel.ConsumedEnergy.Value;
                         int stolenENG = Steal.StolenEnergy(_unit2, _unit1);
 
-                        if (targetENG + stolenENG >= consumENG)
+                        if (targetENG + stolenENG >= Math.Abs(consumENG))
                         {
                             EventManager.Instance.OnTriggerAbility.Invoke(ability2, false);
                             return 2;
