@@ -35,7 +35,12 @@ public class EventManager
     public UnityAction OnCloseSceneSound { get; set; }
     public UnityAction OnMoveHintClickSound { get; set; }
     public UnityAction OnOpenSceneSound { get; set; }
+    public UnityAction OnReplayButtonClick { get; set; }
 
+    /// <summary>
+    /// bool isDestroyingUnit
+    /// </summary>
+    public UnityAction<AbilityBase, bool> OnTriggerAbility { get; set; }
     
 
     #region Phase Shop
@@ -66,12 +71,6 @@ public class EventManager
     public UnityAction OnSwap { get; set; }
 
     public UnityAction OnNotEnoughCurrency { get; set; }
-
-    /// <summary>
-    /// bool isDestroyingUnit
-    /// </summary>
-    public UnityAction<AbilityBase, bool> OnTriggerAbility { get; set; }
-
 
     #endregion
 

@@ -30,7 +30,8 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
 
     [Header("Level References")]
     [SerializeField] private CatalogDescriptionLevel[] myLevels;
-
+        
+    public UnitController AttachedController => attachedController;
     private UnitController attachedController;
 
 

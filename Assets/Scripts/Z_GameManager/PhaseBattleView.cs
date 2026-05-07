@@ -70,13 +70,16 @@ public class PhaseBattleView : MonoBehaviour
     {
         EventManager.Instance.OnSettingsButtonOpen += HideWinnerPanel;
         EventManager.Instance.OnSettingsButtonClose += ShowWinnerPanel;
+        EventManager.Instance.OnReplayButtonClick += HideWinnerPanel;
     }
 
     private void OnDisable()
     {
+        GameManager.Instance.IsGameOverSceneRunning = false;
+
         EventManager.Instance.OnSettingsButtonOpen -= HideWinnerPanel;
         EventManager.Instance.OnSettingsButtonClose -= ShowWinnerPanel;
-        GameManager.Instance.IsGameOverSceneRunning = false;
+        EventManager.Instance.OnReplayButtonClick -= HideWinnerPanel;
     }
 
     private void ShowWinnerPanel()

@@ -15,6 +15,7 @@ public class ReplayBattleButton : MonoBehaviour
 
         InputManager.Instance.BlocksInput = true;
 
+        EventManager.Instance.OnReplayButtonClick?.Invoke();
         GameManager.Instance.PlayReplay();
     }
 }
