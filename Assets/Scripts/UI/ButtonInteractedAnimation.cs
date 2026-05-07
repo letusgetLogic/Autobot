@@ -148,14 +148,15 @@ public class ButtonInteractedAnimation : MonoBehaviour, IPointerClickHandler, IP
     {
         yield return new WaitForSeconds(_delay);
 
-        if (layoutToDeactivate != null)
-            layoutToDeactivate.SetActive(false);
-
         if (layoutToActivate != null)
             layoutToActivate.SetActive(true);
 
         if (doSomethingAfterClick != null)
             doSomethingAfterClick.Invoke();
+
+        if (layoutToDeactivate != null)
+            layoutToDeactivate.SetActive(false);
+
 
     }
 

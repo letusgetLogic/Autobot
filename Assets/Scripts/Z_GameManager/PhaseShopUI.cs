@@ -457,6 +457,15 @@ public class PhaseShopUI : MonoBehaviour
     /// <param name="_currency"></param>
     public void SetButtonData(TextMeshProUGUI _tool, TextMeshProUGUI _nut, Currency _currency)
     {
+        if (_currency.Tool == 0 && _currency.Nut == 0)
+        {
+            _tool.text = "";
+            _nut.text = "+0";
+            _tool.transform.parent.gameObject.SetActive(false);
+            _nut.transform.parent.gameObject.SetActive(true);
+            return;
+        }
+
         if (_currency.Tool == 0)
         {
             _tool.text = "";

@@ -92,6 +92,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Instance.OnBuff += () => PlayOneShot("Buff");
         EventManager.Instance.OnShootOut += (unit) => PlayOneShot("Summon");
 
+        EventManager.Instance.OnBattleOverSound += () => PlayOneShot("Game_Over");
         EventManager.Instance.OnGameOverSound += () => PlayOneShot("Game_Over");
     }
 

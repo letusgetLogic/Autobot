@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 5594820714228919558}
   - component: {fileID: 9187487761148959067}
   m_Layer: 5
-  m_Name: Settings Button
+  m_Name: Button Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetRectLocalScaleClick
   button: {fileID: 0}
-  scaleFactor: 0.9
+  scaleFactor: 0.95
 --- !u!114 &346414467383106589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +471,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 9187487761148959067}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &9187487761148959067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,7 +504,7 @@ MonoBehaviour:
       Data4: -310500793
     Path: event:/Button
   Event: 
-  EventPlayTrigger: 20
+  EventPlayTrigger: 0
   EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0

@@ -10,8 +10,8 @@ public class CutScene : MonoBehaviour
     [SerializeField] private RectTransform coverPanelClose;
     [SerializeField] private float delayOpen = 1f;
     [SerializeField] private float delayClose = 1f;
-    [SerializeField] private LerpMovement hintClickClose;
-    [SerializeField] private LerpMovement hintClick;
+    //[SerializeField] private LightenUpDown hintClickClose;
+    [SerializeField] private LightenUpDown hintClick;
     [SerializeField] private TextMeshProUGUI hintClickCloseText;
     [SerializeField] private TextMeshProUGUI hintClickText;
 
@@ -39,6 +39,12 @@ public class CutScene : MonoBehaviour
         Instance = this;
         Debug.Log(this.name + ".Awake:");
 
+        if (hintClick != null)
+            hintClick.gameObject.SetActive(false);
+
+        if (coverPanelClose != null)
+            coverPanelClose.gameObject.SetActive(true);
+        
         if (GameManager.Instance == null)
             return;
 
@@ -48,24 +54,20 @@ public class CutScene : MonoBehaviour
             StartCoroutine(OpenScene(GameManager.Instance.Replay != null ? 0f : delayOpen));
         }
 
-        if (hintClickClose)
-        {
-            if (GameManager.Instance.Replay == null && GameManager.Instance.IsMode1P == false)
-            {
-                hintClickClose.gameObject.SetActive(true);
-                hintClickClose.Trigger();
-                //EventManager.Instance.OnMoveHintClickSound?.Invoke();
-            }
-            else
-            {
-                hintClickClose.gameObject.SetActive(false);
-            }
-        }
+        //if (hintClickClose)
+        //{
+        //    if (GameManager.Instance.Replay == null && GameManager.Instance.IsMode1P == false)
+        //    {
+        //        hintClickClose.gameObject.SetActive(true);
+        //        hintClickClose.Trigger();
+        //        //EventManager.Instance.OnMoveHintClickSound?.Invoke();
+        //    }
+        //    else
+        //    {
+        //        hintClickClose.gameObject.SetActive(false);
+        //    }
+        //}
 
-        if (coverPanelClose != null)
-        {
-            coverPanelClose.gameObject.SetActive(true);
-        }
     }
 
     private void OnDestroy()
@@ -108,7 +110,7 @@ public class CutScene : MonoBehaviour
     /// Runs the close scene animation for a time then load the new scene.
     /// </summary>
     /// <param name="_scene"></param>
-    public void SwitchScene()
+    public void CloseScene()
     {
         if (GameManager.Instance.Replay == null)
             StartCoroutine(LoadScene());
@@ -127,7 +129,7 @@ public class CutScene : MonoBehaviour
 
         ClosePanel.ScaleUp(true);
 
-        EventManager.Instance.OnCloseSceneSound?.Invoke();
+        //EventManager.Instance.OnCloseSceneSound?.Invoke();
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
 
@@ -137,13 +139,16 @@ public class CutScene : MonoBehaviour
             yield break;
         }
 
-        GameManager.Instance.Switch(GameState.WaitingCutScene);
-
+        float fadeTime = 0f;
         if (hintClick != null)
         {
-            hintClick.Trigger();
-            //EventManager.Instance.OnMoveHintClickSound?.Invoke();
+            hintClick.gameObject.SetActive(true);
+            fadeTime = hintClick.SwitchOn(true);
         }
+
+        yield return new WaitForSeconds(fadeTime);
+
+        GameManager.Instance.Switch(GameState.WaitingCutScene);
     }
 
     /// <summary>
@@ -157,30 +162,46 @@ public class CutScene : MonoBehaviour
 
         ClosePanel.ScaleUp(true);
 
-        EventManager.Instance.OnCloseSceneSound?.Invoke();
+        //EventManager.Instance.OnCloseSceneSound?.Invoke();
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
 
         GameManager.Instance.Replay.Switch(GameState.LoadScene);
     }
 
-    /// <summary>
-    /// Sets the name of current player.
-    /// </summary>
-    /// <param name="_lookAwayPlayer"></param>
-    /// <param name="_playerIsTurn"></param>
-    public void SetHintClickClose(string _playerIsTurn, bool _shouldBothWatch)
+    public void HideHintClick()
     {
-        if (hintClickCloseText)
-        {
-            if (_shouldBothWatch)
-            {
-                hintClickCloseText.text = "Click to continue!";
-                return;
-            }
-            hintClickCloseText.text = $"{_playerIsTurn} should click to continue!";
-        }
+        StartCoroutine(FadeOutHintClick());
     }
+
+    private IEnumerator FadeOutHintClick()
+    {
+        if (hintClick != null)
+        {
+            float fadeTime = hintClick.SwitchOn(false);
+            //EventManager.Instance.OnMoveHintClickSound?.Invoke();
+            yield return new WaitForSeconds(fadeTime);
+        }
+        GameManager.Instance.Switch(GameState.LoadScene);
+    }
+
+    ///// <summary>
+    ///// Sets the name of current player.
+    ///// </summary>
+    ///// <param name="_lookAwayPlayer"></param>
+    ///// <param name="_playerIsTurn"></param>
+    //public void SetHintClickClose(string _playerIsTurn, bool _shouldBothWatch)
+    //{
+    //    if (hintClickCloseText)
+    //    {
+    //        if (_shouldBothWatch)
+    //        {
+    //            hintClickCloseText.text = GameManager.Instance.IsMobile ? "Tap to continue!" : "Click to continue!";
+    //            return;
+    //        }
+    //        hintClickCloseText.text = $"{_playerIsTurn} should {(GameManager.Instance.IsMobile ? "tap" : "click")} to continue!";
+    //    }
+    //}
 
     /// <summary>
     /// Sets the name of current player.
@@ -193,10 +214,10 @@ public class CutScene : MonoBehaviour
         {
             if (_shouldBothWatch)
             {
-                hintClickText.text = "Click to continue!";
+                hintClickText.text = GameManager.Instance.IsMobile ? "Tap to continue!" : "Click to continue!";
                 return;
             }
-            hintClickText.text = $"{_playerIsTurn} should click to continue!";
+            hintClickText.text = $"{_playerIsTurn} should {(GameManager.Instance.IsMobile ? "tap" : "click")} to continue!";
         }
     }
 }

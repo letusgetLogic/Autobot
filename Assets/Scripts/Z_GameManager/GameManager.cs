@@ -143,8 +143,11 @@ public class GameManager : MonoBehaviour
     public bool IsCatalogActive { get; set; }
     public ReplayManager Replay { get; set; }
 
-    public bool IsStopped { get; set; } = false;
-    public float IsRunning { get; set; } = 1f;  // 1 = running, 0 = stopped
+    #region Time
+    public void SetTime(float _time) => Time.timeScale = _time;
+    public bool IsStopped { get; set; } = false; // is for SetRunningButton
+    public float BattleSpeed { get; set; } = 1f;  // 1 = running, 0 = stopped
+
 
     public TutorialManager.StepState TutorialStepState { get; set; }
 
@@ -152,7 +155,7 @@ public class GameManager : MonoBehaviour
     public void SetTutorialRunning(bool _value) => isTutorialRunning = _value;
 
     private bool isTutorialRunning = false;
-
+    #endregion
 
     public bool IsMode1P =>
         currentGame.Mode == GameMode.Tutorial ||
@@ -346,12 +349,12 @@ public class GameManager : MonoBehaviour
 
             case GameState.PlayCutSceneShop:
                 CutScene.Instance.SetHintClick(CurrentPlayer.Data.Name, false);
-                CutScene.Instance.SwitchScene();
+                CutScene.Instance.CloseScene();
                 break;
 
             case GameState.PlayCutSceneBattle:
                 CutScene.Instance.SetHintClick("", true);
-                CutScene.Instance.SwitchScene();
+                CutScene.Instance.CloseScene();
                 break;
 
             case GameState.WaitingCutScene:

@@ -9,6 +9,10 @@ public class PhaseBattleView : MonoBehaviour
 {
     public static PhaseBattleView Instance { get; private set; }
 
+    [Header("Buttons")]
+    [SerializeField] private List<GameObject> buttons;
+    [SerializeField] private GameObject replayButton;
+
     [Header("Panel")]
     [SerializeField] private LerpMovement bottomPanel;
 
@@ -59,6 +63,7 @@ public class PhaseBattleView : MonoBehaviour
         labelContent.enabled = false;
         winnerPanel.SetActive(false);
         ShowPanelText(false);
+        replayButton.SetActive(false);
     }
 
     private void OnEnable()
@@ -149,10 +154,14 @@ public class PhaseBattleView : MonoBehaviour
     public IEnumerator ShowWinnerAtEndOfBattle(bool _isDraw, string _winner)
     {
         coverPanel.gameObject.SetActive(true);
+        playButton.SetActive(false);
+        buttons.ForEach(b => b.SetActive(false));
+
         float animTime = coverPanel.SwitchOn(true);
         yield return new WaitForSeconds(animTime);
 
-        playButton.SetActive(false);
+        buttons.ForEach(b => b.SetActive(true));
+        EventManager.Instance.OnGameOverSound?.Invoke();
 
         if (_isDraw)
         {
@@ -174,10 +183,11 @@ public class PhaseBattleView : MonoBehaviour
         GameManager.Instance.IsGameOverSceneRunning = true;
 
         coverPanel.gameObject.SetActive(true);
+        playButton.SetActive(false);
+        buttons.ForEach(b => b.SetActive(false));
+
         float animTime = coverPanel.SwitchOn(true);
         yield return new WaitForSeconds(animTime);
-
-        playButton.SetActive(false);
 
         var game = GameManager.Instance.CurrentGame;
         if (game != null)
@@ -211,8 +221,10 @@ public class PhaseBattleView : MonoBehaviour
         ShowWinnerTeam(_winnerData);
         EventManager.Instance.OnPopUpSound?.Invoke();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
+        buttons.ForEach(b => b.SetActive(true));
+        replayButton.SetActive(true);
         GameManager.Instance.IsGameOverSceneRunning = false;
         actionEndOfGame?.Invoke();
     }
@@ -226,7 +238,7 @@ public class PhaseBattleView : MonoBehaviour
         {
             if (unit != null)
             {
-                unit.transform.SetParent(Canvas1.transform, true);
+                unit.transform.SetParent(WinnerPanel.transform, true);
                 unit.View.ShowByGameOver();
             }
         }

@@ -194,10 +194,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (UnitView() != null)
             UnitView().SetDescriptionActive(false);
 
-        if (PhaseShopController.Instance == null)
-            return;
-
-        var attached = PhaseShopController.Instance.AttachedController;
+        var attached = PhaseShopController.Instance && PhaseShopController.Instance.AttachedController;
         if (indicator.enabled &&
             (attached == null || attached != UnitController()))
         {

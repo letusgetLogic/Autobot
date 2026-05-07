@@ -26,9 +26,11 @@ public class Player
 
         GameManager.Instance.Switch(GameState.EndOfTurn);
     }
-    private void DebugTeamUnit(string _context)
+    private IEnumerator DebugTeamUnit(string _context)
     {
         GameManager.Instance.Log("___" + _context + "___");
+        yield return null;
+
         for (int i = 0; i < Data.TeamUnitDatas.Length; i++)
         {
             GameManager.Instance.Log("TeamUnit: " + i + " - " +
@@ -40,9 +42,10 @@ public class Player
                 )
                 )
                 );
+            yield return null;
         }
     }
-    private void DebugUnit(string _context, int i, SaveUnitData _data)
+    private IEnumerator DebugUnit(string _context, int i, SaveUnitData _data)
     {
         GameManager.Instance.Log(_context + i + " - "
                 + _data.ID + " | "
@@ -50,6 +53,7 @@ public class Player
                 + _data.Durability + " /3" + " | "
                 + _data.Cur.ATK + "/" + _data.Cur.HP + "/" + _data.Cur.ENG + " | "
                 );
+        yield return null;
     }
 
     private IEnumerator BuildTeamByAI()
@@ -62,11 +66,11 @@ public class Player
         if (Data.TeamUnitDatas == null)
         {
             Data.TeamUnitDatas = new SaveUnitData[PhaseShopController.Instance.TeamSlots.Count];
-            DebugTeamUnit("BuildTeamByAI");
+            yield return DebugTeamUnit("BuildTeamByAI");
         }
         else
         {
-            DebugTeamUnit("BuildTeamByAI");
+            yield return DebugTeamUnit("BuildTeamByAI");
 
             // add controller
             for (int j = 0; j < Data.TeamUnitDatas.Length; j++)
@@ -102,7 +106,7 @@ public class Player
                 for (int i = 0; i < teamUnits.Count; i++)
                     Data.TeamUnitDatas[i] = teamUnits[i].Model.Data;
 
-                DebugTeamUnit("BuildTeamByAI - Shuffle");
+                yield return DebugTeamUnit("BuildTeamByAI - Shuffle");
 
                 // Repair
                 for (int i = 0; i < PackManager.Instance.MyPack.CurrencyData.HealthPortion; i++)
@@ -111,13 +115,13 @@ public class Player
                     {
                         if (teamUnits[j].Model.Data.Durability == i)
                         {
-                            DebugUnit("repair: ", j, teamUnits[j].Model.Data);
+                            yield return DebugUnit("repair: ", j, teamUnits[j].Model.Data);
                             repairTools -= teamUnits[j].Model.Repair.RiseDurability();
-                            DebugUnit("repair: ", j, teamUnits[j].Model.Data);
+                            yield return DebugUnit("repair: ", j, teamUnits[j].Model.Data);
                         }
                     }
                 }
-                DebugTeamUnit("BuildTeamByAI - Repair");
+                yield return DebugTeamUnit("BuildTeamByAI - Repair");
 
                 // fill from shop
                 for (int i = 0; i < Data.TeamUnitDatas.Length && shopBots.Count > 0; i++)
@@ -163,13 +167,13 @@ public class Player
                     if (target == null) continue;
 
                     // repair target
-                    DebugUnit("repair: ", i, target.Model.Data);
+                    yield return DebugUnit("repair: ", i, target.Model.Data);
                     while (repairTools > 0 && target.Model.Repair.RepairAmount > 0)
                     {
                         repairTools -= target.Model.Repair.RiseDurability();
                         yield return null;
                     }
-                    DebugUnit("repair: ", i, target.Model.Data);
+                    yield return DebugUnit("repair: ", i, target.Model.Data);
 
                     string name = target.Model.SoUnit.Name;
                     var sameInShop = shopBots.Where(z => z.Model.SoUnit.Name == name).ToList();
@@ -181,22 +185,22 @@ public class Player
                         if (match == null) continue;
                         if (match.Model.SoUnit.Name == name)
                         {
-                            DebugUnit("repair: ", j, match.Model.Data);
+                            yield return DebugUnit("repair: ", j, match.Model.Data);
                             while (repairTools > 0 && match.Model.Repair.RepairAmount > 0)
                             {
                                 repairTools -= match.Model.Repair.RiseDurability();
                                 yield return null;
                             }
-                            DebugUnit("repair: ", j, match.Model.Data);
+                            yield return DebugUnit("repair: ", j, match.Model.Data);
 
                             if (target.Model.IsFullDurability() && match.Model.IsFullDurability())
                             {
                                 // fusion same in team
-                                DebugUnit("target: ", i, target.Model.Data);
-                                DebugUnit("fusion with: ", j, match.Model.Data);
+                                yield return DebugUnit("target: ", i, target.Model.Data);
+                                yield return DebugUnit("fusion with: ", j, match.Model.Data);
                                 bool levelUp = target.UpdateLevel(match.Model.Data, false);
                                 repairTools += levelUp ? 1 : 0;
-                                DebugUnit("target: ", i, target.Model.Data);
+                                yield return DebugUnit("target: ", i, target.Model.Data);
                                 // set references to null
                                 SetNullInTeam(match.Model.Data);
                                 teamUnits.ForEach(x => { if (x == match) x = null; });
@@ -212,29 +216,29 @@ public class Player
                         {
                             if (target.Model.IsFullDurability())
                             {
-                                DebugUnit("fusion with shop: ", k, sameInShop[k].Model.Data);
+                                yield return DebugUnit("fusion with shop: ", k, sameInShop[k].Model.Data);
                                 bool levelUp = target.UpdateLevel(sameInShop[k].Model.Data, false);
                                 repairTools += levelUp ? 1 : 0;
                                 shopBots.RemoveAll(z => z == sameInShop[k]);
-                                DebugUnit("target: ", i, target.Model.Data);
+                                yield return DebugUnit("target: ", i, target.Model.Data);
                             }
                         }
                     }
                     //if (hasSame <= 0)
                     //    recycleBots.Add(target);
                 }
-                DebugTeamUnit("BuildTeamByAI - Fusion same in team");
+                yield return DebugTeamUnit("BuildTeamByAI - Fusion same in team");
 
                 // recycle as long as empty slots is smaller than shop slots
                 while (EmptySlots() < shopBots.Count)
                 {
                     var recycle = teamUnits.LastOrDefault(x => x != null);
-                    DebugUnit("recycle: ", teamUnits.IndexOf(recycle), recycle.Model.Data);
+                    yield return DebugUnit("recycle: ", teamUnits.IndexOf(recycle), recycle.Model.Data);
                     SetNullInTeam(recycle.Model.Data);
                     teamUnits.Remove(recycle);
                     yield return null;
                 }
-                DebugTeamUnit("BuildTeamByAI - Recycle");
+                yield return DebugTeamUnit("BuildTeamByAI - Recycle");
 
                 // remove null in team unit
                 teamUnits.RemoveAll(y => y == null);
@@ -244,13 +248,13 @@ public class Player
                 {
                     while (teamUnits[j].Model.Repair.RepairAmount > 0 && repairTools > 0)
                     {
-                        DebugUnit("repair: ", j, teamUnits[j].Model.Data);
+                        yield return DebugUnit("repair: ", j, teamUnits[j].Model.Data);
                         repairTools -= teamUnits[j].Model.Repair.RiseDurability();
-                        DebugUnit("repair: ", j, teamUnits[j].Model.Data);
+                        yield return DebugUnit("repair: ", j, teamUnits[j].Model.Data);
                         yield return null;
                     }
                 }
-                DebugTeamUnit("BuildTeamByAI - Repair");
+                yield return DebugTeamUnit("BuildTeamByAI - Repair");
 
                 // fill empty slot with shop bot
                 for (int i = 0; i < Data.TeamUnitDatas.Length && shopBots.Count > 0; i++)
@@ -262,7 +266,7 @@ public class Player
                         shopBots.RemoveAt(shopBots.Count - 1);
                     }
                 }
-                DebugTeamUnit("BuildTeamByAI - Fill from shop");
+                yield return DebugTeamUnit("BuildTeamByAI - Fill from shop");
                 var list = Data.TeamUnitDatas.ToList();
                 list.OrderByDescending(x => x.Cur.HP + x.Cur.ATK).ThenByDescending(x => x.Cur.ATK).ToList();
                 if (Random.Range(0, 2) == 1) // 50% chance last unit to first slot
@@ -272,7 +276,7 @@ public class Player
                     list.Insert(0, last);
                 }
                 Data.TeamUnitDatas = list.ToArray();
-                DebugTeamUnit("BuildTeamByAI - Shuffle");
+                yield return DebugTeamUnit("BuildTeamByAI - Shuffle");
                 break;
 
             default:
@@ -284,7 +288,7 @@ public class Player
             if (unit != null)
                 unit.SetEnergy(unit.Cur.ENG + 1);
 
-        DebugTeamUnit("BuildTeamByAI - Charge");
+        yield return DebugTeamUnit("BuildTeamByAI - Charge");
     }
 
     /// <summary>

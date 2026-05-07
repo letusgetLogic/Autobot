@@ -11,9 +11,9 @@ public class MainMenu : MonoBehaviour
     public List<MenuLayout> Layouts => layouts;
 
 
-    [Header("Replay Button")]
-    [SerializeField] private GameObject replayButton;
-    [SerializeField] private GameObject tutorialButton;
+    //[Header("Buttons SetActive")]
+    //[SerializeField] private GameObject replayButton;
+    //[SerializeField] private GameObject tutorialButton;
 
 
     private void Awake()
@@ -44,7 +44,7 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.Replay = null;
         GameManager.Instance.SetTutorialRunning(false);
         GameManager.Instance.TutorialStepState = TutorialManager.StepState.Turn1;
-        replayButton.SetActive(GameManager.Instance.CurrentRound != null);
+        //replayButton.SetActive(GameManager.Instance.CurrentRound != null);
     }
 
     public void OnPlayTutorial()

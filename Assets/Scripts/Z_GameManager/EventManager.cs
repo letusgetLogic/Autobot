@@ -96,7 +96,7 @@ public class EventManager
     public UnityAction OnInitDone { get; set; }
     public UnityAction OnBattleDone { get; set; }
 
-    public UnityAction OnMatchOver { get; set; }
+    public UnityAction OnBattleOverSound { get; set; }
     public UnityAction OnBattleDelayHintClick { get; set; }
     public UnityAction OnGameOverSound { get; set; }
 

@@ -126,17 +126,17 @@ public class GameSettings : MonoBehaviour
 
     public void OnRandomName1()
     {
-        inputName1.text = NameList.GetRandomName();
+        inputName1.text = NameList.GetRandomExclusive(new[] { inputName1.text });
     }
 
     public void OnRandomPvpName1()
     {
-        inputPvpName1.text = NameList.GetRandomExclusive(new[] { inputPvpName2.text } );
+        inputPvpName1.text = NameList.GetRandomExclusive(new[] { inputPvpName1.text, inputPvpName2.text } );
     }
 
     public void OnRandomPvpName2()
     {
-        inputPvpName2.text = NameList.GetRandomExclusive(new[] { inputPvpName1.text } );
+        inputPvpName2.text = NameList.GetRandomExclusive(new[] { inputPvpName1.text, inputPvpName2.text } );
     }
 
     ///// <summary>

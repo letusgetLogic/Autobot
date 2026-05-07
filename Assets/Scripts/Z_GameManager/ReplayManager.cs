@@ -31,11 +31,11 @@ public class ReplayManager
                 break;
 
             case GameState.PlayCutSceneBattle:
-                CutScene.Instance.SwitchScene();
+                CutScene.Instance.CloseScene();
                 break;
 
             case GameState.PlayCutSceneShop:
-                CutScene.Instance.SwitchScene();
+                CutScene.Instance.CloseScene();
                 break;
 
             case GameState.LoadScene:

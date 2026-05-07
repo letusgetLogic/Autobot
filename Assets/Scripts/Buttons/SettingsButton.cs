@@ -44,7 +44,6 @@ public class SettingsButton : MonoBehaviour
                 button.SetActive(!isSettingsOpen);
             }
         }
-
-        Time.timeScale = isSettingsOpen ? 0f : (GameManager.Instance.IsStopped ? 0f : 1f);
+        GameManager.Instance.SetTime(isSettingsOpen ? 0f : 1f);
     }
 }

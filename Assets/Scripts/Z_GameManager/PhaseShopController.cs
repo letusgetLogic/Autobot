@@ -108,22 +108,22 @@ public class PhaseShopController : MonoBehaviour
         Player = _player;
         SetStartTurn(StartTurnState.Init);
 
-        if (IsTurnAI() == false)
-        {
-            StartCoroutine(SetHintClick());
-        }
+        //if (IsTurnAI() == false)
+        //{
+        //    StartCoroutine(SetHintClick());
+        //}
     }
 
-    /// <summary>
-    /// Set the player name to the hint click.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator SetHintClick()
-    {
-        yield return new WaitUntil(() => CutScene.Instance != null);
+    ///// <summary>
+    ///// Set the player name to the hint click.
+    ///// </summary>
+    ///// <returns></returns>
+    //private IEnumerator SetHintClick()
+    //{
+    //    yield return new WaitUntil(() => CutScene.Instance != null);
 
-        CutScene.Instance.SetHintClickClose(Player.Data.Name, false);
-    }
+    //    CutScene.Instance.SetHintClickClose(Player.Data.Name, false);
+    //}
 
     /// <summary>
     /// Set start turn state.

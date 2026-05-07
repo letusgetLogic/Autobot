@@ -89,19 +89,19 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         else
             GameManager.Instance.Switch(GameState.StartOfBattle);
 
-        StartCoroutine(SetHintClick());
+        //StartCoroutine(SetHintClick());
     }
 
-    /// <summary>
-    /// Set the player name to the hint click.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator SetHintClick()
-    {
-        yield return new WaitUntil(() => CutScene.Instance != null);
+    ///// <summary>
+    ///// Set the player name to the hint click.
+    ///// </summary>
+    ///// <returns></returns>
+    //private IEnumerator SetHintClick()
+    //{
+    //    yield return new WaitUntil(() => CutScene.Instance != null);
 
-        CutScene.Instance.SetHintClickClose("", true);
-    }
+    //    CutScene.Instance.SetHintClickClose("", true);
+    //}
 
     private void Start()
     {
@@ -136,7 +136,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         if (state == null)
             return;
 
-        float speed = GameManager.Instance.IsRunning * Time.deltaTime/* * GameManager.Instance.CurrentSpeedMultiplier*/;
+        float speed = GameManager.Instance.BattleSpeed * Time.deltaTime/* * GameManager.Instance.CurrentSpeedMultiplier*/;
         state.OnUpdate(this, speed);
 
         if (SubState != null)
@@ -199,13 +199,13 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     /// <summary>
     /// Set boolean IsRunning.
     /// </summary>
-    public void SetRunning(bool _value, bool _affectTimeScale)
+    public void SetRunning(bool _isRunning, bool _affectTimeScale)
     {
-        GameManager.Instance.IsStopped = !_value;
-        GameManager.Instance.IsRunning = _value ? 1f : 0f;
+        GameManager.Instance.IsStopped = !_isRunning;
+        GameManager.Instance.BattleSpeed = _isRunning ? 1f : 0f;
 
         if (_affectTimeScale)
-            Time.timeScale = _value ? 1f : 0f;
+            GameManager.Instance.SetTime(_isRunning ? 1f : 0f);
 
         PhaseBattleView.Instance.SetRunningButton();
     }

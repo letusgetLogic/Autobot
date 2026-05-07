@@ -43,7 +43,7 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
             (game.State == GameState.PlayCutSceneShop || game.State == GameState.PlayCutSceneBattle))
         {
             InputManager.Instance.BlocksInput = true;
-            GameManager.Instance.Switch(GameState.LoadScene);
+            CutScene.Instance.HideHintClick();
 
             isChecking = false;
             return;

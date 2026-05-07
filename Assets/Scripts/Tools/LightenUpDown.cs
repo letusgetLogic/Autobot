@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class LightenUpDown : MonoBehaviour
@@ -120,6 +121,10 @@ public class LightenUpDown : MonoBehaviour
         var image = GetComponent<Image>();
         if (image)
             image.color = new Color(image.color.r, image.color.g, image.color.b, _dimValue);
+
+        var text = GetComponent<TextMeshProUGUI>();
+        if (text)
+            text.color = new Color(text.color.r, text.color.g, text.color.b, _dimValue);
     }
 }
 
