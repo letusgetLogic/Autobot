@@ -25,7 +25,7 @@ public class Shutdown : AbilityBase
                 if (Targets.Count > 0)
                 {
                     var unit = Targets.Dequeue();
-                    unit.View.SetShutdown();
+                    unit.Model.ReduceHp(new Damage(unit.Model.Data.Cur.HP));
 
                     yield return new WaitForSeconds(0.5f);
                     unit.TriggerShutdown();

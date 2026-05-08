@@ -212,5 +212,12 @@ public class PackManager : MonoBehaviour
 
         return Bots[_data.Index];
     }
+
+    public void ResetPack()
+    {
+        MyPack = null;
+        Bots.Clear();
+        Items.Clear();
+    }
 }
 

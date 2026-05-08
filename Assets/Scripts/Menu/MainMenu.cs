@@ -45,6 +45,10 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.SetTutorialRunning(false);
         GameManager.Instance.TutorialStepState = TutorialManager.StepState.Turn1;
         //replayButton.SetActive(GameManager.Instance.CurrentRound != null);
+
+        yield return new WaitUntil(() => PackManager.Instance != null);
+
+        PackManager.Instance.ResetPack();
     }
 
     public void OnPlayTutorial()
