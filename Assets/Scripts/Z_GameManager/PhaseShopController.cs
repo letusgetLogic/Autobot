@@ -480,7 +480,7 @@ public class PhaseShopController : MonoBehaviour
     /// </summary>
     /// <param name="_attachedController"></param>
     /// <param name="_targetSlot"></param>
-    public void ManageAttachedUnit(UnitController _attached, Slot _targetSlot, UnitController _target)
+    public IEnumerator ManageAttachedUnit(UnitController _attached, Slot _targetSlot, UnitController _target)
     {
         var attachedState = _attached.Model.Data.UnitState;
 
@@ -492,8 +492,13 @@ public class PhaseShopController : MonoBehaviour
                 _attached.Model.Cost.Nut, _attached.Model.Cost.Tool, true))
             {
                 // then buy.
-                buyCoroutine = StartCoroutine(Buy(_attached, _targetSlot, _target));
+                yield return buyCoroutine = StartCoroutine(Buy(_attached, _targetSlot, _target));
             }
+            else yield break;
+
+            // Set drop slot inactive for randomness item.
+            if (itemRandomnessDropSlot != null)
+                itemRandomnessDropSlot.gameObject.SetActive(false);
         }
         // If unit is in the team and
         else if (attachedState == UnitState.InSlotTeam || attachedState == UnitState.InSlotCharge)
@@ -512,15 +517,10 @@ public class PhaseShopController : MonoBehaviour
                         _target.UpdateLevel(_attached.Model.Data, true);
                         Destroy(_attached.gameObject);
                     }
-                    else StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
+                    else yield return StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
             }
         }
-        // Set drop slot inactive for randomness item.
-        if (itemRandomnessDropSlot != null &&
-            itemRandomnessDropSlot.gameObject.activeSelf)
-        {
-            itemRandomnessDropSlot.gameObject.SetActive(false);
-        }
+       
     }
 
     /// <summary>
@@ -942,14 +942,6 @@ public class PhaseShopController : MonoBehaviour
     public bool IsBlockingDropByItemRandomness(Slot _slot)
     {
         return isRandomnessItemAttached && _slot != itemRandomnessDropSlot;
-    }
-
-    /// <summary>
-    /// Sets the drop slot for randomness item inactive.
-    /// </summary>
-    public void SetItemRandomnessInactive()
-    {
-        itemRandomnessDropSlot.gameObject.SetActive(false);
     }
 
     /// <summary>

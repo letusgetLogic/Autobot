@@ -13,6 +13,50 @@ public class PackManager : MonoBehaviour
 
     public int DebugID { get; set; }
 
+    [Header("Default Pack")]
+    [SerializeField] private SoPack soPack;
+
+    [Header("Prefab Settings")]
+    public GameObject prefabToSpawn;
+    public Sprite sprite;
+    public int numberOfPrefabs = 10;
+
+    [Header("Area Settings")]
+    public Vector2 areaMin = new Vector2(-10, -10); // Min X and Y
+    public Vector2 areaMax = new Vector2(10, 10);   // Max X and Y
+
+    [Header("Rotation Settings")]
+    public float rotationRangeMin = -90f; // Degrees for random rotation
+    public float rotationRangeMax = 90f; // Degrees for random rotation
+
+    [ContextMenu("Create lot of robots")]
+    void SpawnPrefabsInArea()
+    {
+        for (int i = 0; i < numberOfPrefabs; i++)
+        {
+            // 1. Generate Random Position within the area
+            float randomX = Random.Range(areaMin.x, areaMax.x);
+            float randomY = Random.Range(areaMin.y, areaMax.y);
+            Vector3 spawnPosition = new Vector3(randomX, randomY, transform.position.z);
+
+            // 2. Generate Random Rotation (Direction)
+            // For 2D, rotate around Z axis. For 3D, use random Euler angles.
+            float randomAngle = Random.Range(rotationRangeMin, rotationRangeMax);
+            Quaternion spawnRotation = Quaternion.Euler(0, 0, randomAngle);
+
+            // 3. Instantiate the prefab
+            var go = Instantiate(prefabToSpawn, spawnPosition, spawnRotation);
+
+            // 4. Set visual
+            var bots = soPack.BotsTier1;
+            int rand = Random.Range(0, bots.Length);
+            var unit = bots[rand];
+            go.GetComponent<SpriteRenderer>().sprite = unit.Sprite;
+
+            go.name = DebugID++ + "_" + unit.name;
+        }
+    }
+
     private void Awake()
     {
         if (Instance != null)

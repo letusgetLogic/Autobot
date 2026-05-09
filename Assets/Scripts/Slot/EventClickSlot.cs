@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EventClickSlot : MonoBehaviour, IPointerClickHandler
@@ -65,14 +66,25 @@ public class EventClickSlot : MonoBehaviour, IPointerClickHandler
                     return;
                 }
 
-                PhaseShopController.Instance.ManageAttachedUnit(attached, slot, null);
+                coroutine = PhaseShopController.Instance.StartCoroutine(ManageAttachedUnit(attached));
                 PhaseShopController.Instance.SetAttachedGameObject(null);
+                return;
             }
+
+            InputManager.Instance.BlocksInput = false;
         }
         else // An unit is on the slot, switch attached to it.
         {
             PhaseShopController.Instance.SetAttachedGameObject(unit);
             InputManager.Instance.BlocksInput = false;
         }
+    }
+    private Coroutine coroutine;
+    private IEnumerator ManageAttachedUnit(UnitController _attached)
+    {
+        yield return PhaseShopController.Instance.ManageAttachedUnit(_attached, slot, null);
+
+        InputManager.Instance.BlocksInput = false;
+        coroutine = null;
     }
 }

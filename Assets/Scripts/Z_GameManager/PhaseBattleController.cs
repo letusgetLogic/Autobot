@@ -87,20 +87,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
             GameManager.Instance.Replay.Switch(GameState.StartOfBattle);
         else
             GameManager.Instance.Switch(GameState.StartOfBattle);
-
-        //StartCoroutine(SetHintClick());
     }
-
-    ///// <summary>
-    ///// Set the player name to the hint click.
-    ///// </summary>
-    ///// <returns></returns>
-    //private IEnumerator SetHintClick()
-    //{
-    //    yield return new WaitUntil(() => CutScene.Instance != null);
-
-    //    CutScene.Instance.SetHintClickClose("", true);
-    //}
 
     private void Start()
     {
@@ -135,7 +122,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         if (state == null)
             return;
 
-        float speed = GameManager.Instance.BattleSpeed * Time.deltaTime/* * GameManager.Instance.CurrentSpeedMultiplier*/;
+        float speed = GameManager.Instance.BattleSpeed * Time.deltaTime /** GameManager.Instance.CurrentSpeedMultiplier*/;
         state.OnUpdate(this, speed);
 
         if (SubState != null)

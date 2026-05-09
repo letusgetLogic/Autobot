@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -54,8 +55,16 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
         // EndDrag set later blocking input = false.
         InputManager.Instance.BlocksInput = true;
 
-        PhaseShopController.Instance.ManageAttachedUnit(attached, slot, slot.UnitController());
+        coroutine = PhaseShopController.Instance.StartCoroutine(ManageAttachedUnit(attached));
         PhaseShopController.Instance.SetAttachedGameObject(null);
-        PhaseShopController.Instance.SetItemRandomnessInactive();
+    }
+
+    private Coroutine coroutine;
+    private IEnumerator ManageAttachedUnit(UnitController _attached)
+    {
+        yield return PhaseShopController.Instance.ManageAttachedUnit(_attached, slot, slot.UnitController());
+
+        InputManager.Instance.BlocksInput = false;
+        coroutine = null;
     }
 }
