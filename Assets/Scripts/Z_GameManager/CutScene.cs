@@ -129,7 +129,7 @@ public class CutScene : MonoBehaviour
 
         ClosePanel.ScaleUp(true);
 
-        //EventManager.Instance.OnCloseSceneSound?.Invoke();
+        EventManager.Instance.OnCloseSceneSound?.Invoke();
 
         yield return new WaitForSeconds(ClosePanel.AnimTime);
 

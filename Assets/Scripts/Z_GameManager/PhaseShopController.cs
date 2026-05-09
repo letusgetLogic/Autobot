@@ -533,7 +533,7 @@ public class PhaseShopController : MonoBehaviour
         {
             if (_purchased.Model.Data.UnitType == UnitType.Item)
             {
-                // case: virus wouldn't trigger ability
+                // case: virus wouldn't trigger ability on shutdown unit
                 if (IsBuyingItemNotUseful(_purchased, _target))
                 {
                     var panel = PhaseShopUI.Instance.PanelShutdownNotTrigger;

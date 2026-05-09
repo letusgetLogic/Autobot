@@ -509,6 +509,7 @@ public class TutorialManager : MonoBehaviour
                 AbilitySlot.EnergyIndicator.SetActive(false);
             }
         }
+        activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
         activeHints.Clear();
     }
 
@@ -528,6 +529,7 @@ public class TutorialManager : MonoBehaviour
                 && (_unit.Model.SoUnit.Name == "Gold Eye" || _unit.Model.SoUnit.ModelID == "RC-BF-2R"))
         {
             _unit.View.SetDescriptionActive(false);
+            activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
             SetNextStep();
         }
     }
@@ -614,13 +616,6 @@ public class TutorialManager : MonoBehaviour
         }
 
         return false;
-    }
-
-    private IEnumerator DeactivateHintArrowSlot(bool _case)
-    {
-        yield return new WaitUntil(() => _case);
-        activeHints.ForEach(slot => slot.Tutorial.HintArrow.SetActive(false));
-        coroutineDeactivateArrow = null;
     }
 
     /// <summary>

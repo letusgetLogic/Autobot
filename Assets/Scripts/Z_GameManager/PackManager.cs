@@ -215,7 +215,6 @@ public class PackManager : MonoBehaviour
 
     public void ResetPack()
     {
-        MyPack = null;
         Bots.Clear();
         Items.Clear();
     }

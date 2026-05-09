@@ -501,6 +501,7 @@ public class UnitController : MonoBehaviour
             // Add temporary buff.
             model.Add(new Attribute(0, 0, 0), _attribute);
 
+        model.View.SetBuyOrSell(model.Sell, false, model.Data.UnitType);
         view.ShowBuff(_attribute);
         view.GetTargetedByAbility();
 
@@ -529,7 +530,7 @@ public class UnitController : MonoBehaviour
     public float SwapMoveToParent(Vector3 _target, Transform _parent, SoLerpMovementSettings _so)
     {
         float animDelay = toNextSlotMover.MoveTo(_target, _parent, _so);
-
+        
         return animDelay;
     }
 

@@ -976,7 +976,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -2793,7 +2793,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 7389531910738118428, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3118,7 +3118,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 7389531910738118428, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3792,7 +3792,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -5891,7 +5891,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 7389531910738118428, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8477,13 +8477,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot Team (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4284081654376497277, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7389531910738118428, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 7389531910738118428, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8750,7 +8754,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -8923,27 +8927,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1920
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1080
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8975,7 +8979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1920
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7971707411603769596, guid: 3950cdc6536dfdd48ad1d7fe015d19ab, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9036,7 +9040,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -9652,7 +9656,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 7389531910738118428, guid: ea277f6be7dfd384aaf249c292f93b0d, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11710,7 +11714,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -55.300087, y: 1.1999955}
-  m_SizeDelta: {x: 45, y: 45}
+  m_SizeDelta: {x: 43, y: 43}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1949726912149550824
 CanvasRenderer:
@@ -12151,7 +12155,7 @@ PrefabInstance:
       objectReference: {fileID: 6341117824451997600}
     - target: {fileID: 74285316413934389, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_SortingOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 573225990986924566, guid: 05ff7866fca64624a916f79a6376b022, type: 3}
       propertyPath: m_Name
@@ -19310,7 +19314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18823531, g: 0.18431373, b: 0.18823531, a: 1}
+  m_Color: {r: 0.18431373, g: 0.18431373, b: 0.18431373, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

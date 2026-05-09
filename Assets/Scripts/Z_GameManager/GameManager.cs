@@ -204,8 +204,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        PackManager.Instance.InitPack(GameSettings.Instance.DefaultPack);
-
         // auto play in dev mode.
         if (isModeDevelop)
         {
