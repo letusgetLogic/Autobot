@@ -4,7 +4,6 @@ public static class NameList
    {
         "The B-Team",
         "The Rockets",
-        "Megadron",
         "The Tanks",
         "The Terminators",
    };

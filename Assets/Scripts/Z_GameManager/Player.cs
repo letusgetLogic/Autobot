@@ -268,7 +268,18 @@ public class Player
                 }
                 yield return DebugTeamUnit("BuildTeamByAI - Fill from shop");
                 var list = Data.TeamUnitDatas.ToList();
-                list.OrderByDescending(x => x.Cur.HP + x.Cur.ATK).ThenByDescending(x => x.Cur.ATK).ToList();
+                list.OrderByDescending(x => 
+                { 
+                    if (x != null) 
+                        return x.Cur.HP + x.Cur.ATK; 
+                    else return 0; 
+                }).ThenByDescending(x =>
+                {
+                    if (x != null)
+                        return x.Cur.HP + x.Cur.ATK;
+                    else return 0;
+                }).ToList();
+
                 if (Random.Range(0, 2) == 1) // 50% chance last unit to first slot
                 {
                     var last = list[list.Count - 1];

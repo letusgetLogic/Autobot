@@ -182,7 +182,7 @@ public class UnitController : MonoBehaviour
         if (model.Data.Cur.ENG < consumENG)
             return null;
 
-        if (PhaseBattleController.Instance && PhaseBattleController.Instance.HasOutcome())
+        if (_triggerType != TriggerType.Shutdown && PhaseBattleController.Instance && PhaseBattleController.Instance.HasOutcome())
             return null;
 
         // All conditions are satisfied, return the ability.
