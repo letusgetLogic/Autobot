@@ -60,8 +60,10 @@ public class PhaseShopUI : MonoBehaviour
         recycleTool,
         recycleNut;
 
-    [Header("Replay Button")]
+    [Header("Buttons")]
     [SerializeField] private GameObject replayButton;
+    [SerializeField] private Button endTurnButton;
+    public float reactivateDelay = 0.5f;
 
     [Header("Charging Station")]
     [SerializeField] private GameObject chargingStation;
@@ -225,15 +227,21 @@ public class PhaseShopUI : MonoBehaviour
         EventManager.Instance.OnRoll?.Invoke();
     }
 
+    private Coroutine coroutine;
+
     /// <summary>
     /// Ends turn.
     /// </summary>
     public void OnEndTurn()
     {
-        if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonEndTurn))
-            return;
-
+        endTurnButton.interactable = false;
         Debug.Log("End Turn Button Clicked");
+
+        if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonEndTurn))
+        {
+            coroutine = StartCoroutine(EnableButtonAfterDelay(reactivateDelay));
+            return;
+        }
 
         input.BlocksInput = true;
         EventManager.Instance.OnEndTurnButton?.Invoke(InputKey.ClickButtonEndTurn);
@@ -251,9 +259,15 @@ public class PhaseShopUI : MonoBehaviour
         }
         else
         {
+            panelLeftCurrency.ActionOnDeclined = () => endTurnButton.interactable = true;
             panelLeftCurrency.SetData(Player.Data.Tools, Player.Data.Nuts);
             // wait for panelLeftCurrency.Confirm calls PhaseShopController.Instance.EndShop();
         }
+    }
+    private IEnumerator EnableButtonAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        endTurnButton.interactable = true;
     }
 
     #region Manage Buttons
@@ -381,7 +395,7 @@ public class PhaseShopUI : MonoBehaviour
         yield return new WaitUntil(() =>
                            panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed ||
                            panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Declined);
-        
+
         if (panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed)
         {
             _action.Invoke();

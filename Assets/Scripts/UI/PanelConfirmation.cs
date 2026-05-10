@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PanelConfirmation : MonoBehaviour
@@ -22,6 +23,7 @@ public class PanelConfirmation : MonoBehaviour
 
     public Button OnContinueDeclined;
     public Button OnContinueConfirmed;
+    public UnityEvent OnCancelConfirmed;
 
     // you can use type to define each panel display and outcome handling,
     // if type is default (None), the panel can return the event or/and result. 
@@ -30,7 +32,7 @@ public class PanelConfirmation : MonoBehaviour
     [SerializeField] private List<GameObject> leftCurrencyComponents;
     [SerializeField] private List<GameObject> defaultComponents;
 
-   
+    public UnityAction ActionOnDeclined { get; set; }
 
     private void OnEnable()
     {
@@ -61,6 +63,9 @@ public class PanelConfirmation : MonoBehaviour
     private void Decline()
     {
         MyResult = Result.Declined;
+        OnCancelConfirmed?.Invoke();
+        ActionOnDeclined?.Invoke();
+        ActionOnDeclined = null;
 
         OnContinueDeclined.interactable = false;
         gameObject.SetActive(false);

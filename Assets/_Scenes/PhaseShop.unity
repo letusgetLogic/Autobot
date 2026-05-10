@@ -10186,6 +10186,38 @@ PrefabInstance:
       propertyPath: type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4335697955760510578}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_interactable
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.UI.Button, UnityEngine.UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333665965150962752, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: OnCancelConfirmed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7031929659918564228, guid: 9bbca71baba28e84b993740db8887691, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -12995,6 +13027,7 @@ MonoBehaviour:
   recycleTool: {fileID: 1247093063629668119}
   recycleNut: {fileID: 2586409625504307268}
   replayButton: {fileID: 5877232069244262692}
+  endTurnButton: {fileID: 4335697955760510578}
   chargingStation: {fileID: 1160341077}
   energyText: {fileID: 838497591}
   turnToEnable: 1
@@ -15850,6 +15883,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8abe8d9b58e3e5e44a33fbb209796a5e, type: 3}
+--- !u!114 &4335697955760510578 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6091722712747519869, guid: 8abe8d9b58e3e5e44a33fbb209796a5e, type: 3}
+  m_PrefabInstance: {fileID: 4335697955760510577}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &4341323498097256221
 GameObject:
   m_ObjectHideFlags: 0
