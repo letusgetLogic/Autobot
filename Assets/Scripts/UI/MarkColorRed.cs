@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,17 +30,19 @@ public class MarkColorRed : MonoBehaviour
         yield return new WaitForSeconds(_duration);
 
         _target.color = _defaultColor;
+       
     }
+
     /// <summary>
     /// Sets the color of the text red and back to default color with a delay.
     /// </summary>
     /// <param name="_target"></param>
     /// <param name="_duration"></param>
-    public void SetComponent(Image _target, float _duration)
+    public void SetComponent(Image _target, float _duration, Action _action)
     {
         var defaultColor = _target.color;
         _target.color = Color.red;
-        StartCoroutine(SetDefault(_target, _duration, defaultColor));
+        StartCoroutine(SetDefault(_target, _duration, defaultColor, _action));
     }
 
     /// <summary>
@@ -49,11 +52,12 @@ public class MarkColorRed : MonoBehaviour
     /// <param name="_duration"></param>
     /// <param name="_defaultColor"></param>
     /// <returns></returns>
-    private IEnumerator SetDefault(Image _target, float _duration, Color _defaultColor)
+    private IEnumerator SetDefault(Image _target, float _duration, Color _defaultColor, Action _action)
     {
         yield return new WaitForSeconds(_duration);
 
         _target.color = _defaultColor;
+        _action?.Invoke();
     }
 
     /// <summary>

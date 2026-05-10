@@ -8465,12 +8465,18 @@ MonoBehaviour:
   repairStepFillHp1: {fileID: 2885595844939731636}
   repairStepFillHp2: {fileID: 7961873788817610351}
   repairStepFillHp3: {fileID: 2126366847789061967}
+  repairStepBgHp1: {fileID: 2726183554834349311}
+  repairStepBgHp2: {fileID: 7419158393107553308}
+  repairStepBgHp3: {fileID: 973257866400911778}
   repairDisplayAtk: {fileID: 745217876374953693}
   repairPanelAtk2: {fileID: 3592751439967784998}
   repairPanelAtk3: {fileID: 2830242492709776714}
   repairStepFillAtk1: {fileID: 6264506661245693130}
   repairStepFillAtk2: {fileID: 1196285938440890385}
   repairStepFillAtk3: {fileID: 7162433002788989233}
+  repairStepBgAtk1: {fileID: 6571056146982781569}
+  repairStepBgAtk2: {fileID: 1734564255009563234}
+  repairStepBgAtk3: {fileID: 8315326479932698588}
   shutdown: {fileID: 6421296682326630975}
   canvasStats: {fileID: 7261809540764983890}
   settings: {fileID: 11400000, guid: e315c3b302e52d04299609ab2e6c5836, type: 2}
@@ -9079,11 +9085,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+--- !u!114 &973257866400911778 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3409324279981080421, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+  m_PrefabInstance: {fileID: 2509048709296991943}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &2126366847789061967 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4563186423648156040, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
   m_PrefabInstance: {fileID: 2509048709296991943}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2726183554834349311 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 505731360722588216, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+  m_PrefabInstance: {fileID: 2509048709296991943}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &2885595844939731636 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 782039327956106355, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
@@ -9104,6 +9132,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8895358801575017971, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
   m_PrefabInstance: {fileID: 2509048709296991943}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7419158393107553308 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4911117952625160923, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+  m_PrefabInstance: {fileID: 2509048709296991943}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &7961873788817610351 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5525824963648108712, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
@@ -9403,6 +9442,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7773839764603514601, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8895358801575017971, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -9422,6 +9465,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5525824963648108712, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
   m_PrefabInstance: {fileID: 6644396312134111417}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1734564255009563234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4911117952625160923, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+  m_PrefabInstance: {fileID: 6644396312134111417}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &2830242492709776714 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8895358801575017971, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
@@ -9442,11 +9496,33 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 782039327956106355, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
   m_PrefabInstance: {fileID: 6644396312134111417}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6571056146982781569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 505731360722588216, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+  m_PrefabInstance: {fileID: 6644396312134111417}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &7162433002788989233 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4563186423648156040, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
   m_PrefabInstance: {fileID: 6644396312134111417}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8315326479932698588 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3409324279981080421, guid: c4cccc2280ed43b498e4f81991608b38, type: 3}
+  m_PrefabInstance: {fileID: 6644396312134111417}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1001 &7507820646300255021
 PrefabInstance:
   m_ObjectHideFlags: 0

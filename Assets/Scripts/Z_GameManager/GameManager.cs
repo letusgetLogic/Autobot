@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public bool TestBattle;
     [SerializeField] private int defaultTutorialLives = 3;
     [SerializeField] private int devLives = 3;
-    [SerializeField] private float timer = 90.0f;
+    //[SerializeField] private float timer = 90.0f;
 
     [Header("Global Settings")]
     [SerializeField] private float clickCooldown = 0.5f;

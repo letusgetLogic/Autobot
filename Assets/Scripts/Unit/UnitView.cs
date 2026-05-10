@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
 /// Managing Visual Components.
@@ -93,6 +95,14 @@ public class UnitView : MonoBehaviour
         repairStepFillHp1,
         repairStepFillHp2,
         repairStepFillHp3;
+    [SerializeField]
+    private Image
+        repairStepBgHp1,
+        repairStepBgHp2,
+        repairStepBgHp3;
+
+    private Color defaultBgColor = default;
+    private Action setBgDefault;
 
     [Header("Repair Display Attack")]
     [SerializeField] private GameObject repairDisplayAtk;
@@ -105,6 +115,11 @@ public class UnitView : MonoBehaviour
         repairStepFillAtk1,
         repairStepFillAtk2,
         repairStepFillAtk3;
+    [SerializeField]
+    private Image
+        repairStepBgAtk1,
+        repairStepBgAtk2,
+        repairStepBgAtk3;
 
     [Header("Feedback")]
     [SerializeField] private GameObject shutdown;
@@ -146,6 +161,9 @@ public class UnitView : MonoBehaviour
     {
         originalScale = dragSpriteRenderer.gameObject.transform.localScale;
         originalSortingOrder = dragSpriteRenderer.sortingOrder;
+        defaultBgColor = repairStepBgHp1.color;
+        setBgDefault = () => repairStepBgHp1.color = defaultBgColor;
+        // set to all step bg ...
     }
 
     private void OnEnable()
@@ -442,6 +460,21 @@ public class UnitView : MonoBehaviour
         if (repairStepFillAtk1) repairStepFillAtk1.SetActive(_fill1);
         if (repairStepFillAtk2) repairStepFillAtk2.SetActive(_fill2);
         if (repairStepFillAtk3) repairStepFillAtk3.SetActive(_fill3);
+    }
+
+    public void ShowInvalidFusion()
+    {
+        var markColorRed = GetComponent<MarkColorRed>();
+        if (markColorRed == null)
+            markColorRed = gameObject.AddComponent<MarkColorRed>();
+
+        if (repairStepFillHp1 && repairStepFillHp1.activeSelf == false) markColorRed.SetComponent(repairStepBgHp1, 0.2f, setBgDefault);
+        if (repairStepFillHp2 && repairStepFillHp2.activeSelf == false) markColorRed.SetComponent(repairStepBgHp2, 0.2f, setBgDefault);
+        if (repairStepFillHp3 && repairStepFillHp3.activeSelf == false) markColorRed.SetComponent(repairStepBgHp3, 0.2f, setBgDefault);
+
+        if (repairStepFillAtk1 && repairStepFillAtk1.activeSelf == false) markColorRed.SetComponent(repairStepBgAtk1, 0.2f, setBgDefault);
+        if (repairStepFillAtk2 && repairStepFillAtk2.activeSelf == false) markColorRed.SetComponent(repairStepBgAtk2, 0.2f, setBgDefault);
+        if (repairStepFillAtk3 && repairStepFillAtk3.activeSelf == false) markColorRed.SetComponent(repairStepBgAtk3, 0.2f, setBgDefault);
     }
 
     /// <summary>

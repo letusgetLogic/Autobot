@@ -548,7 +548,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(nutBG, durationCoinsRedDefault);
+        markColorRed.SetComponent(nutBG, durationCoinsRedDefault, null);
     }
 
     /// <summary>
@@ -560,7 +560,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(toolBG, durationCoinsRedDefault);
+        markColorRed.SetComponent(toolBG, durationCoinsRedDefault, null);
     }
 
     /// <summary>

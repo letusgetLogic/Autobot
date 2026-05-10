@@ -512,7 +512,7 @@ public class PhaseShopController : MonoBehaviour
                     Transport(_attached, _targetSlot.transform, true);
                 else
                     // else fusion, if both are fusible.
-                    if (IsFusible(_target, _attached))
+                    if (IsFusible(_target, _attached, true))
                     {
                         _target.UpdateLevel(_attached.Model.Data, true);
                         Destroy(_attached.gameObject);
@@ -520,7 +520,7 @@ public class PhaseShopController : MonoBehaviour
                     else yield return StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
             }
         }
-       
+
     }
 
     /// <summary>
@@ -544,7 +544,7 @@ public class PhaseShopController : MonoBehaviour
                         yield return new WaitUntil(() =>
                             panel.MyResult == PanelConfirmation.Result.Confirmed ||
                             panel.MyResult == PanelConfirmation.Result.Declined);
-                      
+
                         if (panel.MyResult == PanelConfirmation.Result.Declined)
                         {
                             _target.View.SetDescriptionActive(false);
@@ -567,17 +567,24 @@ public class PhaseShopController : MonoBehaviour
                 Destroy(_purchased.gameObject);
             }
             // case: buy and bots are fusible.
-            else if (IsFusible(_target, _purchased))
+            else
             {
-                _target.UpdateLevel(_purchased.Model.Data, true);
-                _target.TriggerCraft();
+                if (IsFusible(_target, _purchased, true))
+                {
+                    _target.UpdateLevel(_purchased.Model.Data, true);
+                    _target.TriggerCraft();
 
-                PhaseShopUI.Instance.UpdateCurrency(
-                     _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
+                    PhaseShopUI.Instance.UpdateCurrency(
+                         _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
+                    EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
 
-                Destroy(_purchased.gameObject);
+                    Destroy(_purchased.gameObject);
+                }
+                else if (_target.Model.IsFullDurability() == false) // target don't have enough durability
+                {
+                    _target.View.ShowInvalidFusion();
+                }
             }
         }
         else // case: buy and place dragging bot on empty slot.
@@ -959,9 +966,12 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_onSlot"></param>
     /// <param name="_onDrag"></param>
     /// <returns></returns>
-    public bool IsFusible(UnitController _onSlot, UnitController _onDrag)
+    public bool IsFusible(UnitController _onSlot, UnitController _onDrag, bool _hintInvalid)
     {
         if (_onDrag == _onSlot)
+            return false;
+
+        if (_onSlot.Model.SoUnit.Name != _onDrag.Model.SoUnit.Name)
             return false;
 
         if (_onSlot.Model.IsRobot() == false ||
@@ -971,14 +981,26 @@ public class PhaseShopController : MonoBehaviour
         if (_onSlot.Model.IsMaxed || _onDrag.Model.IsMaxed)
             return false;
 
+        bool onSlotHasFullDur = true;
         if (_onSlot.Model.IsFullDurability() == false)
+        {
+            onSlotHasFullDur = false;
+            if (_hintInvalid)
+                _onSlot.View.ShowInvalidFusion();
+        }
+
+        if (_onDrag.Model.IsFullDurability() == false)
+        {
+            if (_hintInvalid)
+                _onDrag.View.ShowInvalidFusion();
+
+            return false;
+        }
+
+        if (onSlotHasFullDur == false)
             return false;
 
-        if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name &&
-            _onSlot.Model.IsFullDurability() && _onDrag.Model.IsFullDurability())
-            return true;
-
-        return false;
+        return true;
     }
 
     public bool IsTurnAI()

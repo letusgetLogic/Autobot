@@ -261,7 +261,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         bool slotEmpty = Unit() == null;
 
-        bool isFusible = slotEmpty ? false : PhaseShopController.Instance.IsFusible(UnitController(), _attached);
+        bool isFusible = slotEmpty ? false : PhaseShopController.Instance.IsFusible(UnitController(), _attached, false);
 
         bool isAttachedItem = _attached.Model.Data.UnitType == UnitType.Item;
         bool isShutdown = false;

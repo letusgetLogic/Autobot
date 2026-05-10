@@ -85,8 +85,9 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
 
                 // Check if unit on slot is fusible with attached.
                 bool isFusible = PhaseShopController.Instance.IsFusible(
-                    slot.UnitController(),
-                    unitDragged);
+                    unitOnSlot,
+                    unitDragged,
+                    false);
 
                 // Set countdown based on fusibility.
                 countDown = isFusible ?
