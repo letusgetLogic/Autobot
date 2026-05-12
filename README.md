@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
-# Autobot ![Cover](/Screenshots/Cover.png")
+# Autobot ![Cover](Screenshots/Cover.png")
 Ein 2D-Unity-Projekt über ein Strategiespiel mit Mechaniken von einem Auto-Battler.
 
 ------------------------------------------------------------------------
