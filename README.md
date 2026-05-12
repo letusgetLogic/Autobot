@@ -6,6 +6,7 @@ Ein 2D-Unity-Projekt über ein Strategiespiel mit Mechaniken von einem Auto-Batt
 
 ## Projekt
 Dieses Projekt wurde für das Modul **5FSC0XD101** am **SAE Institute Hannover** erstellt.
+
 Es beinhaltet Aufgaben: Spieleprototyp, Alpha, Beta, Goldmaster, Projektreflexion.
 
 Entwicklungs-Zeitraum: **11.09.2025 - 05.03.2026**
