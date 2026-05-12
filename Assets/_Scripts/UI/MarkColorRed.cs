@@ -38,11 +38,10 @@ public class MarkColorRed : MonoBehaviour
     /// </summary>
     /// <param name="_target"></param>
     /// <param name="_duration"></param>
-    public void SetComponent(Image _target, float _duration, Action _action)
+    public void SetComponent(Image _target, Color _defaultColor, float _duration, Action _action)
     {
-        var defaultColor = _target.color;
         _target.color = Color.red;
-        StartCoroutine(SetDefault(_target, _duration, defaultColor, _action));
+        StartCoroutine(SetDefault(_target, _defaultColor, _duration, _action));
     }
 
     /// <summary>
@@ -52,7 +51,7 @@ public class MarkColorRed : MonoBehaviour
     /// <param name="_duration"></param>
     /// <param name="_defaultColor"></param>
     /// <returns></returns>
-    private IEnumerator SetDefault(Image _target, float _duration, Color _defaultColor, Action _action)
+    private IEnumerator SetDefault(Image _target, Color _defaultColor, float _duration, Action _action)
     {
         yield return new WaitForSeconds(_duration);
 

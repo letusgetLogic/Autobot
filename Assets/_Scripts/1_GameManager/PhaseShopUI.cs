@@ -39,6 +39,7 @@ public class PhaseShopUI : MonoBehaviour
         toolLabel;
     [SerializeField] private WrenchLevelUp toolAdding;
     [SerializeField] private Image nutBG, toolBG;
+    private Color defaultNutBgColor, defaultToolBgColor;
     [SerializeField] private RectTransform clockPointer;
 
     [Header("Roll Button")]
@@ -93,6 +94,12 @@ public class PhaseShopUI : MonoBehaviour
         }
 
         Settings();
+    }
+
+    private void Start()
+    {
+        defaultNutBgColor = nutBG.color;
+        defaultToolBgColor = toolBG.color;
     }
 
     private void OnEnable()
@@ -562,7 +569,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(nutBG, durationCoinsRedDefault, null);
+        markColorRed.SetComponent(nutBG, defaultNutBgColor, durationCoinsRedDefault, null);
     }
 
     /// <summary>
@@ -574,7 +581,7 @@ public class PhaseShopUI : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(toolBG, durationCoinsRedDefault, null);
+        markColorRed.SetComponent(toolBG, defaultToolBgColor, durationCoinsRedDefault, null);
     }
 
     /// <summary>

@@ -10,8 +10,6 @@ using UnityEngine.UI;
 /// </summary>
 public class UnitView : MonoBehaviour
 {
-    #region Variables
-
     [Header("Smoke Effect")]
     [SerializeField] private ParticleSystem smoke;
 
@@ -135,7 +133,6 @@ public class UnitView : MonoBehaviour
 
     private int originalSortingOrder;
 
-    #endregion
 
 
     private void OnValidate()
@@ -467,13 +464,13 @@ public class UnitView : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        if (repairStepFillHp1 && repairStepFillHp1.activeSelf == false && repairStepBgHp1) markColorRed.SetComponent(repairStepBgHp1, 0.2f, () => repairStepBgHp1.color = defaultBgColor);
-        if (repairStepFillHp2 && repairStepFillHp2.activeSelf == false && repairStepBgHp2) markColorRed.SetComponent(repairStepBgHp2, 0.2f, () => repairStepBgHp2.color = defaultBgColor);
-        if (repairStepFillHp3 && repairStepFillHp3.activeSelf == false && repairStepBgHp3) markColorRed.SetComponent(repairStepBgHp3, 0.2f, () => repairStepBgHp3.color = defaultBgColor);
+        if (repairStepFillHp1 && repairStepFillHp1.activeSelf == false && repairStepBgHp1) markColorRed.SetComponent(repairStepBgHp1, defaultBgColor, 0.2f, null);
+        if (repairStepFillHp2 && repairStepFillHp2.activeSelf == false && repairStepBgHp2) markColorRed.SetComponent(repairStepBgHp2, defaultBgColor, 0.2f, null);
+        if (repairStepFillHp3 && repairStepFillHp3.activeSelf == false && repairStepBgHp3) markColorRed.SetComponent(repairStepBgHp3, defaultBgColor, 0.2f, null);
 
-        if (repairStepFillAtk1 && repairStepFillAtk1.activeSelf == false && repairStepBgAtk1) markColorRed.SetComponent(repairStepBgAtk1, 0.2f, () => repairStepBgAtk1.color = defaultBgColor);
-        if (repairStepFillAtk2 && repairStepFillAtk2.activeSelf == false && repairStepBgAtk2) markColorRed.SetComponent(repairStepBgAtk2, 0.2f, () => repairStepBgAtk2.color = defaultBgColor);
-        if (repairStepFillAtk3 && repairStepFillAtk3.activeSelf == false && repairStepBgAtk3) markColorRed.SetComponent(repairStepBgAtk3, 0.2f, () => repairStepBgAtk3.color = defaultBgColor);
+        if (repairStepFillAtk1 && repairStepFillAtk1.activeSelf == false && repairStepBgAtk1) markColorRed.SetComponent(repairStepBgAtk1, defaultBgColor, 0.2f, null);
+        if (repairStepFillAtk2 && repairStepFillAtk2.activeSelf == false && repairStepBgAtk2) markColorRed.SetComponent(repairStepBgAtk2, defaultBgColor, 0.2f, null);
+        if (repairStepFillAtk3 && repairStepFillAtk3.activeSelf == false && repairStepBgAtk3) markColorRed.SetComponent(repairStepBgAtk3, defaultBgColor, 0.2f, null);
     }
 
     /// <summary>
