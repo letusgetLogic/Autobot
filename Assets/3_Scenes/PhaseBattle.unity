@@ -1351,26 +1351,10 @@ PrefabInstance:
       propertyPath: _gameObject
       value: 
       objectReference: {fileID: 1588840806}
-    - target: {fileID: 4703755952804133106, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
-      propertyPath: CoverPanelsToDeactivate.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4703755952804133106, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
-      propertyPath: 'CoverPanelsToDeactivate.Array.data[0]'
-      value: 
-      objectReference: {fileID: 176535294}
     - target: {fileID: 5336668436006901540, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: _gameObject
       value: 
       objectReference: {fileID: 1588840806}
-    - target: {fileID: 5349523215106947407, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
-      propertyPath: CoverPanels.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5349523215106947407, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
-      propertyPath: 'CoverPanels.Array.data[0]'
-      value: 
-      objectReference: {fileID: 176535294}
     - target: {fileID: 5894114498672300871, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1455,10 +1439,6 @@ PrefabInstance:
       propertyPath: _gameObject
       value: 
       objectReference: {fileID: 1588840806}
-    - target: {fileID: 7178445535778415135, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7561420934996691726, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
       propertyPath: m_Name
       value: Tutorial
@@ -1472,11 +1452,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
---- !u!1 &176535294 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7878089633023215717, guid: 03b5bb9f1ec0a094698b26fa014d4abd, type: 3}
-  m_PrefabInstance: {fileID: 176535293}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &191692318
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -62,21 +62,22 @@ public class PanelConfirmation : MonoBehaviour
 
     private void Decline()
     {
+        OnContinueDeclined.gameObject.SetActive(false);
         MyResult = Result.Declined;
         OnCancelConfirmed?.Invoke();
         ActionOnDeclined?.Invoke();
         ActionOnDeclined = null;
 
-        OnContinueDeclined.interactable = false;
         gameObject.SetActive(false);
         InputManager.Instance.BlocksInput = false;
     }
 
     private void Confirm()
     {
+        OnContinueConfirmed.gameObject.SetActive(false);
+
         MyResult = Result.Confirmed;
 
-        OnContinueConfirmed.interactable = false;
         gameObject.SetActive(false);
 
         switch (type)
