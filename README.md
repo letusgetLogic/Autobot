@@ -37,8 +37,9 @@ Aufgaben:
 
 ------------------------------------------------------------------------
 
-## Zusätzliche Features
-- Cover-Bild mit zufällig generierte Positionen und Drehungen von Robotern
+## Anmerkungen
+- Erstellung von Cover-Bild mit zufällig generierte Positionen und Drehungen von Robotern
+- Auseinandersetzung von Copyrights von Assets von externalen Creators, AI und sich selbst
 
 ------------------------------------------------------------------------
 
