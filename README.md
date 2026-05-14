@@ -32,8 +32,8 @@ Aufgaben:
 - Cutscenes
 - Replay System
 - Katalog
-- Tutorial
-- KI-Spieler
+- Interaktives Tutorial-System
+- KI-Spieler-Algorithmus
 
 ------------------------------------------------------------------------
 
