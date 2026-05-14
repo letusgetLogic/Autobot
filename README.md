@@ -37,6 +37,11 @@ Aufgaben:
 
 ------------------------------------------------------------------------
 
+## Zusätzliche Features
+- Cover-Bild mit zufällig generierte Positionen und Drehungen von Robotern
+
+------------------------------------------------------------------------
+
 ## Demonstration
 
 [Autobot by nambition](https://nambition.itch.io/autobot)
