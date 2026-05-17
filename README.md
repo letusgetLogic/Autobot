@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
-# Autobot ![Cover](/Screenshots/")
+# Autobot 
 Ein 2D-Unity-Projekt über ein Strategiespiel mit Mechaniken von einem Auto-Battler.
 
 ------------------------------------------------------------------------
@@ -32,8 +32,14 @@ Aufgaben:
 - Cutscenes
 - Replay System
 - Katalog
-- Tutorial
-- KI-Spieler
+- Interaktives Tutorial-System
+- KI-Spieler-Algorithmus
+
+------------------------------------------------------------------------
+
+## Anmerkungen
+- Erstellung von Cover-Bild mit zufällig generierte Positionen und Drehungen von Robotern
+- Auseinandersetzung von Copyrights von Assets von externalen Creators, AI und sich selbst
 
 ------------------------------------------------------------------------
 
