@@ -509,7 +509,7 @@ public class PhaseShopController : MonoBehaviour
                 // then check if the slot is empty,
                 if (_target == null)
                     // transport the unit to it,
-                    Transport(_attached, _targetSlot.transform, true);
+                    Transport(_attached, _targetSlot, true);
                 else
                     // else fusion, if both are fusible.
                     if (IsFusible(_target, _attached, true))
@@ -517,7 +517,7 @@ public class PhaseShopController : MonoBehaviour
                         _target.UpdateLevel(_attached.Model.Data, true);
                         Destroy(_attached.gameObject);
                     }
-                    else yield return StartCoroutine(Swap(_target, _attached.Slot.transform, _attached, _targetSlot.transform));
+                    else yield return StartCoroutine(Swap(_target, _attached.Slot, _attached, _targetSlot));
             }
         }
 
@@ -533,6 +533,12 @@ public class PhaseShopController : MonoBehaviour
         {
             if (_purchased.Model.Data.UnitType == UnitType.Item)
             {
+                if (TutorialManager.Instance && TutorialManager.Instance.IsPreventingInstallBattery(_targetSlot))
+                {
+                    EventManager.Instance.OnInvalidInput?.Invoke();
+                    yield break;
+                }
+
                 // case: virus wouldn't trigger ability on shutdown unit
                 if (IsBuyingItemNotUseful(_purchased, _target))
                 {
@@ -594,7 +600,7 @@ public class PhaseShopController : MonoBehaviour
                 PhaseShopUI.Instance.UpdateCurrency(
                    _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
 
-                Transport(_purchased, _targetSlot.transform, true);
+                Transport(_purchased, _targetSlot, true);
 
                 EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
 
@@ -614,7 +620,7 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_dropSlot"></param>
     /// <param name="_mouseRelease"> unitView.BeingReleased(null); </param>
     /// <param name="_disableShadow">  unitView.Shadow.enabled = false;</param>
-    public void Transport(UnitController _attached, Transform _dropSlot, bool _mouseRelease)
+    public void Transport(UnitController _attached, Slot _dropSlot, bool _mouseRelease)
     {
         HideDescriptionOfUnits();
 
@@ -624,7 +630,7 @@ public class PhaseShopController : MonoBehaviour
         if (_attached.transform.parent)
             _attached.transform.parent.GetComponent<Slot>().SetIndicatorActive(false);
 
-        _attached.transform.SetParent(_dropSlot, false);
+        _attached.transform.SetParent(_dropSlot.transform, false);
 
         var model = _attached.Model;
         var view = _attached.View;
@@ -647,6 +653,7 @@ public class PhaseShopController : MonoBehaviour
         }
 
         EventManager.Instance.OnDropUnit?.Invoke();
+        EventManager.Instance.OnDropUnitSlot?.Invoke(_dropSlot);
         Player.UpdateUnitData();
     }
 
@@ -659,8 +666,8 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_slotTarget"></param>
     /// <returns></returns>
     public IEnumerator Swap(
-        UnitController _unitTarget, Transform _slotDragged,
-        UnitController _unitDragged, Transform _slotTarget)
+        UnitController _unitTarget, Slot _slotDragged,
+        UnitController _unitDragged, Slot _slotTarget)
     {
         IsSwapping = true;
 
@@ -675,7 +682,7 @@ public class PhaseShopController : MonoBehaviour
         {
             _unitTarget.transform.SetParent(null, true);
             _unitTargetView.SetSpriteOverOther();
-            delay1 = _unitTarget.SwapMoveToParent(_slotDragged.position, _slotDragged, unitSwapSettings);
+            delay1 = _unitTarget.SwapMoveToParent(_slotDragged.transform.position, _slotDragged.transform, unitSwapSettings);
             EventManager.Instance.OnSwap?.Invoke();
         }
 
@@ -690,7 +697,7 @@ public class PhaseShopController : MonoBehaviour
         if (_unitDragged != null && _slotTarget != null)
         {
             _unitDragged.BeginSwap();
-            delay2 = _unitDragged.SwapMoveToParent(_slotTarget.position, _slotTarget, unitSwapSettings);
+            delay2 = _unitDragged.SwapMoveToParent(_slotTarget.transform.position, _slotTarget.transform, unitSwapSettings);
             EventManager.Instance.OnSwap?.Invoke();
         }
 
@@ -736,13 +743,13 @@ public class PhaseShopController : MonoBehaviour
                     if (movedUnit == null ||
                         movedUnit == AttachedController) // unit being moved is null or self, break foe loop
                         break;
-                    Transport(movedUnit, teamSlots[empty].transform, false);
+                    Transport(movedUnit, teamSlots[empty], false);
                 }
 
                 if (AttachedController.Model.Data.UnitState
                     == UnitState.InSlotTeam)
                 {
-                    Transport(AttachedController, teamSlots[_target].transform, true);
+                    Transport(AttachedController, teamSlots[_target], true);
                     SetAttachedGameObject(null);
                 }
                 else if (AttachedController.Model.Data.UnitState

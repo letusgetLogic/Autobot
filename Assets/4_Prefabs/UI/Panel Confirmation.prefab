@@ -243,10 +243,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6905850170626602769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 117, y: 57}
+  m_SizeDelta: {x: -3, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8955827066629667023
 CanvasRenderer:
@@ -743,10 +743,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6567550556756784220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 117, y: 57}
+  m_SizeDelta: {x: -3, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &192179043032655630
 CanvasRenderer:
@@ -1335,6 +1335,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnContinueDeclined: {fileID: 3876520136324267802}
   OnContinueConfirmed: {fileID: 1612421606846898523}
+  OnCancelConfirmed:
+    m_PersistentCalls:
+      m_Calls: []
   type: 0
   tool: {fileID: 4315882850175661537}
   nut: {fileID: 4816994580203772912}

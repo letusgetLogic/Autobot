@@ -47,6 +47,7 @@ public class EventManager
 
     public UnityAction<UnitController> OnAttachedUnit { get; set; }
     public UnityAction<UnitController> OnAttachedUnitCatalog { get; set; }
+    public UnityAction<Slot> OnDropUnitSlot { get; set; }
     public UnityAction OnDropUnit { get; set; }
     public UnityAction OnRoll {  get; set; }
     public UnityAction<InputKey> OnEndTurnButton {  get; set; }
@@ -54,6 +55,7 @@ public class EventManager
     public UnityAction OnEndTurnCharged {  get; set; }
 
     public UnityAction<InputKey> OnCraft {  get; set; }
+    public UnityAction<Slot> OnCraftSlot {  get; set; }
     public UnityAction<InputKey> OnRecycle { get; set; }
     public UnityAction<InputKey> OnRecycleSound { get; set; }
 

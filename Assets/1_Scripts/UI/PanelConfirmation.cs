@@ -42,9 +42,9 @@ public class PanelConfirmation : MonoBehaviour
         leftCurrencyComponents.ForEach(x => x.SetActive(type == Type.LeftCurrency));
         defaultComponents.ForEach(x => x.SetActive(type == Type.ToMenu || type == Type.None));
 
-        OnContinueDeclined.interactable = true;
+        OnContinueDeclined.gameObject.SetActive(true);
         OnContinueDeclined.onClick.AddListener(Decline);
-        OnContinueConfirmed.interactable = true;
+        OnContinueConfirmed.gameObject.SetActive(true);
         OnContinueConfirmed.onClick.AddListener(Confirm);
     }
 

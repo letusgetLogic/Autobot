@@ -68,6 +68,8 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void OnMouseOver()
     {
+        // swap is necessary, when both robots are fusible, but player just want change position.
+
         if (InputManager.Instance.IsBlockingInput(inputKey))
             return;
 
@@ -111,8 +113,8 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
                 PhaseShopController.Instance.SetAttachedGameObject(null);
 
                 StartCoroutine(PhaseShopController.Instance.Swap(
-                    unitOnSlot, draggedSlot.transform,
-                    unitDragged, slot.transform));
+                    unitOnSlot, draggedSlot,
+                    unitDragged, slot));
 
                 SetDefault();
 

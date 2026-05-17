@@ -1,9 +1,5 @@
 ﻿public class AI_Idle : StateBaseAI
 {
-    public AI_Idle() : base()
-    {
-    }
-
     public override void OnEnter(I_FSM_AI _ctx)
     {
         throw new System.NotImplementedException();

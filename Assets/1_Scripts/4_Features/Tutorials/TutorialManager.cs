@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 [DisallowMultipleComponent]
 public class TutorialManager : MonoBehaviour
@@ -95,6 +96,7 @@ public class TutorialManager : MonoBehaviour
 
     private float countTime = 0f;
     private float lagCount = 0f;
+    private float delayClickCountTime = 0f;
 
     private enum RunState { None, Start, Delay, Duration, DurationHide, AFK }
     private RunState runState = RunState.None;
@@ -111,8 +113,8 @@ public class TutorialManager : MonoBehaviour
 
     private List<Slot> activeHints { get; set; } = new();
 
-    // Conflict by SoTutorialSettings.Duration = 0s, countTime stop by reached 0, so "duration - 1f" is never true. 
-    //private bool isSettingInput;
+    private bool isSettingInput;
+    private bool hasShowedAbility;
 
 
     [ContextMenu("OnReset")]
@@ -287,16 +289,17 @@ public class TutorialManager : MonoBehaviour
 
                     OnValidatedEnter();
 
-                    //isSettingInput = true;
-                    currentAllowedInputs = settings[(int)currentState].AllowedInputs;
+                    isSettingInput = true;
+                    //currentAllowedInputs = settings[(int)currentState].AllowedInputs;
                     countTime = settings[(int)currentState].Duration;
+                    delayClickCountTime = 1f;
                     runState = RunState.Duration;
                     break;
 
                 case RunState.Duration:
                     if (settings[(int)currentState].AutoCompleted)
                     {
-                        SetNextStep();
+                        StartStep(currentState + 1);
                         return;
                     }
                     Debug.Log($"{currentState}.OnLateEnter");
@@ -314,6 +317,12 @@ public class TutorialManager : MonoBehaviour
             }
         }
 
+        if (isSettingInput && delayClickCountTime <= 0)
+        {
+            currentAllowedInputs = settings[(int)currentState].AllowedInputs;
+            isSettingInput = false;
+        }
+
         // Conflict by SoTutorialSettings.Duration = 0s, countTime stop by reached 0, so "duration - 1f" is never true. 
         //if (countTime < settings[(int)currentState].Duration - 1f && isSettingInput)
         //{
@@ -325,9 +334,14 @@ public class TutorialManager : MonoBehaviour
         {
             countTime -= Time.deltaTime;
         }
+
+        if (delayClickCountTime > 0)
+        {
+            delayClickCountTime -= Time.deltaTime;
+        }
     }
 
-    public void SetNextStep()
+    public void StartStep(StepState _state)
     {
         runState = RunState.None;
         currentAllowedInputs = new();
@@ -352,16 +366,16 @@ public class TutorialManager : MonoBehaviour
                 currentStep.gameObject.SetActive(false);
             }
 
-            currentState++;
+            currentState = _state;
             runState = RunState.Start;
             countTime = 0f;
             return;
         }
 
-        coroutineNextStep = StartCoroutine(DelaySetNextStep(delay));
+        coroutineNextStep = StartCoroutine(DelaySetNextStep(delay, _state));
     }
 
-    private IEnumerator DelaySetNextStep(float _delay)
+    private IEnumerator DelaySetNextStep(float _delay, StepState _state)
     {
         yield return new WaitForSeconds(_delay);
 
@@ -381,7 +395,7 @@ public class TutorialManager : MonoBehaviour
             currentStep.gameObject.SetActive(false);
         }
 
-        currentState++;
+        currentState = _state;
         runState = RunState.Start;
         countTime = 0f;
 
@@ -390,7 +404,72 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedEnter()
     {
-        if (currentState == StepState.LockBattery)
+        if (currentState == StepState.PickOthers)
+        {
+            foreach (var slot in PhaseShopController.Instance.ShopBotSlots)
+            {
+                var unit = slot.UnitController();
+                if (unit != null)
+                {
+                    if (slot.Tutorial)
+                    {
+                        slot.Tutorial.HintArrow.SetActive(true);
+                        activeHints.Add(slot);
+                    }
+                }
+            }
+            foreach (var slot in PhaseShopController.Instance.TeamSlots)
+            {
+                var unit = slot.UnitController();
+                if (unit == null)
+                {
+                    if (slot.Tutorial)
+                    {
+                        slot.Tutorial.HintArrow.SetActive(true);
+                        activeHints.Add(slot);
+                    }
+                }
+            }
+        }
+        else if (currentState == StepState.PickBattery)
+        {
+            foreach (var slot in PhaseShopController.Instance.ShopItemSlots)
+            {
+                var unit = slot.UnitController();
+                if (unit != null)
+                {
+                    if (slot.Tutorial)
+                    {
+                        slot.Tutorial.HintArrow.SetActive(true);
+                        activeHints.Add(slot);
+                    }
+                }
+            }
+            foreach (var slot in PhaseShopController.Instance.TeamSlots)
+            {
+                var unit = slot.UnitController();
+                if (unit != null && !(unit.Model.SoUnit.Name == "Gold Eye" || unit.Model.SoUnit.ModelID == "RC-BF-2R"))
+                {
+                    if (slot.Tutorial)
+                    {
+                        slot.Tutorial.HintArrow.SetActive(true);
+                        activeHints.Add(slot);
+                    }
+                }
+            }
+        }
+        else if (currentState == StepState.ShowFactoryReseted)
+        {
+            foreach (var slot in PhaseShopController.Instance.ShopItemSlots)
+            {
+                if (slot.Tutorial && slot.UnitController())
+                {
+                    slot.Tutorial.HintArrow.SetActive(true);
+                    activeHints.Add(slot);
+                }
+            }
+        }
+        else if (currentState == StepState.LockBattery)
         {
             EventManager.Instance.OnHideDescription += PhaseShopController.Instance.SetAttachedGameObject;
         }
@@ -413,18 +492,15 @@ public class TutorialManager : MonoBehaviour
         }
         else if (currentState == StepState.RepairRobot)
         {
-            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots.Count > 0)
+            foreach (var slot in PhaseShopController.Instance.TeamSlots)
             {
-                foreach (var slot in PhaseShopController.Instance.TeamSlots)
+                var unit = slot.UnitController();
+                if (unit != null && unit.Model.IsFullDurability() == false)
                 {
-                    var unit = slot.UnitController();
-                    if (unit != null && unit.Model.IsFullDurability() == false)
+                    if (slot.Tutorial)
                     {
-                        if (slot.Tutorial)
-                        {
-                            slot.Tutorial.HintArrow.SetActive(true);
-                            activeHints.Add(slot);
-                        }
+                        slot.Tutorial.HintArrow.SetActive(true);
+                        activeHints.Add(slot);
                     }
                 }
             }
@@ -438,49 +514,30 @@ public class TutorialManager : MonoBehaviour
 
     private void OnValidatedLateEnter()
     {
-        if (currentState == StepState.ShowFactoryReseted)
+        if (currentState == StepState.ClickRobotToRepair)
         {
-            foreach (var slot in PhaseShopController.Instance.ShopItemSlots)
+            foreach (var slot in PhaseShopController.Instance.TeamSlots)
             {
-                if (slot.Tutorial &&
-                    slot.UnitController() && slot.UnitController().Model.Data.UnitType == UnitType.Item)
+                var unit = slot.UnitController();
+                if (unit != null && unit.Model.IsFullDurability() == false)
                 {
-                    slot.Tutorial.HintArrow.SetActive(true);
-                    activeHints.Add(slot);
-                }
-            }
-        }
-        else if (currentState == StepState.ClickRobotToRepair)
-        {
-            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots.Count > 0)
-            {
-                foreach (var slot in PhaseShopController.Instance.TeamSlots)
-                {
-                    var unit = slot.UnitController();
-                    if (unit != null && unit.Model.IsFullDurability() == false)
+                    if (slot.Tutorial)
                     {
-                        if (slot.Tutorial)
-                        {
-                            slot.Tutorial.HintArrow.SetActive(true);
-                        }
+                        slot.Tutorial.HintArrow.SetActive(true);
                     }
                 }
             }
         }
         else if (currentState == StepState.ClickRobotToRecycle)
         {
-            if (PhaseShopController.Instance && PhaseShopController.Instance.TeamSlots.Count > 0)
+            foreach (var slot in PhaseShopController.Instance.TeamSlots)
             {
-                foreach (var slot in PhaseShopController.Instance.TeamSlots)
+                var unit = slot.UnitController();
+                if (slot.Tutorial &&
+                    unit && (unit.Model.SoUnit.Name == "Gold Eye" || unit.Model.SoUnit.ModelID == "RC-BF-2R"))
                 {
-                    var unit = slot.UnitController();
-                    if (slot.Tutorial &&
-                        unit && unit.Model.Data.UnitState == UnitState.InSlotTeam
-                        && (unit.Model.SoUnit.Name == "Gold Eye" || unit.Model.SoUnit.ModelID == "RC-BF-2R"))
-                    {
-                        slot.Tutorial.HintArrow.SetActive(true);
-                        activeHints.Add(slot);
-                    }
+                    slot.Tutorial.HintArrow.SetActive(true);
+                    activeHints.Add(slot);
                 }
             }
         }
@@ -492,7 +549,7 @@ public class TutorialManager : MonoBehaviour
         {
             EventManager.Instance.OnHideDescription -= PhaseShopController.Instance.SetAttachedGameObject;
         }
-        else if(currentState == StepState.ShowFactoryReseted)
+        else if (currentState == StepState.ShowFactoryReseted)
         {
             activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
         }
@@ -523,14 +580,14 @@ public class TutorialManager : MonoBehaviour
             if (PhaseShopController.Instance)
                 PhaseShopController.Instance.HideDescriptionOfUnits();
 
-            SetNextStep();
+            StartStep(currentState + 1);
         }
         else if (currentState == StepState.ClickRobotToRecycle && _unit && _unit.Model.Data.UnitState == UnitState.InSlotTeam
                 && (_unit.Model.SoUnit.Name == "Gold Eye" || _unit.Model.SoUnit.ModelID == "RC-BF-2R"))
         {
             _unit.View.SetDescriptionActive(false);
             activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
-            SetNextStep();
+            StartStep(StepState.RecycleRobot);
         }
     }
 
@@ -539,17 +596,51 @@ public class TutorialManager : MonoBehaviour
         switch (_inputKey)
         {
             case InputKey.DropSlotTeam:
-                if (currentState == StepState.PickRobot ||
-               currentState == StepState.PickOthers && PhaseShopController.Instance.HasAnyBotInShop == false ||
-               currentState == StepState.PickBattery)
-                    SetNextStep();
+
+                if (currentState == StepState.PickRobot)
+                    StartStep(StepState.PickOthers);
+                else
+                    if (currentState == StepState.PickOthers)
+                    {
+                        foreach (var slot in PhaseShopController.Instance.ShopBotSlots)
+                        {
+                            var unit = slot.UnitController();
+                            if (unit == null)
+                            {
+                                if (slot.Tutorial)
+                                {
+                                    slot.Tutorial.HintArrow.SetActive(false);
+                                }
+                            }
+                        }
+                        foreach (var slot in PhaseShopController.Instance.TeamSlots)
+                        {
+                            var unit = slot.UnitController();
+                            if (unit != null)
+                            {
+                                if (slot.Tutorial)
+                                {
+                                    slot.Tutorial.HintArrow.SetActive(false);
+                                }
+                            }
+                        }
+
+                        if (PhaseShopController.Instance.HasAnyBotInShop == false)
+                                StartStep(StepState.PickBattery);
+                    }
+                    else
+                        if (currentState == StepState.PickBattery)
+                        {
+                            activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
+                            StartStep(StepState.ShowFactoryReseted);
+                        }
                 break;
 
             case InputKey.ClickButtonLock:
                 if (currentState == StepState.LockBattery)
                 {
                     PhaseShopUI.Instance.SetButtonActive(null);
-                    SetNextStep();
+                    StartStep(StepState.ShowTeamOrder);
                 }
                 break;
 
@@ -570,7 +661,7 @@ public class TutorialManager : MonoBehaviour
                     }
 
                     if (PhaseShopController.Instance && PhaseShopController.Instance.HasAllFullRobots())
-                        SetNextStep();
+                        StartStep(StepState.RepairCompliment);
                 }
                 break;
 
@@ -578,7 +669,7 @@ public class TutorialManager : MonoBehaviour
                 if (currentState == StepState.RecycleRobot)
                 {
                     activeHints.ForEach(x => x.Tutorial.HintArrow.SetActive(false));
-                    SetNextStep();
+                    StartStep(StepState.RecycleCompliment);
                 }
                 break;
 
@@ -598,14 +689,28 @@ public class TutorialManager : MonoBehaviour
             case StepState.ShopToBattle: // set speed in battle 0 but not timeScale to show tutorial
                 PhaseBattleController.Instance.SetRunning(false, false);
                 break;
-            case StepState.WaitingForAbility: // set speed in battle 0 but not timeScale to show tutorial
-                SetNextStep();
+            case StepState.WaitingForAbility: // be called from ablity trigger
+                // set speed in battle 0 but not timeScale to show tutorial
                 PhaseBattleController.Instance.SetRunning(false, false);
+                StartStep(StepState.RobotHasAbility);
                 break;
             case StepState.BattleIdle:
-                SetNextStep();
+                StartStep(StepState.WaitingEndBattle);
                 break;
         }
+    }
+
+    public bool IsPreventingInstallBattery(Slot _dropSlot)
+    {
+        var unit = _dropSlot.UnitController();
+        if (currentState == StepState.PickBattery &&
+            (unit != null && unit.Model.Data.UnitState == UnitState.InSlotTeam
+                        && (unit.Model.SoUnit.Name == "Gold Eye" || unit.Model.SoUnit.ModelID == "RC-BF-2R")))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public bool IsPreventingDrop()

@@ -527,7 +527,18 @@ public class GameManager : MonoBehaviour
 
         if (IsTutorialRunning && isUnlocking == false)
         {
-            TutorialManager.Instance.SetNextStep();
+            switch(TutorialStepState)
+            {
+                case TutorialManager.StepState.Turn1:
+                    TutorialManager.Instance.StartStep(TutorialManager.StepState.Welcome);
+                    break;
+                case TutorialManager.StepState.ShopToBattle:
+                    TutorialManager.Instance.StartStep(TutorialManager.StepState.BattleIntro1);
+                    break;
+                case TutorialManager.StepState.Turn2:
+                    TutorialManager.Instance.StartStep(TutorialManager.StepState.ClickRobotToRepair);
+                    break;
+            }
         }
     }
 

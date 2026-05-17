@@ -18,7 +18,7 @@ public class CustomBlinker : MonoBehaviour
     public bool loop = true; // Whether to repeat the sequence indefinitely
 
     private int currentStep = 0;
-    private float stepTimer = 0f;
+    //private float stepTimer = 0f;
 
     private Coroutine coroutine;
 

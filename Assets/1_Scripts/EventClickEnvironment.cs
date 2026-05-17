@@ -82,7 +82,7 @@ public class EventClickEnvironment : MonoBehaviour, IPointerClickHandler
             tutorial != null && tutorial.IsAbledToSetNextStep())
         {
             Debug.Log("SetNextStep " + GameManager.Instance.ClickIndex);
-            tutorial.SetNextStep();
+            tutorial.StartStep(GameManager.Instance.TutorialStepState + 1);
         }
 
  

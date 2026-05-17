@@ -3518,6 +3518,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4478270065428780896, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: m_text
+      value: Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 4654054329079332231, guid: 9bbca71baba28e84b993740db8887691, type: 3}
       propertyPath: m_Name
       value: Panel Confirmation
@@ -3525,6 +3529,14 @@ PrefabInstance:
     - target: {fileID: 4654054329079332231, guid: 9bbca71baba28e84b993740db8887691, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462699663782037320, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: m_text
+      value: Stay
+      objectReference: {fileID: 0}
+    - target: {fileID: 6905850170626602769, guid: 9bbca71baba28e84b993740db8887691, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 7031929659918564228, guid: 9bbca71baba28e84b993740db8887691, type: 3}
       propertyPath: m_Pivot.x

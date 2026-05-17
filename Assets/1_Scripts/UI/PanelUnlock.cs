@@ -10,10 +10,10 @@ public class PanelUnlock : MonoBehaviour, IPointerClickHandler
             return;
 
         PhaseShopController.Instance.SetStartTurn(StartTurnState.ClickPanelUnlock);
-        if (GameManager.Instance.IsTutorialRunning)
-        {
-            TutorialManager.Instance.SetNextStep();
-        }
+        //if (GameManager.Instance.IsTutorialRunning)
+        //{
+        //    TutorialManager.Instance.StartStep(GameManager.Instance.TutorialStepState + 1);
+        //}
         wasClicked = true;
     }
 }
