@@ -27,7 +27,7 @@ Aufgaben:
 - PvP Gameloop inkl. Shop- und Kampfphasen
 - Grundstruktur von Spieleinheiten und Währungssystem mit Scriptable Object
 - Interaktionen mit Spielobjekten und UI
-- Kampfablauf mit FSM
+- Kampfablauf mit FSM-System
 - Animation und SFX inkl. Sound mit FMOD
 - Cutscenes
 - Replay System
