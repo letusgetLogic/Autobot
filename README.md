@@ -39,7 +39,7 @@ Aufgaben:
 
 ## Anmerkungen
 - Beschäftigung mit Networking-Systemen
-- Erstellung von Cover-Bild mit zufällig generierte Positionen und Drehungen von Robotern
+- Erstellung von Cover-Bild mit zufällig generierte Positionen & Drehungen von Robotern und manuellen Anpassen/Polishen
 - Auseinandersetzung von Copyrights von Assets von externalen Creators, AI und sich selbst
 
 ------------------------------------------------------------------------
