@@ -34,6 +34,12 @@ public class PanelConfirmation : MonoBehaviour
 
     public UnityAction ActionOnDeclined { get; set; }
 
+    private void Start()
+    {
+        OnContinueDeclined.onClick.AddListener(Decline);
+        OnContinueConfirmed.onClick.AddListener(Confirm);
+    }
+
     private void OnEnable()
     {
         InputManager.Instance.BlocksInput = true;
@@ -42,10 +48,8 @@ public class PanelConfirmation : MonoBehaviour
         leftCurrencyComponents.ForEach(x => x.SetActive(type == Type.LeftCurrency));
         defaultComponents.ForEach(x => x.SetActive(type == Type.ToMenu || type == Type.None));
 
-        OnContinueDeclined.gameObject.SetActive(true);
-        OnContinueDeclined.onClick.AddListener(Decline);
-        OnContinueConfirmed.gameObject.SetActive(true);
-        OnContinueConfirmed.onClick.AddListener(Confirm);
+        OnContinueDeclined.interactable = true;
+        OnContinueConfirmed.interactable = true;
     }
 
     private void OnDisable()
@@ -62,7 +66,8 @@ public class PanelConfirmation : MonoBehaviour
 
     private void Decline()
     {
-        OnContinueDeclined.gameObject.SetActive(false);
+        OnContinueDeclined.interactable = false;
+
         MyResult = Result.Declined;
         OnCancelConfirmed?.Invoke();
         ActionOnDeclined?.Invoke();
@@ -74,7 +79,7 @@ public class PanelConfirmation : MonoBehaviour
 
     private void Confirm()
     {
-        OnContinueConfirmed.gameObject.SetActive(false);
+        OnContinueConfirmed.interactable = false;
 
         MyResult = Result.Confirmed;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -181,6 +182,9 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    private float aiLogicTime = 0f;
+    private float aiLogicRefresh = 1f;
+
 
     private void Awake()
     {
@@ -215,7 +219,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            LoadGame(GameMode.PvP);
+            LoadGame(GameMode.AI);
         }
     }
 
@@ -225,6 +229,16 @@ public class GameManager : MonoBehaviour
         if (Time.time - lastClickTime >= clickCooldown)
         {
             canRegisterClick = true; // Reset the clickable state after cooldown.
+        }
+
+        if (aiLogicTime > 0f)
+        {
+            aiLogicTime -= Time.deltaTime;
+        }
+        if (aiCoroutine != null && aiLogicTime <= 0f)
+        {
+            aiCoroutine = null;
+            Switch(GameState.EndOfTurn);
         }
     }
 
@@ -266,7 +280,7 @@ public class GameManager : MonoBehaviour
 
                 currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
 
-                Switch(GameState.StartScene);
+                testBattleCoroutine = StartCoroutine(DelayLoadShop());
                 break;
 
             case GameMode.Tutorial:
@@ -310,6 +324,14 @@ public class GameManager : MonoBehaviour
 
         // Set default speed multiplier for phase battle
         //CurrentSpeedMultiplier = DefaultSpeedMultiplier;
+    }
+
+    private Coroutine testBattleCoroutine;
+    private IEnumerator DelayLoadShop()
+    {
+        yield return new WaitUntil(() => PackManager.Instance.MyPack != null);
+        Switch(GameState.StartScene);
+        testBattleCoroutine = null;
     }
 
     [ContextMenu("Reload Shop")]
@@ -399,10 +421,10 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.EndOfTurn:
+                aiCoroutine = null;
                 CurrentGame.CurrentPlayerIndex++;
                 SaveSystem.SaveGame(CurrentGame);
                 Switch(GameState.StartScene);
-                coroutine = null;
                 break;
 
             case GameState.StartOfBattle:
@@ -441,7 +463,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Coroutine coroutine;
+    private Coroutine aiCoroutine;
 
     /// <summary>
     /// Starts scene.
@@ -463,7 +485,8 @@ public class GameManager : MonoBehaviour
                 if (TestBattle)
                     LoadScene("PhaseShop");
 
-                coroutine = StartCoroutine(CurrentPlayer.ExecuteByTutorialAI());
+                aiLogicTime = aiLogicRefresh;
+                aiCoroutine = StartCoroutine(CurrentPlayer.ExecuteByTutorialAI());
                 return;
             }
 

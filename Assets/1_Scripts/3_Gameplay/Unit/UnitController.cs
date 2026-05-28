@@ -95,7 +95,8 @@ public class UnitController : MonoBehaviour
     public Slot Slot => transform.parent.GetComponent<Slot>();
 
     public bool HasView =>
-        (PhaseShopController.Instance && GameManager.Instance.CurrentPlayer.Data.IsAI == false)
+        (PhaseShopController.Instance && GameManager.Instance.CurrentPlayer != null 
+        && GameManager.Instance.CurrentPlayer.Data != null && GameManager.Instance.CurrentPlayer.Data.IsAI == false)
         || PhaseBattleController.Instance
         || (Application.isPlaying == false && editorHasView);
 

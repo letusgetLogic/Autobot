@@ -800,6 +800,7 @@ public class PhaseShopController : MonoBehaviour
     /// </summary>
     public void EndShop()
     {
+        Debug.Log("PhaseShopController.EndShop()");
         EventManager.Instance.OnEndTurnAccepted?.Invoke();
         SetAttachedGameObject(null);
         coverPanelPreventButtonClick.SetActive(true);

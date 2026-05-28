@@ -460,6 +460,8 @@ public class UnitView : MonoBehaviour
 
     public void ShowInvalidFusion()
     {
+        EventManager.Instance.OnInvalidInput?.Invoke();
+
         var markColorRed = GetComponent<MarkColorRed>();
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();

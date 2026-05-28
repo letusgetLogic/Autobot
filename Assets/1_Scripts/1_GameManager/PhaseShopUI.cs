@@ -241,7 +241,8 @@ public class PhaseShopUI : MonoBehaviour
     /// </summary>
     public void OnEndTurn()
     {
-        endTurnButton.gameObject.SetActive(false);
+        endTurnButton.interactable = false;
+        Debug.Log("endTurnButton.interactable " + endTurnButton.interactable);
         Debug.Log("End Turn Button Clicked");
 
         if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonEndTurn))
@@ -266,8 +267,12 @@ public class PhaseShopUI : MonoBehaviour
         }
         else
         {
-            panelLeftCurrency.ActionOnDeclined = () => endTurnButton.gameObject.SetActive(true);
-            panelLeftCurrency.SetData(Player.Data.Tools, Player.Data.Nuts);
+            panelLeftCurrency.ActionOnDeclined = () => 
+            {
+                endTurnButton.interactable = true; 
+                Debug.Log("endTurnButton.interactable " + endTurnButton.interactable); 
+            };
+                panelLeftCurrency.SetData(Player.Data.Tools, Player.Data.Nuts);
             // wait for panelLeftCurrency.Confirm calls PhaseShopController.Instance.EndShop();
         }
     }
