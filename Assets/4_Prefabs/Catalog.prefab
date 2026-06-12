@@ -1890,15 +1890,15 @@ SpriteRenderer:
   m_SortingLayerID: -1099682533
   m_SortingLayer: 3
   m_SortingOrder: 21
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1185347767, guid: ae0e9d3f46318e0449603a706748d8ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.2666667, y: 1.3666667}
+  m_Size: {x: 0.5714286, y: 0.74285716}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &6829364174019181729
@@ -7216,12 +7216,12 @@ GameObject:
   - component: {fileID: 7689928789331688712}
   - component: {fileID: 2229695575537674133}
   m_Layer: 0
-  m_Name: 
+  m_Name: Battery XXL
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3836632378720035163
 Transform:
   m_ObjectHideFlags: 0
@@ -7254,7 +7254,7 @@ MonoBehaviour:
   view: {fileID: 7689928789331688712}
   toNextSlotMover: {fileID: 2229695575537674133}
   attackMover: {fileID: 6829364174019181729}
-  editorSoUnit: {fileID: 0}
+  editorSoUnit: {fileID: 11400000, guid: ba73690184ca8c84886fd8c2eaeaee09, type: 2}
   editorIsOnRightSide: 0
   editorUnitState: 0
   editorIsRepairOnValidateActive: 1
@@ -10671,15 +10671,15 @@ SpriteRenderer:
   m_SortingLayerID: -1099682533
   m_SortingLayer: 3
   m_SortingOrder: 20
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1185347767, guid: ae0e9d3f46318e0449603a706748d8ff, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.95454544, y: 1.5909091}
+  m_Size: {x: 0.5714286, y: 0.74285716}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3163506168223294077
@@ -35921,7 +35921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247793794051499583, guid: 7efa909f4e104094f891a040dca49493, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2481364895660148022, guid: 7efa909f4e104094f891a040dca49493, type: 3}
       propertyPath: m_Name
@@ -36009,11 +36009,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4401293869368866261, guid: 7efa909f4e104094f891a040dca49493, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4892811242057813875, guid: 7efa909f4e104094f891a040dca49493, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7599780402568914818, guid: 7efa909f4e104094f891a040dca49493, type: 3}
       propertyPath: m_SizeDelta.x
@@ -36724,6 +36724,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7102740730026399700, guid: 33e48d66338a30847a50480ee5b8b1ec, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697488652533702803, guid: 33e48d66338a30847a50480ee5b8b1ec, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9032570628432327599, guid: 33e48d66338a30847a50480ee5b8b1ec, type: 3}

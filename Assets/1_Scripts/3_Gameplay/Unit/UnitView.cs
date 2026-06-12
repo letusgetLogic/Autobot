@@ -222,7 +222,8 @@ public class UnitView : MonoBehaviour
     {
         if (_description != null)
         {
-            ability.text = _description;
+            if (ability != null)
+                ability.text = _description;
 
             if (_energy == 0)
                 energyConsumptionComponent.SetActive(false);
