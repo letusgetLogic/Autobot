@@ -7,8 +7,8 @@ public class LightenUpDown : MonoBehaviour
     [SerializeField] private bool isAutomatic = true;
     [SerializeField] private bool isDisableAtAwake = false;
     [SerializeField] private float animTime = 1f;
-    [SerializeField] private float colorMax = 1f;
-    [SerializeField] private float colorMin = 0.1f;
+    [SerializeField] private float colorMax = 1f; // The maximum alpha value.
+    [SerializeField] private float colorMin = 0.1f; // The minimum alpha value.
     [SerializeField] private AnimationCurve animCurve;
 
     private enum Lighten

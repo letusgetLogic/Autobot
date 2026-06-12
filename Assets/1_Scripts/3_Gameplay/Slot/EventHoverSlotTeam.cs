@@ -91,10 +91,11 @@ public class EventHoverSlotTeam : MonoBehaviour, IPointerEnterHandler, IPointerE
                     unitDragged,
                     false);
 
+                if (!isFusible)
+                    return;
+
                 // Set countdown based on fusibility.
-                countDown = isFusible ?
-                PhaseShopController.Instance.Process.DelayPushingFusion :
-                PhaseShopController.Instance.Process.DelayPushing;
+                countDown = PhaseShopController.Instance.Process.DelayPushingFusion;
 
                 //direction = DirectionMoveOther();
                 isCounting = true;

@@ -21,16 +21,33 @@ public class ConvertEnergy : AbilityBase
 
         // Execute only when the current energy > 0
 
-        Controller.AddEnergy(-energy, false, true);
+        int buffValue = CurrentLevel.Index switch
+        {
+            0 => (int)(energy * 0.5f),
+            1 => energy,
+            2 => energy * 2,
+            _ => 0
+        };
+
+        int consumENG = CurrentLevel.Index switch
+        {
+            0 => buffValue * 2,
+            1 => energy,
+            2 => energy,
+            _ => 0
+        };
+
+        Controller.AddEnergy(-consumENG, false, true);
 
         Attribute buff = default;
+        
 
         // If the buff is HP, convert all energy to HP, otherwise convert all energy to ATK
         if (CurrentLevel.Buff.HP > 0)
-            buff = new Attribute(energy, 0);
+            buff = new Attribute(buffValue, 0);
         else
             if (CurrentLevel.Buff.ATK > 0)
-            buff = new Attribute(0, energy);
+            buff = new Attribute(0, buffValue);
 
         Controller.Buff(IsPernament(CurrentLevel.AbilityDuration), buff);
 

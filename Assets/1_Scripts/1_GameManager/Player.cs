@@ -59,7 +59,7 @@ public class Player
     private IEnumerator BuildTeamByAI()
     {
         List<UnitController> teamUnits = new();
-        int repairTools = Data.Tools - PhaseShopController.Instance.ShopBotSlots.Count;
+        int repairTools = 999 /*Data.Tools - PhaseShopController.Instance.ShopBotSlots.Count*/;
         GameManager.Instance.Log("PackManager.Instance.Bots " + (PackManager.Instance.Bots == null ? "null" : "Count" + PackManager.Instance.Bots.Count));
         var shopBots = PhaseShopController.Instance.GetRandomShopBots();
 
@@ -267,27 +267,38 @@ public class Player
                     }
                 }
                 yield return DebugTeamUnit("BuildTeamByAI - Fill from shop");
-                var list = Data.TeamUnitDatas.ToList();
-                list.OrderByDescending(x => 
-                { 
-                    if (x != null) 
-                        return x.Cur.HP + x.Cur.ATK; 
-                    else return 0; 
-                }).ThenByDescending(x =>
-                {
-                    if (x != null)
-                        return x.Cur.HP + x.Cur.ATK;
-                    else return 0;
-                }).ToList();
 
-                if (Random.Range(0, 2) == 1) // 50% chance last unit to first slot
-                {
-                    var last = list[list.Count - 1];
-                    list.RemoveAt(list.Count - 1);
-                    list.Insert(0, last);
-                }
+                var list = Data.TeamUnitDatas.ToList();
+
+                foreach(var unit in list)
+                    Debug.Log("before sort: " + unit.ID + " | HP + ATK: " + unit.Cur.HP + " + " + unit.Cur.ATK + " = " + (unit.Cur.HP + unit.Cur.ATK));
+
+                list.OrderByDescending(x => x.Cur.HP + x.Cur.ATK).ToList();
+
+                Debug.Log("----------------------------------");
+                foreach (var unit in list)
+                    Debug.Log("after sort: " + unit.ID + " | HP + ATK: " + unit.Cur.HP + " + " + unit.Cur.ATK + " = " + (unit.Cur.HP + unit.Cur.ATK));
+
+                //list
+                //    .Where(x => x != null)
+                //    .OrderByDescending(x => (x.Cur.HP + x.Cur.ATK))
+                //    .ThenBy(x => x.Cur.ATK)
+                //    .ToList();
+
+
+                //if (Random.Range(0, 2) == 1) // 50% chance last unit to first slot
+                //{
+                //    var last = list[list.Count - 1];
+                //    list.RemoveAt(list.Count - 1);
+                //    list.Insert(0, last);
+                //}
                 Data.TeamUnitDatas = list.ToArray();
                 yield return DebugTeamUnit("BuildTeamByAI - Shuffle");
+
+                // charge at end of shop
+                foreach (var unit in Data.TeamUnitDatas)
+                    if (unit != null)
+                        unit.SetEnergy(unit.Cur.ENG + 1);
                 break;
 
             default:

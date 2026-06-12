@@ -45,6 +45,7 @@ public class PhaseShopUI : MonoBehaviour
     [Header("Roll Button")]
     [SerializeField] private TextMeshProUGUI rollCostNut;
     [SerializeField] private TextMeshProUGUI rollCostTool;
+    [SerializeField] private GameObject hintRoll;
 
     [Header("Manage Buttons")]
     [SerializeField] private GameObject[] manageButtons;
@@ -248,6 +249,7 @@ public class PhaseShopUI : MonoBehaviour
         if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonEndTurn))
         {
             //coroutine = StartCoroutine(EnableButtonAfterDelay(reactivateDelay));
+            endTurnButton.interactable = true;
             return;
         }
 
@@ -261,26 +263,37 @@ public class PhaseShopUI : MonoBehaviour
 
         panelLeftCurrency.gameObject.SetActive(hasEnoughCur);
 
+        // visual hint roll button
+        if (Player.Data.Nuts > 0)
+        {
+            hintRoll.gameObject.SetActive(true);
+        }
+
         if (hasEnoughCur == false)
         {
             PhaseShopController.Instance.EndShop();
         }
         else
         {
+            panelLeftCurrency.SetData(Player.Data.Tools, Player.Data.Nuts);
+
             panelLeftCurrency.ActionOnDeclined = () => 
             {
+                hintRoll.gameObject.SetActive(false);
                 endTurnButton.interactable = true; 
                 Debug.Log("endTurnButton.interactable " + endTurnButton.interactable); 
             };
-                panelLeftCurrency.SetData(Player.Data.Tools, Player.Data.Nuts);
+
+            panelLeftCurrency.ActionOnConfirmed = () => 
+            {
+                hintRoll.gameObject.SetActive(false);
+                PhaseShopController.Instance.EndShop();
+            };
+
+              
             // wait for panelLeftCurrency.Confirm calls PhaseShopController.Instance.EndShop();
         }
     }
-    //private IEnumerator EnableButtonAfterDelay(float seconds)
-    //{
-    //    yield return new WaitForSeconds(seconds);
-    //    endTurnButton.interactable = true;
-    //}
 
     #region Manage Buttons
 

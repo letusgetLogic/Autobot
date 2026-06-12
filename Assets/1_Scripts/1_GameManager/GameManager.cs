@@ -148,6 +148,7 @@ public class GameManager : MonoBehaviour
     public void SetTime(float _time) => Time.timeScale = _time;
     public bool IsStopped { get; set; } = false; // is for SetRunningButton
     public float BattleSpeed { get; set; } = 1f;  // 1 = running, 0 = stopped
+    #endregion
 
 
     public TutorialManager.StepState TutorialStepState { get; set; }
@@ -156,7 +157,7 @@ public class GameManager : MonoBehaviour
     public void SetTutorialRunning(bool _value) => isTutorialRunning = _value;
 
     private bool isTutorialRunning = false;
-    #endregion
+
 
     public bool IsMode1P =>
         currentGame.Mode == GameMode.Tutorial ||

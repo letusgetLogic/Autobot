@@ -684,6 +684,7 @@ MonoBehaviour:
   CoverPanels: []
   CoverPanelsToDeactivate:
   - {fileID: 289755581187539113}
+  - {fileID: 7878089633023215717}
   Labels:
   - {fileID: 5836547030710007963}
   TargetsToBeChild: []
@@ -1318,7 +1319,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CoverPanels: []
-  CoverPanelsToDeactivate: []
+  CoverPanelsToDeactivate:
+  - {fileID: 7878089633023215717}
   Labels:
   - {fileID: 351734346468721617}
   TargetsToBeChild: []
@@ -1577,6 +1579,7 @@ MonoBehaviour:
   CoverPanelsToDeactivate:
   - {fileID: 5832135086478373965}
   - {fileID: 8066269447918999517}
+  - {fileID: 7878089633023215717}
   Labels:
   - {fileID: 5454878142534363550}
   TargetsToBeChild: []
@@ -3803,7 +3806,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CoverPanels: []
-  CoverPanelsToDeactivate: []
+  CoverPanelsToDeactivate:
+  - {fileID: 7878089633023215717}
   Labels:
   - {fileID: 4902754886780948297}
   TargetsToBeChild: []
@@ -3905,7 +3909,6 @@ RectTransform:
   m_Children:
   - {fileID: 2056274643450848287}
   - {fileID: 3146213432558305935}
-  - {fileID: 4909926423865937564}
   - {fileID: 7604118182925708831}
   - {fileID: 6092630829030369594}
   - {fileID: 6204561585118634738}
@@ -3951,6 +3954,7 @@ RectTransform:
   - {fileID: 1153447771984140447}
   - {fileID: 5747275238543092176}
   - {fileID: 487373579562184140}
+  - {fileID: 4909926423865937564}
   - {fileID: 5913787218742134143}
   - {fileID: 8054498166046476895}
   m_Father: {fileID: 0}
@@ -5211,7 +5215,8 @@ MonoBehaviour:
   CoverPanels:
   - {fileID: 5832135086478373965}
   - {fileID: 8066269447918999517}
-  CoverPanelsToDeactivate: []
+  CoverPanelsToDeactivate:
+  - {fileID: 7878089633023215717}
   Labels:
   - {fileID: 8411890086786804117}
   TargetsToBeChild: []

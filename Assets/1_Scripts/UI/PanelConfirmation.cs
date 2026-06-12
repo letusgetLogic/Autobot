@@ -33,6 +33,7 @@ public class PanelConfirmation : MonoBehaviour
     [SerializeField] private List<GameObject> defaultComponents;
 
     public UnityAction ActionOnDeclined { get; set; }
+    public UnityAction ActionOnConfirmed { get; set; }
 
     private void Start()
     {
@@ -80,7 +81,7 @@ public class PanelConfirmation : MonoBehaviour
     private void Confirm()
     {
         OnContinueConfirmed.interactable = false;
-
+        ActionOnConfirmed?.Invoke();
         MyResult = Result.Confirmed;
 
         gameObject.SetActive(false);
@@ -88,7 +89,7 @@ public class PanelConfirmation : MonoBehaviour
         switch (type)
         {
             case Type.LeftCurrency:
-                PhaseShopController.Instance.EndShop();
+                //PhaseShopController.Instance.EndShop();
                 break;
             case Type.ToMenu:
                 if (GameManager.Instance.CurrentGame != null)
