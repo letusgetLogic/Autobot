@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor.Playables;
 using UnityEngine;
 
 public class AttackState : StateBaseBattle
@@ -99,8 +100,11 @@ public class AttackState : StateBaseBattle
 
         ShowCollide();
         // Logic
-        unit1.TakeDamage(unit2.TriggerAttack());
-        unit2.TakeDamage(unit1.TriggerAttack());
+
+        unit1.TakeDamage(unit2.TriggerAttack(unit1));
+        unit2.TakeDamage(unit1.TriggerAttack(unit2));
+
+        EventManager.Instance.OnAttackFinished?.Invoke();
 
         yield return new WaitForSeconds(MaxTimeCount);
 

@@ -14,6 +14,8 @@
 
     ConvertEnergy = 6,
 
+    ActivateOnePunch = 7,
+
     CopyHealth,
     BuffSelfIfAFriendLv3,
 

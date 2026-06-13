@@ -48,7 +48,7 @@ public class EventDropSlotTeam : MonoBehaviour, IDropHandler
         // Prevent dropping items into charge slots
         if (slot.CompareTag("Slot Charge"))
         {
-            if (attached.Model.Data.UnitType == UnitType.Item)
+            if (attached.Model.SoUnit.Name == "Virus")
                 return;
         }
 

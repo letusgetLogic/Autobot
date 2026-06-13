@@ -8,7 +8,8 @@
 
     LevelUp,
     BeforeAttack = 5,
-    AfterAttack,
+    Attack = 22,
+    AfterAttack = 6,
     Hurt,
     EatsFood,
 
@@ -27,7 +28,7 @@
     KnockOut,
 
     StartOfTurn,
-    EndTurn,
+    EndTurn = 20,
     StartOfBattle = 21,
     EndOfBattle,
 }

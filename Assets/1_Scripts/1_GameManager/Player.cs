@@ -270,21 +270,20 @@ public class Player
 
                 var list = Data.TeamUnitDatas.ToList();
 
-                foreach(var unit in list)
-                    Debug.Log("before sort: " + unit.ID + " | HP + ATK: " + unit.Cur.HP + " + " + unit.Cur.ATK + " = " + (unit.Cur.HP + unit.Cur.ATK));
+                //foreach(var unit in list)
+                //    Debug.Log("before sort: " + unit.ID + " | HP + ATK: " + unit.Cur.HP + " + " + unit.Cur.ATK + " = " + (unit.Cur.HP + unit.Cur.ATK));
 
-                list.OrderByDescending(x => x.Cur.HP + x.Cur.ATK).ToList();
+                //List<SaveUnitData> newList = list.OrderByDescending(x => x.Cur.HP + x.Cur.ATK).ToList();
 
-                Debug.Log("----------------------------------");
-                foreach (var unit in list)
-                    Debug.Log("after sort: " + unit.ID + " | HP + ATK: " + unit.Cur.HP + " + " + unit.Cur.ATK + " = " + (unit.Cur.HP + unit.Cur.ATK));
+                //Debug.Log("----------------------------------");
+                //foreach (var unit in newList)
+                //    Debug.Log("after sort: " + unit.ID + " | HP + ATK: " + unit.Cur.HP + " + " + unit.Cur.ATK + " = " + (unit.Cur.HP + unit.Cur.ATK));
 
-                //list
-                //    .Where(x => x != null)
-                //    .OrderByDescending(x => (x.Cur.HP + x.Cur.ATK))
-                //    .ThenBy(x => x.Cur.ATK)
-                //    .ToList();
-
+                List<SaveUnitData> newList = list
+                    .Where(x => x != null)
+                    .OrderByDescending(x => x.Cur.HP + x.Cur.ATK)
+                    .ThenByDescending(x => x.Cur.ATK)
+                    .ToList();
 
                 //if (Random.Range(0, 2) == 1) // 50% chance last unit to first slot
                 //{
@@ -292,7 +291,7 @@ public class Player
                 //    list.RemoveAt(list.Count - 1);
                 //    list.Insert(0, last);
                 //}
-                Data.TeamUnitDatas = list.ToArray();
+                Data.TeamUnitDatas = newList.ToArray();
                 yield return DebugTeamUnit("BuildTeamByAI - Shuffle");
 
                 // charge at end of shop

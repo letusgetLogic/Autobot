@@ -63,7 +63,7 @@ public class LightenUpDown : MonoBehaviour
     {
         if (lightenState == Lighten.Up)
         {
-            if (currentValue == 1f)
+            if (currentValue >= 1f)
             {
                 lightenState = isAutomatic ? Lighten.Down : Lighten.None;
                 return;
@@ -81,7 +81,7 @@ public class LightenUpDown : MonoBehaviour
     {
         if (lightenState == Lighten.Down)
         {
-            if (currentValue == 0f)
+            if (currentValue <= 0f)
             {
                 lightenState = isAutomatic ? Lighten.Up : Lighten.None;
                 return;

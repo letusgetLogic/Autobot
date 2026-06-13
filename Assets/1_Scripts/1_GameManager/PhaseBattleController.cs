@@ -69,6 +69,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     }
     private List<Coroutine> coroutines;
 
+    public float Speed { get; set; } = 1f;
 
     private void Awake()
     {
@@ -77,8 +78,6 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
             Destroy(Instance.gameObject);
         }
         Instance = this;
-
-        Time.timeScale = 1f;
 
         if (GameManager.Instance == null)
             return;
@@ -122,7 +121,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
         if (state == null)
             return;
 
-        float speed = GameManager.Instance.BattleSpeed * Time.deltaTime /** GameManager.Instance.CurrentSpeedMultiplier*/;
+        float speed = Speed * Time.deltaTime /** GameManager.Instance.CurrentSpeedMultiplier*/;
         state.OnUpdate(this, speed);
 
         if (SubState != null)
@@ -188,11 +187,21 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
     public void SetRunning(bool _isRunning, bool _affectTimeScale)
     {
         GameManager.Instance.IsStopped = !_isRunning;
-        GameManager.Instance.BattleSpeed = _isRunning ? 1f : 0f;
+        Speed = _isRunning ? 1f : 0f;
 
         if (_affectTimeScale)
-            GameManager.Instance.SetTime(_isRunning ? 1f : 0f);
+            GameManager.Instance.SetTime(_isRunning ? GameManager.Instance.BattleSpeed : 0f);
 
+        PhaseBattleView.Instance.SetRunningButton();
+    }
+
+    public void SetSpeed(float _speed)
+    {
+        GameManager.Instance.BattleSpeed = _speed;
+
+        if (!GameManager.Instance.IsStopped)
+            GameManager.Instance.SetTime(GameManager.Instance.BattleSpeed);
+        
         PhaseBattleView.Instance.SetRunningButton();
     }
 

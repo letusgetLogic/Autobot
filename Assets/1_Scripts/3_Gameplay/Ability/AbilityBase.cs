@@ -122,6 +122,9 @@ public abstract class AbilityBase
                 if (_controller.Model.Data.Cur.ENG > 0)
                     return new ConvertEnergy(_controller, _level, _seed);
                 return null;
+
+            case DoType.ActivateOnePunch:
+                return new ActivateOnePunch(_controller, _level, _seed);
         }
 
         return null;

@@ -48,7 +48,6 @@ public class InitializeState : StateBaseBattle
 
     public override void OnExit(I_FSM_Battle _ctx)
     {
-       
     }
 
     /// <summary>

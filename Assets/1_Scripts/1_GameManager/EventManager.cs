@@ -103,6 +103,8 @@ public class EventManager
 
     public UnityAction OnSettingsButtonOpen { get; set; }
     public UnityAction OnSettingsButtonClose { get; set; }
+
+    public UnityAction OnAttackFinished { get ; set; }
     #endregion
 }
 

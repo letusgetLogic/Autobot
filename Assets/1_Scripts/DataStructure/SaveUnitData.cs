@@ -58,7 +58,9 @@ public class SaveUnitData
 
     public bool IsTeamLeft { get; set; }
 
-    
+    public bool HasOnePunch { get; set; }
+
+
     /// <summary>
     /// Default constructor
     /// </summary>

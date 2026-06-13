@@ -71,6 +71,7 @@ public class UnitView : MonoBehaviour
     [Header("Attribute Display")]
     [SerializeField] private GameObject attributeGroup;
     [SerializeField] private GameObject energyIcon;
+    public GameObject OnePunchVisual;
     [SerializeField]
     private TextMeshProUGUI
         health,
@@ -228,7 +229,8 @@ public class UnitView : MonoBehaviour
             if (_energy == 0)
                 energyConsumptionComponent.SetActive(false);
             else
-                energyConsumption.text = _energy.ToString();
+                if (energyConsumption != null)
+                    energyConsumption.text = _energy.ToString();
 
             return;
         }
@@ -622,7 +624,8 @@ public class UnitView : MonoBehaviour
     /// </summary>
     public void HideAttributes()
     {
-        attributeGroup.SetActive(false);
+        if (attributeGroup != null)
+            attributeGroup.SetActive(false);
     }
 
     /// <summary>

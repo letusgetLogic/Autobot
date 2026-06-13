@@ -46,6 +46,9 @@ public class PhaseBattleView : MonoBehaviour
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject play;
     [SerializeField] private GameObject stop;
+    [SerializeField] private GameObject speedButton;
+    [SerializeField] private GameObject x1;
+    [SerializeField] private GameObject x2;
 
     [Header("Visuals")]
     [SerializeField] private Image collideVisual;
@@ -122,6 +125,7 @@ public class PhaseBattleView : MonoBehaviour
         coverPanel.gameObject.SetActive(false);
         bottomPanel.Trigger();
         bottomPanel.OnPosition += ShowText;
+        PhaseBattleController.Instance.SetSpeed(GameManager.Instance.BattleSpeed);
     }
 
     private void ShowText()
@@ -158,6 +162,7 @@ public class PhaseBattleView : MonoBehaviour
     {
         coverPanel.gameObject.SetActive(true);
         playButton.SetActive(false);
+        speedButton.SetActive(false);
         buttons.ForEach(b => b.SetActive(false));
 
         float animTime = coverPanel.SwitchOn(true);
@@ -187,6 +192,7 @@ public class PhaseBattleView : MonoBehaviour
 
         coverPanel.gameObject.SetActive(true);
         playButton.SetActive(false);
+        speedButton.SetActive(false);
         buttons.ForEach(b => b.SetActive(false));
 
         float animTime = coverPanel.SwitchOn(true);
@@ -298,12 +304,25 @@ public class PhaseBattleView : MonoBehaviour
     }
 
     /// <summary>
+    /// Button click and click on screen call.
+    /// </summary>
+    public void OnSpeedButtonClick()
+    {
+        if (InputManager.Instance.IsBlockingInput(InputKey.ClickButtonPlayInBattle))
+            return;
+
+        PhaseBattleController.Instance.SetSpeed(GameManager.Instance.BattleSpeed == 1f ? 2f : 1f);
+    }
+
+    /// <summary>
     /// Sets the running button.
     /// </summary>
     public void SetRunningButton()
     {
         play.SetActive(!GameManager.Instance.IsStopped);
         stop.SetActive(GameManager.Instance.IsStopped);
+        x1.SetActive(GameManager.Instance.BattleSpeed == 1f);
+        x2.SetActive(GameManager.Instance.BattleSpeed == 2f);
     }
 
     /// <summary>

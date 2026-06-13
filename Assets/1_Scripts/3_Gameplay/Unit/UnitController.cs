@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
+using static UnityEngine.UI.CanvasScaler;
 
 /// <summary>
 /// Creating and initializing components.
@@ -111,12 +113,14 @@ public class UnitController : MonoBehaviour
     {
         if (toNextSlotMover) toNextSlotMover.OnSetParent += SetParent;
         EventManager.Instance.OnEndTurnCharged +=  TriggerEndTurn;
+        EventManager.Instance.OnAttackFinished += DeactivateOnePunch;
     }
 
     private void OnDisable()
     {
         if (toNextSlotMover) toNextSlotMover.OnSetParent -= SetParent;
         EventManager.Instance.OnEndTurnCharged -=  TriggerEndTurn;
+        EventManager.Instance.OnAttackFinished -= DeactivateOnePunch;
     }
 
     /// <summary>
@@ -296,8 +300,9 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Triggers the ability while attacking.
     /// </summary>
-    /// <returns></returns>
-    public Damage TriggerAttack()
+    /// <param name="_damage">The damage value to be triggered.</param>
+    /// <returns>The triggered damage instance.</returns>
+    public Damage TriggerAttack(UnitController _enemy)
     {
         EventManager.Instance.OnAttack?.Invoke();
 
@@ -305,7 +310,9 @@ public class UnitController : MonoBehaviour
         if (ability != null)
             EventManager.Instance.OnTriggerAbility?.Invoke(ability, default);
 
-        return new Damage(model.Data.Cur.ATK);
+        int damage = model.Data.HasOnePunch ? _enemy.Model.Data.Cur.HP : model.Data.Cur.ATK;
+
+        return new Damage(damage);
     }
 
     #endregion
@@ -516,7 +523,15 @@ public class UnitController : MonoBehaviour
     #endregion
 
 
-
+    private void DeactivateOnePunch() => ActivateOnePunch(false);
+    public void ActivateOnePunch(bool _active)
+    {
+        Model.Data.HasOnePunch = _active;
+        View.OnePunchVisual.SetActive(_active);
+        
+        if (_active)
+            EventManager.Instance.OnBuff?.Invoke();
+    }
 
     /// <summary>
     /// Moves the objects to the target and set it to the parent.
