@@ -18,6 +18,7 @@ public class PhaseShopUI : MonoBehaviour
     [SerializeField] private List<GameObject> unlockTierObjects;
     [SerializeField] private GameObject tier2;
     [SerializeField] private GameObject tier3;
+    [SerializeField] private GameObject tier4;
 
     [Header("References")]
     [SerializeField] private PanelConfirmation panelLeftCurrency;
@@ -184,6 +185,7 @@ public class PhaseShopUI : MonoBehaviour
         unlockTierObjects.ForEach(x => x.SetActive(_active));
         tier2.SetActive(_index == 2);
         tier3.SetActive(_index == 3);
+        tier4.SetActive(_index == 4);
     }
 
     /// <summary>

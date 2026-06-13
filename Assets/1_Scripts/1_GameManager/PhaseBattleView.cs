@@ -125,7 +125,6 @@ public class PhaseBattleView : MonoBehaviour
         coverPanel.gameObject.SetActive(false);
         bottomPanel.Trigger();
         bottomPanel.OnPosition += ShowText;
-        PhaseBattleController.Instance.SetSpeed(GameManager.Instance.BattleSpeed);
     }
 
     private void ShowText()

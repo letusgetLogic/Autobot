@@ -24,7 +24,8 @@ public class MainMenu : MonoBehaviour
         }
         Instance = this;
 
-        Time.timeScale = 1.0f;
+        GameManager.Instance.SetTime(1f);
+        GameManager.Instance.BattleSpeed = 1f;
        
         InputManager.Instance.BlocksInput = false;
 

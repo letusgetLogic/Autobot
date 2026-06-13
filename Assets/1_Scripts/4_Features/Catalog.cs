@@ -69,6 +69,7 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
         GameManager.Instance.SetTime(1f);
         GameManager.Instance.IsCatalogActive = false;
         EventManager.Instance.OnSettingsButtonClose?.Invoke();
+        SetAttachedGameObject(null);
     }
 
     /// <summary>

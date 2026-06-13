@@ -90,7 +90,7 @@ public class PhaseBattleController : MonoBehaviour, I_FSM_Battle
 
     private void Start()
     {
-        PhaseBattleView.Instance.SetRunningButton();
+        SetSpeed(GameManager.Instance.BattleSpeed);
         Slots1.ForEach(x => x.Index = Slots1.IndexOf(x));
         Slots2.ForEach(x => x.Index = Slots2.IndexOf(x));
     }
