@@ -9,7 +9,7 @@ public class ContinueButton : MonoBehaviour
     /// </summary>
     public void OnButtonClick()
     {
-        settingsButton.OnContinueButtonClick();
+        settingsButton.OnButtonClick();
     }
 }
 

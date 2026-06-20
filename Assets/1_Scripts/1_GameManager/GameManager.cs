@@ -37,49 +37,6 @@ public class GameManager : MonoBehaviour
     [Header("Global Settings")]
     [SerializeField] private float clickCooldown = 0.5f;
 
-    private float lastClickTime = 0f;
-    public bool IsClickable
-    {
-        get
-        {
-            if (canRegisterClick)
-            {
-                // Register the click and start the cooldown.
-                lastClickTime = Time.time;
-                canRegisterClick = false;
-                return true;
-            }
-
-            // Still in cooldown, ignore the click.
-            return false;
-        }
-    }
-    private bool canRegisterClick = true;
-
-    public bool IsGameOverSceneRunning { get; set; }
-
-    // This code block or the time scaling feature is disabled,
-    // because it cause inaccuracy, when the time from start coroutine wasn't also scaled.
-    //
-    //[Header("Battle Speed Settings")] 
-    //public float DefaultSpeedMultiplier = 1f;
-    //public float MaxSpeedMultiplier = 2f;
-    //public float CurrentSpeedMultiplier { get; set; }
-    //public bool IsDefaultMult { get; set; } = true;
-    //---------------------------------------------------
-
-    // GameSettings set those variables, to initialize in the next scene.
-    public GameMode Mode { get; set; }
-    public string Name1 { get; set; } = "Player 1";
-    public string Name2 { get; set; } = "Player 2";
-    public int PlayerLives { get; set; }
-    public int Timer { get; set; }
-    //
-
-    public bool IsMode1P =>
-        currentGame.Mode == GameMode.Tutorial ||
-        currentGame.Mode == GameMode.AI ||
-        currentGame.Mode == GameMode.TestBattle;
 
     #region Reference Datas
     /// <summary>
@@ -141,6 +98,22 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    public bool HasInitSound { get; set; }
+
+
+    #region GameSettings set those variables, to initialize in the next scene.
+    public GameMode Mode { get; set; }
+    public string Name1 { get; set; } = "Player 1";
+    public string Name2 { get; set; } = "Player 2";
+    public int PlayerLives { get; set; }
+    public int Timer { get; set; }
+    #endregion
+
+    public bool IsMode1P =>
+        currentGame.Mode == GameMode.Tutorial ||
+        currentGame.Mode == GameMode.AI ||
+        currentGame.Mode == GameMode.TestBattle;
+
     #region Settings
     public bool IsMobile => isMobile;
     public void SetIsMobile(bool _value) => isMobile = _value;
@@ -154,6 +127,24 @@ public class GameManager : MonoBehaviour
     public float BattleSpeed { get; set; } = 1f;  // 1 = running, 0 = stopped
     #endregion
 
+    private float lastClickTime = 0f;
+    public bool IsClickable
+    {
+        get
+        {
+            if (canRegisterClick)
+            {
+                // Register the click and start the cooldown.
+                lastClickTime = Time.time;
+                canRegisterClick = false;
+                return true;
+            }
+
+            // Still in cooldown, ignore the click.
+            return false;
+        }
+    }
+    private bool canRegisterClick = true;
 
     public bool IsCatalogActive { get; set; }
     public bool IsWaitingConfirmation { get; set; }
@@ -190,6 +181,8 @@ public class GameManager : MonoBehaviour
     private float aiLogicTime = 0f;
     private float aiLogicRefresh = 1f;
 
+    public bool IsGameOverSceneRunning { get; set; }
+
 
     private void Awake()
     {
@@ -208,7 +201,8 @@ public class GameManager : MonoBehaviour
         if (input != null)
         {
             // this if-query is used to initialize instances once.
-        };
+        }
+        ;
     }
 
     private void Start()
@@ -315,7 +309,7 @@ public class GameManager : MonoBehaviour
 
                 // Create a new game.
                 players[0].Data = new PlayerData(Name1, PlayerLives, 0);
-                players[1].Data = new PlayerData(NameList.GetRandomExclusive(new [] {Name1}), PlayerLives, 0, true);
+                players[1].Data = new PlayerData(NameList.GetRandomExclusive(new[] { Name1 }), PlayerLives, 0, true);
 
                 currentGame = new Game(Mode, 2, Timer, PlayerLives, 0, GameState.None);
 
@@ -555,7 +549,7 @@ public class GameManager : MonoBehaviour
 
         if (IsTutorialRunning && isUnlocking == false)
         {
-            switch(TutorialStepState)
+            switch (TutorialStepState)
             {
                 case TutorialManager.StepState.Turn1:
                     TutorialManager.Instance.StartStep(TutorialManager.StepState.Welcome);

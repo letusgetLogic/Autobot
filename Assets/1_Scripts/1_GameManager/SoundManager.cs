@@ -6,18 +6,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance
-    {
-        get
-        {
-            if (_Instance == null)
-            {
-                Debug.LogWarning("SoundManager instance is null.");
-            }
-            return _Instance;
-        }
-    }
-    private static SoundManager _Instance;
+    public static SoundManager Instance { get; private set; }
 
 
     [SerializeField] 
@@ -30,19 +19,24 @@ public class SoundManager : MonoBehaviour
     {
         Debug.Log(this.name + ".Awake()");
 
-        if (_Instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
 
-        _Instance = this;
+        Instance = this;
 
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start() 
+    public void Init() 
     {
+        if (GameManager.Instance.HasInitSound)
+            return;
+
+        GameManager.Instance.HasInitSound = true;
+
         // Retrieve the master bus using the standard path
         masterBus = RuntimeManager.GetBus("bus:/");
         SetMasterVolume(defaultVolumeValue);

@@ -15,9 +15,9 @@ public class SettingsButton : MonoBehaviour
 
 
     /// <summary>
-    /// Button click calls.
+    /// Button click calls by setting and continue buttons.
     /// </summary>
-    public void OnContinueButtonClick()
+    public void OnButtonClick()
     {
         if (InputManager.Instance.IsBlockingInput(InputKey.AlwaysEnabled))
             return;
