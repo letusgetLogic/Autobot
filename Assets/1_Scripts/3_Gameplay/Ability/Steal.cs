@@ -27,10 +27,10 @@ public class Steal : AbilityBase
 
                     var target = Targets.Dequeue();
 
-                    int stolen = StolenEnergy(target, Controller);
+                    int stolenENG = StolenEnergy(target, Controller);
 
-                    target.AddEnergy(stolen, default, true);
-                    Controller.AddEnergy(Math.Abs(stolen), true, true);
+                    target.AddEnergy(stolenENG, default, true);
+                    Controller.AddEnergy(Math.Abs(stolenENG), true, true);
 
                     yield return new WaitForSeconds(Controller.View.Settings.DurationShowTemporaryValue);
                 }
@@ -53,7 +53,12 @@ public class Steal : AbilityBase
         int targetENG = _target.Model.Data.Cur.ENG;
         int debuffENG = _causer.Model.CurrentLevel.Debuff.ENG;
 
-        return targetENG < Math.Abs(debuffENG) ? -targetENG : debuffENG;
+        if (debuffENG == 0)
+            return -targetENG;
+
+        bool isLessThanDebuff = targetENG < Math.Abs(debuffENG);
+
+        return isLessThanDebuff ? -targetENG : debuffENG;
     }
 }
 

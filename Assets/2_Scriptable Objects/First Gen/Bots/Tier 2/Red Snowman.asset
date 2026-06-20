@@ -26,33 +26,6 @@ MonoBehaviour:
   LevelLimit: {fileID: 11400000, guid: 7edce010087e1574e9d4e826c792d1ae, type: 2}
   Levels:
   - Index: 0
-    Description: "Shutdown \u2192 Give the two nearest teammates behind +1 attack
-      and +1 health."
-    HasAbility: 1
-    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
-    TriggerType: 3
-    TriggerTimes: 0
-    TriggerTimesLimit: 0
-    DoType: 1
-    FromWho: 1
-    ToWho: 4
-    ToWhoCount: 2
-    AbilityDuration: 3
-    Buff:
-      HP: 1
-      ATK: 1
-      ENG: 0
-      HasValue: 0
-    Debuff:
-      HP: 0
-      ATK: 0
-      ENG: 0
-      HasValue: 0
-    UnitLimit: 0
-    SummonUnits: []
-    SummonForOpponent: 0
-    GainCoin: 0
-  - Index: 1
     Description: "Shutdown \u2192 Give the two nearest teammates behind +2 attack
       and +2 health."
     HasAbility: 1
@@ -79,9 +52,9 @@ MonoBehaviour:
     SummonUnits: []
     SummonForOpponent: 0
     GainCoin: 0
-  - Index: 2
-    Description: "Shutdown \u2192 Give the two nearest teammates behind +3 attack
-      and +3 health."
+  - Index: 1
+    Description: "Shutdown \u2192 Give the two nearest teammates behind +4 attack
+      and +4 health."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 3
@@ -93,8 +66,35 @@ MonoBehaviour:
     ToWhoCount: 2
     AbilityDuration: 3
     Buff:
-      HP: 3
-      ATK: 3
+      HP: 4
+      ATK: 4
+      ENG: 0
+      HasValue: 0
+    Debuff:
+      HP: 0
+      ATK: 0
+      ENG: 0
+      HasValue: 0
+    UnitLimit: 0
+    SummonUnits: []
+    SummonForOpponent: 0
+    GainCoin: 0
+  - Index: 2
+    Description: "Shutdown \u2192 Give the two nearest teammates behind +8 attack
+      and +8 health."
+    HasAbility: 1
+    ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
+    TriggerType: 3
+    TriggerTimes: 0
+    TriggerTimesLimit: 0
+    DoType: 1
+    FromWho: 1
+    ToWho: 4
+    ToWhoCount: 2
+    AbilityDuration: 3
+    Buff:
+      HP: 8
+      ATK: 8
       ENG: 0
       HasValue: 0
     Debuff:

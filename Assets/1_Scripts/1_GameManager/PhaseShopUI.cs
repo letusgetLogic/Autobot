@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -406,7 +405,11 @@ public class PhaseShopUI : MonoBehaviour
             {
                 panelRecycleNotTrigger.gameObject.SetActive(true);
                 unit.View.SetDescriptionActive(true);
-                recycleCoroutine = StartCoroutine(RecycleByConfirmation(recycle, unit));
+
+                panelRecycleNotTrigger.ActionOnConfirmed = recycle;
+                panelRecycleNotTrigger.ActionOnDeclined = () => unit.View.SetDescriptionActive(false);
+
+                return; // necessary to not set block input false
             }
             else
             {
@@ -414,25 +417,6 @@ public class PhaseShopUI : MonoBehaviour
             }
         }
         else input.BlocksInput = false;
-    }
-
-    private Coroutine recycleCoroutine;
-    private IEnumerator RecycleByConfirmation(UnityAction _action, UnitController _unit)
-    {
-        yield return new WaitUntil(() =>
-                           panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed ||
-                           panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Declined);
-
-        if (panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Confirmed)
-        {
-            _action.Invoke();
-        }
-        if (panelRecycleNotTrigger.MyResult == PanelConfirmation.Result.Declined)
-        {
-            _unit.View.SetDescriptionActive(false);
-        }
-
-        recycleCoroutine = null;
     }
 
     /// <summary>

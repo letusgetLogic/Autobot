@@ -83,6 +83,8 @@ public class UnitView : MonoBehaviour
         addEnergy,
         consumEnergy;
 
+    private Vector3 defaultEnergyScale = default;
+
     [Header("Repair Display Health")]
     [SerializeField] private GameObject repairDisplayHp;
     [SerializeField]
@@ -161,6 +163,9 @@ public class UnitView : MonoBehaviour
 
         if (repairStepBgHp1)
             defaultBgColor = repairStepBgHp1.color;
+
+        if (energy)
+            defaultEnergyScale = energy.transform.localScale;
     }
 
     private void OnEnable()
@@ -292,6 +297,19 @@ public class UnitView : MonoBehaviour
     public void SetDescriptionActive(bool _value)
     {
         if (description) description.SetActive(_value);
+    }
+
+    public void HintInvalidEnergy()
+    {
+        if (energy)
+        {
+            var markColorRed = GetComponent<MarkColorRed>();
+            if (markColorRed == null)
+                markColorRed = gameObject.AddComponent<MarkColorRed>();
+
+            energy.transform.localScale *= 1.5f;
+            markColorRed.SetComponent(energy, energy.color, settings.DurationShowTemporaryValue, () => energy.transform.localScale = defaultEnergyScale);
+        }
     }
 
     #region Drag Event Behaviour

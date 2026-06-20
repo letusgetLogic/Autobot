@@ -89,9 +89,9 @@ public class InitializeState : StateBaseBattle
             return;
         }
 
-        if (_player.Data.TeamUnitDatas.Length < _slots.Length)
+        if (_player.Data.TeamUnitDatas.Length != _slots.Length)
         {
-            Debug.LogWarning($"{_player.Data.Name} TeamUnitDatas.Length < Slots.Length");
+            Debug.LogWarning($"{_player.Data.Name} TeamUnitDatas.Length != Slots.Length");
             return;
         }
 

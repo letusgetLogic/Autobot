@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PhaseShopController : MonoBehaviour
 {
@@ -58,6 +59,9 @@ public class PhaseShopController : MonoBehaviour
     private InputManager input => InputManager.Instance;
 
     private List<AbilityBase> abilities = new List<AbilityBase>();
+
+
+
 
     private void Awake()
     {
@@ -473,15 +477,19 @@ public class PhaseShopController : MonoBehaviour
 
     #endregion
 
-    private Coroutine buyCoroutine;
 
     /// <summary>
     ///  Manages the attached unit.
     /// </summary>
     /// <param name="_attachedController"></param>
     /// <param name="_targetSlot"></param>
-    public IEnumerator ManageAttachedUnit(UnitController _attached, Slot _targetSlot, UnitController _target)
+    public void ManageAttachedUnit(UnitController _attached, Slot _targetSlot, UnitController _target)
     {
+        // Set drop slot inactive for randomness item by drop or click.
+        if (itemRandomnessDropSlot != null)
+            itemRandomnessDropSlot.gameObject.SetActive(false);
+
+
         var attachedState = _attached.Model.Data.UnitState;
 
         // If unit is in the shop and
@@ -492,13 +500,9 @@ public class PhaseShopController : MonoBehaviour
                 _attached.Model.Cost.Nut, _attached.Model.Cost.Tool, true))
             {
                 // then buy.
-                yield return buyCoroutine = StartCoroutine(Buy(_attached, _targetSlot, _target));
+                Buy(_attached, _targetSlot, _target);
+                return;  // necessary to not set block input false
             }
-            else yield break;
-
-            // Set drop slot inactive for randomness item.
-            if (itemRandomnessDropSlot != null)
-                itemRandomnessDropSlot.gameObject.SetActive(false);
         }
         // If unit is in the team and
         else if (attachedState == UnitState.InSlotTeam || attachedState == UnitState.InSlotCharge)
@@ -508,26 +512,34 @@ public class PhaseShopController : MonoBehaviour
             {
                 // then check if the slot is empty,
                 if (_target == null)
+                {
                     // transport the unit to it,
                     Transport(_attached, _targetSlot, true);
+                }
                 else
+                {
                     // else fusion, if both are fusible.
                     if (IsFusible(_target, _attached, true))
                     {
                         _target.UpdateLevel(_attached.Model.Data, true);
                         Destroy(_attached.gameObject);
                     }
-                    else yield return StartCoroutine(Swap(_target, _attached.Slot, _attached, _targetSlot));
+                    else
+                    {
+                        swapCoroutine = StartCoroutine(Swap(_target, _attached.Slot, _attached, _targetSlot));
+                        return;
+                    }
+                }
             }
         }
-
+        input.BlocksInput = false;
     }
 
     /// <summary>
     /// Checks if it's purchasable, then buy the attached object.
     /// </summary>
     /// <param name="_targetedSlot"></param>
-    private IEnumerator Buy(UnitController _purchased, Slot _targetSlot, UnitController _target)
+    private void Buy(UnitController _purchased, Slot _targetSlot, UnitController _target)
     {
         if (_target != null || _purchased.Model.IsItemDoRandomness) // on drop, not on click
         {
@@ -536,41 +548,39 @@ public class PhaseShopController : MonoBehaviour
                 if (TutorialManager.Instance && TutorialManager.Instance.IsPreventingInstallBattery(_targetSlot))
                 {
                     EventManager.Instance.OnInvalidInput?.Invoke();
-                    yield break;
+                    return;
                 }
 
+                UnityAction buyItem = () =>
+                {
+                    // case: buy & destroy item
+                    _purchased.Targets.Enqueue(_target);
+                    _purchased.TriggerCraft();
+
+                    PhaseShopUI.Instance.UpdateCurrency(
+                         _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
+
+                    EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
+
+                    Destroy(_purchased.gameObject);
+                };
+
                 // case: virus wouldn't trigger ability on shutdown unit
-                if (IsBuyingItemNotUseful(_purchased, _target))
+                if (IsLackOfEnergyToTriggerShutdown(_purchased, _target))
                 {
                     var panel = PhaseShopUI.Instance.PanelShutdownNotTrigger;
                     if (panel != null)
                     {
                         panel.gameObject.SetActive(true);
                         _target.View.SetDescriptionActive(true);
-                        yield return new WaitUntil(() =>
-                            panel.MyResult == PanelConfirmation.Result.Confirmed ||
-                            panel.MyResult == PanelConfirmation.Result.Declined);
 
-                        if (panel.MyResult == PanelConfirmation.Result.Declined)
-                        {
-                            _target.View.SetDescriptionActive(false);
-                            input.BlocksInput = false;
-                            buyCoroutine = null;
-                            yield break;
-                        }
+                        panel.ActionOnConfirmed = buyItem;
+                        panel.ActionOnDeclined = () => _target.View.SetDescriptionActive(false);
+
+                        return; // necessary to not set block input false
                     }
                 }
-
-                // case: buy & destroy item
-                _purchased.Targets.Enqueue(_target);
-                _purchased.TriggerCraft();
-
-                PhaseShopUI.Instance.UpdateCurrency(
-                     _purchased.Model.Cost.Nut, _purchased.Model.Cost.Tool);
-
-                EventManager.Instance.OnCraft?.Invoke(InputKey.DropSlotTeam);
-
-                Destroy(_purchased.gameObject);
+                else buyItem?.Invoke();
             }
             // case: buy and bots are fusible.
             else
@@ -657,6 +667,8 @@ public class PhaseShopController : MonoBehaviour
         Player.UpdateUnitData();
     }
 
+    private Coroutine swapCoroutine;
+
     /// <summary>
     /// Move the targeted unit to the be dragged slot and the dragging unit to target slot.
     /// </summary>
@@ -708,6 +720,8 @@ public class PhaseShopController : MonoBehaviour
 
         IsSwapping = false;
         input.BlocksInput = false;
+
+        swapCoroutine = null;
     }
 
     ///summary>
@@ -965,7 +979,8 @@ public class PhaseShopController : MonoBehaviour
     /// <param name="_unit"></param>
     public void DestroyUnit(UnitController _unit)
     {
-        _unit.DestroyObject();
+        if (_unit.gameObject.activeSelf)
+            _unit.StartCoroutine(_unit.DestroyObject(0.5f));
     }
 
     /// <summary>
@@ -1010,6 +1025,25 @@ public class PhaseShopController : MonoBehaviour
 
         return true;
     }
+
+    /// <summary>
+    /// Checks if two units are of the same type.
+    /// </summary>
+    /// <param name="_onSlot"></param>
+    /// <param name="_onDrag"></param>
+    /// <returns></returns>
+    public bool IsSameType(UnitController _onSlot, UnitController _onDrag)
+    {
+        if (_onDrag == _onSlot)
+            return false;
+
+        if (_onSlot.Model.SoUnit.Name == _onDrag.Model.SoUnit.Name)
+            return true;
+
+        return false;
+    }
+
+
 
     public bool IsTurnAI()
     {
@@ -1058,7 +1092,7 @@ public class PhaseShopController : MonoBehaviour
         return fullRobots == robots;
     }
 
-    public bool IsBuyingItemNotUseful(UnitController _item, UnitController _target)
+    public bool IsLackOfEnergyToTriggerShutdown(UnitController _item, UnitController _target)
     {
         if (_item.Model.CurrentLevel.DoType == DoType.ShutDown &&
             _target.Model.CurrentLevel.TriggerType == TriggerType.Shutdown)

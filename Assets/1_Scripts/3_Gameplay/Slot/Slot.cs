@@ -173,7 +173,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// </summary>
     private void ShowDescription()
     {
-        if (UnitView() == null)
+        if (UnitView() == null) 
             return;
 
         UnitView().SetDescriptionActive(true);

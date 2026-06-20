@@ -58,7 +58,7 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
         GameManager.Instance.SetActive(this, true);
         GameManager.Instance.IsCatalogActive = true;
 
-        GameManager.Instance.SetTime(0f);
+        GameManager.Instance.SetPause(true);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class Catalog : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void OnDisable()
     {
-        GameManager.Instance.SetTime(1f);
+        GameManager.Instance.SetPause(false);
         GameManager.Instance.IsCatalogActive = false;
         EventManager.Instance.OnSettingsButtonClose?.Invoke();
         SetAttachedGameObject(null);

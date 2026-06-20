@@ -207,7 +207,7 @@ public class GameSettings : MonoBehaviour
         if (markColorRed == null)
             markColorRed = gameObject.AddComponent<MarkColorRed>();
 
-        markColorRed.SetComponent(_target, durationColorDefault);
+        markColorRed.SetComponent(_target, _target.textComponent.color, durationColorDefault, null);
     }
 
     /// <summary>

@@ -17,7 +17,7 @@ public class SettingsButton : MonoBehaviour
     /// <summary>
     /// Button click calls.
     /// </summary>
-    public void OnButtonClick()
+    public void OnContinueButtonClick()
     {
         if (InputManager.Instance.IsBlockingInput(InputKey.AlwaysEnabled))
             return;
@@ -44,6 +44,6 @@ public class SettingsButton : MonoBehaviour
                 button.SetActive(!isSettingsOpen);
             }
         }
-        GameManager.Instance.SetTime(isSettingsOpen ? 0f : 1f);
+        GameManager.Instance.SetPause(isSettingsOpen);
     }
 }

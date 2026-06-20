@@ -280,9 +280,18 @@ public class Player
                 //    Debug.Log("after sort: " + unit.ID + " | HP + ATK: " + unit.Cur.HP + " + " + unit.Cur.ATK + " = " + (unit.Cur.HP + unit.Cur.ATK));
 
                 List<SaveUnitData> newList = list
-                    .Where(x => x != null)
-                    .OrderByDescending(x => x.Cur.HP + x.Cur.ATK)
-                    .ThenByDescending(x => x.Cur.ATK)
+                    .OrderByDescending(x =>
+                    {
+                        if (x != null) 
+                            return x.Cur.HP + x.Cur.ATK;
+                        else return 0;
+                    })
+                    .ThenByDescending(x =>
+                    {
+                        if (x != null)
+                            return x.Cur.ATK;
+                        else return 0;
+                    })
                     .ToList();
 
                 //if (Random.Range(0, 2) == 1) // 50% chance last unit to first slot

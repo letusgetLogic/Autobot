@@ -52,7 +52,7 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 1
-    Description: "Start of battle \u2192 Deal 1 damage to two random enemies."
+    Description: "Start of battle \u2192 Deal 2 damage to two random enemies."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 21
@@ -69,7 +69,7 @@ MonoBehaviour:
       ENG: 0
       HasValue: 0
     Debuff:
-      HP: -1
+      HP: -2
       ATK: 0
       ENG: 0
       HasValue: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 2
-    Description: "Start of battle \u2192 Deal 1 damage to three random enemies."
+    Description: "Start of battle \u2192 Deal 3 damage to three random enemies."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 21
@@ -95,7 +95,7 @@ MonoBehaviour:
       ENG: 0
       HasValue: 0
     Debuff:
-      HP: -1
+      HP: -3
       ATK: 0
       ENG: 0
       HasValue: 0

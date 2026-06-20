@@ -93,7 +93,9 @@ public class EventDragSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (PhaseShopController.Instance.IsSwapping)
             return;
 
-        InputManager.Instance.BlocksInput = false;
+        if (GameManager.Instance.IsWaitingConfirmation == false)
+            InputManager.Instance.BlocksInput = false;
+
         PhaseShopController.Instance.IsDragging = false;
 
         if (eventData.button != PointerEventData.InputButton.Left)

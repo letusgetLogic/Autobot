@@ -26,11 +26,13 @@ public class GameManager : MonoBehaviour
     [Header("Develop Settings")]
     [SerializeField] private bool isModeDevelop;
     [SerializeField] private bool isNotSavingGame;
-    public bool IsRepairSystemActive;
-    public bool TestBattle;
+    [SerializeField] private bool isRepairSystemActive;
+    [SerializeField] private bool isTestBattle;
     [SerializeField] private int defaultTutorialLives = 3;
     [SerializeField] private int devLives = 3;
     //[SerializeField] private float timer = 90.0f;
+    public bool IsRepairSystemActive => isRepairSystemActive;
+    public bool IsTestBattle => isTestBattle;
 
     [Header("Global Settings")]
     [SerializeField] private float clickCooldown = 0.5f;
@@ -73,6 +75,11 @@ public class GameManager : MonoBehaviour
     public int PlayerLives { get; set; }
     public int Timer { get; set; }
     //
+
+    public bool IsMode1P =>
+        currentGame.Mode == GameMode.Tutorial ||
+        currentGame.Mode == GameMode.AI ||
+        currentGame.Mode == GameMode.TestBattle;
 
     #region Reference Datas
     /// <summary>
@@ -134,21 +141,23 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-
+    #region Settings
     public bool IsMobile => isMobile;
     public void SetIsMobile(bool _value) => isMobile = _value;
 
     private bool isMobile = false;
-
-
-    public bool IsCatalogActive { get; set; }
-    public ReplayManager Replay { get; set; }
+    #endregion
 
     #region Time
     public void SetTime(float _time) => Time.timeScale = _time;
     public bool IsStopped { get; set; } = false; // is for SetRunningButton
     public float BattleSpeed { get; set; } = 1f;  // 1 = running, 0 = stopped
     #endregion
+
+
+    public bool IsCatalogActive { get; set; }
+    public bool IsWaitingConfirmation { get; set; }
+    public ReplayManager Replay { get; set; }
 
 
     public TutorialManager.StepState TutorialStepState { get; set; }
@@ -158,11 +167,6 @@ public class GameManager : MonoBehaviour
 
     private bool isTutorialRunning = false;
 
-
-    public bool IsMode1P =>
-        currentGame.Mode == GameMode.Tutorial ||
-        currentGame.Mode == GameMode.AI ||
-        currentGame.Mode == GameMode.TestBattle;
 
     public int RandomSeed
     {
@@ -214,7 +218,7 @@ public class GameManager : MonoBehaviour
         {
             PlayerLives = devLives;
 
-            if (TestBattle)
+            if (IsTestBattle)
             {
                 LoadGame(GameMode.TestBattle);
                 return;
@@ -483,7 +487,7 @@ public class GameManager : MonoBehaviour
 
             if (IsMode1P && CurrentPlayer.Data.IsAI)
             {
-                if (TestBattle)
+                if (IsTestBattle)
                     LoadScene("PhaseShop");
 
                 aiLogicTime = aiLogicRefresh;
@@ -583,6 +587,12 @@ public class GameManager : MonoBehaviour
             InputManager.Instance.BlocksInput = false;
             PhaseBattleView.Instance.OnOpenSceneEnd();
         }
+    }
+
+    public void SetPause(bool _pause)
+    {
+        if (PhaseBattleController.Instance != null)
+            PhaseBattleController.Instance.SetRunning(!_pause, true);
     }
 
     public void SetActive(Component _comp, bool _active)

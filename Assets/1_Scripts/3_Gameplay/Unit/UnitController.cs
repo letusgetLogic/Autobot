@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.XR;
 using static UnityEngine.UI.CanvasScaler;
 
 /// <summary>
@@ -183,16 +184,21 @@ public class UnitController : MonoBehaviour
         var consum = model.CurrentLevel.ConsumedEnergy;
         int consumENG = consum != null ? Mathf.Abs(consum.Value) : 0;
 
-        // Doesn't have enough energy to trigger the ability.
-        if (model.Data.Cur.ENG < consumENG)
-            return null;
-
-        if (_triggerType != TriggerType.Shutdown && PhaseBattleController.Instance && PhaseBattleController.Instance.HasOutcome())
-            return null;
-
-        // All conditions are satisfied, return the ability.
+        //if (_triggerType != TriggerType.Shutdown && PhaseBattleController.Instance && PhaseBattleController.Instance.HasOutcome())
+        //    return null;
+       
         if (_triggerType == model.CurrentLevel.TriggerType)
+        {
+            // Doesn't have enough energy to trigger the ability.
+            if (model.Data.Cur.ENG < consumENG)
+            {
+                view.HintInvalidEnergy();
+                return null;
+            }
+
+            // All conditions are satisfied, return the ability.
             return Ability;
+        }
 
         return null;
     }
@@ -603,8 +609,9 @@ public class UnitController : MonoBehaviour
     /// <summary>
     /// Detroys game object.
     /// </summary>
-    public void DestroyObject()
+    public IEnumerator DestroyObject(float _delay)
     {
-        Destroy(gameObject);
+         yield return new WaitForSeconds(_delay);
+         Destroy(gameObject);
     }
 }

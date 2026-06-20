@@ -5122,10 +5122,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1893371834}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1893371836}
+        m_TargetAssemblyTypeName: Catalog, Assembly-CSharp
+        m_MethodName: OnActivate
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5271,6 +5271,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2473986517068812062, guid: 2a27b98a40e3cdd45a1f360ae7c0f951, type: 3}
   m_PrefabInstance: {fileID: 4722600675120826127}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1893371836 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2249910314888278916, guid: 2a27b98a40e3cdd45a1f360ae7c0f951, type: 3}
+  m_PrefabInstance: {fileID: 4722600675120826127}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893371834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52bbae1c1925a6a428e42e78b380ad24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1895431503
 GameObject:
   m_ObjectHideFlags: 0
@@ -8839,10 +8850,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1893371834}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1893371836}
+        m_TargetAssemblyTypeName: Catalog, Assembly-CSharp
+        m_MethodName: OnActivate
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9017,8 +9028,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   isModeDevelop: 0
   isNotSavingGame: 1
-  IsRepairSystemActive: 1
-  TestBattle: 0
+  isRepairSystemActive: 1
+  isTestBattle: 0
   defaultTutorialLives: 10
   devLives: 10
   clickCooldown: 1

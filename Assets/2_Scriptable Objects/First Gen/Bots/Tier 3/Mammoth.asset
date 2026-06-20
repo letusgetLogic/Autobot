@@ -78,7 +78,7 @@ MonoBehaviour:
     SummonForOpponent: 0
     GainCoin: 0
   - Index: 2
-    Description: "Shutdown \u2192 Give all teammate +6 attack and +6 health."
+    Description: "Shutdown \u2192 Give all teammate +8 attack and +8 health."
     HasAbility: 1
     ConsumedEnergy: {fileID: 11400000, guid: b4f04174d24b88d4f9685dc22bcb1cbb, type: 2}
     TriggerType: 3
@@ -90,8 +90,8 @@ MonoBehaviour:
     ToWhoCount: 0
     AbilityDuration: 3
     Buff:
-      HP: 6
-      ATK: 6
+      HP: 8
+      ATK: 8
       ENG: 0
       HasValue: 0
     Debuff:
