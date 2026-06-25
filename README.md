@@ -10,7 +10,7 @@ Dieses Projekt wurde für das Modul **5FSC0XD101** am **SAE Institute Hannover**
 Es beinhaltet Aufgaben: Spieleprototyp, Alpha, Beta, Goldmaster, Projektreflexion.
 
 Entwicklungs-Zeitraum: **11.09.2025 - 05.03.2026**
-- Update am 17.05.2026
+- Update am 20.06.2026
 
 Aufgaben:
 - Entwurf von GDD
